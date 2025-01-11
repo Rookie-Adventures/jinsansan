@@ -1,0 +1,305 @@
+# 全局开发规范
+
+## **开发顺序**
+
+1. **全局基础设施**：初始化项目结构，配置工具链（如代码格式化、Linter、CI/CD）。
+2. **中间层**：构建后端服务（如 API、数据库）。
+3. **业务层**：开发核心业务逻辑。
+4. **UI层**：实现前端界面。
+
+---
+
+## **架构设计**
+
+### **技术栈**
+
+#### 前端
+- **框架**：React (18.2.0)
+- **语言**：TypeScript (5.3.3)
+- **UI库**：MUI (5.16.9)
+- **状态管理**：Redux Toolkit (2.0.1) / Zustand (4.4.7)
+
+#### 后端
+- **运行时**：Node.js (22.12.0)
+- **框架**：Express (4.21.2)
+- **数据库**：MongoDB (7.0.4)
+- **缓存**：Redis (7.2.3)
+
+### **架构模式**
+- **模式**：前后端分离架构
+
+---
+
+## **代码规范**
+
+### **代码风格**
+
+#### 函数
+- **单函数最大行数**：15行
+- **最大参数数量**：4个
+- **最大嵌套层级**：4层
+- **显式返回**：所有函数必须显式返回值
+
+#### 文件
+- **单文件最大行数**：500行
+- **重复代码阈值**：10行
+
+#### 复杂度
+- **最大圈复杂度**：10
+
+### **注释规范**
+- **函数注释**：所有函数必须使用 JSDoc 格式
+- **复杂逻辑**：复杂逻辑部分必须有详细注释
+- **JSDoc 必填项**：
+  - `@param` 参数描述
+  - `@returns` 返回值描述
+  - `@throws` 异常描述
+
+### **命名规则**
+
+#### 文件命名
+- **前端**
+  - 组件：`*.tsx`
+  - 服务：`*.ts`
+  - 类型：`*.ts`
+  - 测试：`*.test.tsx`，放在 `__tests__` 文件夹中
+- **后端**
+  - 控制器：`*.ts`
+  - 服务：`*.ts`
+  - 路由：`*.ts`
+
+#### 目录命名
+- 使用小写字母和连字符命名。
+
+---
+
+## **测试规范**
+
+### **框架**
+- 使用 Jest 进行单元测试
+
+### **覆盖率要求**
+- **语句**：80%
+- **分支**：80%
+- **函数**：90%
+- **行**：80%
+
+### **测试配置**
+- 测试初始化文件：`setupTests.ts`
+
+---
+
+## **TypeScript 规则**
+
+- **严格模式**：启用 (`strict: true`)
+- **禁止隐式 `any`**：启用 (`noImplicitAny: true`)
+- **未使用变量**：禁止 (`noUnusedVars: true`)
+- **优先接口**：建议使用 `interface` 而不是 `type` 定义对象
+- **类型守卫**：鼓励使用类型守卫确保类型安全
+
+---
+
+## **质量保证**
+
+### **代码检查**
+- **Linter**：ESLint
+- **格式化**：Prettier
+
+### **自动化**
+- **CI/CD**：集成自动化测试和代码检查
+
+---
+
+#技术栈特性
+## 1. Node.js & TypeScript Compatibility
+
+### Node.js 22.12.0 LTS & TypeScript 5.3.3
+- **Full Compatibility Status**: Fully compatible
+- **Key Features**:
+  - Enhanced ECMAScript features support
+  - ES modules support (`.mjs` extension)
+  - Improved diagnostic tools
+  - async/await and top-level await support
+
+### Configuration Recommendations
+```json
+// tsconfig.json
+{
+  "module": "ESNext",
+  "target": "ES2022"
+}
+```
+
+### Performance Optimizations
+- **Async Local Storage**:
+  ```javascript
+  const { AsyncLocalStorage } = require('async_hooks');
+  const asyncLocalStorage = new AsyncLocalStorage();
+  ```
+- **V8 Engine Improvements**: Enhanced JavaScript execution speed, particularly for compute-intensive operations
+
+## 2. React & TypeScript Integration
+
+### Version Compatibility
+- React 18.2.0
+- TypeScript 5.3.3
+- @types/react: 18.2.7
+- @types/react-dom: 18.2.7
+
+### Best Practices
+1. **Type Checking Configuration**
+   ```json
+   // tsconfig.json
+   {
+     "strict": true,
+     "jsx": "react-jsx"
+   }
+   ```
+
+2. **Suspense & Concurrent Mode Example**
+   ```typescript
+   import { SuspenseList } from 'react';
+
+   const App = () => (
+     <SuspenseList revealOrder="forwards">
+       <Suspense fallback={<Loading />}>
+         <ComponentA />
+       </Suspense>
+       <Suspense fallback={<Loading />}>
+         <ComponentB />
+       </Suspense>
+     </SuspenseList>
+   );
+   ```
+
+### Generic Component Pattern
+```typescript
+interface ButtonProps<T> {
+  onClick: (args: T) => void;
+  label: string;
+}
+
+function Button<T>({ onClick, label }: ButtonProps<T>) {
+  return <button onClick={() => onClick({ data: 'example' } as T)}>{label}</button>;
+}
+```
+
+## 3. MongoDB 7.0.4
+
+### Key Enhancements
+- **Query Improvements**:
+  - New aggregation operators: `$median`, `$percentile`
+  - Enhanced time series data processing
+  - Compound wildcard index support
+  
+- **Transaction Support**:
+  - Enhanced multi-document ACID transactions
+  - Improved distributed environment reliability
+
+### Performance Features
+- Optimized sharding strategies
+- Improved replica set configurations
+- Enhanced aggregate operations
+
+## 4. Redis 7.2.3
+
+### New Features
+- **Stream Extensions**: Improved time series and event-driven capabilities
+- **Memory Management**:
+  ```conf
+  maxmemory 4gb
+  maxmemory-policy allkeys-lru
+  ```
+- **Cluster Improvements**:
+  - Better failover handling
+  - Enhanced node management
+  - Reduced replication latency
+
+## 5. Material UI 5.16.9
+
+### Core Updates
+- Material Design 3 implementation
+- Emotion style engine optimization
+- Enhanced theme customization
+
+### Responsive Design
+```typescript
+const theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
+    },
+  },
+});
+```
+
+## 6. ESLint 9.16
+
+### Configuration Best Practices
+```json
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "plugin:import/errors"
+  ],
+  "rules": {
+    "no-unsafe-optional-chaining": "error",
+    "import/order": ["warn", {
+      "groups": [
+        ["builtin", "external"],
+        ["internal"],
+        ["parent", "sibling", "index"]
+      ],
+      "newlines-between": "always"
+    }]
+  }
+}
+```
+
+### TypeScript Integration
+```json
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  }
+}
+```
+
+### Key Rules
+- Enhanced `no-unsafe-optional-chaining`
+- Improved `no-non-null-assertion`
+- Strengthened `import/no-unresolved`
+- Updated `no-duplicate-imports`
+
+## 7. TypeScript 5.3.3 Advanced Features
+
+### Template Literal Types
+```typescript
+type Color = 'red' | 'green' | 'blue';
+type ButtonSize = `button-${
+  | 'small'
+  | 'medium'
+  | 'large'}`;
+```
+
+### Type System Enhancements
+- Improved type inference
+- Enhanced generic type handling
+- Better third-party library type integration
+
+## Additional Notes
+- All versions mentioned are fully tested and verified for production use
+- Regular security updates should be monitored for all components
+- Performance monitoring is recommended after any major version updates
+
+## **参考说明**
+
+- **前端规范**：请参阅 [Jinshanshan/frontend/.cursorrules]
+- **后端规范**：请参阅 [Jinshanshan/backend/.cursorrules]
