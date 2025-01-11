@@ -1,6 +1,6 @@
+import { Box, Typography, Container } from '@mui/material';
 import React from 'react';
 import { useRouteError } from 'react-router-dom';
-import { Box, Typography, Container } from '@mui/material';
 
 const ErrorPage: React.FC = () => {
   const error = useRouteError() as Error;

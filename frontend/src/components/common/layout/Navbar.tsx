@@ -1,4 +1,4 @@
-import React from 'react';
+import { Menu as MenuIcon } from '@mui/icons-material';
 import {
   AppBar,
   Box,
@@ -10,7 +10,27 @@ import {
   useTheme,
   useMediaQuery,
 } from '@mui/material';
-import { Menu as MenuIcon } from '@mui/icons-material';
+import React from 'react';
+
+const NavigationMenu: React.FC = () => (
+  <Box sx={{ display: 'flex', gap: 2 }}>
+    <Button color="inherit">首页</Button>
+    <Button color="inherit">文档</Button>
+    <Button color="inherit">API</Button>
+    <Button color="inherit">价格</Button>
+    <Button 
+      variant="contained" 
+      color="secondary"
+      sx={{ 
+        borderRadius: 1,
+        textTransform: 'none',
+        px: 3,
+      }}
+    >
+      登录
+    </Button>
+  </Box>
+);
 
 const Navbar: React.FC = () => {
   const theme = useTheme();
@@ -51,23 +71,7 @@ const Navbar: React.FC = () => {
               <MenuIcon />
             </IconButton>
           ) : (
-            <Box sx={{ display: 'flex', gap: 2 }}>
-              <Button color="inherit">首页</Button>
-              <Button color="inherit">文档</Button>
-              <Button color="inherit">API</Button>
-              <Button color="inherit">价格</Button>
-              <Button 
-                variant="contained" 
-                color="secondary"
-                sx={{ 
-                  borderRadius: 1,
-                  textTransform: 'none',
-                  px: 3,
-                }}
-              >
-                登录
-              </Button>
-            </Box>
+            <NavigationMenu />
           )}
         </Toolbar>
       </Container>

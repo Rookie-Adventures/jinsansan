@@ -1,11 +1,12 @@
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
 import { Provider } from 'react-redux';
+
 import App from './App';
-import theme from './theme';
 import { store } from './store';
+import theme from './theme';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

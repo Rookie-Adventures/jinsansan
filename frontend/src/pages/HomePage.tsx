@@ -1,9 +1,10 @@
-import React from 'react';
 import { Box } from '@mui/material';
-import Navbar from '../components/layout/Navbar';
-import HeroSection from '../components/sections/HeroSection';
-import FeatureSection from '../components/sections/FeatureSection';
-import PricingSection from '../components/sections/PricingSection';
+import React from 'react';
+
+import FeatureSection from '../components/business/sections/FeatureSection';
+import HeroSection from '../components/business/sections/HeroSection';
+import PricingSection from '../components/business/sections/PricingSection';
+import Navbar from '../components/common/layout/Navbar';
 
 const HomePage: React.FC = () => {
   return (
