@@ -1,18 +1,9 @@
-import React, { Suspense } from 'react';
-import { Box, CircularProgress } from '@mui/material';
+import React from 'react';
+import { Box } from '@mui/material';
 import Navbar from '../components/layout/Navbar';
-
-// 使用 React.lazy 懒加载组件
-const LazyHeroSection = React.lazy(() => import('../components/sections/HeroSection'));
-const LazyFeatureSection = React.lazy(() => import('../components/sections/FeatureSection'));
-const LazyPricingSection = React.lazy(() => import('../components/sections/PricingSection'));
-
-// Loading 组件
-const LoadingFallback = () => (
-  <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
-    <CircularProgress />
-  </Box>
-);
+import HeroSection from '../components/sections/HeroSection';
+import FeatureSection from '../components/sections/FeatureSection';
+import PricingSection from '../components/sections/PricingSection';
 
 const HomePage: React.FC = () => {
   return (
@@ -47,25 +38,19 @@ const HomePage: React.FC = () => {
           }
         }}
       >
-        <Suspense fallback={<LoadingFallback />}>
-          <LazyHeroSection />
-        </Suspense>
+        <HeroSection />
       </Box>
 
       {/* Feature Section */}
       <Box>
-        <Suspense fallback={<LoadingFallback />}>
-          <LazyFeatureSection />
-        </Suspense>
+        <FeatureSection />
       </Box>
 
       {/* Pricing Section */}
       <Box sx={{ 
         background: 'linear-gradient(135deg, #f5f7fa 0%, #e8ecf3 100%)',
       }}>
-        <Suspense fallback={<LoadingFallback />}>
-          <LazyPricingSection />
-        </Suspense>
+        <PricingSection />
       </Box>
     </Box>
   );

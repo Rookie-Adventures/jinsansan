@@ -27,12 +27,12 @@ request.interceptors.request.use(
 
 // 响应拦截器
 request.interceptors.response.use(
-  (response: AxiosResponse<ApiResponse>) => {
+  async <T>(response: AxiosResponse<ApiResponse<T>>): Promise<T> => {
     const res = response.data;
     if (res.code !== 200) {
-      return Promise.reject(new Error(res.message || 'Error'));
+      throw new Error(res.message || 'Error');
     }
-    return Promise.resolve(res.data);
+    return res.data;
   },
   (error) => {
     return Promise.reject(error);

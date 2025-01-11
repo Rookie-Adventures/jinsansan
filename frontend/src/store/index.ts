@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import appReducer from './slices/appSlice';
 
 export const store = configureStore({
   reducer: {
-    // 这里将添加各个slice
+    app: appReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

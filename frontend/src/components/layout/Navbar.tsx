@@ -27,7 +27,7 @@ const Navbar: React.FC = () => {
       }}
     >
       <Container maxWidth={false}>
-        <Toolbar sx={{ px: { xs: 0.5, sm: 1 } }}>
+        <Toolbar sx={{ px: { xs: 2, sm: 3 } }}>
           <Typography
             variant="h6"
             component="div"
@@ -38,7 +38,7 @@ const Navbar: React.FC = () => {
               fontSize: { xs: '1.1rem', sm: '1.25rem' },
             }}
           >
-            HuggingFace
+            Jinsansan
           </Typography>
           
           {isMobile ? (

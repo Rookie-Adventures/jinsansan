@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Card, CardContent, Typography, Box, useTheme } from '@mui/material';
+import { Grid, Card, CardContent, Typography, Box, useTheme, Container } from '@mui/material';
 import { 
   Speed, 
   Security, 
@@ -59,110 +59,112 @@ const FeatureSection: React.FC = () => {
   const theme = useTheme();
 
   return (
-    <Box sx={{ 
-      py: { xs: 4, md: 6 },
-      px: { xs: 0.5, sm: 1 },
-      background: 'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(245,247,250,0.5) 100%)',
-      width: '100%'
-    }}>
-      <Typography
-        variant="h3"
-        component="h2"
-        align="center"
-        gutterBottom
-        sx={{ 
-          mb: 2,
-          fontSize: { xs: '2rem', md: '3rem' },
-          fontWeight: 'bold',
-          background: 'linear-gradient(135deg, #24243e 0%, #302b63 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-        }}
-      >
-        核心特性
-      </Typography>
-      <Typography
-        variant="h6"
-        component="p"
-        align="center"
-        color="text.secondary"
-        sx={{ mb: { xs: 3, md: 4 } }}
-      >
-        为您提供最优质的 HuggingFace 模型调用服务
-      </Typography>
-      <Grid container spacing={0.5}>
-        {features.map((feature, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index} sx={{ pl: { xs: 0.5, sm: 1 } }}>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              style={{ height: '100%' }}
-            >
-              <Card
-                elevation={0}
-                sx={{
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  transition: 'all 0.3s ease-in-out',
-                  background: 'rgba(255, 255, 255, 0.8)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255, 255, 255, 0.3)',
-                  borderRadius: 1,
-                  '&:hover': {
-                    transform: 'translateY(-8px)',
-                    boxShadow: theme.shadows[8],
-                    background: 'rgba(255, 255, 255, 0.95)',
-                  },
-                }}
+    <Container maxWidth="lg">
+      <Box sx={{ 
+        py: { xs: 4, md: 6 },
+        px: { xs: 2, sm: 3 },
+        background: 'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(245,247,250,0.5) 100%)',
+        width: '100%'
+      }}>
+        <Typography
+          variant="h3"
+          component="h2"
+          align="center"
+          gutterBottom
+          sx={{ 
+            mb: 2,
+            fontSize: { xs: '2rem', md: '3rem' },
+            fontWeight: 'bold',
+            background: 'linear-gradient(135deg, #24243e 0%, #302b63 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
+        >
+          核心特性
+        </Typography>
+        <Typography
+          variant="h6"
+          component="p"
+          align="center"
+          color="text.secondary"
+          sx={{ mb: { xs: 3, md: 4 } }}
+        >
+          为您提供最优质的 Jinsansan 模型调用服务
+        </Typography>
+        <Grid container spacing={2}>
+          {features.map((feature, index) => (
+            <Grid item xs={12} sm={6} md={3} key={index}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                style={{ height: '100%' }}
               >
-                <CardContent sx={{ p: 1.5 }}>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      mb: 1,
-                      color: 'primary.main',
-                      '& > svg': { 
-                        fontSize: { xs: 32, md: 40 },
-                        filter: 'drop-shadow(0px 2px 4px rgba(0,0,0,0.1))',
-                      },
-                    }}
-                  >
-                    {feature.icon}
-                  </Box>
-                  <Typography
-                    gutterBottom
-                    variant="h6"
-                    component="h3"
-                    align="center"
-                    sx={{ 
-                      fontWeight: 'bold',
-                      fontSize: { xs: '1rem', md: '1.15rem' },
-                      mb: 0.5,
-                    }}
-                  >
-                    {feature.title}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    align="center"
-                    sx={{
-                      fontSize: { xs: '0.875rem', md: '0.9rem' },
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    {feature.description}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
+                <Card
+                  elevation={0}
+                  sx={{
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    transition: 'all 0.3s ease-in-out',
+                    background: 'rgba(255, 255, 255, 0.8)',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    borderRadius: 1,
+                    '&:hover': {
+                      transform: 'translateY(-8px)',
+                      boxShadow: theme.shadows[8],
+                      background: 'rgba(255, 255, 255, 0.95)',
+                    },
+                  }}
+                >
+                  <CardContent sx={{ p: 3 }}>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        mb: 2,
+                        color: 'primary.main',
+                        '& > svg': { 
+                          fontSize: { xs: 32, md: 40 },
+                          filter: 'drop-shadow(0px 2px 4px rgba(0,0,0,0.1))',
+                        },
+                      }}
+                    >
+                      {feature.icon}
+                    </Box>
+                    <Typography
+                      gutterBottom
+                      variant="h6"
+                      component="h3"
+                      align="center"
+                      sx={{ 
+                        fontWeight: 'bold',
+                        fontSize: { xs: '1rem', md: '1.15rem' },
+                        mb: 1,
+                      }}
+                    >
+                      {feature.title}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      align="center"
+                      sx={{
+                        fontSize: { xs: '0.875rem', md: '0.9rem' },
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      {feature.description}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+    </Container>
   );
 };
 
