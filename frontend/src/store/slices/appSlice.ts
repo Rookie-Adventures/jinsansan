@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface AppState {
+export interface AppState {
   theme: 'light' | 'dark';
   loading: boolean;
+  [key: string]: unknown;
 }
 
 const initialState: AppState = {

@@ -11,30 +11,37 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const NavigationMenu: React.FC = () => (
-  <Box sx={{ display: 'flex', gap: 2 }}>
-    <Button color="inherit">首页</Button>
-    <Button color="inherit">文档</Button>
-    <Button color="inherit">API</Button>
-    <Button color="inherit">价格</Button>
-    <Button 
-      variant="contained" 
-      color="secondary"
-      sx={{ 
-        borderRadius: 1,
-        textTransform: 'none',
-        px: 3,
-      }}
-    >
-      登录
-    </Button>
-  </Box>
-);
+const NavigationMenu: React.FC = () => {
+  const navigate = useNavigate();
+
+  return (
+    <Box sx={{ display: 'flex', gap: 2 }}>
+      <Button color="inherit" onClick={() => navigate('/')}>首页</Button>
+      <Button color="inherit" onClick={() => navigate('/docs')}>文档</Button>
+      <Button color="inherit" onClick={() => navigate('/api')}>API</Button>
+      <Button color="inherit" onClick={() => navigate('/pricing')}>价格</Button>
+      <Button 
+        variant="contained" 
+        color="secondary"
+        onClick={() => navigate('/login')}
+        sx={{ 
+          borderRadius: 1,
+          textTransform: 'none',
+          px: 3,
+        }}
+      >
+        登录
+      </Button>
+    </Box>
+  );
+};
 
 const Navbar: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const navigate = useNavigate();
 
   return (
     <AppBar 
@@ -56,7 +63,9 @@ const Navbar: React.FC = () => {
               fontWeight: 'bold',
               color: 'white',
               fontSize: { xs: '1.1rem', sm: '1.25rem' },
+              cursor: 'pointer',
             }}
+            onClick={() => navigate('/')}
           >
             Jinsansan
           </Typography>

@@ -299,6 +299,50 @@ type ButtonSize = `button-${
 - Regular security updates should be monitored for all components
 - Performance monitoring is recommended after any major version updates
 
+ESLint v9.16 引入了新的配置文件格式，使用 eslint.config.js 文件来替代传统的 .eslintrc.js 或 .eslintrc.json 文件。这种新的配置方式旨在简化配置过程，并提供更好的性能。以下是一个基本的 eslint.config.js 文件的例子：
+
+import { defineConfig, flatConfig } from 'eslint';
+
+export default defineConfig([
+  flatConfig({
+    // 指定环境
+    languageOptions: {
+      ecmaVersion: 'latest', // 使用最新版本的 ECMAScript
+      sourceType: 'module', // 指定源代码模块类型
+      globals: {
+        // 定义全局变量
+        myGlobal: 'readonly',
+      },
+    },
+    // 指定插件
+    plugins: ['plugin-name'], // 例如: 'react', 'jsx-a11y', 'import'
+    // 指定规则
+    rules: {
+      'no-console': 'warn', // 禁用 console 语句，但允许在测试中使用
+      'no-unused-vars': 'error', // 禁用未使用的变量
+      // 其他规则...
+    },
+    // 指定文件匹配模式
+    files: ['**/*.js', '**/*.jsx'], // 匹配所有 js 和 jsx 文件
+    // 指定排除文件
+    ignores: ['**/node_modules/**', '**/dist/**'], // 排除 node_modules 和 dist 目录
+    // 指定解析器
+    parser: '@babel/eslint-parser', // 使用 Babel 解析器
+    // 指定扩展配置
+    extends: ['eslint:recommended', 'plugin:react/recommended'], // 扩展推荐的规则集
+  }),
+]);
+解释
+defineConfig: 这个函数用于创建 ESLint 配置对象。它接受一个配置对象或配置对象的数组。
+flatConfig: 这个函数用于创建一个扁平的配置对象，它是 eslint.config.js 文件中的基本配置单元。
+languageOptions: 这个对象用于配置语言相关的选项，如 ECMAScript 版本、源类型、全局变量等。
+plugins: 这个数组用于指定要使用的 ESLint 插件。
+rules: 这个对象用于定义具体的 ESLint 规则及其级别。
+files: 这个数组用于指定要应用这些配置的文件匹配模式。
+ignores: 这个数组用于指定要排除的文件或目录。
+parser: 这个字段用于指定自定义的解析器。
+extends: 这个数组用于指定要继承的配置文件或配置集。
+使用 eslint.config.js 的主要优点是它提供了更清晰的配置结构，支持模块化配置，以及更好的性能优化。如果你的项目中使用了 ESLint v9.16 或更高版本，推荐使用这种新的配置方式。
 ## **参考说明**
 
 - **前端规范**：请参阅 [Jinshanshan/frontend/.cursorrules]
