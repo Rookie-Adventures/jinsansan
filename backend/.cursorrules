@@ -1,11 +1,6 @@
-本规范基于 全局开发规范，针对后端项目做进一步细化。
+后端项目规范
+应用层架构
 
-# 后端项目规范
-
-## 应用层架构
-
-```plaintext
-应用层架构：
 ┌─────────────┐
 │   Routes    │ 路由层：URL映射，请求解析
 ├─────────────┤
@@ -33,137 +28,279 @@
 ├─────────────┤
 │   Config    │ 配置层：环境配置，常量定义
 └─────────────┘
-```
+#模块划分
+核心模块：
 
-## 模块划分
+auth：认证授权
+user：用户管理
+chat：聊天功能
+model：模型管理
+order：订单管理
+admin：管理员后台（新增模块）
+基础设施：
 
-### 核心模块
-- `auth`: 认证授权
-- `user`: 用户管理
-- `chat`: 聊天功能
-- `model`: 模型管理
-- `order`: 订单管理
+common：通用功能
+config：配置管理
+utils：工具函数
+types：类型定义
 
-### 基础设施
-- `common`: 通用功能
-- `config`: 配置管理
-- `utils`: 工具函数
-- `types`: 类型定义
-
-## 目录结构
-
-```plaintext
+#项目结构
 backend/
 ├── src/
-│   ├── config/           # 配置模块
-│   │   ├── index.ts     # 统一导出配置
-│   │   ├── app.config.ts # 应用配置
-│   │   └── db.config.ts  # 数据库配置
-│   ├── controllers/     # 控制器模块
-│   │   ├── auth.controller.ts          # 处理与认证相关的请求
-│   │   └── __tests__/                   # 控制器测试文件夹
-│   │       └── auth.controller.test.ts  # 控制器测试
-│   ├── services/       # 服务模块
-│   │   ├── auth.service.ts                # 处理与认证相关的业务逻辑
-│   │   └── __tests__/                     # 服务测试文件夹
-│   │       └── auth.service.test.ts      # 服务测试
-│   ├── models/         # 数据模型模块
-│   │   ├── user.model.ts                    # 用户数据模型定义
-│   │   └── __tests__/                       # 模型测试文件夹
-│   │       └── user.model.test.ts          # 模型测试
-│   ├── routes/         # 路由模块
-│   │   ├── auth.routes.ts                    # 定义与认证相关的路由
-│   │   └── __tests__/                        # 路由测试文件夹
-│   │       └── auth.routes.test.ts          # 路由测试
-│   ├── utils/          # 工具模块
-│   │   ├── response.ts                         # 处理响应的工具函数
-│   │   └── __tests__/                         # 工具函数测试文件夹
-│   │       └── response.test.ts               # 工具函数测试
-│   ├── types/          # 类型定义模块
-│   │   ├── index.ts    # 统一导出类型
-│   │   └── api.response.types.ts               # API 响应类型定义
-│   ├── middleware/     # 中间件模块
-│   │   ├── auth.middleware.ts                  # 处理认证相关的中间件
-│   │   └── __tests__/                          # 中间件测试文件夹
-│   │       └── auth.middleware.test.ts        # 中间件测试
-│   └── app.ts         # 应用入口文件
-├── test/               # 测试配置与通用测试目录
-│   ├── __tests__/     # 通用测试配置和工具
-│   │   ├── setupTests.ts  # 测试环境配置
-│   │   └── testUtils.ts   # 通用测试工具函数
-│   └── __mocks__/     # Mock 服务和数据
-│       ├── apiMocks.ts    # API Mock 数据
-│       └── userMocks.ts   # 用户相关 Mock 数据
-└── jest.config.ts     # Jest 主配置文件
-```
+│   ├── config/               # 配置模块
+│   │   ├── index.ts         # 统一导出配置
+│   │   ├── app.config.ts    # 应用配置
+│   │   └── db.config.ts     # 数据库配置
+│   ├── controllers/         # 控制器模块
+│   │   ├── auth.controller.ts       # 处理与认证相关的请求
+│   │   ├── admin.controller.ts      # 处理与管理员相关的请求
+│   │   └── __tests__/              # 控制器测试
+│   │       └── auth.controller.test.ts
+│   ├── services/            # 服务模块
+│   │   ├── auth.service.ts          # 处理与认证相关的业务逻辑
+│   │   ├── admin.service.ts         # 处理与管理员相关的业务逻辑
+│   │   └── __tests__/             # 服务测试
+│   │       └── auth.service.test.ts
+│   ├── models/              # 数据模型模块
+│   │   ├── user.model.ts           # 用户数据模型定义
+│   │   ├── admin.model.ts          # 管理员数据模型定义
+│   │   └── __tests__/              # 模型测试
+│   │       └── user.model.test.ts
+│   ├── routes/              # 路由模块
+│   │   ├── auth.routes.ts         # 定义与认证相关的路由
+│   │   ├── admin.routes.ts        # 定义与管理员相关的路由
+│   │   └── __tests__/             # 路由测试
+│   │       └── auth.routes.test.ts
+│   ├── middleware/          # 中间件模块
+│   │   ├── auth.middleware.ts        # 处理认证相关的中间件
+│   │   ├── admin.middleware.ts       # 处理管理员权限相关的中间件
+│   │   └── __tests__/              # 中间件测试
+│   │       └── auth.middleware.test.ts
+│   ├── utils/               # 工具模块
+│   │   ├── response.ts           # 处理响应的工具函数
+│   │   └── __tests__/            # 工具函数测试
+│   │       └── response.test.ts
+│   ├── types/               # 类型定义模块
+│   │   ├── index.ts         # 统一导出类型
+│   │   └── api.response.types.ts  # API 响应类型定义
+│   └── app.ts               # 应用入口文件
+├── test/                    # 测试配置与通用测试目录
+│   ├── __tests__/           # 通用测试配置和工具
+│   │   ├── setupTests.ts    # 测试环境配置
+│   │   └── testUtils.ts     # 通用测试工具函数
+└── jest.config.ts           # Jest 主配置文件
 
-## 类型系统规范
+#管理员后台功能
 
-### 静态工具类
+新增模块：admin
+管理员模块包括对用户的管理、统计数据查看、违规用户的禁用/解封等功能。
+
+1. Admin Service（服务层）
+在 services/admin.service.ts 中实现管理员操作的业务逻辑，功能包括但不限于：
+
+禁用用户
+解封用户
+获取用户统计数据
+管理订单等
 ```typescript
-interface IStaticUtil {
-  new(): never;  // 防止实例化
-}
+// admin.service.ts
+import { User } from '../models/user.model';
 
-class StaticUtil implements IStaticUtil {
-  private constructor() {}
+export class AdminService {
+  async banUser(userId: string) {
+    // 实现禁用用户逻辑
+  }
+
+  async unbanUser(userId: string) {
+    // 实现解封用户逻辑
+  }
+
+  async getStatistics() {
+    // 获取统计信息
+  }
 }
 ```
 
-### 模块声明规范
-- **全局声明文件** (`global.d.ts`):
-  ```typescript
-  declare module '@utils/response' {
-    import { Response } from 'express';
-    interface TApiResponse<T = unknown> {
-      success: boolean;
-      data?: T;
-      error?: {
-        code: string;
-        message: string;
-      };
-    }
-    const ResponseHandler: IResponseUtil;
-    export { ResponseHandler, TApiResponse };
+2. Admin Controller（控制层）
+在 controllers/admin.controller.ts 中实现管理员后台接口的控制器，处理请求并调用服务层。
+
+```typescript
+// admin.controller.ts
+import { Request, Response } from 'express';
+import { AdminService } from '../services/admin.service';
+
+export class AdminController {
+  private adminService = new AdminService();
+
+  async banUser(req: Request, res: Response) {
+    const { userId } = req.params;
+    await this.adminService.banUser(userId);
+    res.status(200).json({ message: 'User banned successfully' });
   }
-  ```
-- **类型收敛**：相关类型放在同一文件
-- **类型复用**：使用泛型提高复用性
-- **类型安全**：避免 `any`，添加类型守卫
 
-## 技术栈规范
-- Node.js@22.12.0
-- Express@4.21.2
-- MongoDB@7.0.4
-- Redis@7.2.3
-- Swagger/OpenAPI
+  async unbanUser(req: Request, res: Response) {
+    const { userId } = req.params;
+    await this.adminService.unbanUser(userId);
+    res.status(200).json({ message: 'User unbanned successfully' });
+  }
 
-## 微服务架构规范
-- **设计**：功能模块独立部署，服务通过 REST 或 GraphQL 交互
-- **容器化**：Docker + Kubernetes 实现自动部署和扩展
+  async getStatistics(req: Request, res: Response) {
+    const stats = await this.adminService.getStatistics();
+    res.status(200).json(stats);
+  }
+}
+```
 
-## API设计规范
-- **RESTful API**：使用 HTTP 动词操作
-- **统一格式**：JSON 数据，规范化错误码
+3. Admin Routes（路由层）
+在 routes/admin.routes.ts 中定义管理员相关的路由。
 
-## 数据库设计规范
-- **建模**：合理结构，避免冗余，优化查询
-- **访问层**：使用 ORM 简化逻辑，封装数据访问
+```typescript
+// admin.routes.ts
+import { Router } from 'express';
+import { AdminController } from '../controllers/admin.controller';
 
-## 性能优化
-- **请求优化**：参数校验、去重、压缩
-- **缓存策略**：Redis 热点数据缓存
-- **异步处理**：消息队列处理耗时任务
+const router = Router();
+const adminController = new AdminController();
 
-## 安全机制
-- **验证**：JWT 身份验证，角色权限控制
-- **数据保护**：输入验证，防注入
-- **访问控制**：多因素认证
+router.post('/ban-user/:userId', adminController.banUser);
+router.post('/unban-user/:userId', adminController.unbanUser);
+router.get('/statistics', adminController.getStatistics);
 
-## 日志与监控
-- **日志**：集中式管理工具分析
-- **监控**：实时监控性能、错误率
+export default router;
+```
 
-## 版本控制规范
-- **提交信息**：`feat`、`fix` 等
-- **分支命名**：`feature/xxx` 和 `bugfix/xxx`
+4. Admin Middleware（中间件层）
+创建 admin.middleware.ts，确保只有管理员才能访问相关接口。
+
+```typescript
+// admin.middleware.ts
+import { Request, Response, NextFunction } from 'express';
+
+export const adminMiddleware = (req: Request, res: Response, next: NextFunction) => {
+  // 假设已经有登录的验证，进一步验证用户是否为管理员
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ message: 'Forbidden' });
+  }
+  next();
+};
+
+5. Admin Model（数据模型）
+在 models/admin.model.ts 中定义管理员相关的数据模型，可能包括管理员信息、日志等。
+
+```typescript
+// admin.model.ts
+import mongoose, { Schema, Document } from 'mongoose';
+
+interface IAdmin extends Document {
+  username: string;
+  password: string;
+  role: 'admin';
+}
+
+const AdminSchema = new Schema<IAdmin>({
+  username: { type: String, required: true },
+  password: { type: String, required: true },
+  role: { type: String, default: 'admin' },
+});
+
+export const Admin = mongoose.model<IAdmin>('Admin', AdminSchema);
+```
+#API 设计
+管理员后台的 API 应包含以下接口：
+
+## 基础 CRUD 接口
+// 用户管理
+GET    /admin/users              # 列表（支持分页、搜索、排序）
+GET    /admin/users/:id          # 详情
+POST   /admin/users              # 创建
+PUT    /admin/users/:id          # 更新
+DELETE /admin/users/:id          # 删除
+PATCH  /admin/users/:id/status   # 状态更新
+
+// 角色权限
+GET    /admin/roles             # 角色列表
+GET    /admin/permissions       # 权限列表
+POST   /admin/roles/:id/permissions  # 分配权限
+
+// 系统管理
+GET    /admin/logs             # 操作日志
+GET    /admin/dashboard        # 仪表盘数据
+
+## 统一请求/响应格式
+```typescript
+// 统一响应格式
+interface AdminResponse<T> {
+  code: number;
+  data: T;
+  message: string;
+  timestamp: number;
+}
+
+// 分页请求参数
+interface PageQuery {
+  page: number;
+  pageSize: number;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+  keyword?: string;
+}
+
+// 分页响应格式
+interface PageResult<T> {
+  list: T[];
+  total: number;
+  page: number;
+  pageSize: number;
+}
+```
+
+## 错误码规范
+```typescript
+enum AdminErrorCode {
+  SUCCESS = 200,
+  UNAUTHORIZED = 401,
+  FORBIDDEN = 403,
+  NOT_FOUND = 404,
+  VALIDATION_ERROR = 422,
+  INTERNAL_ERROR = 500
+}
+```
+
+权限控制
+所有管理员接口需要通过中间件进行权限控制，确保只有管理员能够访问这些接口。
+
+```typescript
+// 在 admin.routes.ts 中应用中间件
+import { adminMiddleware } from '../middleware/admin.middleware';
+
+router.use(adminMiddleware);
+```
+
+# 测试
+你需要为每个模块编写单元测试和集成测试，确保管理员接口的功能完备。
+
+admin.controller.test.ts
+admin.service.test.ts
+admin.middleware.test.ts
+
+#API 文档
+确保通过 Swagger 或 OpenAPI 对 API 进行文档化，管理员相关的 API 需要包括：
+
+请求方法、路由路径
+请求参数和返回类型
+示例请求和响应
+错误码说明
+
+# 技术栈
+Node.js：版本 22.12.0
+Express：版本 4.21.2
+MongoDB：版本 7.0.4
+Redis：版本 7.2.3
+Swagger/OpenAPI：API文档生成
+
+#安全机制
+使用 JWT 进行身份验证，确保管理员权限验证。
+在管理员请求中，确保进行 角色权限控制，只允许 admin 用户访问管理员接口。
+
+#数据库设计
+在数据库模型中，管理员可以有 role 字段来区分权限。需要合理设计数据模型，避免冗余。
