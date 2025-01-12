@@ -16,8 +16,8 @@ src/
 │   ├── Home/         # 首页
 │   ├── Login/        # 登录页
 │   └── Dashboard/    # 仪表盘
+├── router/           # 路由配置
 ├── store/            # 状态管理
-├── services/         # API 服务
 ├── utils/            # 工具函数
 ├── hooks/            # 自定义钩子
 │   ├── auth/         # 鉴权相关

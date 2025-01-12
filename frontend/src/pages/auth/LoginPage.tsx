@@ -1,21 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import AuthCard from '@/components/auth/AuthCard';
 import LoginForm from '@/components/auth/LoginForm';
-import { LoginFormData } from '@/types/auth';
+import { useAuth, useAuthForm } from '@/hooks/auth';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState<LoginFormData>({
-    username: '',
-    password: '',
-  });
+  const { login } = useAuth();
+  const { formData, showPassword, handleFormChange, togglePasswordVisibility } = useAuthForm();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: 实现登录逻辑
+    try {
+      await login(formData);
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
   };
 
   return (
@@ -24,8 +25,8 @@ const LoginPage: React.FC = () => {
         formData={formData}
         showPassword={showPassword}
         onSubmit={handleSubmit}
-        onFormChange={(data) => setFormData((prev) => ({ ...prev, ...data }))}
-        onTogglePassword={() => setShowPassword(!showPassword)}
+        onFormChange={handleFormChange}
+        onTogglePassword={togglePasswordVisibility}
       />
     </AuthCard>
   );

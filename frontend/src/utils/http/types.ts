@@ -1,94 +1,50 @@
-import type { AxiosRequestConfig, AxiosProgressEvent } from 'axios';
-
-import type { ErrorHandler } from './error';
+import type { AxiosRequestConfig } from 'axios';
 import type { ProgressInfo } from './progress-monitor';
-import type { RetryConfig } from './retry';
+import type { HttpConfig } from './config';
 
-// 扩展 Axios 请求配置
-export interface HttpRequestConfig extends AxiosRequestConfig {
-  // 缓存配置
-  cache?: {
-    enable: boolean;
-    ttl: number;
-    key?: string;
-  };
-
-  // 队列配置
-  queue?: {
-    enable: boolean;
-    priority: number;
-    concurrency?: number;
-  };
-
-  // 重试配置
-  retry?: RetryConfig;
-
-  // 错误处理配置
-  errorHandler?: ErrorHandler;
-
-  // 取消令牌ID
+export interface HttpRequestConfig extends AxiosRequestConfig, Partial<HttpConfig> {
+  // 请求标识，用于取消请求
   cancelTokenId?: string;
-
-  // 防抖配置
-  debounce?: {
-    enable: boolean;
-    wait: number;
-    options?: {
-      leading?: boolean;
-      trailing?: boolean;
-    };
-  };
-
-  // 节流配置
-  throttle?: {
-    enable: boolean;
-    wait: number;
-    options?: {
-      leading?: boolean;
-      trailing?: boolean;
-    };
-  };
-
-  // 进度配置
+  
+  // 进度监控
   progress?: {
     onUploadProgress?: (info: ProgressInfo) => void;
     onDownloadProgress?: (info: ProgressInfo) => void;
   };
-
-  // 进度事件处理
-  onUploadProgress?: (event: AxiosProgressEvent) => void;
-  onDownloadProgress?: (event: AxiosProgressEvent) => void;
+  
+  // 错误处理
+  errorHandler?: {
+    handle: (error: any) => Promise<void>;
+  };
 }
 
-// 缓存数据接口
-export interface CacheData<T = unknown> {
+// 请求队列项
+export interface QueueItem {
+  id: string;
+  priority: number;
+  timestamp: number;
+  config: HttpRequestConfig;
+}
+
+// 缓存项
+export interface CacheItem<T = any> {
   data: T;
   timestamp: number;
   ttl: number;
 }
 
-// 队列项接口
-export interface QueueItem {
-  config: HttpRequestConfig;
-  resolve: (value: unknown) => void;
-  reject: (reason?: unknown) => void;
-  priority: number;
+// HTTP 错误
+export interface HttpError extends Error {
+  code: number;
+  status?: number;
+  data?: any;
+  config?: HttpRequestConfig;
+  isHttpError: true;
 }
 
-// 请求管理器接口
-export interface RequestManager {
-  cache: Map<string, CacheData>;
-  cancelTokens: Map<string, AbortController>;
-  queue: QueueItem[];
-  generateCacheKey: (config: HttpRequestConfig) => string;
-  getCacheData: <T>(key: string) => T | null;
-  setCacheData: <T>(key: string, data: T, ttl: number) => void;
-  cancelRequest: (token: string) => void;
-  cancelAllRequests: () => void;
-  addToQueue: (
-    config: HttpRequestConfig,
-    resolve: (value: unknown) => void,
-    reject: (reason?: unknown) => void
-  ) => void;
-  processQueue: () => Promise<void>;
+// API 响应
+export interface ApiResponse<T = any> {
+  code: number;
+  message: string;
+  data: T;
 } 

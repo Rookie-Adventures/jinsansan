@@ -1,28 +1,49 @@
+import { AlertColor } from '@mui/material';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+interface ToastState {
+  open: boolean;
+  message: string;
+  severity: AlertColor;
+}
+
 export interface AppState {
-  theme: 'light' | 'dark';
+  darkMode: boolean;
   loading: boolean;
-  [key: string]: unknown;
+  toast: ToastState;
 }
 
 const initialState: AppState = {
-  theme: 'light',
+  darkMode: false,
   loading: false,
+  toast: {
+    open: false,
+    message: '',
+    severity: 'info',
+  },
 };
 
-export const appSlice = createSlice({
+const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    toggleTheme: (state) => {
-      state.theme = state.theme === 'light' ? 'dark' : 'light';
+    toggleDarkMode: (state) => {
+      state.darkMode = !state.darkMode;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
+    showToast: (state, action: PayloadAction<Omit<ToastState, 'open'>>) => {
+      state.toast = {
+        ...action.payload,
+        open: true,
+      };
+    },
+    hideToast: (state) => {
+      state.toast.open = false;
+    },
   },
 });
 
-export const { toggleTheme, setLoading } = appSlice.actions;
+export const { toggleDarkMode, setLoading, showToast, hideToast } = appSlice.actions;
 export default appSlice.reducer; 

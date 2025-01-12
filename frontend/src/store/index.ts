@@ -1,72 +1,47 @@
-import { configureStore, Middleware } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { createLogger } from 'redux-logger';
-import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
-import { createPersistConfig } from './persistConfig';
-import type { AppState } from './slices/appSlice';
 import appReducer from './slices/appSlice';
-import type { AuthState } from './slices/authSlice';
 import authReducer from './slices/authSlice';
-import type { RootState } from './types';
 
-// 创建持久化 reducer
-const persistedAppReducer = persistReducer<AppState>(
-  createPersistConfig<AppState>('app'),
-  appReducer
-);
-
-const persistedAuthReducer = persistReducer<AuthState>(
-  createPersistConfig<AuthState>('auth'),
-  authReducer
-);
-
-const persistedReducer = {
-  app: persistedAppReducer,
-  auth: persistedAuthReducer,
-} as const;
-
-// 创建自定义错误处理中间件
-const errorMiddleware: Middleware = () => (next) => (action) => {
-  try {
-    return next(action);
-  } catch (err) {
-    console.error('Caught an exception!', err);
-    throw err;
-  }
+// 配置持久化
+const persistConfig = {
+  key: 'root',
+  version: 1,
+  storage,
+  whitelist: ['app', 'auth'], // 只持久化这些 reducer
 };
 
-// 创建 store
+const persistedReducer = persistReducer(persistConfig, appReducer);
+
 export const store = configureStore({
-  reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) => {
-    const middleware = getDefaultMiddleware({
+  reducer: {
+    app: persistedReducer,
+    auth: authReducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    });
-
-    // 开发环境添加 logger
-    if (process.env.NODE_ENV !== 'production') {
-      middleware.push(createLogger({
-        collapsed: true,
-        duration: true,
-      }));
-    }
-
-    // 添加错误处理中间件
-    middleware.push(errorMiddleware);
-
-    return middleware;
-  },
-  devTools: process.env.NODE_ENV !== 'production',
+    }),
 });
 
 export const persistor = persistStore(store);
 
-// 导出 dispatch 类型
+export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
-// 创建类型化的hooks
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector; 
