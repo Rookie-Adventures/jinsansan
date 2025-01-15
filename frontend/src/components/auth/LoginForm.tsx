@@ -14,6 +14,7 @@ import { LoginFormData } from '@/types/auth';
 interface LoginFormProps {
   formData: LoginFormData;
   showPassword: boolean;
+  disabled?: boolean;
   onSubmit: (e: React.FormEvent) => void;
   onFormChange: (data: Partial<LoginFormData>) => void;
   onTogglePassword: () => void;
@@ -33,9 +34,10 @@ const FormHeader: React.FC = () => (
 const PasswordField: React.FC<{
   value: string;
   showPassword: boolean;
+  disabled?: boolean;
   onChange: (value: string) => void;
   onTogglePassword: () => void;
-}> = ({ value, showPassword, onChange, onTogglePassword }) => (
+}> = ({ value, showPassword, disabled, onChange, onTogglePassword }) => (
   <TextField
     fullWidth
     label="密码"
@@ -43,11 +45,16 @@ const PasswordField: React.FC<{
     variant="outlined"
     margin="normal"
     value={value}
+    disabled={disabled}
     onChange={(e) => onChange(e.target.value)}
     InputProps={{
       endAdornment: (
         <InputAdornment position="end">
-          <IconButton onClick={onTogglePassword} edge="end">
+          <IconButton 
+            onClick={onTogglePassword} 
+            edge="end"
+            disabled={disabled}
+          >
             {showPassword ? <VisibilityOff /> : <Visibility />}
           </IconButton>
         </InputAdornment>
@@ -59,6 +66,7 @@ const PasswordField: React.FC<{
 const LoginForm: React.FC<LoginFormProps> = ({
   formData,
   showPassword,
+  disabled,
   onSubmit,
   onFormChange,
   onTogglePassword,
@@ -72,12 +80,14 @@ const LoginForm: React.FC<LoginFormProps> = ({
       variant="outlined"
       margin="normal"
       value={formData.username}
+      disabled={disabled}
       onChange={(e) => onFormChange({ username: e.target.value })}
     />
 
     <PasswordField
       value={formData.password}
       showPassword={showPassword}
+      disabled={disabled}
       onChange={(value) => onFormChange({ password: value })}
       onTogglePassword={onTogglePassword}
     />
@@ -88,6 +98,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
       color="primary"
       size="large"
       type="submit"
+      disabled={disabled}
       sx={{ mt: 3 }}
     >
       登录

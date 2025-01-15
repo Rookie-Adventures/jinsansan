@@ -8,11 +8,20 @@ export interface RegisterFormData extends LoginFormData {
   confirmPassword: string;
 }
 
+export interface User {
+  id: number;
+  username: string;
+  email: string;
+}
+
 export interface AuthResponse {
   token: string;
-  user: {
-    id: string;
-    username: string;
-    email: string;
-  };
+  user: User;
+}
+
+export interface AuthState {
+  user: User | null;
+  token: string | null;
+  loading: boolean;
+  error: string | null;
 } 

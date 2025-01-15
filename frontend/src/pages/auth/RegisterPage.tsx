@@ -3,14 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import { Alert, Snackbar, CircularProgress, Box } from '@mui/material';
 
 import AuthCard from '@/components/auth/AuthCard';
-import LoginForm from '@/components/auth/LoginForm';
+import RegisterForm from '@/components/auth/RegisterForm';
 import { useAuth, useAuthForm } from '@/hooks/auth';
+import type { RegisterFormData } from '@/types/auth';
 
-const LoginPage: React.FC = () => {
+const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
-  const { login, loading } = useAuth();
-  const { formData, showPassword, handleFormChange, togglePasswordVisibility } = useAuthForm({
-    initialData: { username: '', password: '' }
+  const { register, loading } = useAuth();
+  const { formData, showPassword, handleFormChange, togglePasswordVisibility } = useAuthForm<RegisterFormData>({
+    initialData: { 
+      username: '', 
+      password: '', 
+      email: '', 
+      confirmPassword: '' 
+    }
   });
   const [showError, setShowError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
@@ -18,10 +24,16 @@ const LoginPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setShowError(false);
-    
+
     // 表单验证
     if (!formData.username.trim()) {
       setErrorMessage('请输入用户名');
+      setShowError(true);
+      return;
+    }
+    
+    if (!formData.email.trim()) {
+      setErrorMessage('请输入邮箱');
       setShowError(true);
       return;
     }
@@ -32,12 +44,33 @@ const LoginPage: React.FC = () => {
       return;
     }
     
+    if (!formData.confirmPassword) {
+      setErrorMessage('请确认密码');
+      setShowError(true);
+      return;
+    }
+
+    // 验证密码确认
+    if (formData.password !== formData.confirmPassword) {
+      setErrorMessage('两次输入的密码不一致');
+      setShowError(true);
+      return;
+    }
+
+    // 验证邮箱格式
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setErrorMessage('请输入有效的邮箱地址');
+      setShowError(true);
+      return;
+    }
+    
     try {
-      await login(formData);
-      // 登录成功后的导航由 useAuth 中处理
+      await register(formData);
+      // 注册成功后的导航由 useAuth 中处理
     } catch (error) {
-      console.error('Login failed:', error);
-      setErrorMessage(error instanceof Error ? error.message : '登录失败，请重试');
+      console.error('Register failed:', error);
+      setErrorMessage(error instanceof Error ? error.message : '注册失败，请重试');
       setShowError(true);
     }
   };
@@ -48,9 +81,9 @@ const LoginPage: React.FC = () => {
 
   return (
     <>
-      <AuthCard onToRegister={() => navigate('/register')}>
+      <AuthCard onToLogin={() => navigate('/login')}>
         <Box position="relative">
-          <LoginForm
+          <RegisterForm
             formData={formData}
             showPassword={showPassword}
             onSubmit={handleSubmit}
@@ -90,4 +123,4 @@ const LoginPage: React.FC = () => {
   );
 };
 
-export default LoginPage; 
+export default RegisterPage; 

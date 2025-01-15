@@ -1,30 +1,26 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
 import { authApi, type LoginResponse } from '@/services/auth';
-import type { LoginFormData } from '@/types/auth';
-
-export interface AuthState {
-  user: LoginResponse['user'] | null;
-  token: string | null;
-  loading: boolean;
-  error: string | null;
-  [key: string]: unknown;
-}
+import type { LoginFormData, RegisterFormData, AuthState } from '@/types/auth';
 
 const initialState: AuthState = {
   user: null,
-  token: localStorage.getItem('token'),
+  token: null,
   loading: false,
   error: null,
 };
 
-export const login = createAsyncThunk(
+export const login = createAsyncThunk<LoginResponse, LoginFormData>(
   'auth/login',
-  async (data: LoginFormData) => {
-    const response = await authApi.login(data);
-    localStorage.setItem('token', response.token);
-    return response;
+  async (data) => {
+    return await authApi.login(data);
+  }
+);
+
+export const register = createAsyncThunk<LoginResponse, RegisterFormData>(
+  'auth/register',
+  async (data) => {
+    return await authApi.register(data);
   }
 );
 
@@ -39,7 +35,7 @@ export const logout = createAsyncThunk(
   'auth/logout',
   async () => {
     await authApi.logout();
-    localStorage.removeItem('token');
+    localStorage.removeItem('persist:root');
   }
 );
 
@@ -50,10 +46,16 @@ const authSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
+    clearAuth: (state) => {
+      state.user = null;
+      state.token = null;
+      state.error = null;
+      state.loading = false;
+    },
   },
   extraReducers: (builder) => {
+    // Login
     builder
-      // Login
       .addCase(login.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -65,19 +67,52 @@ const authSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Login failed';
+        state.error = action.error.message || '登录失败，请稍后重试';
       })
-      // Get Current User
+
+    // Register
+    builder
+      .addCase(register.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(register.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
+        state.loading = false;
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+      })
+      .addCase(register.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || '注册失败，请稍后重试';
+      })
+
+    // Get Current User
+    builder
       .addCase(getCurrentUser.fulfilled, (state, action) => {
         state.user = action.payload;
       })
-      // Logout
+      .addCase(getCurrentUser.rejected, (state) => {
+        state.user = null;
+        state.token = null;
+      })
+
+    // Logout
+    builder
+      .addCase(logout.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
         state.token = null;
+        state.loading = false;
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || '退出登录失败，请稍后重试';
       });
   },
 });
 
-export const { clearError } = authSlice.actions;
+export const { clearError, clearAuth } = authSlice.actions;
 export default authSlice.reducer; 

@@ -3,12 +3,13 @@ import { createBrowserRouter, useRouteError } from 'react-router-dom';
 
 import MainLayout from '@/components/common/layout/MainLayout';
 import Loading from '@/components/common/Loading';
-import { GuestGuard } from '@/router/guards';
+import { AuthGuard, GuestGuard } from '@/router/guards';
 import { routerErrorHandler } from '@/utils/router/error-handler';
 import { useRouteAnalytics } from '@/utils/router/analytics';
 
 const HomePage = React.lazy(() => import('@/pages/HomePage'));
 const LoginPage = React.lazy(() => import('@/pages/auth/LoginPage'));
+const RegisterPage = React.lazy(() => import('@/pages/auth/RegisterPage'));
 const ErrorPage = React.lazy(() => import('@/pages/ErrorPage'));
 
 // 路由分析包装器
@@ -43,10 +44,25 @@ export const router = createBrowserRouter([
     errorElement: <ErrorWrapper />,
   },
   {
+    path: '/register',
+    element: (
+      <AnalyticsWrapper>
+        <GuestGuard>
+          <Suspense fallback={<Loading />}>
+            <RegisterPage />
+          </Suspense>
+        </GuestGuard>
+      </AnalyticsWrapper>
+    ),
+    errorElement: <ErrorWrapper />,
+  },
+  {
     path: '/',
     element: (
       <AnalyticsWrapper>
-        <MainLayout />
+        <AuthGuard>
+          <MainLayout />
+        </AuthGuard>
       </AnalyticsWrapper>
     ),
     errorElement: <ErrorWrapper />,

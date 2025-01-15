@@ -20,8 +20,8 @@ export interface RequestConfig extends InternalAxiosRequestConfig {
 
 // 创建 axios 实例
 const request: AxiosInstance = axios.create({
-  baseURL: '/api',
-  timeout: 10000,
+  baseURL: '',
+  timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -29,16 +29,12 @@ const request: AxiosInstance = axios.create({
 
 // 配置请求重试
 axiosRetry(request, {
-  retries: 3, // 最大重试次数
+  retries: 1,
   retryDelay: (retryCount) => {
-    return retryCount * 1000; // 重试延迟时间（毫秒）
+    return retryCount * 500;
   },
   retryCondition: (error: AxiosError) => {
-    // 只在网络错误或 5xx 错误时重试
-    return (
-      isNetworkError(error) || 
-      (error.response?.status ? error.response.status >= 500 : false)
-    );
+    return isNetworkError(error);
   },
 });
 
@@ -63,10 +59,12 @@ request.interceptors.response.use(
     
     // 处理业务错误
     if (data.code !== 200) {
-      return Promise.reject(new Error(data.message));
+      const error = new Error(data.message || '请求失败') as any;
+      error.code = data.code;
+      return Promise.reject(error);
     }
     
-    return Promise.resolve(response);
+    return response;
   },
   async (error: AxiosError) => {
     // 处理 401 错误
@@ -76,7 +74,13 @@ request.interceptors.response.use(
       return Promise.reject(new Error('登录已过期，请重新登录'));
     }
 
-    // 处理其他错误
+    // 处理其他 HTTP 错误
+    if (error.response?.data) {
+      const apiError = error.response.data as any;
+      return Promise.reject(new Error(apiError.message || getErrorMessage(error)));
+    }
+
+    // 处理网络错误
     return Promise.reject(new Error(getErrorMessage(error)));
   }
 );

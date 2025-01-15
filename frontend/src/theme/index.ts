@@ -1,4 +1,5 @@
 import { createTheme, ThemeOptions } from '@mui/material';
+import { getThemeTransitionStyles } from './utils';
 
 const baseThemeOptions: ThemeOptions = {
   typography: {
@@ -14,7 +15,7 @@ const baseThemeOptions: ThemeOptions = {
   },
   components: {
     MuiCssBaseline: {
-      styleOverrides: {
+      styleOverrides: (theme) => ({
         body: {
           scrollbarColor: '#6b6b6b #2b2b2b',
           '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
@@ -37,8 +38,9 @@ const baseThemeOptions: ThemeOptions = {
           '&::-webkit-scrollbar-corner, & *::-webkit-scrollbar-corner': {
             backgroundColor: '#2b2b2b',
           },
+          ...getThemeTransitionStyles(theme),
         },
-      },
+      }),
     },
   },
 };

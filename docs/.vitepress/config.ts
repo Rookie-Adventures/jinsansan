@@ -39,12 +39,22 @@ export default defineConfig({
         {
           text: '核心功能',
           items: [
+            { text: '认证系统', link: '/frontend/auth' },
             { text: '路由系统', link: '/guide/router' },
             { text: '状态管理', link: '/guide/state-management' },
             { text: 'UI 框架', link: '/guide/ui-framework' },
             { text: 'Material UI', link: '/frontend/material-ui' },
             { text: 'HTTP 客户端', link: '/guide/http-client' },
             { text: '监控系统', link: '/guide/monitoring' }
+          ]
+        }
+      ],
+      '/frontend/': [
+        {
+          text: '前端功能',
+          items: [
+            { text: '认证系统', link: '/frontend/auth' },
+            { text: 'Material UI', link: '/frontend/material-ui' }
           ]
         }
       ],

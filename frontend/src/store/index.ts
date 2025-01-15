@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import {
   persistStore,
@@ -15,21 +15,24 @@ import storage from 'redux-persist/lib/storage';
 import appReducer from './slices/appSlice';
 import authReducer from './slices/authSlice';
 
+// 合并 reducers
+const rootReducer = combineReducers({
+  app: appReducer,
+  auth: authReducer,
+});
+
 // 配置持久化
 const persistConfig = {
   key: 'root',
   version: 1,
   storage,
-  whitelist: ['app', 'auth'], // 只持久化这些 reducer
+  whitelist: ['auth'], // 只持久化 auth reducer
 };
 
-const persistedReducer = persistReducer(persistConfig, appReducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: {
-    app: persistedReducer,
-    auth: authReducer,
-  },
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
