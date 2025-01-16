@@ -16,6 +16,27 @@ export class RouterAnalytics {
   private performanceMonitor: PerformanceMonitor;
   private routeStats: Record<string, number> = {};
   private routeDurations: Record<string, number[]> = {};
+  
+  // 新增：路由切换动画相关的属性
+  private transitionStartTime?: number;
+  private transitionFrames: number[] = [];
+  private activeTransition = false;
+
+  // 新增：预加载相关的属性
+  private preloadRequests: Map<string, { 
+    startTime: number;
+    promise: Promise<void>;
+    fromCache: boolean;
+    resolve: () => void;
+  }> = new Map();
+  private activePreloads: Map<string, number> = new Map();
+  private preloadStats = {
+    totalRequests: 0,
+    cacheHits: 0,
+    successCount: 0,
+    failureCount: 0,
+    deduplicationCount: 0
+  };
 
   private constructor() {
     this.performanceMonitor = PerformanceMonitor.getInstance();
@@ -106,5 +127,154 @@ export class RouterAnalytics {
     this.routeDurations = {};
     this.lastPath = undefined;
     this.lastTimestamp = undefined;
+    this.preloadStats = {
+      totalRequests: 0,
+      cacheHits: 0,
+      successCount: 0,
+      failureCount: 0,
+      deduplicationCount: 0
+    };
+    this.preloadRequests.clear();
+    this.activePreloads.clear();
+  }
+
+  // 新增：路由切换动画相关的方法
+  public trackRouteTransitionStart(fromPath: string, toPath: string): void {
+    this.transitionStartTime = Date.now();
+    this.transitionFrames = [];
+    this.activeTransition = true;
+
+    // 开始记录帧率
+    const recordFrame = () => {
+      if (this.activeTransition) {
+        this.transitionFrames.push(Date.now());
+        requestAnimationFrame(recordFrame);
+      }
+    };
+    requestAnimationFrame(recordFrame);
+  }
+
+  public trackRouteTransitionEnd(): void {
+    if (!this.transitionStartTime) return;
+
+    const duration = Date.now() - this.transitionStartTime;
+    this.performanceMonitor.trackCustomMetric('route_transition_duration', duration);
+
+    // 计算帧率
+    if (this.transitionFrames.length > 1) {
+      const totalTime = this.transitionFrames[this.transitionFrames.length - 1] - this.transitionFrames[0];
+      const fps = totalTime > 0 ? (this.transitionFrames.length - 1) * 1000 / totalTime : 60;
+      this.performanceMonitor.trackCustomMetric('route_transition_fps', fps);
+    }
+
+    // 检查性能问题
+    if (duration > 300) {
+      console.warn('路由切换动画性能问题: 动画时间过长');
+      this.performanceMonitor.trackCustomMetric('route_transition_performance_issue', 1);
+    }
+
+    this.activeTransition = false;
+    this.transitionStartTime = undefined;
+    this.transitionFrames = [];
+  }
+
+  // 新增：预加载相关的方法
+  public trackPreloadStart(path: string): Promise<void> {
+    const existingRequest = this.preloadRequests.get(path);
+    if (existingRequest) {
+      this.preloadStats.deduplicationCount++;
+      this.performanceMonitor.trackCustomMetric('route_preload_deduplication_count', this.preloadStats.deduplicationCount);
+      return existingRequest.promise;
+    }
+
+    const startTime = Date.now();
+    let resolvePromise!: () => void;
+    const promise = new Promise<void>((resolve) => {
+      resolvePromise = resolve;
+    });
+
+    this.preloadRequests.set(path, {
+      startTime,
+      promise,
+      fromCache: false,
+      resolve: resolvePromise
+    });
+
+    this.activePreloads.set(path, (this.activePreloads.get(path) || 0) + 1);
+    this.preloadStats.totalRequests++;
+
+    return promise;
+  }
+
+  public async trackPreloadEnd(
+    path: string, 
+    fromCache: boolean = false,
+    resourceSizes?: { jsSize?: number; cssSize?: number; totalSize?: number }
+  ): Promise<void> {
+    const request = this.preloadRequests.get(path);
+    if (!request) return;
+
+    const duration = Date.now() - request.startTime;
+    this.performanceMonitor.trackCustomMetric('route_preload_duration', duration);
+
+    if (fromCache) {
+      this.preloadStats.cacheHits++;
+    }
+    this.preloadStats.successCount++;
+
+    // 记录资源大小
+    if (resourceSizes) {
+      if (resourceSizes.totalSize) {
+        this.performanceMonitor.trackCustomMetric('route_preload_size', resourceSizes.totalSize);
+      }
+      if (resourceSizes.jsSize) {
+        this.performanceMonitor.trackCustomMetric('route_preload_js_size', resourceSizes.jsSize);
+      }
+      if (resourceSizes.cssSize) {
+        this.performanceMonitor.trackCustomMetric('route_preload_css_size', resourceSizes.cssSize);
+      }
+    }
+
+    // 更新缓存命中率
+    const cacheHitRate = this.preloadStats.totalRequests > 0 
+      ? this.preloadStats.cacheHits / this.preloadStats.totalRequests 
+      : 0;
+    this.performanceMonitor.trackCustomMetric('route_preload_cache_hit_rate', cacheHitRate);
+
+    // 更新成功率
+    const total = this.preloadStats.successCount + this.preloadStats.failureCount;
+    const successRate = total > 0 ? this.preloadStats.successCount / total : 0;
+    this.performanceMonitor.trackCustomMetric('route_preload_success_rate', successRate);
+
+    // 更新活动预加载计数
+    const activeCount = this.activePreloads.get(path) || 0;
+    if (activeCount > 0) {
+      this.activePreloads.set(path, activeCount - 1);
+    }
+
+    // 调用resolve函数来完成Promise
+    request.resolve();
+    this.preloadRequests.delete(path);
+  }
+
+  public async trackPreloadError(path: string, error: Error): Promise<void> {
+    this.preloadStats.failureCount++;
+    
+    // 更新活动预加载计数
+    const activeCount = this.activePreloads.get(path) || 0;
+    if (activeCount > 0) {
+      this.activePreloads.set(path, activeCount - 1);
+    }
+
+    // 更新成功率
+    const total = this.preloadStats.successCount + this.preloadStats.failureCount;
+    const successRate = total > 0 ? this.preloadStats.successCount / total : 0;
+    this.performanceMonitor.trackCustomMetric('route_preload_success_rate', successRate);
+
+    this.preloadRequests.delete(path);
+  }
+
+  public getActivePreloadCount(path: string): number {
+    return this.activePreloads.get(path) || 0;
   }
 } 

@@ -139,4 +139,170 @@ describe('Router Analytics', () => {
       expect(avgDuration).toBe(2000);
     });
   });
+
+  describe('路由切换动画性能', () => {
+    it('应该记录路由切换动画的性能指标', () => {
+      const mockTrackCustomMetric = vi.spyOn(performanceMonitor, 'trackCustomMetric');
+      
+      // 模拟路由切换动画开始
+      routerAnalytics.trackRouteTransitionStart('/home', '/dashboard');
+      vi.advanceTimersByTime(300); // 模拟动画持续300ms
+      routerAnalytics.trackRouteTransitionEnd();
+
+      expect(mockTrackCustomMetric).toHaveBeenCalledWith(
+        'route_transition_duration',
+        expect.any(Number)
+      );
+
+      const duration = mockTrackCustomMetric.mock.calls[0][1];
+      expect(duration).toBe(300);
+    });
+
+    it('应该记录路由切换动画帧率', () => {
+      const mockTrackCustomMetric = vi.spyOn(performanceMonitor, 'trackCustomMetric');
+      
+      // 模拟 requestAnimationFrame
+      const mockRaf = vi.fn();
+      global.requestAnimationFrame = mockRaf;
+      
+      // 模拟路由切换动画
+      routerAnalytics.trackRouteTransitionStart('/home', '/dashboard');
+      
+      // 模拟60fps的动画帧
+      for (let i = 0; i < 18; i++) { // 300ms at 60fps ≈ 18 frames
+        mockRaf.mock.calls[i][0](performance.now() + (i * 16.67)); // 16.67ms per frame at 60fps
+      }
+      
+      routerAnalytics.trackRouteTransitionEnd();
+
+      expect(mockTrackCustomMetric).toHaveBeenCalledWith(
+        'route_transition_fps',
+        expect.any(Number)
+      );
+
+      const fps = mockTrackCustomMetric.mock.calls[1][1];
+      expect(fps).toBeCloseTo(60, 0);
+    });
+
+    it('应该检测到动画性能问题', () => {
+      const mockTrackCustomMetric = vi.spyOn(performanceMonitor, 'trackCustomMetric');
+      const mockConsoleWarn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      
+      // 模拟路由切换动画
+      routerAnalytics.trackRouteTransitionStart('/home', '/dashboard');
+      vi.advanceTimersByTime(500); // 模拟较长的动画时间
+      routerAnalytics.trackRouteTransitionEnd();
+
+      expect(mockConsoleWarn).toHaveBeenCalledWith(
+        expect.stringContaining('路由切换动画性能问题')
+      );
+      expect(mockTrackCustomMetric).toHaveBeenCalledWith(
+        'route_transition_performance_issue',
+        1
+      );
+    });
+  });
+
+  describe('路由预加载性能', () => {
+    it('应该记录路由预加载时间', async () => {
+      const mockTrackCustomMetric = vi.spyOn(performanceMonitor, 'trackCustomMetric');
+      
+      // 模拟预加载开始
+      routerAnalytics.trackPreloadStart('/dashboard');
+      vi.advanceTimersByTime(100); // 模拟预加载耗时100ms
+      await routerAnalytics.trackPreloadEnd('/dashboard');
+
+      expect(mockTrackCustomMetric).toHaveBeenCalledWith(
+        'route_preload_duration',
+        100
+      );
+    });
+
+    it('应该记录预加载成功率', async () => {
+      const mockTrackCustomMetric = vi.spyOn(performanceMonitor, 'trackCustomMetric');
+      
+      // 模拟多次预加载
+      for (let i = 0; i < 5; i++) {
+        routerAnalytics.trackPreloadStart(`/route-${i}`);
+        if (i < 4) {
+          await routerAnalytics.trackPreloadEnd(`/route-${i}`);
+        } else {
+          await routerAnalytics.trackPreloadError(`/route-${i}`, new Error('预加载失败'));
+        }
+      }
+
+      expect(mockTrackCustomMetric).toHaveBeenCalledWith(
+        'route_preload_success_rate',
+        0.8 // 4成功/5总数 = 0.8
+      );
+    });
+
+    it('应该记录预加载缓存命中率', async () => {
+      const mockTrackCustomMetric = vi.spyOn(performanceMonitor, 'trackCustomMetric');
+      
+      // 模拟预加载和缓存
+      routerAnalytics.trackPreloadStart('/dashboard');
+      await routerAnalytics.trackPreloadEnd('/dashboard');
+      
+      // 模拟从缓存加载
+      routerAnalytics.trackPreloadStart('/dashboard');
+      await routerAnalytics.trackPreloadEnd('/dashboard', true); // true表示从缓存加载
+
+      expect(mockTrackCustomMetric).toHaveBeenCalledWith(
+        'route_preload_cache_hit_rate',
+        0.5 // 1缓存命中/2总数 = 0.5
+      );
+    });
+
+    it('应该记录预加载资源大小', async () => {
+      const mockTrackCustomMetric = vi.spyOn(performanceMonitor, 'trackCustomMetric');
+      
+      // 模拟资源大小统计
+      routerAnalytics.trackPreloadStart('/dashboard');
+      await routerAnalytics.trackPreloadEnd('/dashboard', false, {
+        jsSize: 50000, // 50KB
+        cssSize: 10000, // 10KB
+        totalSize: 60000 // 60KB
+      });
+
+      expect(mockTrackCustomMetric).toHaveBeenCalledWith(
+        'route_preload_size',
+        60000
+      );
+      expect(mockTrackCustomMetric).toHaveBeenCalledWith(
+        'route_preload_js_size',
+        50000
+      );
+      expect(mockTrackCustomMetric).toHaveBeenCalledWith(
+        'route_preload_css_size',
+        10000
+      );
+    });
+
+    it('应该优化重复预加载请求', async () => {
+      const mockTrackCustomMetric = vi.spyOn(performanceMonitor, 'trackCustomMetric');
+      
+      // 模拟同时多次预加载请求
+      const requests = [
+        routerAnalytics.trackPreloadStart('/dashboard'),
+        routerAnalytics.trackPreloadStart('/dashboard'),
+        routerAnalytics.trackPreloadStart('/dashboard')
+      ];
+
+      // 应该只有一个实际的预加载请求
+      const preloadCount = routerAnalytics.getActivePreloadCount('/dashboard');
+      expect(preloadCount).toBe(1);
+
+      // 完成预加载
+      await routerAnalytics.trackPreloadEnd('/dashboard');
+      
+      // 所有请求都应该被解决
+      await Promise.all(requests);
+
+      expect(mockTrackCustomMetric).toHaveBeenCalledWith(
+        'route_preload_deduplication_count',
+        2 // 3个请求，去重2个
+      );
+    });
+  });
 }); 
