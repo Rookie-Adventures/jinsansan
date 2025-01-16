@@ -37,36 +37,48 @@ export class HttpClient {
     this.axiosInstance.interceptors.request.use(
       async (config: InternalAxiosRequestConfig) => {
         const extendedConfig = config as ExtendedAxiosRequestConfig;
-        // 添加请求追踪 ID
-        if (!extendedConfig.headers) {
-          extendedConfig.headers = new AxiosHeaders();
-        }
-        extendedConfig.headers['X-Request-ID'] = uuidv4();
-
-        // 运行错误预防规则
-        await errorPreventionManager.checkRules(extendedConfig);
-
-        // 验证请求
-        RequestValidator.validateRequest(extendedConfig);
-
-        // 检查缓存
-        if (extendedConfig.method?.toLowerCase() === 'get') {
-          const cacheKey = cacheManager.getCacheKey(extendedConfig);
-          const cachedData = cacheManager.get(cacheKey);
-          if (cachedData) {
-            extendedConfig.cached = true;
-            extendedConfig.data = cachedData;
-            return extendedConfig;
+        
+        try {
+          // 添加请求追踪 ID
+          if (!extendedConfig.headers) {
+            extendedConfig.headers = new AxiosHeaders();
           }
-        }
+          extendedConfig.headers['X-Request-ID'] = uuidv4();
 
-        // 添加认证信息
-        const token = localStorage.getItem('token');
-        if (token) {
-          extendedConfig.headers.set('Authorization', `Bearer ${token}`);
-        }
+          // 运行错误预防规则
+          await errorPreventionManager.checkRules(extendedConfig);
 
-        return extendedConfig;
+          // 验证请求
+          try {
+            RequestValidator.validateRequest(extendedConfig);
+          } catch (validationError: unknown) {
+            if (validationError instanceof Error) {
+              throw new Error(`请求验证失败: ${validationError.message}`);
+            }
+            throw new Error('请求验证失败: 未知错误');
+          }
+
+          // 检查缓存
+          if (extendedConfig.method?.toLowerCase() === 'get') {
+            const cacheKey = cacheManager.getCacheKey(extendedConfig);
+            const cachedData = cacheManager.get(cacheKey);
+            if (cachedData) {
+              extendedConfig.cached = true;
+              extendedConfig.data = cachedData;
+              return extendedConfig;
+            }
+          }
+
+          // 添加认证信息
+          const token = localStorage.getItem('token');
+          if (token) {
+            extendedConfig.headers.set('Authorization', `Bearer ${token}`);
+          }
+
+          return extendedConfig;
+        } catch (error) {
+          return Promise.reject(HttpErrorFactory.create(error));
+        }
       },
       (error) => {
         return Promise.reject(HttpErrorFactory.create(error));
@@ -77,13 +89,25 @@ export class HttpClient {
     this.axiosInstance.interceptors.response.use(
       (response: AxiosResponse) => {
         const config = response.config as ExtendedAxiosRequestConfig;
-        // 处理缓存
-        if (config.method?.toLowerCase() === 'get' && !config.cached) {
-          const cacheKey = cacheManager.getCacheKey(config);
-          cacheManager.set(cacheKey, response.data);
-        }
+        
+        try {
+          // 处理缓存
+          if (config.method?.toLowerCase() === 'get' && !config.cached) {
+            const cacheKey = cacheManager.getCacheKey(config);
+            cacheManager.set(cacheKey, response.data);
+          }
 
-        return response;
+          // 验证响应数据
+          if (response.data && typeof response.data === 'object') {
+            if ('code' in response.data && response.data.code !== 200) {
+              throw new Error(response.data.message || '请求失败');
+            }
+          }
+
+          return response;
+        } catch (error) {
+          return Promise.reject(HttpErrorFactory.create(error));
+        }
       },
       async (error) => {
         const httpError = HttpErrorFactory.create(error);
@@ -91,9 +115,17 @@ export class HttpClient {
         // 尝试错误恢复
         try {
           await defaultErrorHandler.handle(httpError);
-        } catch (e) {
-          console.error('Error recovery failed:', e);
+        } catch (recoveryError) {
+          console.error('错误恢复失败:', recoveryError);
         }
+
+        // 记录错误日志
+        console.error('API 响应错误:', {
+          url: error.config?.url,
+          status: error.response?.status,
+          message: httpError.message,
+          type: httpError.type
+        });
 
         return Promise.reject(httpError);
       }

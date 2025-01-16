@@ -88,14 +88,25 @@ export class PerformanceMonitor {
   }
 
   public trackCustomMetric(name: string, value: number): void {
-    this.metrics.push({
-      type: 'custom',
-      timestamp: Date.now(),
-      data: {
-        name,
-        value
+    try {
+      if (name === null || name === undefined) {
+        throw new Error('Metric name cannot be null or undefined');
       }
-    });
+      if (typeof value !== 'number' || isNaN(value)) {
+        throw new Error('Metric value must be a valid number');
+      }
+
+      this.metrics.push({
+        type: 'custom',
+        timestamp: Date.now(),
+        data: {
+          name,
+          value
+        }
+      });
+    } catch (error) {
+      console.error('Invalid metric data:', error);
+    }
   }
 
   public trackApiCall(url: string, duration: number, success: boolean): void {
@@ -128,9 +139,15 @@ export class PerformanceMonitor {
 
       if (response.ok) {
         this.metrics = [];
+      } else {
+        console.error(`Failed to report metrics: ${response.statusText}`);
       }
     } catch (error) {
-      console.error('Failed to upload metrics:', error);
+      console.error('Failed to report metrics:', error);
     }
+  }
+
+  public clearMetrics(): void {
+    this.metrics = [];
   }
 } 
