@@ -105,4 +105,56 @@ export interface MonitorConfig {
   enableRemote: boolean;
   /** 远程上报地址 */
   remoteUrl?: string;
+}
+
+/**
+ * 告警规则类型
+ */
+export type AlertRuleType = 'threshold' | 'trend' | 'anomaly';
+
+/**
+ * 告警级别
+ */
+export type AlertSeverity = 'info' | 'warning' | 'error' | 'critical';
+
+/**
+ * 告警规则配置
+ */
+export interface AlertRule {
+  /** 规则ID */
+  id: string;
+  /** 规则名称 */
+  name: string;
+  /** 规则类型 */
+  type: AlertRuleType;
+  /** 监控指标 */
+  metric: string;
+  /** 告警条件 */
+  condition: {
+    operator: '>' | '<' | '>=' | '<=' | '==' | '!=';
+    value: number;
+  };
+  /** 告警级别 */
+  severity: AlertSeverity;
+  /** 是否启用 */
+  enabled: boolean;
+  /** 通知配置 */
+  notification: {
+    email?: string[];
+  };
+}
+
+/**
+ * 告警配置接口
+ */
+export interface AlertConfig {
+  /** 是否启用告警 */
+  enabled: boolean;
+  /** 告警规则列表 */
+  rules: AlertRule[];
+  /** 通知设置 */
+  notification: {
+    /** 默认接收邮箱 */
+    defaultEmail?: string[];
+  };
 } 

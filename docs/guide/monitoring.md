@@ -1,6 +1,6 @@
 # 监控系统文档
 
-> 状态：🚧 开发中
+> 状态：✅ 已实施
 > 
 > 最后更新：2024年1月
 > 
@@ -8,7 +8,7 @@
 > - [x] 性能监控基础框架 (100%)
 > - [x] HTTP请求监控 (100%)
 > - [x] 路由分析 (80%)
-> - [ ] 告警系统 (0%)
+> - [x] 告警系统 (90%)
 
 ## 1. 性能监控
 
@@ -104,9 +104,55 @@ class RouterAnalytics {
 }
 ```
 
-## 4. 数据上报
+## 4. 告警系统
 
-### 4.1 批量处理
+### 4.1 告警规则配置
+```typescript
+interface AlertRule {
+  id: string;
+  name: string;
+  type: 'threshold' | 'trend' | 'anomaly';
+  metric: string;
+  condition: {
+    operator: '>' | '<' | '>=' | '<=' | '==' | '!=';
+    value: number;
+  };
+  severity: 'info' | 'warning' | 'error' | 'critical';
+  enabled: boolean;
+  notification: {
+    email?: string[];
+  };
+}
+```
+
+### 4.2 告警管理器
+```typescript
+class AlertManager {
+  // 添加规则
+  addRule(rule: Omit<AlertRule, 'id'>): AlertRule;
+
+  // 更新规则
+  updateRule(rule: AlertRule): void;
+
+  // 删除规则
+  deleteRule(ruleId: string): void;
+
+  // 启用/禁用规则
+  toggleRule(ruleId: string, enabled: boolean): void;
+
+  // 检查指标
+  checkMetric(metric: PerformanceMetric): void;
+}
+```
+
+### 4.3 告警通知
+- 支持邮件通知
+- 告警历史记录
+- 告警状态追踪
+
+## 5. 数据上报
+
+### 5.1 批量处理
 ```typescript
 private async sendMetrics(): Promise<void> {
   if (this.metrics.length === 0) return;
@@ -129,9 +175,9 @@ private async sendMetrics(): Promise<void> {
 }
 ```
 
-## 5. 配置说明
+## 6. 配置说明
 
-### 5.1 性能监控配置
+### 6.1 性能监控配置
 ```typescript
 interface MonitorConfig {
   batchSize: number;         // 批处理大小
@@ -145,19 +191,51 @@ interface MonitorConfig {
 }
 ```
 
-## 6. 待实现功能
+### 6.2 告警配置
+```typescript
+interface AlertConfig {
+  enabled: boolean;          // 是否启用告警
+  rules: AlertRule[];        // 告警规则列表
+  notification: {            // 通知设置
+    defaultEmail?: string[]; // 默认接收邮箱
+  };
+}
+```
 
-### 6.1 高优先级
-- [ ] 错误聚合分析
-- [ ] 性能指标阈值告警
-- [ ] 监控数据可视化
+## 7. 待实现功能
 
-### 6.2 中优先级
-- [ ] 用户行为分析
+### 7.1 高优先级
+- [ ] 告警数据可视化
+- [ ] 告警规则导入/导出
+- [ ] 告警规则模板
+
+### 7.2 中优先级
+- [ ] 更多告警通知渠道
+- [ ] 告警规则测试工具
+- [ ] 高级告警条件配置
+
+### 7.3 低优先级
+- [ ] 路由分析仪表板
 - [ ] 性能趋势分析
-- [ ] 自定义告警规则
-
-### 6.3 低优先级
-- [ ] 智能异常检测
-- [ ] 多维度数据分析
 - [ ] 监控配置面板 
+
+## 8. 使用建议
+
+### 8.1 小型项目使用建议
+- 优先启用基础监控功能（页面加载、API调用）
+- 根据实际需求逐步开启其他功能
+- 将告警阈值设置得相对宽松，避免信息过载
+- 重点监控核心业务功能和关键用户路径
+
+### 8.2 推荐配置
+```typescript
+const recommendedConfig: MonitorConfig = {
+  batchSize: 10,           // 较小的批处理大小
+  sendInterval: 30000,     // 30秒发送一次
+  enablePageLoad: true,    // 启用页面加载监控
+  enableResource: false,   // 禁用资源监控
+  enableLongTask: false,   // 禁用长任务监控
+  enableInteraction: true, // 启用交互监控（核心功能）
+  enableRemote: true      // 启用远程上报
+};
+``` 

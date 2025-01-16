@@ -1,14 +1,27 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
-import { LoginForm } from '../LoginForm';
+import { describe, it, expect, vi } from 'vitest';
+import LoginForm from '../LoginForm';
 import { Provider } from 'react-redux';
 import { store } from '@/store';
 
 describe('LoginForm', () => {
+  const mockFormData = {
+    username: '',
+    password: ''
+  };
+
+  const mockProps = {
+    formData: mockFormData,
+    showPassword: false,
+    onSubmit: vi.fn(),
+    onFormChange: vi.fn(),
+    onTogglePassword: vi.fn()
+  };
+
   it('should render login form', () => {
     render(
       <Provider store={store}>
-        <LoginForm />
+        <LoginForm {...mockProps} />
       </Provider>
     );
     
@@ -20,7 +33,7 @@ describe('LoginForm', () => {
   it('should handle successful login', async () => {
     render(
       <Provider store={store}>
-        <LoginForm />
+        <LoginForm {...mockProps} />
       </Provider>
     );
     
@@ -34,8 +47,6 @@ describe('LoginForm', () => {
     
     fireEvent.click(screen.getByRole('button', { name: /登录/i }));
     
-    await waitFor(() => {
-      expect(store.getState().auth.token).toBe('mock-jwt-token');
-    });
+    expect(mockProps.onSubmit).toHaveBeenCalled();
   });
 }); 
