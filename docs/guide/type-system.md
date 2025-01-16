@@ -2,14 +2,17 @@
 
 ## 概述
 
-类型系统基于 TypeScript，提供了完整的类型定义和类型安全保证，包括 API 响应类型、状态类型、组件 Props 类型等。
+类型系统基于 TypeScript，提供了完整的类型定义和类型安全保证。类型定义按功能模块组织，避免重复定义。
 
 ## 核心类型
 
-### 1. 基础类型定义
+### 1. API 类型 (@/types/api.ts)
 
 ```typescript
-// 通用响应类型
+import type { AxiosRequestConfig } from 'axios';
+import type { ProgressInfo } from '@/utils/http/progress-monitor';
+
+// API 响应类型
 interface ApiResponse<T = unknown> {
   code: number;
   message: string;
@@ -17,202 +20,142 @@ interface ApiResponse<T = unknown> {
 }
 
 // 分页响应类型
-interface PaginatedResponse<T> extends ApiResponse {
-  data: {
-    items: T[];
-    total: number;
-    page: number;
-    pageSize: number;
+interface PaginatedResponse<T> {
+  items: T[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
+
+// HTTP 请求配置
+interface HttpRequestConfig extends AxiosRequestConfig {
+  cancelTokenId?: string;
+  progress?: {
+    onUploadProgress?: (info: ProgressInfo) => void;
+    onDownloadProgress?: (info: ProgressInfo) => void;
+  };
+  errorHandler?: {
+    handle: (error: any) => Promise<void>;
   };
 }
+```
 
-// 通用错误类型
-interface AppError extends Error {
-  code: string;
+### 2. 错误类型 (@/utils/http/error/types.ts)
+
+```typescript
+enum HttpErrorType {
+  NETWORK = 'NETWORK',    // 网络错误
+  TIMEOUT = 'TIMEOUT',    // 超时错误
+  AUTH = 'AUTH',         // 认证错误
+  SERVER = 'SERVER',     // 服务器错误
+  CLIENT = 'CLIENT',     // 客户端错误
+  CANCEL = 'CANCEL',     // 请求取消
+  UNKNOWN = 'UNKNOWN',   // 未知错误
+  REACT_ERROR = 'REACT_ERROR', // React组件错误
+  VALIDATION = 'VALIDATION',   // 验证错误
+  BUSINESS = 'BUSINESS'       // 业务错误
+}
+
+interface HttpError extends Error {
+  type: HttpErrorType;
   status?: number;
+  code?: string | number;
   data?: unknown;
+  trace?: ErrorTrace;
+  recoverable?: boolean;
+  retryCount?: number;
 }
 ```
 
-### 2. 状态类型
+### 3. 队列类型 (@/utils/http/types.ts)
 
 ```typescript
-// 全局状态类型
-interface RootState {
-  auth: AuthState;
-  app: AppState;
-  user: UserState;
+// 基础队列项类型
+interface BaseQueueItem<T> {
+  id: T;
+  priority: number;
 }
 
-// 认证状态
-interface AuthState {
-  token: string | null;
-  user: User | null;
-  loading: boolean;
-  error: string | null;
-}
-
-// 应用状态
-interface AppState {
-  theme: 'light' | 'dark';
-  language: string;
-  loading: boolean;
-  notifications: Notification[];
+// HTTP请求队列项类型
+interface HttpQueueItem<T = any> extends BaseQueueItem<T> {
+  timestamp: number;
+  config: HttpRequestConfig;
 }
 ```
 
-### 3. 组件 Props 类型
+### 4. 工具类型 (@/types/utils.ts)
 
 ```typescript
-// 组件属性类型
-interface ButtonProps {
-  variant?: 'primary' | 'secondary' | 'text';
-  size?: 'small' | 'medium' | 'large';
-  disabled?: boolean;
-  loading?: boolean;
-  onClick?: () => void;
-  children: React.ReactNode;
-}
+// 深度可选类型
+type DeepPartial<T> = T extends object ? {
+  [P in keyof T]?: DeepPartial<T[P]>;
+} : T;
 
-// 表单字段属性
-interface FieldProps<T = any> {
-  name: string;
-  label?: string;
-  value?: T;
-  onChange?: (value: T) => void;
-  error?: string;
-  touched?: boolean;
-  required?: boolean;
-}
-```
+// 可空类型
+type Nullable<T> = T | null;
 
-## 工具类型
-
-### 1. 类型转换
-
-```typescript
-// 将对象类型的所有属性变为可选
-type DeepPartial<T> = {
-  [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
-};
-
-// 将对象类型的所有属性变为只读
+// 深度只读类型
 type DeepReadonly<T> = {
   readonly [P in keyof T]: T[P] extends object ? DeepReadonly<T[P]> : T[P];
 };
-
-// 从类型中排除某些键
-type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-
-// 从类型中选择某些键
-type Pick<T, K extends keyof T> = {
-  [P in K]: T[P];
-};
 ```
 
-### 2. 类型守卫
+## 类型组织
 
-```typescript
-// 类型守卫函数
-function isError(value: unknown): value is Error {
-  return value instanceof Error;
-}
-
-function isApiError(error: unknown): error is ApiError {
-  return (
-    isError(error) &&
-    'code' in error &&
-    typeof (error as ApiError).code === 'string'
-  );
-}
-
-// 响应类型守卫
-function isSuccessResponse<T>(
-  response: ApiResponse<T>
-): response is SuccessResponse<T> {
-  return response.code === 200;
-}
+### 1. 目录结构
+```
+frontend/src/
+├── types/
+│   ├── api.ts          # API 相关类型
+│   ├── auth.ts         # 认证相关类型
+│   ├── utils.ts        # 工具类型
+│   └── global.d.ts     # 全局类型声明
+├── utils/
+│   └── http/
+│       ├── error/
+│       │   └── types.ts # HTTP 错误类型
+│       └── types.ts     # HTTP 工具类型
+└── store/
+    └── types.ts        # 状态管理类型
 ```
 
-## 使用示例
+### 2. 类型导入导出规范
 
-### 1. API 类型定义
-
+- 使用 type 导入导出类型
 ```typescript
-// API 请求类型
-interface LoginRequest {
-  username: string;
-  password: string;
-}
-
-// API 响应类型
-interface LoginResponse {
-  token: string;
-  user: {
-    id: string;
-    username: string;
-    email: string;
-    roles: string[];
-  };
-}
-
-// API 函数类型
-type LoginApi = (data: LoginRequest) => Promise<ApiResponse<LoginResponse>>;
+import type { ApiResponse, HttpRequestConfig } from '@/types/api';
+export type { HttpError, ApiResponse };
 ```
 
-### 2. 组件类型应用
-
+- 避免循环依赖
 ```typescript
-// 泛型组件
-interface ListProps<T> {
-  items: T[];
-  renderItem: (item: T) => React.ReactNode;
-  keyExtractor: (item: T) => string;
-}
+// 好的做法
+import type { User } from '@/types/auth';
+import type { HttpError } from '@/utils/http/error/types';
 
-function List<T>({ items, renderItem, keyExtractor }: ListProps<T>) {
-  return (
-    <div>
-      {items.map((item) => (
-        <div key={keyExtractor(item)}>
-          {renderItem(item)}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// 使用组件
-<List<User>
-  items={users}
-  renderItem={(user) => <UserCard user={user} />}
-  keyExtractor={(user) => user.id}
-/>
+// 避免的做法
+import type { HttpError } from '@/utils/http/types';  // 不要从中间文件导入
 ```
 
 ## 最佳实践
 
-1. **类型定义**
-   - 使用接口定义对象类型
-   - 使用类型别名定义联合类型
-   - 合理使用泛型约束
+### 1. 类型定义
+- 使用接口定义对象类型
+- 使用类型别名定义联合类型和工具类型
+- 为复杂类型添加 JSDoc 注释
 
-2. **类型安全**
-   - 启用严格类型检查
-   - 避免使用 any 类型
-   - 实现类型守卫
+### 2. 类型安全
+- 启用严格类型检查
+- 避免使用 any 类型
+- 实现必要的类型守卫
 
-3. **类型组织**
-   - 按模块组织类型定义
-   - 导出公共类型
-   - 维护类型文档
+### 3. 类型组织
+- 按功能模块组织类型定义
+- 避免类型定义重复
+- 保持类型定义的单一职责
 
-4. **泛型使用**
-   - 合理使用泛型组件
-   - 实现泛型约束
-   - 提供默认类型
-
-5. **工具类型**
-   - 使用内置工具类型
-   - 创建自定义工具类型
-   - 复用类型逻辑 
+### 4. 类型复用
+- 优先使用类型组合而不是继承
+- 利用工具类型进行类型转换
+- 使用泛型增加类型灵活性 

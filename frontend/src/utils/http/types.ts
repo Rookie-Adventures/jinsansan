@@ -1,50 +1,29 @@
 import type { AxiosRequestConfig } from 'axios';
 import type { ProgressInfo } from './progress-monitor';
 import type { HttpConfig } from './config';
+import type { HttpError } from './error/types';
+import type { ApiResponse, HttpRequestConfig } from '@/types/api';
 
-export interface HttpRequestConfig extends AxiosRequestConfig, Partial<HttpConfig> {
-  // 请求标识，用于取消请求
-  cancelTokenId?: string;
-  
-  // 进度监控
-  progress?: {
-    onUploadProgress?: (info: ProgressInfo) => void;
-    onDownloadProgress?: (info: ProgressInfo) => void;
-  };
-  
-  // 错误处理
-  errorHandler?: {
-    handle: (error: any) => Promise<void>;
-  };
+/**
+ * 基础队列项类型
+ * @template T - 队列项ID的类型
+ */
+export interface BaseQueueItem<T> {
+  /** 队列项的唯一标识符 */
+  id: T;
+  /** 队列项的优先级，数值越大优先级越高 */
+  priority: number;
 }
 
-// 请求队列项
-export interface QueueItem {
-  id: string;
-  priority: number;
+/**
+ * HTTP请求队列项类型
+ * @template T - 队列项ID的类型
+ */
+export interface HttpQueueItem<T = string> extends BaseQueueItem<T> {
+  /** 创建时间戳 */
   timestamp: number;
+  /** HTTP请求配置 */
   config: HttpRequestConfig;
 }
 
-// 缓存项
-export interface CacheItem<T = any> {
-  data: T;
-  timestamp: number;
-  ttl: number;
-}
-
-// HTTP 错误
-export interface HttpError extends Error {
-  code: number;
-  status?: number;
-  data?: any;
-  config?: HttpRequestConfig;
-  isHttpError: true;
-}
-
-// API 响应
-export interface ApiResponse<T = any> {
-  code: number;
-  message: string;
-  data: T;
-} 
+export type { HttpError, ApiResponse, HttpRequestConfig }; 

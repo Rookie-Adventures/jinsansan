@@ -71,7 +71,7 @@ src/
 
 ### 组件拆分
 - 按功能拆分组件，避免单一组件过于庞大。
-- 建议采用“容器组件”和“展示组件”的模式，分离逻辑和视图。
+- 建议采用"容器组件"和"展示组件"的模式，分离逻辑和视图。
 
 ### Props 和 State
 - **Props**：
@@ -143,11 +143,98 @@ src/
 
 ## 错误处理规范
 
-### 错误边界
-- 使用 React 的错误边界组件捕获子组件的错误，提供友好提示。
+### 错误类型系统
+- 使用 TypeScript 枚举定义错误类型：
+  ```typescript
+  enum HttpErrorType {
+    NETWORK = 'NETWORK',    // 网络错误
+    TIMEOUT = 'TIMEOUT',    // 超时错误
+    AUTH = 'AUTH',         // 认证错误
+    SERVER = 'SERVER',     // 服务器错误
+    CLIENT = 'CLIENT',     // 客户端错误
+    CANCEL = 'CANCEL',     // 请求取消
+    UNKNOWN = 'UNKNOWN',   // 未知错误
+    REACT_ERROR = 'REACT_ERROR', // React组件错误
+    VALIDATION = 'VALIDATION',   // 验证错误
+    BUSINESS = 'BUSINESS'       // 业务错误
+  }
+  ```
 
-### 全局错误处理
-- 对 API 请求错误进行统一处理，提供用户友好的错误提示。
+### 错误处理机制
+1. **错误边界组件**
+   - 使用 React ErrorBoundary 捕获渲染错误
+   - 支持自定义 fallback UI
+   - 集成错误日志记录
+
+2. **HTTP 错误处理**
+   - 使用工厂模式创建标准化的错误对象
+   - 支持错误恢复策略
+   - 包含重试机制
+   ```typescript
+   interface HttpError extends Error {
+     type: HttpErrorType;
+     status?: number;
+     code?: string | number;
+     data?: unknown;
+     trace?: ErrorTrace;
+     recoverable?: boolean;
+     retryCount?: number;
+   }
+   ```
+
+3. **错误预防**
+   - 请求前预检查机制
+   - 请求数据验证
+   - 敏感数据检查
+   - 请求缓存管理
+
+4. **错误恢复策略**
+   - 网络错误：自动重试，最多3次
+   - 超时错误：延长超时时间重试
+   - 认证错误：自动刷新 token
+   - 服务器错误：对非500错误进行重试
+
+5. **错误通知系统**
+   - 使用 Material-UI Snackbar 组件
+   - 不同错误类型的差异化展示
+   - 支持错误恢复操作
+   - 自动隐藏非关键错误
+
+### 错误日志
+- 记录错误类型、时间戳和上下文信息
+- 支持错误追踪和定位
+- 包含错误发生时的请求信息
+
+### 开发建议
+1. **错误处理最佳实践**
+   - 使用 try-catch 包装异步操作
+   - 避免吞掉错误，确保错误可追踪
+   - 提供用户友好的错误提示
+
+2. **错误预防建议**
+   - 请求前进行数据验证
+   - 使用 TypeScript 类型检查
+   - 实现请求超时控制
+
+3. **错误恢复建议**
+   - 实现幂等性操作
+   - 保存用户操作状态
+   - 提供手动重试选项
+
+### 待优化项
+1. **错误分析**
+   - 错误聚合和分类
+   - 错误趋势分析
+   - 错误报警机制
+
+2. **性能监控**
+   - 请求耗时统计
+   - 错误率统计
+   - 性能指标收集
+
+3. **开发体验**
+   - 开发环境详细错误信息
+   - 错误复现辅助信息
 
 ---
 

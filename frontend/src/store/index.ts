@@ -12,6 +12,9 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
+import { loggerMiddleware } from './middleware/logger';
+import { errorMiddleware } from './middleware/error';
+import { performanceMiddleware } from './middleware/performance';
 import appReducer from './slices/appSlice';
 import authReducer from './slices/authSlice';
 
@@ -31,6 +34,12 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
+// 创建自定义中间件数组
+const customMiddleware = [
+  errorMiddleware,
+  ...(process.env.NODE_ENV !== 'production' ? [loggerMiddleware, performanceMiddleware] : []),
+];
+
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
@@ -38,13 +47,20 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).concat(customMiddleware),
+  devTools: process.env.NODE_ENV !== 'production',
 });
 
 export const persistor = persistStore(store);
 
+// 导出类型
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
+// 导出 hooks
 export const useAppDispatch = () => useDispatch<AppDispatch>();
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector; 
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+
+// 导出 selectors
+export * from './selectors/auth';
+export * from './selectors/app'; 

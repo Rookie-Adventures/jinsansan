@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { login, logout, getCurrentUser, register, clearAuth } from '@/store/slices/authSlice';
 import type { LoginFormData, RegisterFormData } from '@/types/auth';
-import { isAuthError } from '@/utils/errorHandler';
+import { HttpErrorFactory } from '@/utils/http/error/factory';
+import { HttpErrorType } from '@/utils/http/error/types';
 
 export const useAuth = () => {
   const dispatch = useAppDispatch();
@@ -16,7 +17,8 @@ export const useAuth = () => {
       await dispatch(login(data)).unwrap();
       navigate('/');
     } catch (err) {
-      if (isAuthError(err)) {
+      const httpError = HttpErrorFactory.create(err);
+      if (httpError.type === HttpErrorType.AUTH) {
         navigate('/login');
       }
       throw err;
@@ -28,7 +30,8 @@ export const useAuth = () => {
       await dispatch(register(data)).unwrap();
       navigate('/');
     } catch (err) {
-      if (isAuthError(err)) {
+      const httpError = HttpErrorFactory.create(err);
+      if (httpError.type === HttpErrorType.AUTH) {
         navigate('/register');
       }
       throw err;
@@ -54,7 +57,8 @@ export const useAuth = () => {
     try {
       await dispatch(getCurrentUser()).unwrap();
     } catch (err) {
-      if (isAuthError(err)) {
+      const httpError = HttpErrorFactory.create(err);
+      if (httpError.type === HttpErrorType.AUTH) {
         navigate('/login');
       }
       throw err;

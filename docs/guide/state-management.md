@@ -200,4 +200,115 @@ const Component = () => {
       severity: 'success'
     }));
   };
-}; 
+};
+
+### 新增功能 (2024年1月) ✅
+
+#### 1. 中间件系统
+
+```typescript
+// 中间件配置
+const customMiddleware = [
+  errorMiddleware,
+  ...(process.env.NODE_ENV !== 'production' ? [loggerMiddleware, performanceMiddleware] : []),
+];
+
+// Store 配置
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }).concat(customMiddleware),
+  devTools: process.env.NODE_ENV !== 'production',
+});
+```
+
+##### 1.1 错误处理中间件
+- 统一的错误处理机制
+- 自动错误提示
+- 错误日志记录
+
+##### 1.2 日志中间件（开发环境）
+- Action 分发日志
+- 状态变更追踪
+- 开发调试支持
+
+##### 1.3 性能监控中间件（开发环境）
+- Action 执行时间监控
+- 性能瓶颈检测
+- 超时警告（>16ms）
+
+#### 2. 选择器系统
+
+```typescript
+// 基础选择器
+export const selectAuth = (state: RootState) => state.auth;
+export const selectApp = (state: RootState) => state.app;
+
+// Memoized 选择器
+export const selectUser = createSelector(
+  selectAuth,
+  (auth) => auth.user
+);
+
+export const selectIsAuthenticated = createSelector(
+  selectAuth,
+  (auth) => !!auth.token
+);
+
+export const selectDarkMode = createSelector(
+  selectApp,
+  (app) => app.darkMode
+);
+
+// 复合选择器
+export const selectUserPermissions = createSelector(
+  selectUser,
+  (user) => user?.permissions || []
+);
+
+export const selectIsAdmin = createSelector(
+  selectUserPermissions,
+  (permissions) => permissions.includes('admin')
+);
+```
+
+#### 3. 使用示例
+
+```typescript
+// 在组件中使用选择器
+const MyComponent = () => {
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const darkMode = useAppSelector(selectDarkMode);
+  const isAdmin = useAppSelector(selectIsAdmin);
+  const dispatch = useAppDispatch();
+
+  // 使用选择器和dispatch
+  return (
+    <div>
+      {isAuthenticated && <AdminPanel />}
+      <ThemeToggle darkMode={darkMode} />
+    </div>
+  );
+};
+```
+
+### 性能优化 ✅
+
+#### 1. 选择器优化
+- 使用 createSelector 实现记忆化
+- 避免不必要的重新计算
+- 优化派生状态计算
+
+#### 2. 中间件性能
+- 开发环境性能监控
+- 条件性中间件加载
+- Action 执行时间追踪
+
+#### 3. 状态更新优化
+- 批量更新处理
+- 选择性状态持久化
+- 状态分片管理 

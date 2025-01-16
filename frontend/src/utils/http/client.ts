@@ -1,77 +1,133 @@
-import axios, { AxiosInstance } from 'axios';
-import type { AxiosRequestConfig } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig, AxiosHeaders } from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
-import { DefaultErrorHandler, HttpErrorFactory } from './error';
-import { setupInterceptors } from './interceptors';
-import { requestManager } from './manager';
-import { retry } from './retry';
-import type { HttpRequestConfig, ApiResponse } from './types';
+import { defaultErrorHandler, HttpErrorFactory } from './error/index';
+import { errorPreventionManager, RequestValidator, cacheManager } from './error/prevention';
 
-// 创建基础 axios 实例
-const axiosInstance: AxiosInstance = axios.create({
-  baseURL: '/api',
-  timeout: 10000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+// 扩展 AxiosRequestConfig 类型
+interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
+  cached?: boolean;
+}
 
-// 设置拦截器
-setupInterceptors(axiosInstance);
+export class HttpClient {
+  private static instance: HttpClient;
+  private axiosInstance: AxiosInstance;
 
-// 默认错误处理器
-const defaultErrorHandler = new DefaultErrorHandler();
+  private constructor() {
+    this.axiosInstance = axios.create({
+      baseURL: process.env.VITE_API_BASE_URL,
+      timeout: 10000,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
 
-// 基础请求函数
-async function request<T = unknown>(config: HttpRequestConfig): Promise<T> {
-  try {
-    // 处理请求取消
-    if (config.cancelTokenId) {
-      const controller = new AbortController();
-      requestManager.cancelTokens.set(config.cancelTokenId, controller);
-      config.signal = controller.signal;
+    this.setupInterceptors();
+  }
+
+  static getInstance(): HttpClient {
+    if (!HttpClient.instance) {
+      HttpClient.instance = new HttpClient();
     }
+    return HttpClient.instance;
+  }
 
-    // 包装请求函数
-    const makeRequest = () => axiosInstance.request<ApiResponse<T>>(config);
+  private setupInterceptors(): void {
+    // 请求拦截器
+    this.axiosInstance.interceptors.request.use(
+      async (config: InternalAxiosRequestConfig) => {
+        const extendedConfig = config as ExtendedAxiosRequestConfig;
+        // 添加请求追踪 ID
+        if (!extendedConfig.headers) {
+          extendedConfig.headers = new AxiosHeaders();
+        }
+        extendedConfig.headers['X-Request-ID'] = uuidv4();
 
-    // 如果启用了重试，使用重试包装器
-    const response = config.retry?.times
-      ? await retry(makeRequest, config.retry)
-      : await makeRequest();
+        // 运行错误预防规则
+        await errorPreventionManager.checkRules(extendedConfig);
 
-    // 如果请求有ID，从队列中移除
-    if (config.cancelTokenId) {
-      requestManager.cancelTokens.delete(config.cancelTokenId);
+        // 验证请求
+        RequestValidator.validateRequest(extendedConfig);
+
+        // 检查缓存
+        if (extendedConfig.method?.toLowerCase() === 'get') {
+          const cacheKey = cacheManager.getCacheKey(extendedConfig);
+          const cachedData = cacheManager.get(cacheKey);
+          if (cachedData) {
+            extendedConfig.cached = true;
+            extendedConfig.data = cachedData;
+            return extendedConfig;
+          }
+        }
+
+        // 添加认证信息
+        const token = localStorage.getItem('token');
+        if (token) {
+          extendedConfig.headers.set('Authorization', `Bearer ${token}`);
+        }
+
+        return extendedConfig;
+      },
+      (error) => {
+        return Promise.reject(HttpErrorFactory.create(error));
+      }
+    );
+
+    // 响应拦截器
+    this.axiosInstance.interceptors.response.use(
+      (response: AxiosResponse) => {
+        const config = response.config as ExtendedAxiosRequestConfig;
+        // 处理缓存
+        if (config.method?.toLowerCase() === 'get' && !config.cached) {
+          const cacheKey = cacheManager.getCacheKey(config);
+          cacheManager.set(cacheKey, response.data);
+        }
+
+        return response;
+      },
+      async (error) => {
+        const httpError = HttpErrorFactory.create(error);
+
+        // 尝试错误恢复
+        try {
+          await defaultErrorHandler.handle(httpError);
+        } catch (e) {
+          console.error('Error recovery failed:', e);
+        }
+
+        return Promise.reject(httpError);
+      }
+    );
+  }
+
+  async request<T>(config: AxiosRequestConfig): Promise<T> {
+    try {
+      const response = await this.axiosInstance.request<T>(config);
+      return response.data;
+    } catch (error) {
+      throw HttpErrorFactory.create(error);
     }
+  }
 
-    return response.data.data;
-  } catch (error) {
-    // 转换错误
-    const httpError = HttpErrorFactory.create(error);
+  async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    return this.request<T>({ ...config, method: 'get', url });
+  }
 
-    // 使用自定义错误处理器或默认错误处理器
-    const handler = config.errorHandler || defaultErrorHandler;
-    await handler.handle(httpError);
+  async post<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
+    return this.request<T>({ ...config, method: 'post', url, data });
+  }
 
-    throw httpError;
+  async put<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
+    return this.request<T>({ ...config, method: 'put', url, data });
+  }
+
+  async delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    return this.request<T>({ ...config, method: 'delete', url });
+  }
+
+  async patch<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
+    return this.request<T>({ ...config, method: 'patch', url, data });
   }
 }
 
-// 导出工具函数
-export const http = {
-  get: <T>(url: string, config?: Omit<HttpRequestConfig, 'url' | 'method'>) =>
-    request<T>({ ...config, url, method: 'GET' }),
-    
-  post: <T>(url: string, data?: unknown, config?: Omit<HttpRequestConfig, 'url' | 'method' | 'data'>) =>
-    request<T>({ ...config, url, method: 'POST', data }),
-    
-  put: <T>(url: string, data?: unknown, config?: Omit<HttpRequestConfig, 'url' | 'method' | 'data'>) =>
-    request<T>({ ...config, url, method: 'PUT', data }),
-    
-  delete: <T>(url: string, config?: Omit<HttpRequestConfig, 'url' | 'method'>) =>
-    request<T>({ ...config, url, method: 'DELETE' }),
-    
-  patch: <T>(url: string, data?: unknown, config?: Omit<HttpRequestConfig, 'url' | 'method' | 'data'>) =>
-    request<T>({ ...config, url, method: 'PATCH', data }),
-}; 
+export const httpClient = HttpClient.getInstance(); 
