@@ -11,14 +11,15 @@ import {
   Button,
   Stack,
   Typography,
-  FormHelperText
 } from '@mui/material';
 import type { AlertRule, AlertRuleType, AlertSeverity, MetricType } from '@/infrastructure/monitoring/types';
 import { sanitizeInput } from '../../utils/security';
 
+type AlertRuleFormData = Required<Omit<AlertRule, 'id'>>;
+
 interface AlertRuleFormProps {
   rule?: AlertRule;
-  onSubmit: (rule: Omit<AlertRule, 'id'>) => void;
+  onSubmit: (rule: AlertRuleFormData) => void;
   onCancel: () => void;
 }
 
@@ -28,48 +29,47 @@ const METRIC_TYPES: MetricType[] = [
   'long_task',
   'interaction',
   'custom',
-  'api_call'
+  'api_call',
+  'cpu_usage'
 ];
 
 const RULE_TYPES: AlertRuleType[] = ['threshold', 'trend', 'anomaly'];
 const SEVERITIES: AlertSeverity[] = ['info', 'warning', 'error', 'critical'];
-const OPERATORS = ['>', '<', '>=', '<=', '==', '!='];
+type AlertOperator = '>' | '<' | '>=' | '<=' | '==' | '!=';
+const OPERATORS: AlertOperator[] = ['>', '<', '>=', '<=', '==', '!='];
 
 export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
   rule,
   onSubmit,
   onCancel
 }) => {
-  const [formData, setFormData] = React.useState<Omit<AlertRule, 'id'>>({
+  const [formData, setFormData] = React.useState<AlertRuleFormData>({
     name: sanitizeInput(rule?.name || ''),
     type: rule?.type || 'threshold',
-    metric: rule?.metric || 'page_load',
+    metric: (rule?.metric as MetricType) || 'page_load',
     condition: rule?.condition || { operator: '>', value: 0 },
     severity: rule?.severity || 'warning',
     enabled: rule?.enabled ?? true,
-    notification: rule?.notification || {}
+    notification: rule?.notification || { email: [] }
   });
 
   const [errors, setErrors] = React.useState<Record<string, string>>({});
 
-  const validateEmail = (email: string) => {
+  const validateEmail = (email: string): boolean => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
-  const validateForm = () => {
+  const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
 
-    // 验证规则名称
     if (!formData.name.trim()) {
       newErrors.name = '规则名称不能为空';
     }
 
-    // 验证阈值
     if (formData.condition.value < 0) {
       newErrors.threshold = '阈值不能为负数';
     }
 
-    // 验证邮箱
     if (formData.notification.email?.length) {
       const invalidEmails = formData.notification.email.filter(
         email => !validateEmail(email)
@@ -83,18 +83,20 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleChange = (field: string, value: any) => {
+  const handleChange = <K extends keyof AlertRuleFormData>(
+    field: K,
+    value: AlertRuleFormData[K]
+  ): void => {
     setFormData(prev => ({
       ...prev,
       [field]: value
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
     if (validateForm()) {
-      // 在提交前净化所有文本输入
-      const sanitizedData = {
+      const sanitizedData: AlertRuleFormData = {
         ...formData,
         name: sanitizeInput(formData.name)
       };
@@ -103,7 +105,13 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%', maxWidth: 600 }}>
+    <Box 
+      component="form" 
+      onSubmit={handleSubmit} 
+      sx={{ width: '100%', maxWidth: 600 }}
+      role="form"
+      aria-label="告警规则表单"
+    >
       <Stack spacing={3}>
         <Typography variant="h6" gutterBottom>
           {rule ? '编辑告警规则' : '新建告警规则'}
@@ -117,14 +125,21 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
           error={!!errors.name}
           helperText={errors.name}
           required
+          inputProps={{
+            'aria-label': '规则名称'
+          }}
         />
 
         <FormControl fullWidth>
-          <InputLabel>规则类型</InputLabel>
+          <InputLabel id="rule-type-label">规则类型</InputLabel>
           <Select
+            labelId="rule-type-label"
             value={formData.type}
             label="规则类型"
-            onChange={(e) => handleChange('type', e.target.value)}
+            onChange={(e) => handleChange('type', e.target.value as AlertRuleType)}
+            inputProps={{
+              'aria-label': '规则类型'
+            }}
           >
             {RULE_TYPES.map(type => (
               <MenuItem key={type} value={type}>
@@ -135,14 +150,18 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
         </FormControl>
 
         <FormControl fullWidth>
-          <InputLabel>监控指标</InputLabel>
+          <InputLabel id="metric-type-label">监控指标</InputLabel>
           <Select
+            labelId="metric-type-label"
             value={formData.metric}
             label="监控指标"
-            onChange={(e) => handleChange('metric', e.target.value)}
+            onChange={(e) => handleChange('metric', e.target.value as MetricType)}
+            inputProps={{
+              'aria-label': '监控指标'
+            }}
           >
             {METRIC_TYPES.map(type => (
-              <MenuItem key={type} value={type}>
+              <MenuItem key={type} value={type} aria-label={type}>
                 {type}
               </MenuItem>
             ))}
@@ -151,16 +170,20 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
 
         <Box sx={{ display: 'flex', gap: 2 }}>
           <FormControl sx={{ flex: 1 }} error={!!errors.threshold}>
-            <InputLabel>操作符</InputLabel>
+            <InputLabel id="operator-label">操作符</InputLabel>
             <Select
+              labelId="operator-label"
               value={formData.condition.operator}
               label="操作符"
               onChange={(e) =>
                 handleChange('condition', {
                   ...formData.condition,
-                  operator: e.target.value
+                  operator: e.target.value as AlertRule['condition']['operator']
                 })
               }
+              inputProps={{
+                'aria-label': '操作符'
+              }}
             >
               {OPERATORS.map(op => (
                 <MenuItem key={op} value={op}>
@@ -183,15 +206,22 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
             }
             error={!!errors.threshold}
             helperText={errors.threshold}
+            inputProps={{
+              'aria-label': '阈值'
+            }}
           />
         </Box>
 
         <FormControl fullWidth>
-          <InputLabel>告警级别</InputLabel>
+          <InputLabel id="severity-label">告警级别</InputLabel>
           <Select
+            labelId="severity-label"
             value={formData.severity}
             label="告警级别"
-            onChange={(e) => handleChange('severity', e.target.value)}
+            onChange={(e) => handleChange('severity', e.target.value as AlertSeverity)}
+            inputProps={{
+              'aria-label': '告警级别'
+            }}
           >
             {SEVERITIES.map(severity => (
               <MenuItem key={severity} value={severity}>
@@ -214,6 +244,9 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
           }
           error={!!errors.email}
           helperText={errors.email}
+          inputProps={{
+            'aria-label': '通知邮箱'
+          }}
         />
 
         <FormControlLabel
@@ -221,6 +254,9 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
             <Switch
               checked={formData.enabled}
               onChange={(e) => handleChange('enabled', e.target.checked)}
+              inputProps={{
+                'aria-label': '启用规则'
+              }}
             />
           }
           label="启用规则"

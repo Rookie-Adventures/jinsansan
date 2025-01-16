@@ -1,7 +1,7 @@
 /**
  * 性能指标类型
  */
-export type MetricType = 'page_load' | 'resource' | 'long_task' | 'interaction' | 'custom' | 'api_call';
+export type MetricType = 'page_load' | 'resource' | 'long_task' | 'interaction' | 'custom' | 'api_call' | 'cpu_usage';
 
 /**
  * 性能指标接口
@@ -157,4 +157,46 @@ export interface AlertConfig {
     /** 默认接收邮箱 */
     defaultEmail?: string[];
   };
+}
+
+/**
+ * 告警状态
+ */
+export type AlertStatus = 'active' | 'resolved';
+
+/**
+ * 告警记录
+ */
+export interface Alert {
+  /** 告警ID */
+  id: string;
+  /** 规则ID */
+  ruleId: string;
+  /** 告警值 */
+  value: number;
+  /** 开始时间 */
+  startTime: number;
+  /** 结束时间 */
+  endTime?: number;
+  /** 告警状态 */
+  status: AlertStatus;
+}
+
+/**
+ * 告警通知类型
+ */
+export type AlertNotificationType = 'trigger' | 'resolve';
+
+/**
+ * 告警通知
+ */
+export interface AlertNotification {
+  /** 通知类型 */
+  type: AlertNotificationType;
+  /** 告警规则 */
+  rule: AlertRule;
+  /** 告警值 */
+  value: number;
+  /** 时间戳 */
+  timestamp: number;
 } 

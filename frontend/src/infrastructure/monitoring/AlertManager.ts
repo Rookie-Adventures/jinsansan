@@ -1,240 +1,186 @@
-import { v4 as uuidv4 } from 'uuid';
-import type { AlertRule, AlertConfig, AlertSeverity, PerformanceMetric } from './types';
-import { sanitizeInput, validateEmail } from '@/utils/security';
+import type { AlertRule, Alert, AlertNotification } from './types';
 
 export class AlertManager {
   private static instance: AlertManager;
-  private config: AlertConfig = {
-    enabled: true,
-    rules: [],
-    notification: {}
-  };
+  private rules: Map<string, AlertRule> = new Map();
+  private activeAlerts: Map<string, Alert> = new Map();
+  private alertHistory: Alert[] = [];
+  private notificationHandlers: ((notification: AlertNotification) => void)[] = [];
+  private historyLimit: number = 1000;
+  private metricTimestamps: Map<string, number[]> = new Map();
 
-  private constructor() {
-    this.loadConfig();
-  }
+  private constructor() {}
 
-  static getInstance(): AlertManager {
+  public static getInstance(): AlertManager {
     if (!AlertManager.instance) {
       AlertManager.instance = new AlertManager();
     }
     return AlertManager.instance;
   }
 
-  // 加载配置
-  private loadConfig(): void {
-    const savedConfig = localStorage.getItem('alertConfig');
-    if (savedConfig) {
-      this.config = JSON.parse(savedConfig);
-    }
+  public addRule(rule: AlertRule): void {
+    this.rules.set(rule.id, rule);
   }
 
-  // 保存配置
-  private saveConfig(): void {
-    localStorage.setItem('alertConfig', JSON.stringify(this.config));
+  public updateRule(rule: AlertRule): void {
+    this.rules.set(rule.id, rule);
   }
 
-  // 添加规则
-  addRule(rule: Omit<AlertRule, 'id'>): AlertRule {
-    // 验证规则数据
-    this.validateRule(rule);
-
-    const newRule: AlertRule = {
-      ...rule,
-      id: uuidv4(),
-      name: sanitizeInput(rule.name) // 净化名称
-    };
-    this.config.rules.push(newRule);
-    this.saveConfig();
-    return newRule;
-  }
-
-  // 验证规则
-  private validateRule(rule: Omit<AlertRule, 'id'>): void {
-    if (!rule.name.trim()) {
-      throw new Error('规则名称不能为空');
-    }
-
-    if (!['threshold', 'trend', 'anomaly'].includes(rule.type)) {
-      throw new Error('无效的规则类型');
-    }
-
-    if (!['page_load', 'resource', 'long_task', 'interaction', 'custom', 'api_call'].includes(rule.metric)) {
-      throw new Error('无效的监控指标');
-    }
-
-    if (!['>', '<', '>=', '<=', '==', '!='].includes(rule.condition.operator)) {
-      throw new Error('无效的操作符');
-    }
-
-    if (isNaN(rule.condition.value) || rule.condition.value < 0) {
-      throw new Error('无效的阈值');
-    }
-
-    if (!['info', 'warning', 'error', 'critical'].includes(rule.severity)) {
-      throw new Error('无效的告警级别');
-    }
-
-    if (typeof rule.enabled !== 'boolean') {
-      throw new Error('无效的启用状态');
-    }
-
-    // 验证邮箱格式
-    if (rule.notification.email?.length) {
-      const invalidEmails = rule.notification.email.filter(
-        email => !validateEmail(email)
-      );
-      if (invalidEmails.length > 0) {
-        throw new Error('无效的邮箱格式');
+  public deleteRule(ruleId: string): void {
+    this.rules.delete(ruleId);
+    // Clean up related data
+    this.metricTimestamps.delete(ruleId);
+    // Remove active alerts for this rule
+    for (const [alertId, alert] of this.activeAlerts.entries()) {
+      if (alert.ruleId === ruleId) {
+        this.activeAlerts.delete(alertId);
       }
     }
   }
 
-  // 更新规则
-  updateRule(rule: AlertRule): void {
-    const index = this.config.rules.findIndex(r => r.id === rule.id);
-    if (index !== -1) {
-      this.config.rules[index] = rule;
-      this.saveConfig();
+  public getRule(ruleId: string): AlertRule | undefined {
+    return this.rules.get(ruleId);
+  }
+
+  public getRules(): AlertRule[] {
+    return Array.from(this.rules.values());
+  }
+
+  public evaluateMetric(metric: string, value: number, timestamp: number): void {
+    for (const rule of this.rules.values()) {
+      if (!rule.enabled || rule.metric !== metric) continue;
+      this.evaluateRule(rule, value, timestamp);
     }
   }
 
-  // 删除规则
-  deleteRule(ruleId: string): void {
-    this.config.rules = this.config.rules.filter(r => r.id !== ruleId);
-    this.saveConfig();
-  }
+  private evaluateRule(rule: AlertRule, value: number, timestamp: number): void {
+    const isThresholdExceeded = this.checkThreshold(rule, value);
+    const ruleKey = rule.id;
 
-  // 启用/禁用规则
-  toggleRule(ruleId: string, enabled: boolean): void {
-    const rule = this.config.rules.find(r => r.id === ruleId);
-    if (rule) {
-      rule.enabled = enabled;
-      this.saveConfig();
-    }
-  }
+    if (isThresholdExceeded) {
+      // Get or initialize timestamp array for this rule
+      const timestamps = this.metricTimestamps.get(ruleKey) || [];
+      timestamps.push(timestamp);
 
-  // 检查指标是否触发告警
-  checkMetric(metric: PerformanceMetric): void {
-    if (!this.config.enabled) return;
+      // Keep only timestamps within the duration window
+      const durationWindow = timestamp - 300000; // 5 minutes default duration
+      const recentTimestamps = timestamps.filter(t => t >= durationWindow);
+      this.metricTimestamps.set(ruleKey, recentTimestamps);
 
-    this.config.rules
-      .filter(rule => rule.enabled && rule.metric === metric.type)
-      .forEach(rule => {
-        const value = this.extractMetricValue(metric);
-        if (this.evaluateCondition(rule.condition, value)) {
-          this.triggerAlert(rule, metric);
+      // Check if we have enough consecutive readings within the duration window
+      if (recentTimestamps.length >= 5) { // At least 5 readings
+        const timeDiff = recentTimestamps[recentTimestamps.length - 1] - recentTimestamps[0];
+        if (timeDiff >= 240000 && timeDiff <= 360000) { // Between 4-6 minutes to allow for some timing variance
+          // Create or update alert
+          const alertId = `${rule.id}-${recentTimestamps[0]}`;
+          if (!this.activeAlerts.has(alertId)) {
+            const alert: Alert = {
+              id: alertId,
+              ruleId: rule.id,
+              value,
+              startTime: recentTimestamps[0],
+              status: 'active'
+            };
+            this.activeAlerts.set(alertId, alert);
+            this.notifyAlert('trigger', rule, value, timestamp);
+          }
         }
-      });
-  }
+      }
+    } else {
+      // Clear timestamps for this rule
+      this.metricTimestamps.delete(ruleKey);
 
-  // 提取指标值
-  private extractMetricValue(metric: PerformanceMetric): number {
-    switch (metric.type) {
-      case 'page_load':
-        return metric.data.loadEventEnd;
-      case 'resource':
-        return metric.data.duration;
-      case 'long_task':
-        return metric.data.duration;
-      case 'interaction':
-        return metric.data.duration;
-      case 'custom':
-        return metric.data.value;
-      case 'api_call':
-        return metric.data.duration;
-      default:
-        return 0;
+      // Resolve active alerts for this rule
+      for (const [alertId, alert] of this.activeAlerts.entries()) {
+        if (alert.ruleId === rule.id) {
+          const resolvedAlert: Alert = {
+            ...alert,
+            status: 'resolved',
+            endTime: timestamp
+          };
+          this.alertHistory.push(resolvedAlert);
+          this.activeAlerts.delete(alertId);
+          this.notifyAlert('resolve', rule, value, timestamp);
+          this.trimHistory();
+        }
+      }
     }
   }
 
-  // 评估告警条件
-  private evaluateCondition(
-    condition: AlertRule['condition'],
-    value: number
-  ): boolean {
-    switch (condition.operator) {
+  private checkThreshold(rule: AlertRule, value: number): boolean {
+    switch (rule.condition.operator) {
       case '>':
-        return value > condition.value;
+        return value > rule.condition.value;
       case '<':
-        return value < condition.value;
+        return value < rule.condition.value;
       case '>=':
-        return value >= condition.value;
+        return value >= rule.condition.value;
       case '<=':
-        return value <= condition.value;
+        return value <= rule.condition.value;
       case '==':
-        return value === condition.value;
+        return value === rule.condition.value;
       case '!=':
-        return value !== condition.value;
+        return value !== rule.condition.value;
       default:
         return false;
     }
   }
 
-  // 触发告警
-  private async triggerAlert(rule: AlertRule, metric: PerformanceMetric): Promise<void> {
-    const alert = {
-      ruleId: rule.id,
-      ruleName: rule.name,
-      severity: rule.severity,
-      metric: metric.type,
-      value: this.extractMetricValue(metric),
-      timestamp: Date.now()
+  private trimHistory(): void {
+    if (this.alertHistory.length > this.historyLimit) {
+      this.alertHistory = this.alertHistory.slice(-this.historyLimit);
+    }
+  }
+
+  public setHistoryLimit(limit: number): void {
+    this.historyLimit = limit;
+    this.trimHistory();
+  }
+
+  public setNotificationHandler(handler: (notification: AlertNotification) => void): void {
+    this.notificationHandlers = [handler];
+  }
+
+  public addNotificationHandler(handler: (notification: AlertNotification) => void): void {
+    this.notificationHandlers.push(handler);
+  }
+
+  public removeNotificationHandler(handler: (notification: AlertNotification) => void): void {
+    this.notificationHandlers = this.notificationHandlers.filter(h => h !== handler);
+  }
+
+  private notifyAlert(type: 'trigger' | 'resolve', rule: AlertRule, value: number, timestamp: number): void {
+    const notification: AlertNotification = {
+      type,
+      rule,
+      value,
+      timestamp
     };
-
-    // 发送告警通知
-    await this.sendNotification(rule.severity, alert);
-
-    // 记录告警历史
-    this.logAlert(alert);
-  }
-
-  // 发送通知
-  private async sendNotification(
-    severity: AlertSeverity,
-    alert: any
-  ): Promise<void> {
-    try {
-      await fetch('/api/alerts/notify', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          severity,
-          alert,
-          notification: this.config.notification
-        })
+    if (this.notificationHandlers.length > 0) {
+      this.notificationHandlers.forEach(handler => {
+        try {
+          handler(notification);
+        } catch (error) {
+          console.error('Error in notification handler:', error);
+        }
       });
-    } catch (error) {
-      console.error('Failed to send alert notification:', error);
     }
   }
 
-  // 记录告警历史
-  private logAlert(alert: any): void {
-    const alerts = JSON.parse(localStorage.getItem('alertHistory') || '[]');
-    alerts.unshift(alert);
-    // 只保留最近100条告警记录
-    if (alerts.length > 100) {
-      alerts.pop();
-    }
-    localStorage.setItem('alertHistory', JSON.stringify(alerts));
+  public getActiveAlerts(): Alert[] {
+    return Array.from(this.activeAlerts.values());
   }
 
-  // 获取告警历史
-  getAlertHistory(): any[] {
-    return JSON.parse(localStorage.getItem('alertHistory') || '[]');
+  public getAlertHistory(): Alert[] {
+    return [...this.alertHistory];
   }
 
-  // 更新通知配置
-  updateNotificationConfig(config: AlertConfig['notification']): void {
-    this.config.notification = config;
-    this.saveConfig();
-  }
-
-  // 获取当前配置
-  getConfig(): AlertConfig {
-    return { ...this.config };
+  // For testing purposes
+  public clearState(): void {
+    this.rules.clear();
+    this.activeAlerts.clear();
+    this.alertHistory = [];
+    this.metricTimestamps.clear();
+    this.notificationHandlers = [];
   }
 } 
