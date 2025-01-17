@@ -1,0 +1,261 @@
+import { encryptionManager } from './encryption';
+
+/**
+ * 审计日志类型
+ */
+export enum AuditLogType {
+  AUTH = 'auth',
+  ACCESS = 'access',
+  DATA = 'data',
+  SECURITY = 'security',
+  SYSTEM = 'system'
+}
+
+/**
+ * 审计日志级别
+ */
+export enum AuditLogLevel {
+  INFO = 'info',
+  WARN = 'warn',
+  ERROR = 'error',
+  CRITICAL = 'critical'
+}
+
+/**
+ * 审计日志接口
+ */
+interface AuditLog {
+  id: string;
+  timestamp: number;
+  type: AuditLogType;
+  level: AuditLogLevel;
+  userId?: string;
+  action: string;
+  resource: string;
+  details: Record<string, unknown>;
+  ip?: string;
+  userAgent?: string;
+  status: 'success' | 'failure';
+  errorMessage?: string;
+  [key: string]: unknown;  // 添加索引签名
+}
+
+/**
+ * 审计日志管理器
+ */
+export class AuditLogManager {
+  private static instance: AuditLogManager;
+  private logs: AuditLog[] = [];
+  private readonly maxLogsInMemory = 1000;
+  private readonly encryptionKey = 'your-encryption-key';  // 实际应用中应该从安全的配置中获取
+  private readonly apiBaseUrl = process.env.NODE_ENV === 'test' 
+    ? 'http://localhost:3000'
+    : window.location.origin;  // 在实际环境中使用当前域名
+
+  private constructor() {}
+
+  static getInstance(): AuditLogManager {
+    if (!AuditLogManager.instance) {
+      AuditLogManager.instance = new AuditLogManager();
+    }
+    return AuditLogManager.instance;
+  }
+
+  /**
+   * 记录审计日志
+   */
+  async log(
+    type: AuditLogType,
+    level: AuditLogLevel,
+    action: string,
+    resource: string,
+    details: Record<string, unknown>,
+    status: 'success' | 'failure' = 'success',
+    errorMessage?: string
+  ): Promise<void> {
+    const log: AuditLog = {
+      id: encryptionManager.generateRandomString(16),
+      timestamp: Date.now(),
+      type,
+      level,
+      userId: this.getCurrentUserId(),
+      action,
+      resource,
+      details,
+      ip: this.getClientIP(),
+      userAgent: navigator.userAgent,
+      status,
+      errorMessage
+    };
+
+    // 先添加到内存中
+    this.addLog(log);
+
+    // 对于严重级别的日志，先触发告警
+    if (log.level === AuditLogLevel.CRITICAL) {
+      this.triggerAlert(log);
+    }
+
+    try {
+      // 加密敏感信息
+      const encryptedLog = this.encryptSensitiveData(log);
+      
+      // 发送到服务器
+      await this.sendToServer(encryptedLog);
+    } catch (error) {
+      // 更新日志状态
+      const failedLog: AuditLog = {
+        ...log,
+        status: 'failure',
+        errorMessage: error instanceof Error ? error.message : String(error)
+      };
+      
+      // 存储失败的日志
+      this.storeFailedLog(failedLog);
+      
+      // 重新抛出错误
+      throw error;
+    }
+  }
+
+  /**
+   * 添加日志到内存
+   */
+  private addLog(log: AuditLog): void {
+    this.logs.push(log);
+    if (this.logs.length > this.maxLogsInMemory) {
+      this.logs.shift();  // 移除最旧的日志
+    }
+  }
+
+  /**
+   * 加密敏感数据
+   */
+  private encryptSensitiveData(log: AuditLog): AuditLog {
+    const sensitiveFields = ['userId', 'ip'];
+    const encryptedLog = { ...log };
+
+    sensitiveFields.forEach(field => {
+      if (encryptedLog[field]) {
+        const valueToEncrypt = String(encryptedLog[field]);
+        encryptedLog[field] = encryptionManager.encrypt(
+          valueToEncrypt,
+          this.encryptionKey
+        );
+      }
+    });
+
+    return encryptedLog;
+  }
+
+  /**
+   * 发送日志到服务器
+   */
+  private async sendToServer(log: AuditLog): Promise<void> {
+    const url = `${this.apiBaseUrl}/api/audit-logs`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(log),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+  }
+
+  /**
+   * 存储发送失败的日志
+   */
+  private storeFailedLog(log: AuditLog): void {
+    try {
+      // 获取现有的失败日志
+      const storedLogs = localStorage.getItem('failedAuditLogs');
+      const failedLogs = storedLogs ? JSON.parse(storedLogs) as AuditLog[] : [];
+      
+      // 添加新的失败日志
+      failedLogs.push(log);
+      
+      // 保存回 localStorage
+      localStorage.setItem('failedAuditLogs', JSON.stringify(failedLogs));
+    } catch (error) {
+      // 确保错误被正确记录
+      console.error('Failed to store failed log:', error instanceof Error ? error : new Error(String(error)));
+    }
+  }
+
+  /**
+   * 触发告警
+   */
+  private triggerAlert(log: AuditLog): void {
+    try {
+      const alertData = {
+        type: log.type,
+        level: log.level,
+        action: log.action,
+        resource: log.resource,
+        timestamp: new Date(log.timestamp).toISOString(),
+        details: log.details,
+        status: log.status,
+        errorMessage: log.errorMessage
+      };
+      console.error('Security Alert:', alertData);
+    } catch (error) {
+      console.error('Failed to trigger alert:', error);
+    }
+  }
+
+  /**
+   * 获取当前用户ID
+   */
+  private getCurrentUserId(): string | undefined {
+    // 实际应用中应该从用户会话或状态管理中获取
+    return undefined;
+  }
+
+  /**
+   * 获取客户端IP
+   */
+  private getClientIP(): string | undefined {
+    // 实际应用中可能需要通过服务器获取
+    return undefined;
+  }
+
+  /**
+   * 获取指定时间范围内的日志
+   */
+  getLogs(startTime: number, endTime: number): AuditLog[] {
+    return this.logs.filter(
+      log => log.timestamp >= startTime && log.timestamp <= endTime
+    ).sort((a, b) => b.timestamp - a.timestamp);
+  }
+
+  /**
+   * 获取指定类型的日志
+   */
+  getLogsByType(type: AuditLogType): AuditLog[] {
+    return this.logs.filter(log => log.type === type)
+      .sort((a, b) => b.timestamp - a.timestamp);
+  }
+
+  /**
+   * 获取指定级别的日志
+   */
+  getLogsByLevel(level: AuditLogLevel): AuditLog[] {
+    return this.logs.filter(log => log.level === level)
+      .sort((a, b) => b.timestamp - a.timestamp);
+  }
+
+  /**
+   * 清除过期日志
+   */
+  clearOldLogs(maxAge: number): void {
+    const cutoffTime = Date.now() - maxAge;
+    this.logs = this.logs.filter(log => log.timestamp >= cutoffTime);
+  }
+}
+
+// 导出单例实例
+export const auditLogManager = AuditLogManager.getInstance(); 

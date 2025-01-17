@@ -241,7 +241,8 @@ src/
 ## 测试规范
 
 ### 组件测试
-- 使用 Jest 和 React Testing Library 进行单元测试。
+- - 使用 Vitest 和 React Testing Library 进行单元测试。
+
 - 建议按模块集中管理测试文件：
   ```plaintext
   src/

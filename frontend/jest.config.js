@@ -2,22 +2,33 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
-  roots: ['<rootDir>/src'],
-  transform: {
-    '^.+\\.tsx?$': 'ts-jest'
+  setupFilesAfterEnv: [
+    '<rootDir>/src/utils/security/__tests__/setup.ts'
+  ],
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1'
   },
-  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
+  testMatch: [
+    '**/__tests__/**/*.test.[jt]s?(x)'
+  ],
+  collectCoverageFrom: [
+    'src/**/*.{ts,tsx}',
+    '!src/**/*.d.ts'
+  ],
+  coverageDirectory: 'coverage',
+  coverageReporters: ['text', 'lcov'],
+  transform: {
+    '^.+\\.tsx?$': ['ts-jest', {
+      tsconfig: 'tsconfig.json'
+    }]
+  },
   globals: {
     'ts-jest': {
-      tsconfig: 'tsconfig.json'
+      isolatedModules: true,
+      useESM: true
     }
   },
   testEnvironmentOptions: {
-    url: 'http://localhost'
-  },
-  moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1'
+    customExportConditions: ['node', 'node-addons']
   }
 }; 
