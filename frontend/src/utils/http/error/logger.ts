@@ -9,16 +9,22 @@ export interface ErrorLogData {
   status?: number;
   data?: unknown;
   stack?: string;
+  userAgent?: string;
+  platform?: string;
+  breadcrumbs?: Array<{
+    action: string;
+    timestamp: number;
+    data?: unknown;
+  }>;
 }
 
 export class ErrorLogger {
   private static instance: ErrorLogger;
-  private logQueue: ErrorLogData[] = [];
-  private readonly maxQueueSize = 100;
-  private readonly flushInterval = 5000; // 5秒
+  private readonly maxLocalLogs = 100;
+  private readonly localStorageKey = 'error_logs';
 
   private constructor() {
-    this.startAutoFlush();
+    this.initErrorListener();
   }
 
   static getInstance(): ErrorLogger {
@@ -28,77 +34,106 @@ export class ErrorLogger {
     return ErrorLogger.instance;
   }
 
-  // 记录错误
-  log(error: HttpError, context?: { url?: string; method?: string }): void {
-    const logData: ErrorLogData = {
-      type: error.type,
-      message: error.message,
-      timestamp: Date.now(),
-      status: error.status,
-      data: error.data,
-      stack: error.stack,
-      ...context
-    };
+  private initErrorListener(): void {
+    window.addEventListener('error', (event) => {
+      this.log({
+        type: 'WINDOW_ERROR',
+        message: event.message,
+        stack: event.error?.stack,
+        data: {
+          filename: event.filename,
+          lineno: event.lineno,
+          colno: event.colno,
+        },
+      });
+    });
 
-    this.logQueue.push(logData);
-
-    // 如果队列超过最大大小，立即刷新
-    if (this.logQueue.length >= this.maxQueueSize) {
-      this.flush();
-    }
-
-    // 对于严重错误，立即上报
-    if (this.isCriticalError(error)) {
-      this.flush();
-    }
-  }
-
-  // 判断是否为严重错误
-  private isCriticalError(error: HttpError): boolean {
-    return error.status ? error.status >= 500 : false;
-  }
-
-  // 刷新日志队列
-  private async flush(): Promise<void> {
-    if (this.logQueue.length === 0) return;
-
-    const logs = [...this.logQueue];
-    this.logQueue = [];
-
-    try {
-      await this.sendLogs(logs);
-    } catch (error) {
-      console.error('Failed to send error logs:', error);
-      // 失败时，将日志添加回队列
-      this.logQueue.unshift(...logs);
-    }
-  }
-
-  // 发送日志到服务器
-  private async sendLogs(logs: ErrorLogData[]): Promise<void> {
-    // TODO: 替换为实际的日志服务器地址
-    const url = '/api/logs/error';
-    
-    await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(logs),
+    window.addEventListener('unhandledrejection', (event) => {
+      this.log({
+        type: 'UNHANDLED_REJECTION',
+        message: event.reason?.message || 'Unhandled Promise rejection',
+        stack: event.reason?.stack,
+        data: event.reason,
+      });
     });
   }
 
-  // 开始自动刷新
-  private startAutoFlush(): void {
-    setInterval(() => {
-      this.flush();
-    }, this.flushInterval);
+  log(error: Partial<ErrorLogData> | HttpError): void {
+    const errorLog: ErrorLogData = {
+      type: error.type || 'UNKNOWN',
+      message: error.message || 'Unknown error',
+      timestamp: Date.now(),
+      url: window.location.href,
+      userAgent: navigator.userAgent,
+      platform: navigator.platform,
+      ...error,
+    };
+
+    // 控制台输出
+    this.consoleLog(errorLog);
+
+    // 保存到本地存储
+    this.saveToLocalStorage(errorLog);
+
+    // 上报到服务器
+    this.reportToServer(errorLog).catch((err) => {
+      console.error('Failed to report error:', err);
+    });
   }
 
-  // 停止自动刷新
-  stopAutoFlush(): void {
-    if (this.flushInterval) {
-      clearInterval(this.flushInterval);
+  private consoleLog(errorLog: ErrorLogData): void {
+    if (process.env.NODE_ENV !== 'production') {
+      console.group('Error Log');
+      console.error(errorLog.message);
+      console.error('Type:', errorLog.type);
+      console.error('Timestamp:', new Date(errorLog.timestamp).toISOString());
+      if (errorLog.stack) {
+        console.error('Stack:', errorLog.stack);
+      }
+      if (errorLog.data) {
+        console.error('Additional Data:', errorLog.data);
+      }
+      console.groupEnd();
     }
   }
-} 
+
+  private saveToLocalStorage(errorLog: ErrorLogData): void {
+    try {
+      const logs = this.getLocalLogs();
+      logs.unshift(errorLog);
+      
+      // 限制本地存储的日志数量
+      if (logs.length > this.maxLocalLogs) {
+        logs.length = this.maxLocalLogs;
+      }
+
+      localStorage.setItem(this.localStorageKey, JSON.stringify(logs));
+    } catch (error) {
+      console.error('Failed to save error log to localStorage:', error);
+    }
+  }
+
+  private async reportToServer(errorLog: ErrorLogData): Promise<void> {
+    // TODO: 实现错误上报到服务器的逻辑
+    // 可以使用 Beacon API 或者普通的 HTTP 请求
+    if (navigator.sendBeacon) {
+      const blob = new Blob([JSON.stringify(errorLog)], { type: 'application/json' });
+      navigator.sendBeacon('/api/error-logs', blob);
+    }
+  }
+
+  getLocalLogs(): ErrorLogData[] {
+    try {
+      const logsStr = localStorage.getItem(this.localStorageKey);
+      return logsStr ? JSON.parse(logsStr) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  clearLocalLogs(): void {
+    localStorage.removeItem(this.localStorageKey);
+  }
+}
+
+export const errorLogger = ErrorLogger.getInstance(); 

@@ -34,9 +34,9 @@ const NavigationMenu: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      await logout();
       handleClose();
-      navigate('/login');
+      navigate('/');
+      await logout();
     } catch (error) {
       console.error('Logout failed:', error);
     }
@@ -142,9 +142,9 @@ const Navbar: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      await logout();
       handleClose();
-      navigate('/login');
+      navigate('/');
+      await logout();
     } catch (error) {
       console.error('Logout failed:', error);
     }

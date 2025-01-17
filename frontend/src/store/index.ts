@@ -17,11 +17,13 @@ import { errorMiddleware } from './middleware/error';
 import { performanceMiddleware } from './middleware/performance';
 import appReducer from './slices/appSlice';
 import authReducer from './slices/authSlice';
+import errorReducer from './slices/error';
 
 // 合并 reducers
 const rootReducer = combineReducers({
   app: appReducer,
   auth: authReducer,
+  error: errorReducer,
 });
 
 // 配置持久化

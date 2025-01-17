@@ -8,6 +8,7 @@
 > - 2024-01: 统一错误处理实现
 > - 2024-01: 增强错误恢复策略
 > - 2024-01: 优化错误工厂模式
+> - 2024-01: 完善错误分析功能
 
 ## 1. 系统概述
 
@@ -18,13 +19,16 @@
 - 错误边界（ErrorBoundary）
 - 错误日志（ErrorLogger）
 - 错误恢复（ErrorRecoveryManager）
-- 错误预防（ErrorPreventionManager）
+- 错误通知（ErrorNotification）
+- 错误分析（ErrorAnalytics）
 
 ### 1.2 主要特性
 - **统一错误创建**：使用工厂模式创建标准化的错误对象
 - **智能错误恢复**：基于错误类型的自动恢复策略
 - **错误预防**：请求验证和缓存管理
 - **性能监控**：错误处理性能追踪
+- **用户行为追踪**：记录错误发生时的用户行为
+- **错误分析**：支持错误趋势分析和告警机制
 
 ## 2. 错误类型系统
 
@@ -66,146 +70,97 @@ export interface ErrorTrace {
 }
 ```
 
-## 3. 核心组件实现
+## 3. 错误恢复机制
 
-### 3.1 错误工厂
+### 3.1 自动重试策略
 ```typescript
-class HttpErrorFactory {
-  static create(error: unknown): HttpError {
-    if (this.isAxiosError(error)) {
-      return this.createFromAxiosError(error);
-    }
-    return this.createUnknownError(error);
-  }
-
-  private static isAxiosError(error: unknown): error is AxiosError {
-    return (error as AxiosError).isAxiosError === true;
-  }
-
-  private static createFromAxiosError(error: AxiosError): HttpError {
-    const httpError = new Error(error.message) as HttpError;
-    
-    if (error.response) {
-      const status = error.response.status;
-      httpError.status = status;
-      httpError.data = error.response.data;
-
-      if (status === 401 || status === 403) {
-        httpError.type = HttpErrorType.AUTH;
-      } else if (status >= 500) {
-        httpError.type = HttpErrorType.SERVER;
-      } else if (status >= 400) {
-        httpError.type = HttpErrorType.CLIENT;
-      }
-    } else if (error.code === 'ECONNABORTED') {
-      httpError.type = HttpErrorType.TIMEOUT;
-    } else if (error.message === 'Network Error') {
-      httpError.type = HttpErrorType.NETWORK;
-    } else if (error.message?.includes('canceled')) {
-      httpError.type = HttpErrorType.CANCEL;
-    } else {
-      httpError.type = HttpErrorType.UNKNOWN;
-    }
-
-    return httpError;
-  }
-}
-```
-
-### 3.2 错误边界组件
-```typescript
-interface Props {
-  children: React.ReactNode;
-  fallback?: React.ReactNode;
-}
-
-interface State {
-  hasError: boolean;
-  error: Error | null;
-}
-
-export class ErrorBoundary extends React.Component<Props, State> {
-  private logger: ErrorLogger;
-
-  constructor(props: Props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-    this.logger = ErrorLogger.getInstance();
-  }
-
-  static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error };
-  }
-
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
-    this.logger.log({
-      type: HttpErrorType.REACT_ERROR,
-      message: error.message,
-      stack: error.stack,
-      data: errorInfo
-    } as HttpError);
-  }
-
-  handleReset = (): void => {
-    this.setState({ hasError: false, error: null });
-  };
-
-  render(): React.ReactNode {
-    if (this.state.hasError) {
-      return this.props.fallback || (
-        <ErrorFallback 
-          error={this.state.error} 
-          onReset={this.handleReset} 
-        />
-      );
-    }
-    return this.props.children;
-  }
-}
-```
-
-### 3.3 错误恢复策略
-```typescript
-interface RecoveryStrategy {
-  shouldAttemptRecovery: (error: HttpError) => boolean;
-  recover: (error: HttpError) => Promise<void>;
-  maxAttempts?: number;
-}
-
 const defaultStrategies: Record<HttpErrorType, RecoveryStrategy> = {
   [HttpErrorType.NETWORK]: {
     shouldAttemptRecovery: (error) => error.recoverable !== false,
     recover: async (error) => {
       if (error.retryCount && error.retryCount < 3) {
         await new Promise(resolve => setTimeout(resolve, 1000 * (error.retryCount || 1)));
-        throw error; // 重新抛出错误以触发重试
+        throw error;
       }
     },
     maxAttempts: 3
   },
-  [HttpErrorType.AUTH]: {
-    shouldAttemptRecovery: (error) => error.status === 401,
-    recover: async () => {
-      const refreshToken = localStorage.getItem('refreshToken');
-      if (refreshToken) {
-        try {
-          // 实现 token 刷新逻辑
-          return;
-        } catch {
-          localStorage.removeItem('token');
-          localStorage.removeItem('refreshToken');
-          window.location.href = '/login';
-        }
-      }
-    },
-    maxAttempts: 1
-  }
+  // ... 其他错误类型的恢复策略
 };
 ```
 
-## 4. 使用示例
+### 3.2 错误恢复流程
+1. 网络错误：自动重试，最多3次
+2. 超时错误：延长超时时间重试
+3. 认证错误：自动刷新 token
+4. 服务器错误：对非500错误进行重试
 
-### 4.1 HTTP请求错误处理
+## 4. 错误日志和分析
+
+### 4.1 错误日志记录
+- 本地存储错误日志
+- 控制台输出（开发环境）
+- 错误上报（生产环境）
+- 用户行为追踪
+
+### 4.2 错误分析功能
+```typescript
+interface AlertRule {
+  id: string;
+  name: string;
+  type: 'threshold' | 'trend' | 'anomaly';
+  metric: string;
+  condition: {
+    operator: '>' | '<' | '>=' | '<=' | '==' | '!=';
+    value: number;
+  };
+  severity: 'info' | 'warning' | 'error' | 'critical';
+}
+```
+
+### 4.3 错误趋势分析
+- 错误频率统计
+- 错误类型分布
+- 影响范围评估
+- 自动告警机制
+
+## 5. 错误通知系统
+
+### 5.1 通知组件
+- Snackbar 轻量级通知
+- 错误模态框（详细信息）
+- 开发环境调试信息
+- 生产环境友好提示
+
+### 5.2 通知策略
+- 网络错误：可重试提示
+- 认证错误：登录提示
+- 业务错误：友好提示
+- 系统错误：技术提示
+
+## 6. 最佳实践
+
+### 6.1 错误处理原则
+- 统一使用错误工厂创建错误
+- 合理使用错误恢复机制
+- 记录完整的错误上下文
+- 提供友好的用户提示
+
+### 6.2 开发建议
+- 使用 TypeScript 类型检查
+- 实现错误边界保护
+- 添加错误日志追踪
+- 配置错误分析规则
+
+### 6.3 测试建议
+- 错误场景单元测试
+- 恢复机制集成测试
+- 错误边界组件测试
+- 错误分析功能测试
+
+## 7. 使用示例
+
+### 7.1 错误处理
 ```typescript
 try {
   const response = await request(config);
@@ -223,7 +178,7 @@ try {
 }
 ```
 
-### 4.2 组件错误边界
+### 7.2 错误边界
 ```typescript
 <ErrorBoundary fallback={<ErrorPage />}>
   <App />
@@ -235,31 +190,16 @@ try {
 </ErrorBoundary>
 ```
 
-## 5. 最佳实践
+## 8. 未来优化
 
-### 5.1 错误分类处理
-- 根据错误类型采用不同处理策略
-- 区分业务错误和技术错误
-- 提供友好的错误提示
+### 8.1 计划中的功能
+- 错误预测系统
+- 智能恢复策略
+- 性能影响分析
+- 用户体验优化
 
-### 5.2 错误恢复机制
-- 网络错误：自动重试，最多3次
-- 超时错误：延长超时时间重试
-- 认证错误：自动刷新 token
-- 服务器错误：对非500错误进行重试
-
-### 5.3 错误日志管理
-- 记录详细的错误信息
-- 包含错误上下文
-- 实现日志分级
-- 错误聚合分析
-
-### 5.4 用户体验优化
-- 提供友好的错误提示
-- 引导用户进行错误恢复
-- 避免技术性错误信息
-
-### 5.5 开发调试支持
-- 开发环境显示详细错误信息
-- 生产环境隐藏敏感信息
-- 提供错误追踪能力 
+### 8.2 待优化项
+- 错误分析算法优化
+- 告警规则配置界面
+- 错误报告导出功能
+- 错误处理性能优化 

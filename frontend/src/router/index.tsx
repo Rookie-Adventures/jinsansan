@@ -60,9 +60,7 @@ export const router = createBrowserRouter([
     path: '/',
     element: (
       <AnalyticsWrapper>
-        <AuthGuard>
-          <MainLayout />
-        </AuthGuard>
+        <MainLayout />
       </AnalyticsWrapper>
     ),
     errorElement: <ErrorWrapper />,
@@ -75,7 +73,17 @@ export const router = createBrowserRouter([
           </Suspense>
         ),
       },
-      // 其他需要导航栏的路由配置将在这里添加
+      {
+        path: 'dashboard',
+        element: (
+          <AuthGuard>
+            <Suspense fallback={<Loading />}>
+              <HomePage />
+            </Suspense>
+          </AuthGuard>
+        ),
+      },
+      // 其他需要认证的路由配置将在这里添加
     ],
   },
 ]); 

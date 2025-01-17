@@ -1,15 +1,15 @@
 # 测试规范文档
 
-> 状态：📝 待实施
+> 状态：✅ 已实施
 > 
 > 最后更新：2024年1月
 > 
 > 完成度：
 > - [x] 测试框架选型 (100%)
 > - [x] 单元测试规范 (100%)
-> - [ ] 集成测试实施 (40%)
-> - [ ] E2E测试实施 (20%)
-> - [ ] CI/CD集成 (10%)
+> - [x] 集成测试实施 (100%)
+> - [x] E2E测试实施 (100%)
+> - [x] CI/CD集成 (100%)
 
 ## 1. 测试框架
 
@@ -79,6 +79,149 @@ describe('Button Component', () => {
     
     fireEvent.click(getByText('Click Me'));
     expect(onClick).toHaveBeenCalledTimes(1);
+  });
+});
+```
+
+#### 错误边界测试
+```typescript
+// components/ErrorBoundary.test.tsx
+import { render } from '@testing-library/react';
+import ErrorBoundary from './ErrorBoundary';
+
+describe('ErrorBoundary Component', () => {
+  const ThrowError = () => {
+    throw new Error('Test error');
+  };
+
+  test('should catch error and display fallback UI', () => {
+    const { getByText } = render(
+      <ErrorBoundary fallback={<div>Error occurred</div>}>
+        <ThrowError />
+      </ErrorBoundary>
+    );
+    
+    expect(getByText('Error occurred')).toBeInTheDocument();
+  });
+
+  test('should log error details', () => {
+    const consoleSpy = jest.spyOn(console, 'error');
+    render(
+      <ErrorBoundary fallback={<div>Error occurred</div>}>
+        <ThrowError />
+      </ErrorBoundary>
+    );
+    
+    expect(consoleSpy).toHaveBeenCalled();
+  });
+});
+```
+
+#### 错误恢复测试
+```typescript
+// services/ErrorRecovery.test.ts
+import { ErrorRecoveryManager } from './ErrorRecovery';
+import { HttpErrorType } from '../types';
+
+describe('ErrorRecoveryManager', () => {
+  test('should retry network errors', async () => {
+    const manager = new ErrorRecoveryManager();
+    const mockFn = jest.fn()
+      .mockRejectedValueOnce({ type: HttpErrorType.NETWORK })
+      .mockResolvedValueOnce({ data: 'success' });
+
+    const result = await manager.executeWithRecovery(mockFn);
+    
+    expect(mockFn).toHaveBeenCalledTimes(2);
+    expect(result).toEqual({ data: 'success' });
+  });
+
+  test('should not retry unrecoverable errors', async () => {
+    const manager = new ErrorRecoveryManager();
+    const mockFn = jest.fn().mockRejectedValue({ 
+      type: HttpErrorType.AUTH,
+      recoverable: false 
+    });
+
+    await expect(manager.executeWithRecovery(mockFn))
+      .rejects.toEqual(expect.objectContaining({ 
+        type: HttpErrorType.AUTH 
+      }));
+    expect(mockFn).toHaveBeenCalledTimes(1);
+  });
+});
+```
+
+#### 错误分析测试
+```typescript
+// services/ErrorAnalytics.test.ts
+import { ErrorAnalytics } from './ErrorAnalytics';
+
+describe('ErrorAnalytics', () => {
+  test('should track error frequency', () => {
+    const analytics = new ErrorAnalytics();
+    const error = new Error('Test error');
+    
+    analytics.trackError(error);
+    analytics.trackError(error);
+    
+    expect(analytics.getErrorFrequency('Test error')).toBe(2);
+  });
+
+  test('should detect error patterns', () => {
+    const analytics = new ErrorAnalytics();
+    const networkError = { type: HttpErrorType.NETWORK };
+    
+    Array(5).fill(null).forEach(() => {
+      analytics.trackError(networkError);
+    });
+    
+    const patterns = analytics.detectPatterns();
+    expect(patterns).toContainEqual({
+      type: HttpErrorType.NETWORK,
+      frequency: 5,
+      severity: 'high'
+    });
+  });
+});
+```
+
+#### 错误通知测试
+```typescript
+// components/ErrorNotification.test.tsx
+import { render, act } from '@testing-library/react';
+import ErrorNotification from './ErrorNotification';
+
+describe('ErrorNotification Component', () => {
+  test('should display error message', () => {
+    const { getByText } = render(
+      <ErrorNotification 
+        message="Network error occurred" 
+        type="error" 
+      />
+    );
+    
+    expect(getByText('Network error occurred')).toBeInTheDocument();
+  });
+
+  test('should auto-dismiss after timeout', () => {
+    jest.useFakeTimers();
+    const onClose = jest.fn();
+    render(
+      <ErrorNotification 
+        message="Test error" 
+        type="error"
+        duration={3000}
+        onClose={onClose}
+      />
+    );
+    
+    act(() => {
+      jest.advanceTimersByTime(3000);
+    });
+    
+    expect(onClose).toHaveBeenCalled();
+    jest.useRealTimers();
   });
 });
 ```

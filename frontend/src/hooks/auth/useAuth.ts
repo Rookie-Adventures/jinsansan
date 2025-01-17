@@ -40,15 +40,15 @@ export const useAuth = () => {
 
   const handleLogout = useCallback(async () => {
     try {
+      navigate('/');
       await dispatch(logout()).unwrap();
       dispatch(clearAuth());
       localStorage.removeItem('persist:root');
-      navigate('/login');
     } catch (err) {
       console.error('Logout failed:', err);
+      navigate('/');
       dispatch(clearAuth());
       localStorage.removeItem('persist:root');
-      navigate('/login');
     }
   }, [dispatch, navigate]);
 
