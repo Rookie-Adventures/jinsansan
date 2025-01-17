@@ -1,4 +1,4 @@
-import type { HttpError } from '@/utils/http/error/types';
+import type { HttpError, ErrorSeverity } from '@/utils/http/error/types';
 
 export interface ErrorLogData {
   type: string;
@@ -18,121 +18,82 @@ export interface ErrorLogData {
   }>;
 }
 
-export class ErrorLogger {
-  private static instance: ErrorLogger;
-  private readonly maxLocalLogs = 100;
-  private readonly localStorageKey = 'error_logs';
+type LogHandler = (error: HttpError) => void;
 
-  private constructor() {
-    this.initErrorListener();
-  }
+export class ErrorLogger {
+  private static _instance: ErrorLogger | null = null;
+  private logLevel: ErrorSeverity = 'info';
+  private handlers: LogHandler[] = [];
+
+  private constructor() {}
 
   static getInstance(): ErrorLogger {
-    if (!ErrorLogger.instance) {
-      ErrorLogger.instance = new ErrorLogger();
+    if (!ErrorLogger._instance) {
+      ErrorLogger._instance = new ErrorLogger();
     }
-    return ErrorLogger.instance;
+    return ErrorLogger._instance;
   }
 
-  private initErrorListener(): void {
-    window.addEventListener('error', (event) => {
-      this.log({
-        type: 'WINDOW_ERROR',
-        message: event.message,
-        stack: event.error?.stack,
-        data: {
-          filename: event.filename,
-          lineno: event.lineno,
-          colno: event.colno,
-        },
-      });
-    });
-
-    window.addEventListener('unhandledrejection', (event) => {
-      this.log({
-        type: 'UNHANDLED_REJECTION',
-        message: event.reason?.message || 'Unhandled Promise rejection',
-        stack: event.reason?.stack,
-        data: event.reason,
-      });
-    });
+  static resetInstance(): void {
+    ErrorLogger._instance = null;
   }
 
-  log(error: Partial<ErrorLogData> | HttpError): void {
-    const errorLog: ErrorLogData = {
-      type: error.type || 'UNKNOWN',
-      message: error.message || 'Unknown error',
-      timestamp: Date.now(),
-      url: window.location.href,
-      userAgent: navigator.userAgent,
-      platform: navigator.platform,
-      ...error,
-    };
-
-    // 控制台输出
-    this.consoleLog(errorLog);
-
-    // 保存到本地存储
-    this.saveToLocalStorage(errorLog);
-
-    // 上报到服务器
-    this.reportToServer(errorLog).catch((err) => {
-      console.error('Failed to report error:', err);
-    });
+  setLogLevel(level: ErrorSeverity): void {
+    this.logLevel = level;
   }
 
-  private consoleLog(errorLog: ErrorLogData): void {
-    if (process.env.NODE_ENV !== 'production') {
-      console.group('Error Log');
-      console.error(errorLog.message);
-      console.error('Type:', errorLog.type);
-      console.error('Timestamp:', new Date(errorLog.timestamp).toISOString());
-      if (errorLog.stack) {
-        console.error('Stack:', errorLog.stack);
-      }
-      if (errorLog.data) {
-        console.error('Additional Data:', errorLog.data);
-      }
-      console.groupEnd();
+  addLogHandler(handler: LogHandler): void {
+    this.handlers.push(handler);
+  }
+
+  log(error: HttpError): void {
+    // 根据日志级别过滤
+    if (!this.shouldLog(error)) {
+      return;
     }
-  }
 
-  private saveToLocalStorage(errorLog: ErrorLogData): void {
-    try {
-      const logs = this.getLocalLogs();
-      logs.unshift(errorLog);
-      
-      // 限制本地存储的日志数量
-      if (logs.length > this.maxLocalLogs) {
-        logs.length = this.maxLocalLogs;
-      }
+    const formattedMessage = this.formatError(error);
+    const logArgs = error.metadata ? [formattedMessage, error.metadata] : [formattedMessage];
 
-      localStorage.setItem(this.localStorageKey, JSON.stringify(logs));
-    } catch (error) {
-      console.error('Failed to save error log to localStorage:', error);
+    // 根据错误严重程度选择日志级别
+    switch (error.severity) {
+      case 'critical':
+        console.error(...logArgs);
+        break;
+      case 'warning':
+        console.warn(...logArgs);
+        break;
+      case 'info':
+        console.info(...logArgs);
+        break;
+      default:
+        console.error(...logArgs);
     }
+
+    // 调用自定义处理器
+    this.handlers.forEach(handler => handler(error));
   }
 
-  private async reportToServer(errorLog: ErrorLogData): Promise<void> {
-    // TODO: 实现错误上报到服务器的逻辑
-    // 可以使用 Beacon API 或者普通的 HTTP 请求
-    if (navigator.sendBeacon) {
-      const blob = new Blob([JSON.stringify(errorLog)], { type: 'application/json' });
-      navigator.sendBeacon('/api/error-logs', blob);
-    }
+  private shouldLog(error: HttpError): boolean {
+    const severityLevels: ErrorSeverity[] = ['info', 'warning', 'critical'];
+    const currentLevelIndex = severityLevels.indexOf(this.logLevel);
+    const errorSeverity = error.severity || 'warning';
+    const errorLevelIndex = severityLevels.indexOf(errorSeverity);
+
+    return errorLevelIndex >= currentLevelIndex;
   }
 
-  getLocalLogs(): ErrorLogData[] {
-    try {
-      const logsStr = localStorage.getItem(this.localStorageKey);
-      return logsStr ? JSON.parse(logsStr) : [];
-    } catch {
-      return [];
-    }
-  }
+  formatError(error: HttpError): string {
+    const parts = [
+      `[${error.type}]`,
+      error.message,
+      error.status ? `Status: ${error.status}` : '',
+      error.metadata ? Object.entries(error.metadata)
+        .map(([key, value]) => `${key}: ${value}`).join(', ') : '',
+      error.stack || ''
+    ];
 
-  clearLocalLogs(): void {
-    localStorage.removeItem(this.localStorageKey);
+    return parts.filter(Boolean).join(' | ');
   }
 }
 

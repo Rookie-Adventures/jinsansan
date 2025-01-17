@@ -1,13 +1,25 @@
-import { HttpErrorType, type HttpError } from './types';
+import { HttpErrorType, type HttpError, type ErrorSeverity } from './types';
 
 interface NotificationOptions {
   duration?: number;
   position?: 'top' | 'bottom';
   type?: 'error' | 'warning' | 'info';
+  description?: string;
 }
 
+type NotificationHandler = (options: NotificationOptions & { message: string }) => void;
+type NotificationRule = (error: HttpError) => boolean;
+
 export class ErrorNotificationManager {
-  private static instance: ErrorNotificationManager;
+  private static _instance: ErrorNotificationManager | null = null;
+  private notificationHandler?: NotificationHandler;
+  private notificationLevel: ErrorSeverity = 'warning';
+  private ignoredTypes: Set<HttpErrorType> = new Set();
+  private notificationRules: Array<{
+    condition: NotificationRule;
+    options: NotificationOptions;
+  }> = [];
+
   private readonly defaultOptions: NotificationOptions = {
     duration: 5000,
     position: 'top',
@@ -17,28 +29,109 @@ export class ErrorNotificationManager {
   private constructor() {}
 
   static getInstance(): ErrorNotificationManager {
-    if (!ErrorNotificationManager.instance) {
-      ErrorNotificationManager.instance = new ErrorNotificationManager();
+    if (!ErrorNotificationManager._instance) {
+      ErrorNotificationManager._instance = new ErrorNotificationManager();
     }
-    return ErrorNotificationManager.instance;
+    return ErrorNotificationManager._instance;
   }
 
-  notify(error: HttpError, options?: NotificationOptions): void {
-    const finalOptions = { ...this.defaultOptions, ...options };
+  static resetInstance(): void {
+    ErrorNotificationManager._instance = null;
+  }
+
+  setNotificationHandler(handler: NotificationHandler): void {
+    this.notificationHandler = handler;
+  }
+
+  setNotificationLevel(level: ErrorSeverity): void {
+    this.notificationLevel = level;
+  }
+
+  ignoreErrorType(type: HttpErrorType): void {
+    this.ignoredTypes.add(type);
+  }
+
+  addNotificationRule(condition: NotificationRule, options: NotificationOptions): void {
+    this.notificationRules.push({ condition, options });
+  }
+
+  notify(error: HttpError): void {
+    if (!this.shouldNotify(error)) {
+      return;
+    }
+
+    const options = this.getNotificationOptions(error);
     const message = this.getErrorMessage(error);
+    const description = this.getErrorDescription(error);
+
+    const notificationData = {
+      message,
+      description,
+      ...this.defaultOptions,
+      ...options,
+    };
+
+    if (this.notificationHandler) {
+      this.notificationHandler(notificationData);
+      return;
+    }
 
     // 触发全局通知事件
     const event = new CustomEvent('show-notification', {
-      detail: {
-        message,
-        ...finalOptions,
-      },
+      detail: notificationData,
     });
     window.dispatchEvent(event);
   }
 
+  private shouldNotify(error: HttpError): boolean {
+    // 检查是否是被忽略的错误类型
+    if (this.ignoredTypes.has(error.type)) {
+      return false;
+    }
+
+    // 检查是否有匹配的规则
+    const matchingRule = this.notificationRules.find(rule => rule.condition(error));
+    if (matchingRule) {
+      return true;
+    }
+
+    // 检查错误级别
+    const severityLevels: ErrorSeverity[] = ['info', 'warning', 'critical'];
+    const currentLevelIndex = severityLevels.indexOf(this.notificationLevel);
+    const errorLevelIndex = severityLevels.indexOf(error.severity || 'info');
+
+    return errorLevelIndex >= currentLevelIndex;
+  }
+
+  private getNotificationOptions(error: HttpError): NotificationOptions {
+    // 检查是否有匹配的通知规则
+    const matchingRule = this.notificationRules.find(rule => rule.condition(error));
+    if (matchingRule) {
+      return matchingRule.options;
+    }
+
+    // 根据错误严重程度设置通知类型
+    let type: NotificationOptions['type'] = 'error';
+    switch (error.severity) {
+      case 'warning':
+        type = 'warning';
+        break;
+      case 'info':
+        type = 'info';
+        break;
+      case 'critical':
+        type = 'error';
+        break;
+    }
+
+    return { type };
+  }
+
   private getErrorMessage(error: HttpError): string {
-    // 根据错误类型返回友好的错误消息
+    return error.message || this.getDefaultErrorMessage(error);
+  }
+
+  private getDefaultErrorMessage(error: HttpError): string {
     switch (error.type) {
       case HttpErrorType.NETWORK:
         return '网络连接失败，请检查网络设置';
@@ -49,11 +142,11 @@ export class ErrorNotificationManager {
       case HttpErrorType.SERVER:
         return '服务器错误，请稍后重试';
       case HttpErrorType.CLIENT:
-        return error.message || '请求参数错误';
+        return '请求参数错误';
       case HttpErrorType.VALIDATION:
-        return error.message || '输入数据验证失败';
+        return '输入数据验证失败';
       case HttpErrorType.BUSINESS:
-        return error.message || '操作失败，请检查后重试';
+        return '操作失败，请检查后重试';
       case HttpErrorType.CANCEL:
         return '请求已取消';
       case HttpErrorType.REACT_ERROR:
@@ -61,31 +154,30 @@ export class ErrorNotificationManager {
           ? `组件渲染错误: ${error.message}`
           : '页面显示异常，请刷新重试';
       default:
-        return error.message || '发生未知错误，请稍后重试';
+        return '发生未知错误，请稍后重试';
     }
   }
 
-  showErrorPage(error: HttpError): void {
-    // 对于需要跳转到错误页面的错误
-    if (error.status === 404) {
-      window.location.href = '/404';
-    } else if (error.status === 403) {
-      window.location.href = '/403';
-    } else if (error.status === 500) {
-      window.location.href = '/500';
-    }
-  }
+  private getErrorDescription(error: HttpError): string {
+    const parts = [];
 
-  showErrorModal(error: HttpError): void {
-    // 触发显示错误模态框的事件
-    const event = new CustomEvent('show-error-modal', {
-      detail: {
-        title: '错误提示',
-        message: this.getErrorMessage(error),
-        error,
-      },
-    });
-    window.dispatchEvent(event);
+    if (error.status) {
+      parts.push(`状态码: ${error.status}`);
+    }
+
+    if (error.metadata) {
+      if (error.metadata.requestId) {
+        parts.push(`请求ID: ${error.metadata.requestId}`);
+      }
+      if (error.metadata.timestamp) {
+        parts.push(`时间: ${error.metadata.timestamp}`);
+      }
+      if (error.metadata.userId) {
+        parts.push(`用户ID: ${error.metadata.userId}`);
+      }
+    }
+
+    return parts.join(' | ');
   }
 }
 

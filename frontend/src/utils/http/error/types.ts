@@ -11,6 +11,8 @@ export enum HttpErrorType {
   BUSINESS = 'BUSINESS'
 }
 
+export type ErrorSeverity = 'critical' | 'warning' | 'info';
+
 export interface ErrorTrace {
   id: string;
   timestamp: number;
@@ -23,6 +25,13 @@ export interface ErrorTrace {
   }>;
 }
 
+export interface ErrorMetadata {
+  userId?: string;
+  requestId?: string;
+  timestamp?: string;
+  [key: string]: unknown;
+}
+
 export interface HttpError extends Error {
   type: HttpErrorType;
   status?: number;
@@ -31,4 +40,7 @@ export interface HttpError extends Error {
   trace?: ErrorTrace;
   recoverable?: boolean;
   retryCount?: number;
+  severity?: ErrorSeverity;
+  metadata?: ErrorMetadata;
+  stack?: string;
 } 

@@ -1,4 +1,4 @@
-import { HttpErrorType, ErrorTrace } from './types';
+import { HttpErrorType, ErrorTrace, ErrorSeverity, ErrorMetadata } from './types';
 
 export class HttpError extends Error {
   public type: HttpErrorType;
@@ -8,6 +8,8 @@ export class HttpError extends Error {
   public trace?: ErrorTrace;
   public recoverable: boolean;
   public retryCount: number;
+  public severity: ErrorSeverity;
+  public metadata?: ErrorMetadata;
 
   constructor(options: {
     type: HttpErrorType;
@@ -18,6 +20,9 @@ export class HttpError extends Error {
     trace?: ErrorTrace;
     recoverable?: boolean;
     retryCount?: number;
+    severity?: ErrorSeverity;
+    metadata?: ErrorMetadata;
+    stack?: string;
   }) {
     super(options.message);
     this.name = 'HttpError';
@@ -28,9 +33,15 @@ export class HttpError extends Error {
     this.trace = options.trace;
     this.recoverable = options.recoverable ?? false;
     this.retryCount = options.retryCount ?? 0;
+    this.severity = options.severity ?? 'info';
+    this.metadata = options.metadata;
 
-    // 确保 Error 的堆栈跟踪正确工作
-    if (Error.captureStackTrace) {
+    // 如果提供了自定义堆栈，则使用它
+    if (options.stack) {
+      this.stack = options.stack;
+    }
+    // 否则确保 Error 的堆栈跟踪正确工作
+    else if (Error.captureStackTrace) {
       Error.captureStackTrace(this, HttpError);
     }
   }

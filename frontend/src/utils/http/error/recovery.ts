@@ -9,55 +9,51 @@ interface RecoveryStrategy {
 
 const defaultStrategies: Record<HttpErrorType, RecoveryStrategy> = {
   [HttpErrorType.NETWORK]: {
-    shouldAttemptRecovery: (error) => error.recoverable !== false,
+    shouldAttemptRecovery: (error) => error.recoverable !== false && (error.retryCount || 0) < 3,
     recover: async (error) => {
       // 网络错误恢复策略：重试请求
-      if (error.retryCount && error.retryCount < 3) {
-        await new Promise(resolve => setTimeout(resolve, 1000 * (error.retryCount || 1)));
-        throw error; // 重新抛出错误以触发重试
-      }
+      await new Promise(resolve => setTimeout(resolve, 1000 * (error.retryCount || 1)));
+      return Promise.resolve();
     },
     maxAttempts: 3
   },
   [HttpErrorType.TIMEOUT]: {
-    shouldAttemptRecovery: (error) => error.recoverable !== false,
+    shouldAttemptRecovery: (error) => error.recoverable !== false && (error.retryCount || 0) < 2,
     recover: async (error) => {
       // 超时错误恢复策略：增加超时时间重试
-      if (error.retryCount && error.retryCount < 2) {
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        throw error;
-      }
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      return Promise.resolve();
     },
     maxAttempts: 2
   },
   [HttpErrorType.AUTH]: {
-    shouldAttemptRecovery: (error) => error.status === 401,
+    shouldAttemptRecovery: (error) => error.status === 401 && error.recoverable !== false,
     recover: async () => {
       // 认证错误恢复策略：刷新 token
       const refreshToken = localStorage.getItem('refreshToken');
-      if (refreshToken) {
-        try {
-          // 实现 token 刷新逻辑
-          // await refreshTokenApi(refreshToken);
-          return;
-        } catch {
-          // 如果刷新失败，清除认证信息并跳转到登录页
-          localStorage.removeItem('token');
-          localStorage.removeItem('refreshToken');
-          window.location.href = '/login';
-        }
+      if (!refreshToken) {
+        throw new Error('No refresh token available');
+      }
+      try {
+        // 实现 token 刷新逻辑
+        // await refreshTokenApi(refreshToken);
+        return;
+      } catch {
+        // 如果刷新失败，清除认证信息并跳转到登录页
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
+        window.location.href = '/login';
+        throw new Error('Token refresh failed');
       }
     },
     maxAttempts: 1
   },
   [HttpErrorType.SERVER]: {
-    shouldAttemptRecovery: (error) => error.status !== 500,
+    shouldAttemptRecovery: (error) => error.status !== 500 && error.recoverable !== false && (error.retryCount || 0) < 2,
     recover: async (error) => {
       // 服务器错误恢复策略：对于非 500 错误尝试重试
-      if (error.retryCount && error.retryCount < 2) {
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        throw error;
-      }
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      throw error;
     },
     maxAttempts: 2
   },
@@ -131,7 +127,10 @@ export class ErrorRecoveryManager {
         {
           times: strategy.maxAttempts || 1,
           delay: 1000,
-          shouldRetry: () => true
+          shouldRetry: () => {
+            error.retryCount = (error.retryCount || 0) + 1;
+            return error.retryCount < (strategy.maxAttempts || 1);
+          }
         }
       );
       return true;
