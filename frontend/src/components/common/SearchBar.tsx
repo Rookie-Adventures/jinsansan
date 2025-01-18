@@ -1,20 +1,24 @@
-import React, { useState, useCallback } from 'react';
-import { SearchService, SearchServiceImpl, SearchParams } from '../../infrastructure/search/SearchService';
 import debounce from 'lodash/debounce';
+import React, { useCallback, useState } from 'react';
+import { Logger } from '../../infrastructure/logging/Logger';
+import { SearchParams, SearchService, SearchServiceImpl } from '../../infrastructure/search/SearchService';
 
 interface SearchBarProps<T> {
   onSearchResult: (result: T[]) => void;
+  onError?: (error: Error) => void;
   placeholder?: string;
   debounceTime?: number;
 }
 
 export function SearchBar<T>({
   onSearchResult,
+  onError,
   placeholder = '搜索...',
   debounceTime = 300
 }: SearchBarProps<T>) {
   const [keyword, setKeyword] = useState('');
   const searchService: SearchService = new SearchServiceImpl();
+  const logger = Logger.getInstance();
 
   const debouncedSearch = useCallback(
     debounce(async (searchKeyword: string) => {
@@ -27,13 +31,14 @@ export function SearchBar<T>({
           pageSize: 10
         };
 
-        const result = await searchService.search<T>(params);
-        onSearchResult(result.items);
+        const searchResult = await searchService.search<T>(params);
+        onSearchResult(searchResult.items);
       } catch (error) {
-        console.error('Search failed:', error);
+        logger.error('Search failed:', error);
+        onError?.(error as Error);
       }
     }, debounceTime),
-    [onSearchResult]
+    [onSearchResult, onError]
   );
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

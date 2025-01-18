@@ -1,18 +1,17 @@
-import { AxiosRequestConfig } from 'axios';
+import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { csrfTokenManager } from '../../security/csrf';
 
 /**
  * CSRF请求拦截器
+ * 用于在请求头中添加CSRF token
  */
 export function csrfRequestInterceptor(config: AxiosRequestConfig): AxiosRequestConfig {
-  // 仅为修改数据的请求添加CSRF token
-  const methods = ['post', 'put', 'delete', 'patch'];
-  if (methods.includes(config.method?.toLowerCase() || '')) {
-    const token = csrfTokenManager.getToken() || csrfTokenManager.generateToken();
-    config.headers = {
-      ...config.headers,
-      [csrfTokenManager.getHeaderKey()]: token
-    };
+  const token = csrfTokenManager.getToken();
+  if (token) {
+    if (!config.headers) {
+      config.headers = {};
+    }
+    config.headers[csrfTokenManager.getHeaderKey()] = token;
   }
   return config;
 }
@@ -21,7 +20,7 @@ export function csrfRequestInterceptor(config: AxiosRequestConfig): AxiosRequest
  * CSRF响应拦截器
  * 用于处理服务端返回的新CSRF token
  */
-export function csrfResponseInterceptor(response: any): any {
+export function csrfResponseInterceptor(response: AxiosResponse): AxiosResponse {
   const newToken = response.headers?.[csrfTokenManager.getHeaderKey().toLowerCase()];
   if (newToken) {
     csrfTokenManager.generateToken();

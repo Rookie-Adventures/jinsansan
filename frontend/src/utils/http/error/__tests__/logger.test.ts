@@ -1,13 +1,19 @@
-import { ErrorLogger } from '../logger';
+/* eslint-disable no-console */
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { HttpError } from '../error';
+import { ErrorLogger } from '../logger';
 import { HttpErrorType } from '../types';
-import { vi, describe, test, expect, beforeEach } from 'vitest';
+
+// 保存原始环境变量
+const originalEnv = process.env.NODE_ENV;
 
 describe('ErrorLogger', () => {
   let logger: ErrorLogger;
   const originalConsole = { ...console };
 
   beforeEach(() => {
+    // 设置为开发环境
+    process.env.NODE_ENV = 'development';
     // 恢复所有 mock
     vi.restoreAllMocks();
     // 重置单例实例
@@ -23,6 +29,11 @@ describe('ErrorLogger', () => {
   afterEach(() => {
     // 恢复原始 console
     console = { ...originalConsole };
+  });
+
+  afterAll(() => {
+    // 恢复原始环境变量
+    process.env.NODE_ENV = originalEnv;
   });
 
   describe('getInstance', () => {

@@ -1,4 +1,4 @@
-import { HttpErrorType, type HttpError, type ErrorSeverity } from './types';
+import { HttpErrorType, type ErrorSeverity, type HttpError } from './types';
 
 interface NotificationOptions {
   duration?: number;
@@ -69,6 +69,9 @@ export class ErrorNotificationManager {
       description,
       ...this.defaultOptions,
       ...options,
+      duration: options.duration || this.defaultOptions.duration,
+      position: options.position || this.defaultOptions.position,
+      type: options.type || this.getNotificationTypeFromError(error)
     };
 
     if (this.notificationHandler) {
@@ -178,6 +181,19 @@ export class ErrorNotificationManager {
     }
 
     return parts.join(' | ');
+  }
+
+  private getNotificationTypeFromError(error: HttpError): 'error' | 'warning' | 'info' {
+    switch (error.severity) {
+      case 'critical':
+        return 'error';
+      case 'warning':
+        return 'warning';
+      case 'info':
+        return 'info';
+      default:
+        return 'error';
+    }
   }
 }
 

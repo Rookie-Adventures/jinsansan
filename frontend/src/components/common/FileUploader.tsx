@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import { FileService, FileServiceImpl } from '../../infrastructure/file/FileService';
 
+// 定义上传结果的类型
+interface UploadResult {
+  url: string;
+  filename: string;
+  size: number;
+}
+
 interface FileUploaderProps {
-  onUploadComplete?: (result: any) => void;
+  onUploadComplete?: (result: UploadResult) => void;
   onError?: (error: Error) => void;
 }
 
@@ -20,7 +27,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     try {
       const result = await fileService.uploadCSV(file, {
         onProgress: (progress) => setProgress(progress),
-        validateRow: (row) => {
+        validateRow: (_row) => {
           // 添加自定义验证逻辑
           return true;
         }

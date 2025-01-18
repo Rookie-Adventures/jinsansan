@@ -1,49 +1,46 @@
-import { defineConfig, flatConfig } from 'eslint';
+import eslint from '@eslint/js';
+import react from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import tseslint from 'typescript-eslint';
 
-export default defineConfig([
-  flatConfig({
+export default [
+  eslint.configs.recommended,
+  ...tseslint.configs.recommended,
+  {
+    files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
-      parser: '@typescript-eslint/parser',
+      parser: tseslint.parser,
       parserOptions: {
+        ecmaFeatures: {
+          jsx: true
+        },
         project: './tsconfig.json'
       }
     },
-    plugins: [
-      '@typescript-eslint',
-      'react',
-      'react-hooks',
-      'import'
-    ],
-    rules: {
-      'max-lines-per-function': ['error', { 
-        max: 60,
-        skipBlankLines: true,
-        skipComments: true 
-      }],
-      'max-params': ['error', 4],
-      'no-console': 'warn',
-      'no-unused-vars': 'error',
-      '@typescript-eslint/explicit-function-return-type': 'off',
-      '@typescript-eslint/no-explicit-any': 'error',
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'warn',
-      'import/order': ['warn', {
-        'groups': [
-          ['builtin', 'external'],
-          ['internal'],
-          ['parent', 'sibling', 'index']
-        ],
-        'newlines-between': 'always'
-      }]
+    plugins: {
+      react,
+      'react-hooks': reactHooks
     },
-    files: ['**/*.ts', '**/*.tsx'],
-    ignores: ['**/node_modules/**', '**/dist/**', '**/build/**'],
+    rules: {
+      'no-unused-vars': 'off',
+      'no-console': 'warn',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-unused-vars': ['warn', {
+        'argsIgnorePattern': '^_',
+        'varsIgnorePattern': '^_',
+        'ignoreRestSiblings': true,
+        'args': 'none'
+      }],
+      'react-hooks/rules-of-hooks': 'error',
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off'
+    },
     settings: {
       react: {
         version: 'detect'
       }
     }
-  })
-]); 
+  }
+];

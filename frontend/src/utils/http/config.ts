@@ -1,4 +1,4 @@
-import type { AxiosRequestConfig } from 'axios';
+import type { AxiosError, AxiosRequestConfig } from 'axios';
 
 export interface HttpConfig extends AxiosRequestConfig {
   // 基础配置
@@ -16,7 +16,7 @@ export interface HttpConfig extends AxiosRequestConfig {
   retry?: {
     times: number;
     delay: number; // milliseconds
-    shouldRetry?: (error: any) => boolean;
+    shouldRetry?: (error: AxiosError | Error) => boolean;
   };
   
   // 并发控制
@@ -57,9 +57,12 @@ export const defaultConfig: HttpConfig = {
   retry: {
     times: 3,
     delay: 1000,
-    shouldRetry: (error: any) => {
-      const status = error?.response?.status;
-      return status >= 500 || status === 429;
+    shouldRetry: (error: AxiosError | Error) => {
+      if ('response' in error && error.response?.status) {
+        const status = error.response.status;
+        return status >= 500 || status === 429;
+      }
+      return false;
     },
   },
   

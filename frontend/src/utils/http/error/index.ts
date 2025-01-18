@@ -1,5 +1,5 @@
+import { ErrorLogger } from './logger';
 import { ErrorRecoveryManager } from './recovery';
-import { HttpErrorFactory } from './factory';
 import type { HttpError } from './types';
 
 export interface ErrorHandler {
@@ -9,9 +9,11 @@ export interface ErrorHandler {
 class DefaultErrorHandler implements ErrorHandler {
   private static instance: DefaultErrorHandler;
   private recoveryManager: ErrorRecoveryManager;
+  private logger: ErrorLogger;
 
   private constructor() {
     this.recoveryManager = ErrorRecoveryManager.getInstance();
+    this.logger = ErrorLogger.getInstance();
   }
 
   static getInstance(): DefaultErrorHandler {
@@ -25,15 +27,21 @@ class DefaultErrorHandler implements ErrorHandler {
     try {
       await this.recoveryManager.attemptRecovery(error);
     } catch (e) {
-      console.error('Error recovery failed:', e);
+      this.logger.log({
+        name: 'RecoveryError',
+        type: error.type,
+        message: '错误恢复失败',
+        severity: 'critical',
+        data: e
+      });
       throw error;
     }
   }
 }
 
 export * from './factory';
-export * from './types';
-export * from './recovery';
 export * from './prevention';
+export * from './recovery';
+export * from './types';
 
 export const defaultErrorHandler = DefaultErrorHandler.getInstance(); 

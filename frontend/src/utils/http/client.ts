@@ -1,8 +1,10 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig, AxiosHeaders } from 'axios';
+import axios, { AxiosHeaders, AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
 import { defaultErrorHandler, HttpErrorFactory } from './error/index';
-import { errorPreventionManager, RequestValidator, cacheManager } from './error/prevention';
+import { ErrorLogger } from './error/logger';
+import { cacheManager, errorPreventionManager, RequestValidator } from './error/prevention';
+import { HttpErrorType } from './error/types';
 
 // 扩展 AxiosRequestConfig 类型
 interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
@@ -116,15 +118,26 @@ export class HttpClient {
         try {
           await defaultErrorHandler.handle(httpError);
         } catch (recoveryError) {
-          console.error('错误恢复失败:', recoveryError);
+          ErrorLogger.getInstance().log({
+            name: 'RecoveryError',
+            type: HttpErrorType.UNKNOWN,
+            message: '错误恢复失败',
+            severity: 'critical',
+            data: recoveryError
+          });
         }
 
         // 记录错误日志
-        console.error('API 响应错误:', {
-          url: error.config?.url,
-          status: error.response?.status,
-          message: httpError.message,
-          type: httpError.type
+        ErrorLogger.getInstance().log({
+          name: 'APIError',
+          type: httpError.type,
+          message: 'API 响应错误',
+          severity: 'critical',
+          data: {
+            url: error.config?.url,
+            status: error.response?.status,
+            message: httpError.message
+          }
         });
 
         return Promise.reject(httpError);

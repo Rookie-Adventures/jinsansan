@@ -1,4 +1,4 @@
-import type { HttpError, ErrorSeverity } from '@/utils/http/error/types';
+import type { ErrorSeverity, HttpError } from '@/utils/http/error/types';
 
 export interface ErrorLogData {
   type: string;
@@ -55,19 +55,9 @@ export class ErrorLogger {
     const formattedMessage = this.formatError(error);
     const logArgs = error.metadata ? [formattedMessage, error.metadata] : [formattedMessage];
 
-    // 根据错误严重程度选择日志级别
-    switch (error.severity) {
-      case 'critical':
-        console.error(...logArgs);
-        break;
-      case 'warning':
-        console.warn(...logArgs);
-        break;
-      case 'info':
-        console.info(...logArgs);
-        break;
-      default:
-        console.error(...logArgs);
+    // 只在开发环境下使用 console
+    if (process.env.NODE_ENV === 'development') {
+      this.logToConsole(error.severity || 'error', ...logArgs);
     }
 
     // 调用自定义处理器
@@ -94,6 +84,24 @@ export class ErrorLogger {
     ];
 
     return parts.filter(Boolean).join(' | ');
+  }
+
+  private logToConsole(severity: ErrorSeverity | 'error', ...args: unknown[]): void {
+    /* eslint-disable no-console */
+    switch (severity) {
+      case 'critical':
+        console.error(...args);
+        break;
+      case 'warning':
+        console.warn(...args);
+        break;
+      case 'info':
+        console.info(...args);
+        break;
+      default:
+        console.error(...args);
+    }
+    /* eslint-enable no-console */
   }
 }
 

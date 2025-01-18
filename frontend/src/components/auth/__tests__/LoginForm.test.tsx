@@ -1,8 +1,8 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
-import LoginForm from '../LoginForm';
-import { Provider } from 'react-redux';
 import { store } from '@/store';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { describe, expect, it, vi } from 'vitest';
+import LoginForm from '../LoginForm';
 
 describe('LoginForm', () => {
   const mockFormData = {
