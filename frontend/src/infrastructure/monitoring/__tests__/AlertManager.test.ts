@@ -1,7 +1,6 @@
-/// <reference types="vitest" />
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AlertManager } from '../AlertManager';
-import type { AlertRule, Alert, AlertNotification } from '../types';
+import type { AlertRule } from '../types';
 
 describe('AlertManager', () => {
   let alertManager: AlertManager;

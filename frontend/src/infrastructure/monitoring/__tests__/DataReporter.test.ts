@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { PerformanceMonitor } from '../../../infrastructure/monitoring/PerformanceMonitor';
-import { RouterAnalytics } from '../../../infrastructure/monitoring/RouterAnalytics';
+import { PerformanceMonitor } from '../PerformanceMonitor';
+import { RouterAnalytics } from '../RouterAnalytics';
 
 // 添加类型定义
 interface MetricData {
@@ -49,10 +49,10 @@ describe('Data Reporting', () => {
         }
       }));
 
-      const body = JSON.parse(mockFetch.mock.calls[0][1].body);
+      const body = JSON.parse(mockFetch.mock.calls[0][1].body) as MetricData[];
       expect(body).toHaveLength(3);
-      expect(body.map((m: MetricData) => m.type)).toContain('custom');
-      expect(body.map((m: MetricData) => m.type)).toContain('api_call');
+      expect(body.map((m) => m.type)).toContain('custom');
+      expect(body.map((m) => m.type)).toContain('api_call');
     });
 
     it('应该在上报失败时保留数据', async () => {
@@ -90,7 +90,7 @@ describe('Data Reporting', () => {
       performanceMonitor.trackCustomMetric(testMetric.name, testMetric.value);
       await performanceMonitor.flush();
 
-      const body = JSON.parse(mockFetch.mock.calls[0][1].body);
+      const body = JSON.parse(mockFetch.mock.calls[0][1].body) as MetricData[];
       expect(body[0]).toMatchObject({
         type: 'custom',
         timestamp: expect.any(Number),

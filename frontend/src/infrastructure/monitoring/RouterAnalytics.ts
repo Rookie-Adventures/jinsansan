@@ -116,7 +116,8 @@ export class RouterAnalytics {
         throw new Error(`Failed to report analytics: ${response.statusText}`);
       }
     } catch (error) {
-      console.error('Failed to report route analytics:', error);
+      this.performanceMonitor.trackCustomMetric('route_analytics_error', 1);
+      this.performanceMonitor.trackCustomMetric('route_analytics_error_count', 1);
     }
   }
 
@@ -169,8 +170,8 @@ export class RouterAnalytics {
 
     // 检查性能问题
     if (duration > 300) {
-      console.warn('路由切换动画性能问题: 动画时间过长');
       this.performanceMonitor.trackCustomMetric('route_transition_performance_issue', 1);
+      this.performanceMonitor.trackCustomMetric('route_transition_long_duration', duration);
     }
 
     this.activeTransition = false;
@@ -276,5 +277,9 @@ export class RouterAnalytics {
 
   public getActivePreloadCount(path: string): number {
     return this.activePreloads.get(path) || 0;
+  }
+
+  public getAnalytics(): RouteAnalytics[] {
+    return [...this.analytics];
   }
 } 
