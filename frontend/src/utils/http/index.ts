@@ -68,4 +68,6 @@ export const http = {
     // 实际实现将在后续添加
     return {} as T;
   },
-}; 
+};
+
+export * from './types'; 

@@ -13,4 +13,4 @@ export { SearchBar } from './SearchBar';
 // Auth Components
 export { default as AuthCard } from '../auth/AuthCard';
 export { default as LoginForm } from '../auth/LoginForm';
-export { RegisterForm } from '../auth/RegisterForm'; 
+export { default as RegisterForm } from '../auth/RegisterForm'; 

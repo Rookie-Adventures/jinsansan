@@ -19,7 +19,6 @@ interface RequestOptions {
   };
   queue?: {
     enable: boolean;
-    concurrency?: number;
     priority: number;
   };
 }
@@ -58,8 +57,7 @@ const createFinalOptions = (defaultOptions?: RequestOptions, options?: RequestOp
   } : undefined,
   queue: options?.queue ? {
     enable: options.queue.enable,
-    concurrency: options.queue.concurrency,
-    priority: options.queue.priority || 0
+    priority: options.queue.priority
   } : undefined
 });
 

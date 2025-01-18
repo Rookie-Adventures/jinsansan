@@ -1,8 +1,8 @@
 import type { AxiosRequestConfig } from 'axios';
 import type { ProgressInfo } from './progress-monitor';
 import type { HttpConfig } from './config';
-import type { HttpError } from './error/types';
 import type { ApiResponse } from '@/types/api';
+import { HttpErrorType, type ErrorSeverity, type ErrorTrace, type ErrorMetadata } from './error/types';
 
 /**
  * HTTP请求配置扩展
@@ -90,4 +90,23 @@ export interface HttpQueueItem<T = string> extends BaseQueueItem<T> {
   config: HttpRequestConfig;
 }
 
-export type { HttpError, ApiResponse }; 
+/**
+ * HTTP错误类
+ */
+export class HttpError extends Error {
+  constructor(
+    public status: number,
+    public message: string,
+    public type: HttpErrorType = HttpErrorType.UNKNOWN,
+    public code?: string | number,
+    public data?: unknown,
+    public trace?: ErrorTrace,
+    public recoverable?: boolean,
+    public retryCount?: number,
+    public severity?: ErrorSeverity,
+    public metadata?: ErrorMetadata
+  ) {
+    super(message);
+    this.name = 'HttpError';
+  }
+} 

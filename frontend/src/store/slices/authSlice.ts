@@ -3,6 +3,8 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { authApi, type LoginResponse } from '@/services/auth';
 import type { LoginFormData, RegisterFormData, AuthState } from '@/types/auth';
 
+export type { AuthState };
+
 const initialState: AuthState = {
   user: null,
   token: null,
