@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from 'axios';
 
 import type { RequestManager, HttpRequestConfig, CacheData, QueueItem } from './types';
 
-class HttpRequestManager implements RequestManager {
+export class HttpRequestManager implements RequestManager {
   private static instance: HttpRequestManager;
   private axiosInstance: AxiosInstance;
   public cache: Map<string, CacheData>;
@@ -103,11 +103,17 @@ class HttpRequestManager implements RequestManager {
 
       const { config, resolve, reject } = request;
       const promise = this.executeRequest(config)
-        .then(resolve)
-        .catch(reject)
+        .then((result) => {
+          resolve(result);
+          return undefined;
+        })
+        .catch((error) => {
+          reject(error);
+          return undefined;
+        })
         .finally(() => {
           processing.delete(promise);
-        });
+        }) as Promise<void>;
 
       processing.add(promise);
     }
