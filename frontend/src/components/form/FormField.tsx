@@ -1,17 +1,17 @@
 import { TextField, TextFieldProps } from '@mui/material';
 import React from 'react';
-import { Controller, Control } from 'react-hook-form';
+import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 
-interface FormFieldProps extends Omit<TextFieldProps, 'name'> {
-  name: string;
-  control: Control<any>;
+interface FormFieldProps<T extends FieldValues> extends Omit<TextFieldProps, 'name'> {
+  name: Path<T>;
+  control: Control<T>;
 }
 
-export const FormField: React.FC<FormFieldProps> = ({
+export const FormField = <T extends FieldValues>({
   name,
   control,
   ...props
-}) => {
+}: FormFieldProps<T>): React.ReactElement => {
   return (
     <Controller
       name={name}

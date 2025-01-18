@@ -1,21 +1,24 @@
-import { Menu as MenuIcon, AccountCircle } from '@mui/icons-material';
+import { AccountCircle, Menu as MenuIcon } from '@mui/icons-material';
 import {
-  AppBar,
-  Box,
-  Button,
-  Container,
-  IconButton,
-  Menu,
-  MenuItem,
-  Toolbar,
-  Typography,
-  useTheme,
-  useMediaQuery,
+    AppBar,
+    Box,
+    Button,
+    Container,
+    IconButton,
+    Menu,
+    MenuItem,
+    Toolbar,
+    Typography,
+    useMediaQuery,
+    useTheme,
 } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '@/hooks/auth';
+import { HttpError } from '@/utils/http/error/error';
+import { errorLogger } from '@/utils/http/error/logger';
+import { HttpErrorType } from '@/utils/http/error/types';
 import { ThemeToggle } from '../ThemeToggle';
 
 const NavigationMenu: React.FC = () => {
@@ -38,7 +41,11 @@ const NavigationMenu: React.FC = () => {
       navigate('/');
       await logout();
     } catch (error) {
-      console.error('Logout failed:', error);
+      errorLogger.log(new HttpError({
+        type: HttpErrorType.AUTH,
+        message: '退出登录失败',
+        data: error
+      }));
     }
   };
 
@@ -146,7 +153,11 @@ const Navbar: React.FC = () => {
       navigate('/');
       await logout();
     } catch (error) {
-      console.error('Logout failed:', error);
+      errorLogger.log(new HttpError({
+        type: HttpErrorType.AUTH,
+        message: '退出登录失败',
+        data: error
+      }));
     }
   };
 

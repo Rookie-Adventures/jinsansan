@@ -20,6 +20,12 @@
     },
     "types": ["node", "vite/client"]
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.d.ts",
+    "src/utils/http/**/*.d.ts",
+    "src/utils/security/**/*.d.ts"
+  ],
   "exclude": ["node_modules"]
 }

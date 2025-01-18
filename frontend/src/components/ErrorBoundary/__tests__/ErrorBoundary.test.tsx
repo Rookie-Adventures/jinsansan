@@ -1,8 +1,7 @@
-import { render, screen } from '@testing-library/react';
-import { ErrorBoundary } from '../index';
-import { ErrorLogger } from '@/utils/http/error/logger';
 import { HttpErrorType } from '@/utils/http/error/types';
+import { render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
+import { ErrorBoundary } from '../index';
 
 const mockLog = vi.fn();
 const mockLogger = {
@@ -21,18 +20,21 @@ describe('ErrorBoundary', () => {
     throw new Error('Test error');
   };
 
-  const originalConsoleError = console.error;
+  let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
+
   beforeAll(() => {
-    // 禁用 console.error，避免测试输出中出现错误日志
-    console.error = vi.fn();
+    // 使用 vi.spyOn 来监听 console.error
+    consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
   });
 
   afterAll(() => {
-    console.error = originalConsoleError;
+    // 恢复 console.error
+    consoleErrorSpy.mockRestore();
   });
 
   beforeEach(() => {
     vi.clearAllMocks();
+    consoleErrorSpy.mockClear();
   });
 
   test('should render children when no error occurs', () => {

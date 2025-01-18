@@ -1,4 +1,4 @@
-import { render as rtlRender, RenderOptions } from '@testing-library/react'
+import { RenderOptions, render as rtlRender } from '@testing-library/react'
 import { PropsWithChildren } from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
@@ -20,7 +20,7 @@ function render(
     ...renderOptions
   }: CustomRenderOptions = {}
 ) {
-  function Wrapper({ children }: PropsWithChildren<{}>): JSX.Element {
+  function Wrapper({ children }: PropsWithChildren<Record<string, never>>): React.ReactElement {
     return (
       <Provider store={store}>
         <MemoryRouter initialEntries={[route]}>
@@ -38,4 +38,5 @@ function render(
 
 // 重新导出所有 testing-library/react 的工具
 export * from '@testing-library/react'
-export { render } 
+export { render }
+

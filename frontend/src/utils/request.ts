@@ -1,8 +1,8 @@
-import axios, { 
-  AxiosError, 
-  AxiosInstance, 
-  InternalAxiosRequestConfig,
-  AxiosResponse 
+import axios, {
+    AxiosError,
+    AxiosInstance,
+    AxiosResponse,
+    InternalAxiosRequestConfig
 } from 'axios';
 import axiosRetry from 'axios-retry';
 
@@ -31,7 +31,7 @@ const request: AxiosInstance = axios.create({
 // 配置请求重试
 axiosRetry(request, {
   retries: 1,
-  retryDelay: (retryCount) => {
+  retryDelay: (retryCount: number) => {
     return retryCount * 500;
   },
   retryCondition: (error: AxiosError) => {
@@ -84,7 +84,7 @@ request.interceptors.response.use(
 
     // 处理其他 HTTP 错误
     if (error.response?.data) {
-      const apiError = error.response.data as any;
+      const apiError = error.response.data as ApiResponse<unknown>;
       return Promise.reject(new Error(apiError.message || httpError.message));
     }
 
@@ -98,12 +98,8 @@ type RequestMethod = <T>(config: RequestConfig) => Promise<ApiResponse<T>>;
 
 // 包装请求函数
 const wrappedRequest: RequestMethod = async <T>(config: RequestConfig) => {
-  try {
-    const response = await request(config);
-    return response.data as ApiResponse<T>;
-  } catch (error) {
-    throw error;
-  }
+  const response = await request(config);
+  return response.data as ApiResponse<T>;
 };
 
 export default wrappedRequest; 

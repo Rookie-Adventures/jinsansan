@@ -1,6 +1,16 @@
-import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { PerformanceMonitor } from '../../../infrastructure/monitoring/PerformanceMonitor';
 import { RouterAnalytics } from '../../../infrastructure/monitoring/RouterAnalytics';
+
+// 添加类型定义
+interface MetricData {
+  type: string;
+  timestamp: number;
+  data: {
+    name: string;
+    value: number;
+  };
+}
 
 describe('Data Reporting', () => {
   let performanceMonitor: PerformanceMonitor;
@@ -41,8 +51,8 @@ describe('Data Reporting', () => {
 
       const body = JSON.parse(mockFetch.mock.calls[0][1].body);
       expect(body).toHaveLength(3);
-      expect(body.map((m: any) => m.type)).toContain('custom');
-      expect(body.map((m: any) => m.type)).toContain('api_call');
+      expect(body.map((m: MetricData) => m.type)).toContain('custom');
+      expect(body.map((m: MetricData) => m.type)).toContain('api_call');
     });
 
     it('应该在上报失败时保留数据', async () => {
@@ -131,7 +141,7 @@ describe('Data Reporting', () => {
     it('应该处理无效数据', async () => {
       const mockConsoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
       
-      // @ts-ignore 故意传入无效数据
+      // @ts-expect-error 故意传入无效数据以测试错误处理
       performanceMonitor.trackCustomMetric(null, 'invalid');
       
       expect(mockConsoleError).toHaveBeenCalledWith('Invalid metric data:', expect.any(Error));
