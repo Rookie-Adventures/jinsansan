@@ -1,3 +1,5 @@
+import { errorLogger } from '@/utils/error/errorLogger';
+import { getErrorMessage } from '../error/errorUtils';
 import { encryptionManager } from './encryption';
 
 /**
@@ -36,6 +38,21 @@ interface AuditLog {
   ip?: string;
   userAgent?: string;
   status: 'success' | 'failure';
+  errorMessage?: string;
+  [key: string]: unknown;  // 添加索引签名
+}
+
+/**
+ * 告警数据接口
+ */
+interface AlertData {
+  type: AuditLogType;
+  level: AuditLogLevel;
+  action: string;
+  resource: string;
+  timestamp: string;
+  details: Record<string, unknown>;
+  status: string;
   errorMessage?: string;
   [key: string]: unknown;  // 添加索引签名
 }
@@ -107,7 +124,7 @@ export class AuditLogManager {
       const failedLog: AuditLog = {
         ...log,
         status: 'failure',
-        errorMessage: error instanceof Error ? error.message : String(error)
+        errorMessage: getErrorMessage(error)
       };
       
       // 存储失败的日志
@@ -171,18 +188,18 @@ export class AuditLogManager {
    */
   private storeFailedLog(log: AuditLog): void {
     try {
-      // 获取现有的失败日志
       const storedLogs = localStorage.getItem('failedAuditLogs');
       const failedLogs = storedLogs ? JSON.parse(storedLogs) as AuditLog[] : [];
-      
-      // 添加新的失败日志
       failedLogs.push(log);
-      
-      // 保存回 localStorage
       localStorage.setItem('failedAuditLogs', JSON.stringify(failedLogs));
     } catch (error) {
-      // 确保错误被正确记录
-      console.error('Failed to store failed log:', error instanceof Error ? error : new Error(String(error)));
+      errorLogger.log(
+        error instanceof Error ? error : new Error('Failed to store failed log'),
+        {
+          level: 'error',
+          context: { log }
+        }
+      );
     }
   }
 
@@ -191,7 +208,7 @@ export class AuditLogManager {
    */
   private triggerAlert(log: AuditLog): void {
     try {
-      const alertData = {
+      const alertData: AlertData = {
         type: log.type,
         level: log.level,
         action: log.action,
@@ -201,9 +218,22 @@ export class AuditLogManager {
         status: log.status,
         errorMessage: log.errorMessage
       };
-      console.error('Security Alert:', alertData);
+
+      errorLogger.log(
+        new Error(`Security Alert: ${log.action} on ${log.resource}`),
+        {
+          level: 'error',
+          context: alertData
+        }
+      );
     } catch (error) {
-      console.error('Failed to trigger alert:', error);
+      errorLogger.log(
+        error instanceof Error ? error : new Error('Failed to trigger alert'),
+        {
+          level: 'error',
+          context: { log }
+        }
+      );
     }
   }
 
@@ -254,6 +284,17 @@ export class AuditLogManager {
   clearOldLogs(maxAge: number): void {
     const cutoffTime = Date.now() - maxAge;
     this.logs = this.logs.filter(log => log.timestamp >= cutoffTime);
+  }
+
+  private async handleError(error: Error, context: Record<string, unknown>): Promise<void> {
+    errorLogger.log(error, {
+      level: 'error',
+      context: {
+        ...context,
+        timestamp: Date.now(),
+        source: 'AuditLogger'
+      }
+    });
   }
 }
 

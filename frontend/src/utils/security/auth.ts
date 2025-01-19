@@ -1,5 +1,5 @@
+import { errorLogger } from '@/utils/error/errorLogger';
 import { encryptionManager } from './encryption';
-import { AuditLogType, AuditLogLevel } from './audit';
 
 export interface AuthEvent {
   action: string;
@@ -46,6 +46,13 @@ export class AuthManager {
         this.sessionStartTime = Number(localStorage.getItem('session_start'));
         this.lastActivityTime = Number(localStorage.getItem('last_activity'));
       } catch (error) {
+        errorLogger.log(
+          error instanceof Error ? error : new Error('Failed to initialize from storage'),
+          {
+            level: 'error',
+            context: { source: 'AuthManager' }
+          }
+        );
         this.clearAuth();
       }
     }
@@ -147,11 +154,16 @@ export class AuthManager {
    * 记录认证事件
    */
   logAuthEvent(event: AuthEvent): void {
-    console.log('Auth Event:', {
-      ...event,
-      timestamp: Date.now()
-    });
-    // TODO: 将事件发送到审计日志系统
+    errorLogger.log(
+      new Error(`Auth Event: ${event.action}`),
+      {
+        level: event.status === 'success' ? 'info' : 'error',
+        context: {
+          ...event,
+          timestamp: Date.now()
+        }
+      }
+    );
   }
 
   /**
@@ -247,6 +259,16 @@ export class AuthManager {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('session_start');
     localStorage.removeItem('last_activity');
+  }
+
+  private handleAuthError(error: unknown): void {
+    errorLogger.log(error instanceof Error ? error : new Error('Authentication error'), {
+      level: 'error',
+      context: {
+        timestamp: Date.now(),
+        source: 'AuthManager'
+      }
+    });
   }
 }
 

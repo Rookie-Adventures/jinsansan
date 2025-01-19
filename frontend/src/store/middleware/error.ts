@@ -1,3 +1,4 @@
+import Logger from '@/utils/logger';
 import { Middleware } from '@reduxjs/toolkit';
 import { showToast } from '../slices/appSlice';
 import { isErrorAction } from '../types/actions';
@@ -14,7 +15,7 @@ export const errorMiddleware: Middleware = (store) => (next) => (action) => {
     }
     return next(action);
   } catch (err) {
-    console.error('Action Error:', err);
+    Logger.error('Action Error:', { context: 'errorMiddleware', data: err });
     store.dispatch(showToast({
       message: '系统错误，请稍后重试',
       severity: 'error',

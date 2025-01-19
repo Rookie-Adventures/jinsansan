@@ -2,6 +2,7 @@ import debounce from 'lodash/debounce';
 import React, { useCallback, useState } from 'react';
 import { Logger } from '../../infrastructure/logging/Logger';
 import { SearchParams, SearchService, SearchServiceImpl } from '../../infrastructure/search/SearchService';
+import { toError, toLogData } from '../../utils/error/errorUtils';
 
 interface SearchBarProps<T> {
   onSearchResult: (result: T[]) => void;
@@ -34,8 +35,8 @@ export function SearchBar<T>({
         const searchResult = await searchService.search<T>(params);
         onSearchResult(searchResult.items);
       } catch (error) {
-        logger.error('Search failed:', error);
-        onError?.(error as Error);
+        logger.error('Search failed:', toLogData(error));
+        onError?.(toError(error));
       }
     }, debounceTime),
     [onSearchResult, onError]

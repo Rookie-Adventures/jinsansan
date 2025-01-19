@@ -38,11 +38,11 @@ export interface AppState {
 }
 
 // Action类型
-export interface Action<T = any> {
+export interface Action<T = unknown> {
   type: string;
   payload?: T;
   error?: boolean;
-  meta?: any;
+  meta?: Record<string, unknown>;
 }
 
 // Thunk Action类型
@@ -52,4 +52,4 @@ export type ThunkAction<R = void, S = RootState> = (
 ) => R;
 
 // Dispatch类型
-export type Dispatch = <T = any>(action: Action<T> | ThunkAction) => any; 
+export type Dispatch = <T = unknown>(action: Action<T> | ThunkAction) => Promise<T> | T; 

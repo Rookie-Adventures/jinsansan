@@ -1,5 +1,4 @@
 import { RenderOptions, render as rtlRender } from '@testing-library/react'
-import { PropsWithChildren } from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 
@@ -20,7 +19,7 @@ function render(
     ...renderOptions
   }: CustomRenderOptions = {}
 ) {
-  function Wrapper({ children }: PropsWithChildren<Record<string, never>>): React.ReactElement {
+  function Wrapper({ children }: { children: React.ReactNode }): React.ReactElement {
     return (
       <Provider store={store}>
         <MemoryRouter initialEntries={[route]}>

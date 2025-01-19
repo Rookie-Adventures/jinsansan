@@ -17,7 +17,8 @@ export default [
         ecmaFeatures: {
           jsx: true
         },
-        project: ['./tsconfig.json', './tsconfig.eslint.json']
+        project: ['./tsconfig.json', './tsconfig.eslint.json'],
+        tsconfigRootDir: '.'
       },
       globals: {
         // 浏览器环境全局变量

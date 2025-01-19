@@ -1,6 +1,7 @@
-import { ErrorLogger } from '../http/error/logger';
-import { HttpErrorType } from '../http/error/types';
-import type { HttpError } from '../http/error/types';
+import { errorLogger } from '@/utils/error/errorLogger';
+import { ErrorLogger } from '@/utils/http/error/logger';
+import type { HttpError } from '@/utils/http/error/types';
+import { HttpErrorType } from '@/utils/http/error/types';
 
 interface RouterError extends Error {
   status?: number;
@@ -55,18 +56,52 @@ class RouterErrorHandler {
   }
 
   private handle404Error(error: RouterError): void {
-    console.error('Route not found:', error.message);
+    errorLogger.log(new Error('Route not found: ' + error.message), {
+      level: 'error',
+      context: {
+        status: error.status,
+        errorData: error.data
+      }
+    });
     // 可以在这里添加重定向到 404 页面的逻辑
   }
 
   private handle403Error(error: RouterError): void {
-    console.error('Access forbidden:', error.message);
+    errorLogger.log(new Error('Access forbidden: ' + error.message), {
+      level: 'error',
+      context: {
+        status: error.status,
+        errorData: error.data
+      }
+    });
     // 可以在这里添加重定向到 403 页面的逻辑
   }
 
   private handleUnknownError(error: RouterError): void {
-    console.error('Unknown router error:', error.message);
+    errorLogger.log(new Error('Unknown router error: ' + error.message), {
+      level: 'error',
+      context: {
+        status: error.status,
+        errorData: error.data
+      }
+    });
     // 可以在这里添加重定向到通用错误页面的逻辑
+  }
+
+  private handleWarning(warning: string): void {
+    errorLogger.log(new Error(warning), {
+      level: 'warn'
+    });
+  }
+
+  private handleCritical(error: Error): void {
+    errorLogger.log(error, {
+      level: 'critical',
+      context: {
+        timestamp: Date.now(),
+        isCritical: true
+      }
+    });
   }
 }
 

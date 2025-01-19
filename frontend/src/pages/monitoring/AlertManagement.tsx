@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
 import { AlertManager } from '@/infrastructure/monitoring/AlertManager';
 import type { AlertRule } from '@/infrastructure/monitoring/types';
+import { Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material';
+import { Button, IconButton, List, ListItem, ListItemText, Switch } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 export const AlertManagement: React.FC = () => {
@@ -45,7 +47,49 @@ export const AlertManagement: React.FC = () => {
 
   return (
     <div>
-      {/* 渲染告警规则列表和表单 */}
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => handleAddRule({
+          name: '新规则',
+          type: 'threshold',
+          metric: '',
+          condition: { operator: '>', value: 0 },
+          severity: 'warning',
+          enabled: true,
+          notification: {}
+        })}
+      >
+        添加规则
+      </Button>
+
+      <List>
+        {rules.map((rule) => (
+          <ListItem
+            key={rule.id}
+            secondaryAction={
+              <>
+                <Switch
+                  edge="end"
+                  checked={rule.enabled}
+                  onChange={(e) => handleEnableRule(rule.id, e.target.checked)}
+                />
+                <IconButton edge="end" onClick={() => handleUpdateRule(rule)}>
+                  <EditIcon />
+                </IconButton>
+                <IconButton edge="end" onClick={() => handleDeleteRule(rule.id)}>
+                  <DeleteIcon />
+                </IconButton>
+              </>
+            }
+          >
+            <ListItemText
+              primary={rule.name}
+              secondary={`${rule.metric} ${rule.condition.operator} ${rule.condition.value}`}
+            />
+          </ListItem>
+        ))}
+      </List>
     </div>
   );
 }; 

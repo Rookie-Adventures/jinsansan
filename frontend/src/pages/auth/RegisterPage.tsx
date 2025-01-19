@@ -1,11 +1,12 @@
+import { Alert, Box, CircularProgress, Snackbar } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Alert, Snackbar, CircularProgress, Box } from '@mui/material';
 
 import AuthCard from '@/components/auth/AuthCard';
 import RegisterForm from '@/components/auth/RegisterForm';
 import { useAuth, useAuthForm } from '@/hooks/auth';
 import type { RegisterFormData } from '@/types/auth';
+import Logger from '@/utils/logger';
 
 const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
@@ -69,7 +70,13 @@ const RegisterPage: React.FC = () => {
       await register(formData);
       // 注册成功后的导航由 useAuth 中处理
     } catch (error) {
-      console.error('Register failed:', error);
+      Logger.error(error, { 
+        context: 'RegisterPage', 
+        data: { 
+          username: formData.username,
+          email: formData.email 
+        } 
+      });
       setErrorMessage(error instanceof Error ? error.message : '注册失败，请重试');
       setShowError(true);
     }

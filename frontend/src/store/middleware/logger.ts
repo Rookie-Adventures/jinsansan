@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Middleware } from '@reduxjs/toolkit';
 import type { AnyAction } from 'redux';
 

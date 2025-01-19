@@ -119,6 +119,31 @@ export interface MonitorConfig {
 }
 
 /**
+ * 告警通知类型
+ */
+export type AlertNotificationType = 'trigger' | 'resolve';
+
+/**
+ * 告警通知
+ */
+export interface AlertNotification {
+  /** 通知类型 */
+  type: AlertNotificationType;
+  /** 告警规则 */
+  rule: AlertRule;
+  /** 告警值 */
+  value: number;
+  /** 时间戳 */
+  timestamp: number;
+  /** 邮件接收人 */
+  email?: string[];
+  /** Webhook URL */
+  webhook?: string;
+  /** Slack 频道 */
+  slack?: string;
+}
+
+/**
  * 告警规则类型
  */
 export type AlertRuleType = 'threshold' | 'trend' | 'anomaly';
@@ -141,10 +166,7 @@ export interface AlertRule {
   /** 监控指标 */
   metric: string;
   /** 告警条件 */
-  condition: {
-    operator: '>' | '<' | '>=' | '<=' | '==' | '!=';
-    value: number;
-  };
+  condition: AlertCondition;
   /** 告警级别 */
   severity: AlertSeverity;
   /** 是否启用 */
@@ -152,6 +174,8 @@ export interface AlertRule {
   /** 通知配置 */
   notification: {
     email?: string[];
+    webhook?: string;
+    slack?: string;
   };
 }
 
@@ -185,29 +209,21 @@ export interface Alert {
   ruleId: string;
   /** 告警值 */
   value: number;
+  /** 时间戳 */
+  timestamp: number;
+  /** 告警消息 */
+  message: string;
   /** 开始时间 */
-  startTime: number;
+  startTime?: number;
   /** 结束时间 */
   endTime?: number;
   /** 告警状态 */
   status: AlertStatus;
 }
 
-/**
- * 告警通知类型
- */
-export type AlertNotificationType = 'trigger' | 'resolve';
+export type AlertOperator = '>' | '<' | '>=' | '<=' | '==' | '!=';
 
-/**
- * 告警通知
- */
-export interface AlertNotification {
-  /** 通知类型 */
-  type: AlertNotificationType;
-  /** 告警规则 */
-  rule: AlertRule;
-  /** 告警值 */
+export interface AlertCondition {
+  operator: AlertOperator;
   value: number;
-  /** 时间戳 */
-  timestamp: number;
 } 

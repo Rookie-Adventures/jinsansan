@@ -3,9 +3,8 @@ import { FileService, FileServiceImpl } from '../../infrastructure/file/FileServ
 
 // 定义上传结果的类型
 interface UploadResult {
-  url: string;
-  filename: string;
-  size: number;
+  success: boolean;
+  message: string;
 }
 
 interface FileUploaderProps {

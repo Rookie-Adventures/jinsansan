@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useAuth } from '@/hooks/auth';
 import Loading from '@/components/common/Loading';
+import { useAuth } from '@/hooks/auth';
+import Logger from '@/utils/logger';
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -20,7 +21,7 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
           await getCurrentUser();
         }
       } catch (error) {
-        console.error('Failed to verify auth:', error);
+        Logger.error('Failed to verify auth:', { context: 'AuthGuard', data: error });
         navigate('/login');
       } finally {
         setIsLoading(false);

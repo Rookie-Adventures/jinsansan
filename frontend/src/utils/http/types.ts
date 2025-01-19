@@ -1,8 +1,5 @@
 import type { AxiosRequestConfig } from 'axios';
-import type { ProgressInfo } from './progress-monitor';
-import type { HttpConfig } from './config';
-import type { ApiResponse } from '@/types/api';
-import { HttpErrorType, type ErrorSeverity, type ErrorTrace, type ErrorMetadata } from './error/types';
+import { HttpErrorType, type ErrorMetadata, type ErrorSeverity, type ErrorTrace } from './error/types';
 
 /**
  * HTTP请求配置扩展

@@ -16,13 +16,13 @@ export type DeepReadonly<T> = {
 };
 
 // 函数类型
-export type AnyFunction = (...args: any[]) => any;
+export type AnyFunction = (...args: unknown[]) => unknown;
 
 // 异步函数类型
-export type AsyncFunction = (...args: any[]) => Promise<any>;
+export type AsyncFunction = (...args: unknown[]) => Promise<unknown>;
 
 // 记录类型
-export type RecordOf<K extends keyof any, T> = {
+export type RecordOf<K extends PropertyKey, T> = {
   [P in K]: T;
 };
 
@@ -41,4 +41,4 @@ export type Required<T> = {
 
 // 联合转交叉类型
 export type UnionToIntersection<U> = 
-  (U extends any ? (k: U) => void : never) extends ((k: infer I) => void) ? I : never; 
+  (U extends unknown ? (k: U) => void : never) extends ((k: infer I) => void) ? I : never; 

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { errorLogger } from '../../../errorLogger';
 import { HttpError } from '../error';

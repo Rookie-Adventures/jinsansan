@@ -1,10 +1,11 @@
+import { Alert, Box, CircularProgress, Snackbar } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Alert, Snackbar, CircularProgress, Box } from '@mui/material';
 
 import AuthCard from '@/components/auth/AuthCard';
 import LoginForm from '@/components/auth/LoginForm';
 import { useAuth, useAuthForm } from '@/hooks/auth';
+import Logger from '@/utils/logger';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ const LoginPage: React.FC = () => {
       await login(formData);
       // 登录成功后的导航由 useAuth 中处理
     } catch (error) {
-      console.error('Login failed:', error);
+      Logger.error(error, { context: 'LoginPage', data: { username: formData.username } });
       setErrorMessage(error instanceof Error ? error.message : '登录失败，请重试');
       setShowError(true);
     }

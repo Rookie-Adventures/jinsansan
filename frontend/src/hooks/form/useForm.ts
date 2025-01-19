@@ -1,14 +1,18 @@
-import { useForm as useHookForm, DefaultValues, Resolver } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import type { ObjectSchema, AnyObject } from 'yup';
+import { DefaultValues, Resolver, useForm as useHookForm } from 'react-hook-form';
+import type { ObjectSchema } from 'yup';
 
-interface UseFormProps<T extends Record<string, any>> {
+interface FormData {
+  [key: string]: unknown;
+}
+
+interface UseFormProps<T extends FormData> {
   defaultValues?: DefaultValues<T>;
   schema?: ObjectSchema<T>;
   mode?: 'onSubmit' | 'onChange' | 'onBlur' | 'onTouched' | 'all';
 }
 
-export const useForm = <T extends Record<string, any>>({
+export const useForm = <T extends FormData>({
   defaultValues,
   schema,
   mode = 'onSubmit'

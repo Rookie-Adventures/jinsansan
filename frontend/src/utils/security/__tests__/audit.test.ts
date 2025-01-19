@@ -1,12 +1,13 @@
 /**
  * @jest-environment jsdom
  */
-import { vi, describe, test, expect, beforeEach, afterEach } from 'vitest';
-import { auditLogManager, AuditLogType, AuditLogLevel } from '../audit';
+import { errorLogger } from '@/utils/error/errorLogger';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import { AuditLogLevel, auditLogManager, AuditLogType } from '../audit';
 
 describe('AuditLogManager', () => {
   const mockFetch = vi.fn();
-  const mockConsoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+  const mockErrorLogger = vi.spyOn(errorLogger, 'log').mockImplementation(async () => {});
   const baseTime = new Date('2024-01-01T00:00:00Z').getTime();
   
   // 保存原始的 localStorage
@@ -39,8 +40,8 @@ describe('AuditLogManager', () => {
       json: () => Promise.resolve({}),
     } as Response);
     
-    // 清理 console.error 的 mock
-    mockConsoleError.mockClear();
+    // 清理 errorLogger 的 mock
+    mockErrorLogger.mockClear();
   });
 
   afterEach(() => {
@@ -228,15 +229,8 @@ describe('AuditLogManager', () => {
     });
 
     test('应该触发严重级别的告警', async () => {
-      // 确保 console.error 被正确模拟
-      mockConsoleError.mockClear();
-
-      // 模拟成功的API调用
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        json: () => Promise.resolve({}),
-      } as Response);
+      // 确保 errorLogger 被正确模拟
+      mockErrorLogger.mockClear();
 
       await auditLogManager.log(
         AuditLogType.SECURITY,
@@ -249,13 +243,16 @@ describe('AuditLogManager', () => {
       // 等待一下以确保异步操作完成
       await vi.runAllTimersAsync();
 
-      expect(mockConsoleError).toHaveBeenCalledWith(
-        'Security Alert:',
+      expect(mockErrorLogger).toHaveBeenCalledWith(
+        expect.any(Error),
         expect.objectContaining({
-          type: AuditLogType.SECURITY,
-          level: AuditLogLevel.CRITICAL,
-          action: 'security-breach',
-          resource: 'system'
+          level: 'error',
+          context: expect.objectContaining({
+            type: AuditLogType.SECURITY,
+            level: AuditLogLevel.CRITICAL,
+            action: 'security-breach',
+            resource: 'system'
+          })
         })
       );
     });
@@ -272,8 +269,8 @@ describe('AuditLogManager', () => {
       // 模拟API调用失败
       mockFetch.mockRejectedValueOnce(new Error('Network error'));
 
-      // 确保 console.error 被正确模拟
-      mockConsoleError.mockClear();
+      // 确保 errorLogger 被正确模拟
+      mockErrorLogger.mockClear();
 
       await expect(auditLogManager.log(
         AuditLogType.SYSTEM,
@@ -286,9 +283,14 @@ describe('AuditLogManager', () => {
       // 等待一下以确保异步操作完成
       await vi.runAllTimersAsync();
 
-      expect(mockConsoleError).toHaveBeenCalledWith(
-        'Failed to store failed log:',
-        expect.any(Error)
+      expect(mockErrorLogger).toHaveBeenCalledWith(
+        expect.any(Error),
+        expect.objectContaining({
+          level: 'error',
+          context: expect.objectContaining({
+            log: expect.any(Object)
+          })
+        })
       );
     });
   });

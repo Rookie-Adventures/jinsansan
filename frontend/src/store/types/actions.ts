@@ -1,4 +1,4 @@
-import { Action as ReduxAction, AnyAction } from '@reduxjs/toolkit';
+import { AnyAction } from '@reduxjs/toolkit';
 
 // 基础 Action 类型
 export interface BaseAction extends AnyAction {

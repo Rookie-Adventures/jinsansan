@@ -24,7 +24,9 @@ export class AlertManager {
   }
 
   public updateRule(rule: AlertRule): void {
-    this.rules.set(rule.id, rule);
+    if (this.rules.has(rule.id)) {
+      this.rules.set(rule.id, rule);
+    }
   }
 
   public deleteRule(ruleId: string): void {
@@ -79,6 +81,8 @@ export class AlertManager {
               id: alertId,
               ruleId: rule.id,
               value,
+              timestamp: timestamp,
+              message: `${rule.metric} exceeded threshold: ${value} ${rule.condition.operator} ${rule.condition.value}`,
               startTime: recentTimestamps[0],
               status: 'active'
             };
@@ -109,19 +113,21 @@ export class AlertManager {
   }
 
   private checkThreshold(rule: AlertRule, value: number): boolean {
-    switch (rule.condition.operator) {
+    const { operator, value: conditionValue } = rule.condition;
+    
+    switch (operator) {
       case '>':
-        return value > rule.condition.value;
+        return value > conditionValue;
       case '<':
-        return value < rule.condition.value;
+        return value < conditionValue;
       case '>=':
-        return value >= rule.condition.value;
+        return value >= conditionValue;
       case '<=':
-        return value <= rule.condition.value;
+        return value <= conditionValue;
       case '==':
-        return value === rule.condition.value;
+        return value === conditionValue;
       case '!=':
-        return value !== rule.condition.value;
+        return value !== conditionValue;
       default:
         return false;
     }

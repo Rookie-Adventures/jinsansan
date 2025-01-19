@@ -1,8 +1,13 @@
 import { http } from '../http/HttpClient';
 
+export interface FilterValue {
+  value: string | number | boolean;
+  operator?: 'eq' | 'neq' | 'gt' | 'gte' | 'lt' | 'lte' | 'contains' | 'startsWith' | 'endsWith';
+}
+
 export interface SearchParams {
   keyword: string;
-  filters?: Record<string, any>;
+  filters?: Record<string, FilterValue>;
   page?: number;
   pageSize?: number;
   sortBy?: string;

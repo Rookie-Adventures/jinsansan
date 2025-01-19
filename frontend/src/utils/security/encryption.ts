@@ -1,3 +1,4 @@
+import { errorLogger } from '@/utils/error/errorLogger';
 import CryptoJS from 'crypto-js';
 
 /**
@@ -49,7 +50,7 @@ export class EncryptionManager {
       const encrypted = CryptoJS.AES.encrypt(data, key);
       return salt + encrypted.toString();
     } catch (error) {
-      console.error('Encryption failed:', error);
+      this.handleEncryptionError(error, 'encrypt');
       throw new Error('加密失败');
     }
   }
@@ -69,7 +70,7 @@ export class EncryptionManager {
       }
       return result;
     } catch (error) {
-      console.error('Decryption failed:', error);
+      this.handleDecryptionError(error, 'decrypt');
       throw new Error('解密失败：' + (error instanceof Error ? error.message : '未知错误'));
     }
   }
@@ -101,6 +102,34 @@ export class EncryptionManager {
    */
   updateConfig(config: Partial<EncryptionConfig>): void {
     this.config = { ...this.config, ...config };
+  }
+
+  private handleEncryptionError(error: unknown, operation: string): void {
+    errorLogger.log(
+      error instanceof Error ? error : new Error(`Encryption error in ${operation}`),
+      {
+        level: 'error',
+        context: {
+          operation,
+          timestamp: Date.now(),
+          source: 'EncryptionManager'
+        }
+      }
+    );
+  }
+
+  private handleDecryptionError(error: unknown, operation: string): void {
+    errorLogger.log(
+      error instanceof Error ? error : new Error(`Decryption error in ${operation}`),
+      {
+        level: 'error',
+        context: {
+          operation,
+          timestamp: Date.now(),
+          source: 'EncryptionManager'
+        }
+      }
+    );
   }
 }
 

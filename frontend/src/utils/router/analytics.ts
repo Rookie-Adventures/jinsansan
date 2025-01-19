@@ -1,3 +1,4 @@
+import { errorLogger } from '@/utils/error/errorLogger';
 import { useEffect } from 'react';
 import { useLocation, useNavigationType } from 'react-router-dom';
 
@@ -54,8 +55,17 @@ class RouterAnalytics {
         },
         body: JSON.stringify(analytics),
       });
-    } catch (error) {
-      console.error('Failed to report route analytics:', error);
+    } catch (error: unknown) {
+      errorLogger.log(
+        error instanceof Error ? error : new Error('Analytics error: ' + String(error)),
+        {
+          level: 'error',
+          context: {
+            route: analytics.path,
+            timestamp: analytics.timestamp
+          }
+        }
+      );
     }
   }
 
