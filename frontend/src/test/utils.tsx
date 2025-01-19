@@ -35,7 +35,7 @@ function render(
   }
 }
 
-// 重新导出所有 testing-library/react 的工具
+// 只导出必要的工具
 export * from '@testing-library/react'
 export { render }
 

@@ -1,3 +1,7 @@
+import { HttpError as HttpErrorClass } from './error';
+import { errorMessages } from './messages';
+import { ErrorReporter } from './reporter';
+import { ErrorRetryMiddleware } from './retry';
 import { HttpErrorType, type ErrorSeverity, type HttpError } from './types';
 
 interface NotificationOptions {
@@ -19,6 +23,8 @@ export class ErrorNotificationManager {
     condition: NotificationRule;
     options: NotificationOptions;
   }> = [];
+  private retryMiddleware: ErrorRetryMiddleware;
+  private errorReporter: ErrorReporter;
 
   private readonly defaultOptions: NotificationOptions = {
     duration: 5000,
@@ -26,7 +32,10 @@ export class ErrorNotificationManager {
     type: 'error',
   };
 
-  private constructor() {}
+  private constructor() {
+    this.retryMiddleware = new ErrorRetryMiddleware();
+    this.errorReporter = ErrorReporter.getInstance();
+  }
 
   static getInstance(): ErrorNotificationManager {
     if (!ErrorNotificationManager._instance) {
@@ -55,7 +64,28 @@ export class ErrorNotificationManager {
     this.notificationRules.push({ condition, options });
   }
 
-  notify(error: HttpError): void {
+  async notify(error: HttpError): Promise<void> {
+    // 确保 error 具有必需的属性
+    const httpError = error as HttpErrorClass;
+    
+    // 尝试重试
+    try {
+      await this.retryMiddleware.handle(
+        () => Promise.reject(httpError),
+        httpError
+      );
+    } catch (retryError) {
+      if (retryError instanceof Error && 'type' in retryError) {
+        const errorInstance = retryError as HttpErrorClass;
+        // 重试失败，继续显示通知
+        this.showNotification(errorInstance);
+        // 上报错误
+        this.errorReporter.report(errorInstance);
+      }
+    }
+  }
+
+  private showNotification(error: HttpErrorClass): void {
     if (!this.shouldNotify(error)) {
       return;
     }
@@ -86,7 +116,7 @@ export class ErrorNotificationManager {
     window.dispatchEvent(event);
   }
 
-  private shouldNotify(error: HttpError): boolean {
+  private shouldNotify(error: HttpErrorClass): boolean {
     // 检查是否是被忽略的错误类型
     if (this.ignoredTypes.has(error.type)) {
       return false;
@@ -106,63 +136,35 @@ export class ErrorNotificationManager {
     return errorLevelIndex >= currentLevelIndex;
   }
 
-  private getNotificationOptions(error: HttpError): NotificationOptions {
+  private getNotificationOptions(error: HttpErrorClass): NotificationOptions {
     // 检查是否有匹配的通知规则
     const matchingRule = this.notificationRules.find(rule => rule.condition(error));
     if (matchingRule) {
       return matchingRule.options;
     }
 
-    // 根据错误严重程度设置通知类型
-    let type: NotificationOptions['type'] = 'error';
-    switch (error.severity) {
-      case 'warning':
-        type = 'warning';
-        break;
-      case 'info':
-        type = 'info';
-        break;
-      case 'critical':
-        type = 'error';
-        break;
+    return {
+      type: this.getNotificationTypeFromError(error)
+    };
+  }
+
+  private getErrorMessage(error: HttpErrorClass): string {
+    const template = errorMessages[error.type];
+    if (!template) {
+      return error.message || errorMessages[HttpErrorType.UNKNOWN].message;
     }
 
-    return { type };
-  }
-
-  private getErrorMessage(error: HttpError): string {
-    return error.message || this.getDefaultErrorMessage(error);
-  }
-
-  private getDefaultErrorMessage(error: HttpError): string {
-    switch (error.type) {
-      case HttpErrorType.NETWORK:
-        return '网络连接失败，请检查网络设置';
-      case HttpErrorType.TIMEOUT:
-        return '请求超时，请稍后重试';
-      case HttpErrorType.AUTH:
-        return error.status === 401 ? '登录已过期，请重新登录' : '没有权限执行此操作';
-      case HttpErrorType.SERVER:
-        return '服务器错误，请稍后重试';
-      case HttpErrorType.CLIENT:
-        return '请求参数错误';
-      case HttpErrorType.VALIDATION:
-        return '输入数据验证失败';
-      case HttpErrorType.BUSINESS:
-        return '操作失败，请检查后重试';
-      case HttpErrorType.CANCEL:
-        return '请求已取消';
-      case HttpErrorType.REACT_ERROR:
-        return process.env.NODE_ENV === 'development' 
-          ? `组件渲染错误: ${error.message}`
-          : '页面显示异常，请刷新重试';
-      default:
-        return '发生未知错误，请稍后重试';
+    // 如果是React错误且在开发环境，替换错误信息
+    if (error.type === HttpErrorType.REACT_ERROR && process.env.NODE_ENV === 'development') {
+      return template.message.replace('${error}', error.message);
     }
+
+    return template.message;
   }
 
-  private getErrorDescription(error: HttpError): string {
-    const parts = [];
+  private getErrorDescription(error: HttpErrorClass): string {
+    const template = errorMessages[error.type];
+    const parts = [template?.description || ''];
 
     if (error.status) {
       parts.push(`状态码: ${error.status}`);
@@ -180,10 +182,10 @@ export class ErrorNotificationManager {
       }
     }
 
-    return parts.join(' | ');
+    return parts.filter(Boolean).join(' | ');
   }
 
-  private getNotificationTypeFromError(error: HttpError): 'error' | 'warning' | 'info' {
+  private getNotificationTypeFromError(error: HttpErrorClass): 'error' | 'warning' | 'info' {
     switch (error.severity) {
       case 'critical':
         return 'error';

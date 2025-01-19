@@ -1,12 +1,13 @@
 import eslint from '@eslint/js';
 import * as tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
+import { defineConfig } from 'eslint';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
-export default [
+export default defineConfig([
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
@@ -49,7 +50,10 @@ export default [
     plugins: {
       '@typescript-eslint': tseslint,
       'react': react,
-      'react-hooks': reactHooks
+      'react-hooks': reactHooks,
+      'import': 'eslint-plugin-import',
+      'unused-imports': 'eslint-plugin-unused-imports',
+      'sonarjs': 'eslint-plugin-sonarjs'
     },
     rules: {
       ...eslint.configs.recommended.rules,
@@ -70,7 +74,42 @@ export default [
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
       'no-unreachable': 'error',
-      'no-global-assign': 'error'
+      'no-global-assign': 'error',
+      // 检测重复代码
+      'sonarjs/no-duplicate-string': ['error', 5],
+      'sonarjs/cognitive-complexity': ['error', 15],
+      'sonarjs/no-identical-functions': 'error',
+      
+      // 检测未使用的导入
+      'unused-imports/no-unused-imports': 'error',
+      'unused-imports/no-unused-vars': [
+        'warn',
+        {
+          vars: 'all',
+          varsIgnorePattern: '^_',
+          args: 'after-used',
+          argsIgnorePattern: '^_'
+        }
+      ],
+      
+      // 导入顺序规范
+      'import/order': [
+        'error',
+        {
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            'parent',
+            'sibling',
+            'index'
+          ],
+          'newlines-between': 'always',
+          alphabetize: {
+            order: 'asc'
+          }
+        }
+      ]
     },
     settings: {
       react: {
@@ -99,4 +138,4 @@ export default [
       'no-console': 'off'
     }
   }
-];
+]);

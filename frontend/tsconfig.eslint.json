@@ -17,7 +17,8 @@
     "*.ts",
     ".eslintrc.js",
     "eslint.config.js",
-    "vite.config.ts"
+    "vite.config.ts",
+    "jest.config.js"
   ],
   "exclude": ["node_modules", "dist", "build"]
 } 

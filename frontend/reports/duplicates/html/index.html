@@ -1,0 +1,506 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Copy/Paste Detector Report</title><link href="styles/tailwind.css" rel="stylesheet"><link href="styles/prism.css" rel="stylesheet"></head><body class="bg-gray-100"><header class="bg-white shadow py-4"><div class="container mx-auto px-4"><h1 class="text-3xl font-semibold text-gray-800">jscpd - copy/paste report</h1></div></header><main class="container mx-auto my-8 p-4 bg-white shadow rounded"><section class="mb-8" id="dashboard"><h2 class="text-2xl font-semibold text-gray-700 mb-4">Dashboard</h2><div class="grid grid-cols-4 gap-4"><div class="bg-blue-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-blue-800 mb-2">Total Files</h3><span class="text-4xl font-bold text-blue-800">183</span></div><div class="bg-green-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-green-800 mb-2">Total Lines of Code</h3><span class="text-4xl font-bold text-green-800">13980</span></div><div class="bg-yellow-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-yellow-800 mb-2">Number of Clones</h3><span class="text-4xl font-bold text-yellow-800">19</span></div><div class="bg-red-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-red-800 mb-2">Duplicated Lines</h3><span class="text-4xl font-bold text-red-800">497 (3.56%)</span></div></div></section><section class="mb-8" id="formats"><h2 class="text-2xl font-semibold text-gray-700 mb-4">Formats with Duplications</h2><table class="w-full table-auto"><thead><tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal"><th class="py-3 px-6 text-left">Format</th><th class="py-3 px-6 text-left">Files</th><th class="py-3 px-6 text-left">Lines</th><th class="py-3 px-6 text-left">Clones</th><th class="py-3 px-6 text-left">Duplicated Lines</th><th class="py-3 px-6 text-left">Duplicated Tokens</th></tr></thead><tbody><tr class="bg-white border-b border-gray-200 text-gray-800 text-sm"><td class="py-3 px-6"><a class="text-blue-600 hover:underline" href="#typescript-clones">typescript</a></td><td class="py-3 px-6">105</td><td class="py-3 px-6">8941</td><td class="py-3 px-6">9</td><td class="py-3 px-6">138</td><td class="py-3 px-6">1232</td></tr><tr class="bg-white border-b border-gray-200 text-gray-800 text-sm"><td class="py-3 px-6"><a class="text-blue-600 hover:underline" href="#javascript-clones">javascript</a></td><td class="py-3 px-6">38</td><td class="py-3 px-6">1516</td><td class="py-3 px-6">4</td><td class="py-3 px-6">228</td><td class="py-3 px-6">1806</td></tr><tr class="bg-white border-b border-gray-200 text-gray-800 text-sm"><td class="py-3 px-6"><a class="text-blue-600 hover:underline" href="#tsx-clones">tsx</a></td><td class="py-3 px-6">40</td><td class="py-3 px-6">3523</td><td class="py-3 px-6">6</td><td class="py-3 px-6">131</td><td class="py-3 px-6">1026</td></tr></tbody></table></section><section class="mb-8" id="txt-clones"><a name="typescript-clones"></a><h2 class="text-2xl font-semibold text-gray-700 mb-4">typescript</h2><div class="divide-y divide-gray-200 border-b-2"><div class="py-4"><p class="text-gray-600">src\utils\http\error\__tests__\recovery.test.ts (Line 97:5 - Line 112:6), src\utils\http\error\__tests__\recovery.test.ts (Line 75:21 - Line 90:5)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn0" onclick="toggleCodeBlock('cloneGroup0', 'expandBtn0', 'collapseBtn0')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn0" onclick="toggleCodeBlock('cloneGroup0', 'expandBtn0', 'collapseBtn0')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup0"><code class="language-typescript text-sm text-gray-800">),
+        removeItem: vi.fn()
+      };
+      Object.defineProperty(window, 'localStorage', {
+        value: mockLocalStorage
+      });
+
+      const authError = new HttpError({
+        type: HttpErrorType.AUTH,
+        message: 'Unauthorized',
+        status: 401,
+        recoverable: true
+      });
+
+      const result = await manager.attemptRecovery(authError);
+      expect(result).toBe(false</code></pre></div><div class="py-4"><p class="text-gray-600">src\utils\http\error\__tests__\logger.test.ts (Line 98:12 - Line 112:7), src\utils\http\error\__tests__\notification.test.ts (Line 84:21 - Line 98:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn1" onclick="toggleCodeBlock('cloneGroup1', 'expandBtn1', 'collapseBtn1')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn1" onclick="toggleCodeBlock('cloneGroup1', 'expandBtn1', 'collapseBtn1')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup1"><code class="language-typescript text-sm text-gray-800">('critical');
+
+      const warningError = new HttpError({
+        type: HttpErrorType.CLIENT,
+        message: 'Warning message',
+        severity: 'warning'
+      });
+
+      const criticalError = new HttpError({
+        type: HttpErrorType.SERVER,
+        message: 'Critical error',
+        severity: 'critical'
+      });
+
+      logger</code></pre></div><div class="py-4"><p class="text-gray-600">src\utils\security\__tests__\audit.test.ts (Line 21:5 - Line 33:8), src\utils\security\__tests__\setup.ts (Line 4:1 - Line 16:14)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn2" onclick="toggleCodeBlock('cloneGroup2', 'expandBtn2', 'collapseBtn2')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn2" onclick="toggleCodeBlock('cloneGroup2', 'expandBtn2', 'collapseBtn2')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup2"><code class="language-typescript text-sm text-gray-800">const store = new Map&lt;string, string&gt;();
+    const localStorageMock = {
+      getItem: vi.fn((key: string) =&gt; store.get(key) || null),
+      setItem: vi.fn((key: string, value: string) =&gt; store.set(key, value)),
+      removeItem: vi.fn((key: string) =&gt; store.delete(key)),
+      clear: vi.fn(() =&gt; store.clear()),
+      length: 0,
+      key: vi.fn((index: number) =&gt; null),
+    } as Storage;
+    
+    global.localStorage = localStorageMock;
+    
+    // 清理日志</code></pre></div><div class="py-4"><p class="text-gray-600">src\infrastructure\monitoring\__tests__\DataReporter.test.ts (Line 140:2 - Line 153:11), src\infrastructure\monitoring\__tests__\DataReporter.test.ts (Line 126:2 - Line 139:12)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn3" onclick="toggleCodeBlock('cloneGroup3', 'expandBtn3', 'collapseBtn3')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn3" onclick="toggleCodeBlock('cloneGroup3', 'expandBtn3', 'collapseBtn3')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup3"><code class="language-typescript text-sm text-gray-800">);
+      global.fetch = mockFetch;
+
+      performanceMonitor.trackCustomMetric('test-metric', 100);
+      await performanceMonitor.flush();
+
+      expect(errorLogger.log).toHaveBeenCalledWith(
+        expect.any(Error),
+        expect.objectContaining({ level: 'error' })
+      );
+      expect(performanceMonitor.getMetrics()).toHaveLength(1);
+    });
+
+    it('应该处理无效数据'</code></pre></div><div class="py-4"><p class="text-gray-600">src\infrastructure\monitoring\__tests__\AlertManager.test.ts (Line 69:7 - Line 86:11), src\infrastructure\monitoring\__tests__\AlertManager.test.ts (Line 16:7 - Line 33:3)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn4" onclick="toggleCodeBlock('cloneGroup4', 'expandBtn4', 'collapseBtn4')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn4" onclick="toggleCodeBlock('cloneGroup4', 'expandBtn4', 'collapseBtn4')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup4"><code class="language-typescript text-sm text-gray-800">, () =&gt; {
+    const testRule: AlertRule = {
+      id: 'test-rule-1',
+      name: '测试规则1',
+      type: 'threshold',
+      metric: 'cpu_usage',
+      condition: {
+        operator: '&gt;',
+        value: 80
+      },
+      severity: 'warning',
+      enabled: true,
+      notification: {
+        email: ['test@example.com']
+      }
+    };
+
+    beforeEach</code></pre></div><div class="py-4"><p class="text-gray-600">src\infrastructure\monitoring\__tests__\AlertManager.test.ts (Line 192:7 - Line 213:13), src\infrastructure\monitoring\__tests__\AlertManager.test.ts (Line 16:7 - Line 90:17)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn5" onclick="toggleCodeBlock('cloneGroup5', 'expandBtn5', 'collapseBtn5')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn5" onclick="toggleCodeBlock('cloneGroup5', 'expandBtn5', 'collapseBtn5')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup5"><code class="language-typescript text-sm text-gray-800">, () =&gt; {
+    const testRule: AlertRule = {
+      id: 'test-rule-1',
+      name: '测试规则1',
+      type: 'threshold',
+      metric: 'cpu_usage',
+      condition: {
+        operator: '&gt;',
+        value: 80
+      },
+      severity: 'warning',
+      enabled: true,
+      notification: {
+        email: ['test@example.com']
+      }
+    };
+
+    beforeEach(() =&gt; {
+      alertManager.addRule(testRule);
+    });
+
+    it('应该正确记录告警历史'</code></pre></div><div class="py-4"><p class="text-gray-600">src\infrastructure\monitoring\__tests__\AlertManager.test.ts (Line 252:7 - Line 273:16), src\infrastructure\monitoring\__tests__\AlertManager.test.ts (Line 16:7 - Line 90:17)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn6" onclick="toggleCodeBlock('cloneGroup6', 'expandBtn6', 'collapseBtn6')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn6" onclick="toggleCodeBlock('cloneGroup6', 'expandBtn6', 'collapseBtn6')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup6"><code class="language-typescript text-sm text-gray-800">, () =&gt; {
+    const testRule: AlertRule = {
+      id: 'test-rule-1',
+      name: '测试规则1',
+      type: 'threshold',
+      metric: 'cpu_usage',
+      condition: {
+        operator: '&gt;',
+        value: 80
+      },
+      severity: 'warning',
+      enabled: true,
+      notification: {
+        email: ['test@example.com']
+      }
+    };
+
+    beforeEach(() =&gt; {
+      alertManager.addRule(testRule);
+    });
+
+    it('应该能够添加多个通知处理器'</code></pre></div><div class="py-4"><p class="text-gray-600">src\utils\http\decorators.ts (Line 36:9 - Line 48:12), src\utils\http\decorators.ts (Line 13:9 - Line 25:12)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn10" onclick="toggleCodeBlock('cloneGroup10', 'expandBtn10', 'collapseBtn10')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn10" onclick="toggleCodeBlock('cloneGroup10', 'expandBtn10', 'collapseBtn10')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup10"><code class="language-typescript text-sm text-gray-800">(
+    (config: HttpRequestConfig, resolve: (value: unknown) =&gt; void, reject: (reason?: unknown) =&gt; void) =&gt; {
+      fn(config)
+        .then(resolve)
+        .catch(reject);
+    },
+    wait,
+    options
+  );
+
+  return (config: HttpRequestConfig) =&gt; {
+    return new Promise((resolve, reject) =&gt; {
+      throttledFn</code></pre></div><div class="py-4"><p class="text-gray-600">src\mocks\handlers\audit.ts (Line 5:1 - Line 18:2), src\utils\security\audit.ts (Line 29:1 - Line 42:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn15" onclick="toggleCodeBlock('cloneGroup15', 'expandBtn15', 'collapseBtn15')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn15" onclick="toggleCodeBlock('cloneGroup15', 'expandBtn15', 'collapseBtn15')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup15"><code class="language-typescript text-sm text-gray-800">interface AuditLog {
+  id: string;
+  timestamp: number;
+  type: AuditLogType;
+  level: AuditLogLevel;
+  userId?: string;
+  action: string;
+  resource: string;
+  details: Record&lt;string, unknown&gt;;
+  ip?: string;
+  userAgent?: string;
+  status: 'success' | 'failure';
+  errorMessage?: string;
+}</code></pre></div><!-- Add more clone groups for .txt format as needed         // Add more clone groups for .txt format as needed--></div><a name="javascript-clones"></a><h2 class="text-2xl font-semibold text-gray-700 mb-4">javascript</h2><div class="divide-y divide-gray-200 border-b-2"><div class="py-4"><p class="text-gray-600">src\components\monitoring\__tests__\AlertRuleForm.test.tsx (Line 59:13 - Line 168:2), src\components\monitoring\__tests__\AlertRuleForm.test.tsx (Line 57:12 - Line 157:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn7" onclick="toggleCodeBlock('cloneGroup7', 'expandBtn7', 'collapseBtn7')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn7" onclick="toggleCodeBlock('cloneGroup7', 'expandBtn7', 'collapseBtn7')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup7"><code class="language-javascript text-sm text-gray-800">}
+        /&gt;
+      );
+
+      expect(screen.getByLabelText('规则名称')).toHaveValue(defaultRule.name);
+      expect(screen.getByLabelText('通知邮箱')).toHaveValue(defaultRule.notification.email?.join(','));
+    });
+
+    it('calls onCancel when cancel button is clicked', () =&gt; {
+      render(
+        &lt;AlertRuleForm
+          onSubmit={mockOnSubmit}
+          onCancel={mockOnCancel}
+        /&gt;
+      );
+
+      fireEvent.click(screen.getByText('取消'));
+      expect(mockOnCancel).toHaveBeenCalled();
+    });
+  });
+
+  // 表单验证测试
+  describe('表单验证', () =&gt; {
+    it('validates required fields', async () =&gt; {
+      render(
+        &lt;AlertRuleForm
+          onSubmit={mockOnSubmit}
+          onCancel={mockOnCancel}
+        /&gt;
+      );
+
+      fireEvent.submit(screen.getByRole('form'));
+      expect(await screen.findByText('规则名称不能为空')).toBeInTheDocument();
+      expect(mockOnSubmit).not.toHaveBeenCalled();
+    });
+
+    it('validates email format', async () =&gt; {
+      render(
+        &lt;AlertRuleForm
+          onSubmit={mockOnSubmit}
+          onCancel={mockOnCancel}
+        /&gt;
+      );
+
+      const emailInput = screen.getByLabelText('通知邮箱');
+      await user.type(emailInput, 'invalid-email');
+      fireEvent.submit(screen.getByRole('form'));
+
+      expect(await screen.findByText('邮箱格式不正确')).toBeInTheDocument();
+      expect(mockOnSubmit).not.toHaveBeenCalled();
+    });
+
+    it('validates threshold values', async () =&gt; {
+      render(
+        &lt;AlertRuleForm
+          onSubmit={mockOnSubmit}
+          onCancel={mockOnCancel}
+        /&gt;
+      );
+
+      const thresholdInput = screen.getByLabelText('阈值');
+      fireEvent.change(thresholdInput, { target: { value: '-1' } });
+      fireEvent.submit(screen.getByRole('form'));
+
+      expect(await screen.findByText('阈值不能为负数')).toBeInTheDocument();
+      expect(mockOnSubmit).not.toHaveBeenCalled();
+    });
+  });
+
+  // 安全性测试
+  describe('安全性', () =&gt; {
+    it('should safely handle potentially malicious input', async () =&gt; {
+      render(
+        &lt;AlertRuleForm
+          onSubmit={mockOnSubmit}
+          onCancel={mockOnCancel}
+        /&gt;
+      );
+
+      const nameInput = screen.getByLabelText('规则名称');
+      const maliciousInput = '&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;';
+
+      await user.type(nameInput, maliciousInput);
+      fireEvent.submit(screen.getByRole('form'));
+
+      // 验证提交的数据是否被正确转义
+      expect(mockOnSubmit).toHaveBeenCalledWith(
+        expect.objectContaining({
+          name: expect.not.stringContaining('&lt;script&gt;'),
+          type: 'threshold',
+          condition: expect.any(Object),
+          notification: expect.any(Object)
+        })
+      );
+    });
+
+    it('should render safely without props', () =&gt; {
+      expect(() =&gt; render(
+        &lt;AlertRuleForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} /&gt;
+      )).not.toThrow();
+    });
+  });
+
+  // 数据提交测试
+  describe('数据提交', () =&gt; {
+    it('calls onSubmit with sanitized form data when form is valid', async () =&gt; {
+      render(
+        &lt;AlertRuleForm
+          onSubmit={mockOnSubmit}
+          onCancel={mockOnCancel}</code></pre></div><div class="py-4"><p class="text-gray-600">src\components\business\sections\FeatureSection.tsx (Line 96:6 - Line 121:2), src\components\business\sections\PricingSection.tsx (Line 103:2 - Line 137:25)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn9" onclick="toggleCodeBlock('cloneGroup9', 'expandBtn9', 'collapseBtn9')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn9" onclick="toggleCodeBlock('cloneGroup9', 'expandBtn9', 'collapseBtn9')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup9"><code class="language-javascript text-sm text-gray-800">}&gt;
+              &lt;motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                style={{ height: '100%' }}
+              &gt;
+                &lt;Card
+                  elevation={0}
+                  sx={{
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    transition: 'all 0.3s ease-in-out',
+                    background: 'rgba(255, 255, 255, 0.8)',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    borderRadius: 1,
+                    '&amp;:hover': {
+                      transform: 'translateY(-8px)',
+                      boxShadow: theme.shadows[8],
+                      background: 'rgba(255, 255, 255, 0.95)',
+                    },
+                  }}
+                &gt;
+                  &lt;CardContent sx={{</code></pre></div><div class="py-4"><p class="text-gray-600">src\pages\auth\LoginPage.tsx (Line 52:12 - Line 86:2), src\pages\auth\RegisterPage.tsx (Line 91:9 - Line 125:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn12" onclick="toggleCodeBlock('cloneGroup12', 'expandBtn12', 'collapseBtn12')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn12" onclick="toggleCodeBlock('cloneGroup12', 'expandBtn12', 'collapseBtn12')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup12"><code class="language-javascript text-sm text-gray-800">)}&gt;
+        &lt;Box position=&quot;relative&quot;&gt;
+          &lt;LoginForm
+            formData={formData}
+            showPassword={showPassword}
+            onSubmit={handleSubmit}
+            onFormChange={handleFormChange}
+            onTogglePassword={togglePasswordVisibility}
+            disabled={loading}
+          /&gt;
+          {loading &amp;&amp; (
+            &lt;Box
+              position=&quot;absolute&quot;
+              top={0}
+              left={0}
+              right={0}
+              bottom={0}
+              display=&quot;flex&quot;
+              alignItems=&quot;center&quot;
+              justifyContent=&quot;center&quot;
+              bgcolor=&quot;rgba(255, 255, 255, 0.7)&quot;
+            &gt;
+              &lt;CircularProgress /&gt;
+            &lt;/Box&gt;
+          )}
+        &lt;/Box&gt;
+      &lt;/AuthCard&gt;
+
+      &lt;Snackbar
+        open={showError}
+        autoHideDuration={6000}
+        onClose={handleCloseError}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      &gt;
+        &lt;Alert onClose={handleCloseError}</code></pre></div><div class="py-4"><p class="text-gray-600">src\components\auth\LoginForm.tsx (Line 28:3 - Line 88:9), src\components\auth\RegisterForm.tsx (Line 28:3 - Line 94:6)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn16" onclick="toggleCodeBlock('cloneGroup16', 'expandBtn16', 'collapseBtn16')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn16" onclick="toggleCodeBlock('cloneGroup16', 'expandBtn16', 'collapseBtn16')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup16"><code class="language-javascript text-sm text-gray-800">={{ mb: 4 }}&gt;
+      欢迎回来！请登录您的账号
+    &lt;/Typography&gt;
+  &lt;/&gt;
+);
+
+const PasswordField: React.FC&lt;{
+  value: string;
+  showPassword: boolean;
+  disabled?: boolean;
+  onChange: (value: string) =&gt; void;
+  onTogglePassword: () =&gt; void;
+}&gt; = ({ value, showPassword, disabled, onChange, onTogglePassword }) =&gt; (
+  &lt;TextField
+    fullWidth
+    label=&quot;密码&quot;
+    type={showPassword ? 'text' : 'password'}
+    variant=&quot;outlined&quot;
+    margin=&quot;normal&quot;
+    value={value}
+    disabled={disabled}
+    onChange={(e) =&gt; onChange(e.target.value)}
+    InputProps={{
+      endAdornment: (
+        &lt;InputAdornment position=&quot;end&quot;&gt;
+          &lt;IconButton 
+            onClick={onTogglePassword} 
+            edge=&quot;end&quot;
+            disabled={disabled}
+          &gt;
+            {showPassword ? &lt;VisibilityOff /&gt; : &lt;Visibility /&gt;}
+          &lt;/IconButton&gt;
+        &lt;/InputAdornment&gt;
+      ),
+    }}
+  /&gt;
+);
+
+const LoginForm: React.FC&lt;LoginFormProps&gt; = ({
+  formData,
+  showPassword,
+  disabled,
+  onSubmit,
+  onFormChange,
+  onTogglePassword,
+}) =&gt; (
+  &lt;Box component=&quot;form&quot; onSubmit={onSubmit}&gt;
+    &lt;FormHeader /&gt;
+    
+    &lt;TextField
+      fullWidth
+      label=&quot;用户名&quot;
+      variant=&quot;outlined&quot;
+      margin=&quot;normal&quot;
+      value={formData.username}
+      disabled={disabled}
+      onChange={(e) =&gt; onFormChange({ username: e.target.value })}
+    /&gt;
+
+    &lt;PasswordField
+      value={formData.password</code></pre></div><!-- Add more clone groups for .txt format as needed         // Add more clone groups for .txt format as needed--></div><a name="tsx-clones"></a><h2 class="text-2xl font-semibold text-gray-700 mb-4">tsx</h2><div class="divide-y divide-gray-200 border-b-2"><div class="py-4"><p class="text-gray-600">src\components\common\layout\Navbar.tsx (Line 138:12 - Line 165:2), src\components\common\layout\Navbar.tsx (Line 26:9 - Line 53:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn8" onclick="toggleCodeBlock('cloneGroup8', 'expandBtn8', 'collapseBtn8')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn8" onclick="toggleCodeBlock('cloneGroup8', 'expandBtn8', 'collapseBtn8')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup8"><code class="language-tsx text-sm text-gray-800">();
+  const { isAuthenticated, user, logout } = useAuth();
+  const [anchorEl, setAnchorEl] = React.useState&lt;null | HTMLElement&gt;(null);
+
+  const handleMenu = (event: React.MouseEvent&lt;HTMLElement&gt;) =&gt; {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () =&gt; {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = async () =&gt; {
+    try {
+      handleClose();
+      navigate('/');
+      await logout();
+    } catch (error) {
+      errorLogger.log(new HttpError({
+        type: HttpErrorType.AUTH,
+        message: '退出登录失败',
+        data: error
+      }));
+    }
+  };
+
+  return (
+    &lt;</code></pre></div><div class="py-4"><p class="text-gray-600">src\tests\react\SuspenseList.test.tsx (Line 157:5 - Line 162:34), src\tests\react\SuspenseList.test.tsx (Line 101:5 - Line 106:43)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn11" onclick="toggleCodeBlock('cloneGroup11', 'expandBtn11', 'collapseBtn11')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn11" onclick="toggleCodeBlock('cloneGroup11', 'expandBtn11', 'collapseBtn11')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup11"><code class="language-tsx text-sm text-gray-800">expect(screen.getByTestId('component-A')).toHaveTextContent('A');
+    expect(screen.getByTestId('component-B')).toHaveTextContent('B');
+    expect(screen.getByTestId('component-C')).toHaveTextContent('C');
+  });
+
+  it('should handle errors gracefully'</code></pre></div><div class="py-4"><p class="text-gray-600">src\pages\auth\LoginPage.tsx (Line 14:9 - Line 30:9), src\pages\auth\RegisterPage.tsx (Line 19:16 - Line 36:6)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn13" onclick="toggleCodeBlock('cloneGroup13', 'expandBtn13', 'collapseBtn13')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn13" onclick="toggleCodeBlock('cloneGroup13', 'expandBtn13', 'collapseBtn13')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup13"><code class="language-tsx text-sm text-gray-800">: '' }
+  });
+  const [showError, setShowError] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
+
+  const handleSubmit = async (e: React.FormEvent) =&gt; {
+    e.preventDefault();
+    setShowError(false);
+    
+    // 表单验证
+    if (!formData.username.trim()) {
+      setErrorMessage('请输入用户名');
+      setShowError(true);
+      return;
+    }
+    
+    if (!formData.password</code></pre></div><div class="py-4"><p class="text-gray-600">src\pages\auth\LoginPage.tsx (Line 54:10 - Line 94:10), src\pages\auth\RegisterPage.tsx (Line 93:13 - Line 133:13)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn14" onclick="toggleCodeBlock('cloneGroup14', 'expandBtn14', 'collapseBtn14')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn14" onclick="toggleCodeBlock('cloneGroup14', 'expandBtn14', 'collapseBtn14')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup14"><code class="language-tsx text-sm text-gray-800">
+            formData={formData}
+            showPassword={showPassword}
+            onSubmit={handleSubmit}
+            onFormChange={handleFormChange}
+            onTogglePassword={togglePasswordVisibility}
+            disabled={loading}
+          /&gt;
+          {loading &amp;&amp; (
+            &lt;Box
+              position=&quot;absolute&quot;
+              top={0}
+              left={0}
+              right={0}
+              bottom={0}
+              display=&quot;flex&quot;
+              alignItems=&quot;center&quot;
+              justifyContent=&quot;center&quot;
+              bgcolor=&quot;rgba(255, 255, 255, 0.7)&quot;
+            &gt;
+              &lt;CircularProgress /&gt;
+            &lt;/Box&gt;
+          )}
+        &lt;/Box&gt;
+      &lt;/AuthCard&gt;
+
+      &lt;Snackbar
+        open={showError}
+        autoHideDuration={6000}
+        onClose={handleCloseError}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      &gt;
+        &lt;Alert onClose={handleCloseError} severity=&quot;error&quot; variant=&quot;filled&quot;&gt;
+          {errorMessage}
+        &lt;/Alert&gt;
+      &lt;/Snackbar&gt;
+    &lt;/&gt;
+  );
+};
+
+export default LoginPage</code></pre></div><div class="py-4"><p class="text-gray-600">src\components\auth\LoginForm.tsx (Line 44:5 - Line 66:10), src\components\auth\RegisterForm.tsx (Line 45:5 - Line 67:13)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn17" onclick="toggleCodeBlock('cloneGroup17', 'expandBtn17', 'collapseBtn17')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn17" onclick="toggleCodeBlock('cloneGroup17', 'expandBtn17', 'collapseBtn17')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup17"><code class="language-tsx text-sm text-gray-800">type={showPassword ? 'text' : 'password'}
+    variant=&quot;outlined&quot;
+    margin=&quot;normal&quot;
+    value={value}
+    disabled={disabled}
+    onChange={(e) =&gt; onChange(e.target.value)}
+    InputProps={{
+      endAdornment: (
+        &lt;InputAdornment position=&quot;end&quot;&gt;
+          &lt;IconButton 
+            onClick={onTogglePassword} 
+            edge=&quot;end&quot;
+            disabled={disabled}
+          &gt;
+            {showPassword ? &lt;VisibilityOff /&gt; : &lt;Visibility /&gt;}
+          &lt;/IconButton&gt;
+        &lt;/InputAdornment&gt;
+      ),
+    }}
+  /&gt;
+);
+
+const LoginForm</code></pre></div><div class="py-4"><p class="text-gray-600">src\components\auth\LoginForm.tsx (Line 66:15 - Line 87:14), src\components\auth\RegisterForm.tsx (Line 67:18 - Line 88:10)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn18" onclick="toggleCodeBlock('cloneGroup18', 'expandBtn18', 'collapseBtn18')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn18" onclick="toggleCodeBlock('cloneGroup18', 'expandBtn18', 'collapseBtn18')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup18"><code class="language-tsx text-sm text-gray-800">&gt; = ({
+  formData,
+  showPassword,
+  disabled,
+  onSubmit,
+  onFormChange,
+  onTogglePassword,
+}) =&gt; (
+  &lt;Box component=&quot;form&quot; onSubmit={onSubmit}&gt;
+    &lt;FormHeader /&gt;
+    
+    &lt;TextField
+      fullWidth
+      label=&quot;用户名&quot;
+      variant=&quot;outlined&quot;
+      margin=&quot;normal&quot;
+      value={formData.username}
+      disabled={disabled}
+      onChange={(e) =&gt; onFormChange({ username: e.target.value })}
+    /&gt;
+
+    &lt;PasswordField</code></pre></div><!-- Add more clone groups for .txt format as needed         // Add more clone groups for .txt format as needed--></div></section><!-- Add more sections for other formats and clone groups as needed--></main><footer class="bg-white shadow mt-8 py-4"><div class="container mx-auto px-4 text-center"><p class="text-sm text-gray-600">This report is generated by jscpd, an open-source copy/paste detector.</p><p class="text-sm text-gray-600">jscpd is licensed under the MIT License.</p><a class="text-blue-500 text-sm" href="https://github.com/kucherenko/jscpd" target="_blank" rel="noopener noreferrer">View jscpd on GitHub</a></div></footer><script src="js/prism.js"></script><script>function toggleCodeBlock(codeBlockId, expandBtnId, collapseBtnId) {
+  const codeBlock = document.getElementById(codeBlockId);
+  const expandBtn = document.getElementById(expandBtnId);
+  const collapseBtn = document.getElementById(collapseBtnId);
+
+  codeBlock.classList.toggle('hidden');
+  expandBtn.classList.toggle('hidden');
+  collapseBtn.classList.toggle('hidden');
+}</script></body></html>
