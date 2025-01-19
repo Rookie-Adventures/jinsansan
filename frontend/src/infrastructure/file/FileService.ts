@@ -5,24 +5,24 @@ export interface UploadOptions {
   onProgress?: (progress: number) => void;
   chunkSize?: number;
   headers?: Record<string, string>;
-  validateRow?: (row: any) => boolean;
+  validateRow?: (row: unknown) => boolean;
 }
 
 export interface DownloadParams {
   fileName: string;
-  filters?: Record<string, any>;
+  filters?: Record<string, unknown>;
   columns?: string[];
 }
 
 export interface FileService {
-  uploadCSV(file: File, options?: UploadOptions): Promise<any>;
+  uploadCSV(file: File, options?: UploadOptions): Promise<{ success: boolean; message: string }>;
   downloadCSV(params: DownloadParams): Promise<Blob>;
-  parseCSV<T extends Record<string, any>>(content: string): Promise<T[]>;
-  generateCSV<T extends Record<string, any>>(data: T[]): Promise<string>;
+  parseCSV<T extends Record<string, unknown>>(content: string): Promise<T[]>;
+  generateCSV<T extends Record<string, unknown>>(data: T[]): Promise<string>;
 }
 
 export class FileServiceImpl implements FileService {
-  async uploadCSV(file: File, options?: UploadOptions): Promise<any> {
+  async uploadCSV(file: File, options?: UploadOptions): Promise<{ success: boolean; message: string }> {
     const formData = new FormData();
     formData.append('file', file);
 
@@ -59,7 +59,7 @@ export class FileServiceImpl implements FileService {
     return blob;
   }
 
-  async parseCSV<T extends Record<string, any>>(content: string): Promise<T[]> {
+  async parseCSV<T extends Record<string, unknown>>(content: string): Promise<T[]> {
     const rows = content.split('\n');
     const headers = rows[0].split(',');
     
@@ -73,7 +73,7 @@ export class FileServiceImpl implements FileService {
     });
   }
 
-  async generateCSV<T extends Record<string, any>>(data: T[]): Promise<string> {
+  async generateCSV<T extends Record<string, unknown>>(data: T[]): Promise<string> {
     if (!data.length) return '';
     
     const headers = Object.keys(data[0]);

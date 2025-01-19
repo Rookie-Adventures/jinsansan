@@ -1,19 +1,19 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import {
-  persistStore,
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
+    FLUSH,
+    PAUSE,
+    PERSIST,
+    persistReducer,
+    persistStore,
+    PURGE,
+    REGISTER,
+    REHYDRATE,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-import { loggerMiddleware } from './middleware/logger';
 import { errorMiddleware } from './middleware/error';
+import { loggerMiddleware } from './middleware/logger';
 import { performanceMiddleware } from './middleware/performance';
 import appReducer from './slices/appSlice';
 import authReducer from './slices/authSlice';
@@ -31,7 +31,7 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage,
-  whitelist: ['auth'], // 只持久化 auth reducer
+  whitelist: ['auth', 'app'], // 持久化 auth 和 app reducer
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -64,5 +64,5 @@ export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 // 导出 selectors
+export * from './selectors/app';
 export * from './selectors/auth';
-export * from './selectors/app'; 

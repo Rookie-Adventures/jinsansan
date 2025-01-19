@@ -1,4 +1,5 @@
-import type { AlertRule, Alert, AlertNotification } from './types';
+import { errorLogger } from '../../utils/errorLogger';
+import type { Alert, AlertNotification, AlertRule } from './types';
 
 export class AlertManager {
   private static instance: AlertManager;
@@ -161,7 +162,7 @@ export class AlertManager {
         try {
           handler(notification);
         } catch (error) {
-          console.error('Error in notification handler:', error);
+          errorLogger.log(error instanceof Error ? error : new Error('Error in notification handler'), { level: 'error' });
         }
       });
     }

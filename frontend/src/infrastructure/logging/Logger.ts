@@ -1,8 +1,9 @@
-import { LogLevel, LogEntry } from './types.ts';
+import { errorLogger } from '../../utils/errorLogger';
+import { LogData, LogLevel } from './types';
 
 export class Logger {
   private static instance: Logger;
-  private logQueue: Array<{ level: LogLevel; message: string; data?: any }> = [];
+  private logQueue: Array<{ level: LogLevel; message: string; data?: LogData }> = [];
   private readonly MAX_QUEUE_SIZE = 100;
   private readonly FLUSH_INTERVAL = 5000; // 5秒
 
@@ -44,47 +45,46 @@ export class Logger {
         logs.forEach(({ level, message, data }) => {
           switch (level) {
             case 'debug':
-              console.debug(message, data);
+              errorLogger.log(new Error(message), { level: 'info', context: data });
               break;
             case 'info':
-              console.info(message, data);
+              errorLogger.log(new Error(message), { level: 'info', context: data });
               break;
             case 'warn':
-              console.warn(message, data);
+              errorLogger.log(new Error(message), { level: 'warn', context: data });
               break;
             case 'error':
-              console.error(message, data);
+              errorLogger.log(new Error(message), { level: 'error', context: data });
               break;
           }
         });
       }
     } catch (error) {
-      console.error('Failed to flush logs:', error);
+      errorLogger.log(error instanceof Error ? error : new Error('Failed to flush logs'), { level: 'error' });
     }
   }
 
-  public log(level: LogLevel, message: string, data?: any): void {
+  public log(level: LogLevel, message: string, data?: LogData): void {
     this.logQueue.push({ level, message, data });
 
-    // 如果队列超过最大大小，立即刷新
     if (this.logQueue.length >= this.MAX_QUEUE_SIZE) {
       this.flush();
     }
   }
 
-  public info(message: string, data?: any): void {
+  public info(message: string, data?: LogData): void {
     this.log('info', message, data);
   }
 
-  public warn(message: string, data?: any): void {
+  public warn(message: string, data?: LogData): void {
     this.log('warn', message, data);
   }
 
-  public error(message: string, data?: any): void {
+  public error(message: string, data?: LogData): void {
     this.log('error', message, data);
   }
 
-  public debug(message: string, data?: any): void {
+  public debug(message: string, data?: LogData): void {
     if (process.env.NODE_ENV === 'development') {
       this.log('debug', message, data);
     }

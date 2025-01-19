@@ -115,7 +115,7 @@ export class RouterAnalytics {
       if (!response.ok) {
         throw new Error(`Failed to report analytics: ${response.statusText}`);
       }
-    } catch (error) {
+    } catch {
       this.performanceMonitor.trackCustomMetric('route_analytics_error', 1);
       this.performanceMonitor.trackCustomMetric('route_analytics_error_count', 1);
     }

@@ -1,38 +1,32 @@
 /* eslint-disable no-console */
 import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { errorLogger } from '../../../errorLogger';
 import { HttpError } from '../error';
 import { ErrorLogger } from '../logger';
 import { HttpErrorType } from '../types';
 
-// 保存原始环境变量
-const originalEnv = process.env.NODE_ENV;
+// Mock errorLogger
+vi.mock('../../../errorLogger', () => ({
+  errorLogger: {
+    log: vi.fn()
+  }
+}));
 
 describe('ErrorLogger', () => {
   let logger: ErrorLogger;
-  const originalConsole = { ...console };
+  const originalEnv = process.env.NODE_ENV;
 
-  beforeEach(() => {
-    // 设置为开发环境
-    process.env.NODE_ENV = 'development';
-    // 恢复所有 mock
-    vi.restoreAllMocks();
-    // 重置单例实例
-    ErrorLogger.resetInstance();
-    // 获取新实例
-    logger = ErrorLogger.getInstance();
-    // Mock console methods
-    console.error = vi.fn();
-    console.warn = vi.fn();
-    console.info = vi.fn();
+  beforeAll(() => {
+    process.env.NODE_ENV = 'test';
   });
 
-  afterEach(() => {
-    // 恢复原始 console
-    console = { ...originalConsole };
+  beforeEach(() => {
+    vi.clearAllMocks();
+    ErrorLogger.resetInstance();
+    logger = ErrorLogger.getInstance();
   });
 
   afterAll(() => {
-    // 恢复原始环境变量
     process.env.NODE_ENV = originalEnv;
   });
 
@@ -45,7 +39,7 @@ describe('ErrorLogger', () => {
   });
 
   describe('log', () => {
-    test('should log critical error with console.error', () => {
+    test('should log critical error with errorLogger', () => {
       const error = new HttpError({
         type: HttpErrorType.SERVER,
         message: 'Internal server error',
@@ -54,10 +48,10 @@ describe('ErrorLogger', () => {
       });
 
       logger.log(error);
-      expect(console.error).toHaveBeenCalled();
+      expect(errorLogger.log).toHaveBeenCalledWith(error, { level: 'error' });
     });
 
-    test('should log warning error with console.warn', () => {
+    test('should log warning error with errorLogger', () => {
       const error = new HttpError({
         type: HttpErrorType.CLIENT,
         message: 'Bad request',
@@ -66,10 +60,10 @@ describe('ErrorLogger', () => {
       });
 
       logger.log(error);
-      expect(console.warn).toHaveBeenCalled();
+      expect(errorLogger.log).toHaveBeenCalledWith(error, { level: 'warn' });
     });
 
-    test('should log info error with console.info', () => {
+    test('should log info error with errorLogger', () => {
       const error = new HttpError({
         type: HttpErrorType.NETWORK,
         message: 'Network timeout',
@@ -77,7 +71,7 @@ describe('ErrorLogger', () => {
       });
 
       logger.log(error);
-      expect(console.info).toHaveBeenCalled();
+      expect(errorLogger.log).toHaveBeenCalledWith(error, { level: 'info' });
     });
 
     test('should include error metadata in log', () => {
@@ -96,9 +90,7 @@ describe('ErrorLogger', () => {
       });
 
       logger.log(error);
-      
-      const expectedMessage = expect.stringMatching(/\[AUTH\].*Unauthorized.*401.*userId: 123.*requestId: abc-xyz/);
-      expect(console.warn).toHaveBeenCalledWith(expectedMessage, metadata);
+      expect(errorLogger.log).toHaveBeenCalledWith(error, { level: 'warn', context: metadata });
     });
   });
 
@@ -121,8 +113,8 @@ describe('ErrorLogger', () => {
       logger.log(warningError);
       logger.log(criticalError);
 
-      expect(console.warn).not.toHaveBeenCalled();
-      expect(console.error).toHaveBeenCalled();
+      expect(errorLogger.log).toHaveBeenCalledTimes(1);
+      expect(errorLogger.log).toHaveBeenCalledWith(criticalError, { level: 'error' });
     });
   });
 
@@ -133,7 +125,8 @@ describe('ErrorLogger', () => {
 
       const error = new HttpError({
         type: HttpErrorType.BUSINESS,
-        message: 'Business error'
+        message: 'Business error',
+        severity: 'warning'
       });
 
       logger.log(error);

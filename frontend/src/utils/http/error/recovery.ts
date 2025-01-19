@@ -1,5 +1,5 @@
-import { HttpError, HttpErrorType } from './types';
 import { retry } from '../retry';
+import { HttpError, HttpErrorType } from './types';
 
 interface RecoveryStrategy {
   shouldAttemptRecovery: (error: HttpError) => boolean;
@@ -37,13 +37,13 @@ const defaultStrategies: Record<HttpErrorType, RecoveryStrategy> = {
       try {
         // 实现 token 刷新逻辑
         // await refreshTokenApi(refreshToken);
-        return;
-      } catch {
+        // 如果刷新成功，不需要做任何事情
+      } catch (error) {
         // 如果刷新失败，清除认证信息并跳转到登录页
         localStorage.removeItem('token');
         localStorage.removeItem('refreshToken');
         window.location.href = '/login';
-        throw new Error('Token refresh failed');
+        throw error; // 重新抛出错误，让上层知道恢复失败
       }
     },
     maxAttempts: 1

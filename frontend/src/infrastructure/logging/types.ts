@@ -4,6 +4,11 @@
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
 /**
+ * 日志数据类型
+ */
+export type LogData = Record<string, unknown>;
+
+/**
  * 日志条目接口
  */
 export interface LogEntry {
@@ -12,7 +17,7 @@ export interface LogEntry {
   /** 日志消息 */
   message: string;
   /** 附加数据 */
-  data?: any;
+  data?: LogData;
   /** 时间戳 */
   timestamp: number;
   /** 上下文信息 */

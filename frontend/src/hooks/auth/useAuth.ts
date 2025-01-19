@@ -2,8 +2,9 @@ import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '@/store';
-import { login, logout, getCurrentUser, register, clearAuth } from '@/store/slices/authSlice';
+import { clearAuth, getCurrentUser, login, logout, register } from '@/store/slices/authSlice';
 import type { LoginFormData, RegisterFormData } from '@/types/auth';
+import { errorLogger } from '@/utils/errorLogger';
 import { HttpErrorFactory } from '@/utils/http/error/factory';
 import { HttpErrorType } from '@/utils/http/error/types';
 
@@ -45,7 +46,7 @@ export const useAuth = () => {
       dispatch(clearAuth());
       localStorage.removeItem('persist:root');
     } catch (err) {
-      console.error('Logout failed:', err);
+      errorLogger.log(err instanceof Error ? err : new Error('Logout failed'));
       navigate('/');
       dispatch(clearAuth());
       localStorage.removeItem('persist:root');

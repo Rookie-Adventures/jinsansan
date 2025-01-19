@@ -1,4 +1,5 @@
 import type { ErrorSeverity, HttpError } from '@/utils/http/error/types';
+import { errorLogger as globalErrorLogger } from '../../errorLogger';
 
 export interface ErrorLogData {
   type: string;
@@ -52,13 +53,14 @@ export class ErrorLogger {
       return;
     }
 
-    const formattedMessage = this.formatError(error);
-    const logArgs = error.metadata ? [formattedMessage, error.metadata] : [formattedMessage];
+    const severity = error.severity || 'error';
+    const options = {
+      level: this.mapSeverityToLevel(severity),
+      context: error.metadata
+    };
 
-    // 只在开发环境下使用 console
-    if (process.env.NODE_ENV === 'development') {
-      this.logToConsole(error.severity || 'error', ...logArgs);
-    }
+    // 使用全局 errorLogger
+    globalErrorLogger.log(error, options);
 
     // 调用自定义处理器
     this.handlers.forEach(handler => handler(error));
@@ -86,22 +88,17 @@ export class ErrorLogger {
     return parts.filter(Boolean).join(' | ');
   }
 
-  private logToConsole(severity: ErrorSeverity | 'error', ...args: unknown[]): void {
-    /* eslint-disable no-console */
+  private mapSeverityToLevel(severity: ErrorSeverity | 'error'): 'error' | 'warn' | 'info' {
     switch (severity) {
       case 'critical':
-        console.error(...args);
-        break;
+        return 'error';
       case 'warning':
-        console.warn(...args);
-        break;
+        return 'warn';
       case 'info':
-        console.info(...args);
-        break;
+        return 'info';
       default:
-        console.error(...args);
+        return 'error';
     }
-    /* eslint-enable no-console */
   }
 }
 

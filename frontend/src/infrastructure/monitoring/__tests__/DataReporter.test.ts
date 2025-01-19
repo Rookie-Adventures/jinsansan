@@ -1,6 +1,14 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { errorLogger } from '../../../utils/errorLogger';
 import { PerformanceMonitor } from '../PerformanceMonitor';
 import { RouterAnalytics } from '../RouterAnalytics';
+
+// Mock errorLogger
+vi.mock('../../../utils/errorLogger', () => ({
+  errorLogger: {
+    log: vi.fn()
+  }
+}));
 
 // 添加类型定义
 interface MetricData {
@@ -115,36 +123,41 @@ describe('Data Reporting', () => {
 
   describe('错误处理', () => {
     it('应该处理网络错误', async () => {
-      const mockConsoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
       const mockFetch = vi.fn().mockRejectedValue(new Error('Network error'));
       global.fetch = mockFetch;
 
       performanceMonitor.trackCustomMetric('test-metric', 100);
       await performanceMonitor.flush();
 
-      expect(mockConsoleError).toHaveBeenCalledWith('Failed to report metrics:', expect.any(Error));
+      expect(errorLogger.log).toHaveBeenCalledWith(
+        expect.any(Error),
+        expect.objectContaining({ level: 'error' })
+      );
       expect(performanceMonitor.getMetrics()).toHaveLength(1);
     });
 
     it('应该处理服务器错误', async () => {
-      const mockConsoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
       const mockFetch = vi.fn().mockResolvedValue({ ok: false, status: 500, statusText: 'Internal Server Error' });
       global.fetch = mockFetch;
 
       performanceMonitor.trackCustomMetric('test-metric', 100);
       await performanceMonitor.flush();
 
-      expect(mockConsoleError).toHaveBeenCalledWith('Failed to report metrics: Internal Server Error');
+      expect(errorLogger.log).toHaveBeenCalledWith(
+        expect.any(Error),
+        expect.objectContaining({ level: 'error' })
+      );
       expect(performanceMonitor.getMetrics()).toHaveLength(1);
     });
 
     it('应该处理无效数据', async () => {
-      const mockConsoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
-      
       // @ts-expect-error 故意传入无效数据以测试错误处理
       performanceMonitor.trackCustomMetric(null, 'invalid');
       
-      expect(mockConsoleError).toHaveBeenCalledWith('Invalid metric data:', expect.any(Error));
+      expect(errorLogger.log).toHaveBeenCalledWith(
+        expect.any(Error),
+        expect.objectContaining({ level: 'error' })
+      );
     });
   });
 }); 

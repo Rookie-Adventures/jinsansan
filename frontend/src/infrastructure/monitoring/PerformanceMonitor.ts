@@ -1,8 +1,5 @@
-export interface PerformanceMetric {
-  type: string;
-  timestamp: number;
-  data: any;
-}
+import { errorLogger } from '../../utils/errorLogger';
+import { PerformanceMetric } from './types';
 
 export class PerformanceMonitor {
   private static instance: PerformanceMonitor;
@@ -105,7 +102,7 @@ export class PerformanceMonitor {
         }
       });
     } catch (error) {
-      console.error('Invalid metric data:', error);
+      errorLogger.log(error instanceof Error ? error : new Error('Invalid metric data'), { level: 'error' });
     }
   }
 
@@ -140,10 +137,10 @@ export class PerformanceMonitor {
       if (response.ok) {
         this.metrics = [];
       } else {
-        console.error(`Failed to report metrics: ${response.statusText}`);
+        errorLogger.log(new Error(`Failed to report metrics: ${response.statusText}`), { level: 'error' });
       }
     } catch (error) {
-      console.error('Failed to report metrics:', error);
+      errorLogger.log(error instanceof Error ? error : new Error('Failed to report metrics'), { level: 'error' });
     }
   }
 

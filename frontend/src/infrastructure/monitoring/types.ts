@@ -4,6 +4,17 @@
 export type MetricType = 'page_load' | 'resource' | 'long_task' | 'interaction' | 'custom' | 'api_call' | 'cpu_usage';
 
 /**
+ * 指标数据联合类型
+ */
+export type MetricData = 
+  | PageLoadMetrics 
+  | ResourceMetrics 
+  | LongTaskMetrics 
+  | InteractionMetrics 
+  | CustomMetrics 
+  | ApiCallMetrics;
+
+/**
  * 性能指标接口
  */
 export interface PerformanceMetric {
@@ -12,7 +23,7 @@ export interface PerformanceMetric {
   /** 时间戳 */
   timestamp: number;
   /** 指标数据 */
-  data: any;
+  data: MetricData;
 }
 
 /**

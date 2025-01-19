@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/**/*.d.ts",
+    "*.js",
+    "*.ts",
+    ".eslintrc.js",
+    "eslint.config.js",
+    "vite.config.ts"
+  ],
+  "exclude": ["node_modules", "dist", "build"]
+} 
