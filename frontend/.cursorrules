@@ -240,19 +240,81 @@ src/
 
 ## 测试规范
 
-### 组件测试
-- - 使用 Vitest 和 React Testing Library 进行单元测试。
+### 测试框架
+- 使用 Vitest 进行单元测试和集成测试
+- 使用 React Testing Library 进行组件测试
+- 使用 Cypress 进行 E2E 测试（可选）
 
-- 建议按模块集中管理测试文件：
-  ```plaintext
-  src/
-  ├── __tests__/         # 测试目录
-  │   ├── Home.test.tsx  # 首页测试
-  │   ├── utils.test.ts  # 工具函数测试
-  ```
+### 测试覆盖率要求
+- 语句覆盖率：80%
+- 分支覆盖率：80%
+- 函数覆盖率：90%
+- 行覆盖率：80%
 
-### 覆盖率要求
-- 组件测试覆盖率应达到 80% 以上，确保核心逻辑的测试完整性。
+### 测试文件组织
+```plaintext
+src/
+├── __tests__/         # 测试目录
+│   ├── unit/         # 单元测试
+│   ├── integration/  # 集成测试
+│   └── e2e/         # E2E测试（可选）
+```
+
+### 测试配置
+- 使用 `vitest.config.ts` 统一配置
+- 测试文件命名：`*.test.{ts,tsx}`
+- 使用 `src/test/setup.ts` 进行全局测试设置
+
+### Mock 机制
+- 使用 Vitest 的内置 mock 功能
+- 复杂 mock 应放在 `__mocks__` 目录
+- 共享 mock 应放在 `test/mocks` 目录
+
+### 组件测试示例
+```typescript
+import { render, fireEvent } from '@testing-library/react';
+import { expect, test, describe } from 'vitest';
+import Button from './Button';
+
+describe('Button Component', () => {
+  test('should call onClick when clicked', () => {
+    const onClick = vi.fn();
+    const { getByText } = render(
+      <Button onClick={onClick}>Click Me</Button>
+    );
+    
+    fireEvent.click(getByText('Click Me'));
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
+});
+```
+
+### 单元测试示例
+```typescript
+import { expect, test, describe } from 'vitest';
+import { formatDate } from './date-utils';
+
+describe('Date Utils', () => {
+  test('should format date correctly', () => {
+    const date = new Date('2024-01-01');
+    expect(formatDate(date)).toBe('2024-01-01');
+  });
+});
+```
+
+### 集成测试示例
+```typescript
+import { expect, test, describe } from 'vitest';
+import { createUser, getUserById } from './user-service';
+
+describe('User Service Integration', () => {
+  test('should create and retrieve user', async () => {
+    const user = await createUser({ name: 'Test User' });
+    const retrieved = await getUserById(user.id);
+    expect(retrieved).toEqual(user);
+  });
+});
+```
 
 ---
 
@@ -270,3 +332,64 @@ src/
 - 采用 `feature/xxx` 和 `bugfix/xxx` 命名规则，保持分支清晰。
 
 ---
+
+## TDD 开发规范
+
+### 基本流程
+1. **编写测试**：
+   - 先写测试用例，明确需求和预期结果
+   - 确保测试失败（Red）
+   - 测试代码要简洁明确
+
+2. **实现功能**：
+   - 编写最简单的实现代码
+   - 确保测试通过（Green）
+   - 不过度设计，只关注当前需求
+
+3. **重构优化**：
+   - 改进代码结构，消除重复
+   - 确保测试仍然通过
+   - 持续优化代码质量
+
+### 测试规范
+- **测试文件位置**：与源文件同目录，命名为 `*.test.tsx` 或 `*.test.ts`
+- **测试覆盖率要求**：
+  - 语句覆盖率：80%
+  - 分支覆盖率：80%
+  - 函数覆盖率：90%
+  - 行覆盖率：80%
+
+### 最佳实践
+1. **清理死代码**：
+   - 通过测试覆盖率报告识别未使用的代码
+   - 确认代码确实未被使用后再删除
+   - 保留必要的类型定义和接口实现
+
+2. **消除重复代码**：
+   - 识别测试中的重复模式
+   - 提取公共的测试工具函数
+   - 使用测试夹具（Test Fixtures）
+
+3. **代码质量保证**：
+   - 每个组件/函数都有对应的测试
+   - 测试要覆盖正常和异常情况
+   - 定期运行全套测试确保稳定性
+
+### 示例
+```typescript
+// Button.test.tsx
+describe('Button Component', () => {
+  it('should render with correct label', () => {
+    const label = 'Click Me';
+    render(<Button label={label} />);
+    expect(screen.getByText(label)).toBeInTheDocument();
+  });
+
+  it('should handle click events', () => {
+    const handleClick = vi.fn();
+    render(<Button onClick={handleClick} label="Click" />);
+    fireEvent.click(screen.getByText('Click'));
+    expect(handleClick).toHaveBeenCalled();
+  });
+});
+```

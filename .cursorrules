@@ -1,5 +1,9 @@
 # 全局开发规范
 
+## **参考说明**
+
+- **前端规范**：请参阅 [Jinshanshan/frontend/.cursorrules]
+- **后端规范**：请参阅 [Jinshanshan/backend/.cursorrules]
 
 
 ## **开发顺序**
@@ -106,46 +110,47 @@ enum ErrorCode {
 ### **命名规则**
 
 #### 文件命名
-- **前端**
-  - 组件：`*.tsx`
-  - 服务：`*.ts`
-  - 类型：`*.ts`
-  - 测试：`*.test.tsx`，放在 `__tests__` 文件夹中
-- **后端**
-  - 控制器：`*.ts`
-  - 服务：`*.ts`
-  - 路由：`*.ts`
+- **React 组件**：使用大驼峰命名 (PascalCase)，如 `ErrorBoundary.tsx`
+- **工具和服务**：使用小驼峰命名 (camelCase)，如 `httpService.ts`
+- **类型定义**：使用大驼峰命名，如 `UserTypes.ts`
+- **测试文件**：与被测试文件同名，添加 `.test` 或 `.spec` 后缀
 
 #### 目录命名
-- 使用小写字母和连字符命名。
+- **功能模块目录**：使用小写字母，如 `components`, `hooks`, `utils`
+- **组件目录**：使用大驼峰命名，如 `ErrorBoundary`, `UserProfile`
+- **特性目录**：使用小写字母，如 `auth`, `form`, `monitoring`
 
 ---
 
 ## **测试规范**
+### **测试环境**
+// vitest.config.ts 前后端通用基本配置
+{
+  test: {
+    globals: true,
+    environment: process.env.TEST_ENV === 'node' ? 'node' : 'jsdom',  // 前端使用 'jsdom'，后端使用 'node'
+    setupFiles: ['./src/test/setup.ts'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      exclude: [
+        'node_modules/',
+        'src/test/',
+        '**/*.d.ts',
+        '**/*.test.{ts,tsx}',
+        '**/types/'
+      ]
+    },
+    include: ['**/src/**/*.{test,spec}.{ts,tsx}'],
+    exclude: ['node_modules', 'dist'],
+    testTimeout: 10000
+  }
+}
 
-### **框架**
-- 使用 Jest 进行单元测试
 
-### **覆盖率要求**
-- **语句**：80%
-- **分支**：80%
-- **函数**：90%
-- **行**：80%
-
-### **测试配置**
-- 测试初始化文件：`setupTests.ts`
 
 ---
 
-## **TypeScript 规则**
-
-- **严格模式**：启用 (`strict: true`)
-- **禁止隐式 `any`**：启用 (`noImplicitAny: true`)
-- **未使用变量**：禁止 (`noUnusedVars: true`)
-- **优先接口**：建议使用 `interface` 而不是 `type` 定义对象
-- **类型守卫**：鼓励使用类型守卫确保类型安全
-
----
 
 ## **质量保证**
 
@@ -158,70 +163,103 @@ enum ErrorCode {
 
 ---
 
-#技术栈特性
-## 1. Node.js & TypeScript Compatibility
+技术栈兼容性与最佳实践
+1. Node.js 与 TypeScript 兼容性
+Node.js 22.12.0 LTS 与 TypeScript 5.3.3 的兼容性
+兼容性概述
+Node.js 22.12.0 LTS 提供了对现代 ECMAScript 特性的支持（如 ES 模块、async/await、top-level await 等），与 TypeScript 5.3.3 完全兼容。
+TypeScript 5.3.3 支持现代 JavaScript 语法和 Node.js 模块，可以通过配置轻松集成。
 
-### Node.js 22.12.0 LTS & TypeScript 5.3.3
-- **Full Compatibility Status**: Fully compatible
-- **Key Features**:
-  - Enhanced ECMAScript features support
-  - ES modules support (`.mjs` extension)
-  - Improved diagnostic tools
-  - async/await and top-level await support
+配置建议
+在 tsconfig.json 中设置以下选项，确保兼容性：
 
-### Configuration Recommendations
-```json
-// tsconfig.json
+···
 {
   "module": "ESNext",
   "target": "ES2022"
 }
-```
+···
 
-### Performance Optimizations
-- **Async Local Storage**:
-  ```javascript
-  const { AsyncLocalStorage } = require('async_hooks');
-  const asyncLocalStorage = new AsyncLocalStorage();
-  ```
-- **V8 Engine Improvements**: Enhanced JavaScript execution speed, particularly for compute-intensive operations
+性能优化
+异步本地存储
+Node.js 引入了 AsyncLocalStorage，用于跨异步操作传递上下文数据（如日志、请求 ID）。
+示例：
 
-## 2. React & TypeScript Integration
+···
+const { AsyncLocalStorage } = require('async_hooks');
+const asyncLocalStorage = new AsyncLocalStorage();
+···
 
-### Version Compatibility
-- React 18.2.0
-- TypeScript 5.3.3
-- @types/react: 18.2.7
-- @types/react-dom: 18.2.7
+V8 引擎优化
+提升 JavaScript 执行速度，适用于大量计算和循环操作。
 
-### Best Practices
-1. **Type Checking Configuration**
-   ```json
-   // tsconfig.json
-   {
-     "strict": true,
-     "jsx": "react-jsx"
-   }
-   ```
+2. TypeScript 与 React 兼容性
+TypeScript 5.3.3 与 React 18.2.0
 
-2. **Suspense & Concurrent Mode Example**
-   ```typescript
-   import { SuspenseList } from 'react';
+最佳实践
 
-   const App = () => (
-     <SuspenseList revealOrder="forwards">
-       <Suspense fallback={<Loading />}>
-         <ComponentA />
-       </Suspense>
-       <Suspense fallback={<Loading />}>
-         <ComponentB />
-       </Suspense>
-     </SuspenseList>
-   );
-   ```
+启用严格模式：在 tsconfig.json 中启用 strict。
+安装 @types：确保使用与 React 18 兼容的类型定义包。
+···
+npm install --save-dev @types/react@18.2.7 @types/react-dom@18.2.7
+···
+配置 JSX：在 tsconfig.json 中正确配置 JSX 支持。
 
-### Generic Component Pattern
-```typescript
+推荐用法
+利用并发渲染功能（如 Suspense 和 useTransition）优化性能，确保类型检查有效。
+···
+import { SuspenseList } from 'react';
+
+const App = () => (
+  <SuspenseList revealOrder="forwards">
+    <Suspense fallback={<Loading />}>
+      <ComponentA />
+    </Suspense>
+    <Suspense fallback={<Loading />}>
+      <ComponentB />
+    </Suspense>
+  </SuspenseList>
+);
+···
+
+
+3. MongoDB 7.0.4 新特性
+查询增强
+新聚合操作符：新增 $median 和 $percentile，简化复杂统计分析。
+性能提升：优化时间序列数据处理，提高查询效率。
+事务支持
+增强的 ACID 支持：提高分布式环境中的可靠性。
+配置建议
+分片与副本集：根据数据规模配置分片策略，优化性能。
+聚合优化： MongoDB 7.0 提供了增强的 aggregate 操作符，大幅减少客户端计算压力。
+
+
+4. Redis 7.2.3 新特性
+新数据结构
+流扩展：改进流操作，适合时间序列和事件驱动场景。
+性能优化
+复制延迟减少：适用于高负载场景。
+内存管理：新增内存碎片处理和更精确的报告。
+
+配置建议
+···
+maxmemory 4gb
+maxmemory-policy allkeys-lru
+···
+
+推荐特性
+Redis Streams：结合 Pub/Sub，可处理实时数据流。
+
+
+5. Material UI 5.16.9 新特性
+新组件特性
+实现 Material Design 3，提供更灵活的布局。
+性能优化
+使用 Emotion 增强样式引擎，减少渲染开销。
+TypeScript 支持
+提供严格类型定义，优化泛型组件的开发。
+示例：泛型 Button 组件：
+···
 interface ButtonProps<T> {
   onClick: (args: T) => void;
   label: string;
@@ -230,168 +268,147 @@ interface ButtonProps<T> {
 function Button<T>({ onClick, label }: ButtonProps<T>) {
   return <button onClick={() => onClick({ data: 'example' } as T)}>{label}</button>;
 }
-```
 
-## 3. MongoDB 7.0.4
+interface MyEvent {
+  data: string;
+}
 
-### Key Enhancements
-- **Query Improvements**:
-  - New aggregation operators: `$median`, `$percentile`
-  - Enhanced time series data processing
-  - Compound wildcard index support
-  
-- **Transaction Support**:
-  - Enhanced multi-document ACID transactions
-  - Improved distributed environment reliability
+const handleClick = (event: MyEvent) => {
+  console.log(event.data);
+};
 
-### Performance Features
-- Optimized sharding strategies
-- Improved replica set configurations
-- Enhanced aggregate operations
+<Button<MyEvent> onClick={handleClick} label="Click Me" />;
+···
 
-## 4. Redis 7.2.3
+响应式布局：
 
-### New Features
-- **Stream Extensions**: Improved time series and event-driven capabilities
-- **Memory Management**:
-  ```conf
-  maxmemory 4gb
-  maxmemory-policy allkeys-lru
-  ```
-- **Cluster Improvements**:
-  - Better failover handling
-  - Enhanced node management
-  - Reduced replication latency
-
-## 5. Material UI 5.16.9
-
-### Core Updates
-- Material Design 3 implementation
-- Emotion style engine optimization
-- Enhanced theme customization
-
-### Responsive Design
-```typescript
+使用自定义断点实现响应式设计
+···
 const theme = createTheme({
   breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 960,
-      lg: 1280,
-      xl: 1920,
-    },
+    values: { xs: 0, sm: 600, md: 960, lg: 1280, xl: 1920 },
   },
 });
+
+const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+···
+
+
+6.React 18 + Suspense + Concurrent Mode
+Suspense 和异步组件：React 18 中的 Suspense 配合懒加载使用可以显著提高页面加载速度。除了默认的 React.lazy，还可以通过 SuspenseList 控制多个异步组件的渲染顺序，避免屏幕闪烁或布局突变。
+
+示例：
+```
+import { SuspenseList } from 'react';
+
+const App = () => (
+  <SuspenseList revealOrder="forwards">
+    <Suspense fallback={<Loading />}>
+      <ComponentA />
+    </Suspense>
+    <Suspense fallback={<Loading />}>
+      <ComponentB />
+    </Suspense>
+  </SuspenseList>
+);
 ```
 
-## 6. ESLint 9.16
+服务器端渲染（SSR）：React 18 改进了 SSR 和 hydrate 方法的性能，如果你的应用支持服务端渲染，可以利用 React 18 对 SSR 性能的增强，减少首次加载的时间。
 
-### Configuration Best Practices
-```json
+
+
+7. TypeScript 5.3.3 - 类型安全
+模板字面量类型：
+
+TypeScript 5.3 引入了模板字面量类型的强大支持，适用于创建基于字符串模式的类型，极大提升了代码的类型推断能力。
+类型合并和增强：
+
+TypeScript 5.3 进一步优化了类型合并的功能，特别是在处理第三方库时。如果你需要扩展和增强第三方库的类型定义，可以利用 declare module 和 declare global 等功能进行扩展和增强。
+最佳实践：
+
+启用严格模式： 在 tsconfig.json 中启用严格模式，以提高类型安全性和代码质量。
+使用路径别名： 在 tsconfig.json 中配置路径别名，以简化模块导入路径。
+定义全局类型： 使用 declare global 来定义全局类型，特别是在使用第三方库时。
+利用 TypeScript 的类型检查： 在项目中使用 TypeScript 的类型检查功能，确保代码的类型安全性和一致性。
+使用 @typescript-eslint： 安装并配置 @typescript-eslint/parser 和 @typescript-eslint/eslint-plugin，以利用 ESLint 的 TypeScript 支持。
+配置示例：
+
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}
+
+ESLint v9.16 新特性及注意事项
+1. 新特性：
+
+a) 类型注解的改进
+ESLint v9.16 强化了对 TypeScript 的支持，尤其是在处理类型注解时。新增了一些规则和功能，可以让 ESLint 更好地理解 TypeScript 代码，避免常见的类型问题。
+
+支持 @ts-ignore 和 @ts-expect-error：当你在代码中使用这些指令时，ESLint 现在能更好地识别并正确处理它们，避免错误提示。
+更智能的类型推断：通过与 TypeScript 配合使用时，ESLint 可以在更多的场景下推断类型，并确保 TypeScript 代码的类型一致性。
+b) no-unsafe-optional-chaining 规则的增强
+v9.16 版本加强了对 Optional Chaining (?.) 的支持，新增了 no-unsafe-optional-chaining 规则。这个规则防止开发者在 Optional Chaining 使用过程中引发潜在的错误。
+
+// 错误示例：
+const foo = obj?.bar();
+该规则会提示 obj?.bar() 在某些情况下可能会出现意外错误，因此需要额外的小心。
+
+c) no-non-null-assertion 强化
+这个规则用于避免 TypeScript 中的非空断言操作符（!）的使用。通过禁用它，可以避免潜在的运行时错误。
+
+// 错误示例：
+const value = someValue!; // 强制断言值不是 null 或 undefined
+d) import/no-unresolved 增强
+该规则用于检测是否存在无法解析的模块或文件引用。v9.16 改进了此规则，支持更多的模块解析模式，特别是增强了与模块解析工具（如 Webpack、Babel 等）的兼容性。
+
+e) no-duplicate-imports 规则增强
+该规则用于禁止在同一模块中多次导入同一内容。v9.16 对其进行了强化，支持更多的文件和模块配置。
+
+// 错误示例：
+import { foo } from 'bar';
+import { bar } from 'bar';
+2. 配置文件变化及注意事项：
+
+ESLint v9.16 引入了一些配置文件方面的细微变化：
+
+a) 配置文件的 overrides 支持增强
+overrides 是一种强大的方式，可以在同一个配置文件中为不同类型的文件设置不同的规则。v9.16 增强了 overrides 的功能，允许你对不同目录或文件类型进行更精细的配置。
+
+{
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        "no-unsafe-optional-chaining": "error"
+      }
+    },
+    {
+      "files": ["*.js"],
+      "rules": {
+        "no-unsafe-optional-chaining": "warn"
+      }
+    }
+  ]
+}
+b) 配置文件 extends 选项优化
+v9.16 对 extends 的使用进行了优化，支持更细粒度的规则继承，使得规则配置更加灵活。尤其在与一些第三方规则包集成时，ESLint 将提供更好的兼容性和性能。
+
 {
   "extends": [
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "plugin:import/errors"
-  ],
-  "rules": {
-    "no-unsafe-optional-chaining": "error",
-    "import/order": ["warn", {
-      "groups": [
-        ["builtin", "external"],
-        ["internal"],
-        ["parent", "sibling", "index"]
-      ],
-      "newlines-between": "always"
-    }]
-  }
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ]
 }
-```
-
-### TypeScript Integration
-```json
-{
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": "./tsconfig.json"
-  }
-}
-```
-
-### Key Rules
-- Enhanced `no-unsafe-optional-chaining`
-- Improved `no-non-null-assertion`
-- Strengthened `import/no-unresolved`
-- Updated `no-duplicate-imports`
-
-## 7. TypeScript 5.3.3 Advanced Features
-
-### Template Literal Types
-```typescript
-type Color = 'red' | 'green' | 'blue';
-type ButtonSize = `button-${
-  | 'small'
-  | 'medium'
-  | 'large'}`;
-```
-
-### Type System Enhancements
-- Improved type inference
-- Enhanced generic type handling
-- Better third-party library type integration
-
-## Additional Notes
-- All versions mentioned are fully tested and verified for production use
-- Regular security updates should be monitored for all components
-- Performance monitoring is recommended after any major version updates
-
-ESLint v9.16 引入了新的配置文件格式，使用 eslint.config.js 文件来替代传统的 .eslintrc.js 或 .eslintrc.json 文件。这种新的配置方式旨在简化配置过程，并提供更好的性能。以下是一个基本的 eslint.config.js 文件的例子：
-
-import { defineConfig, flatConfig } from 'eslint';
-
-export default defineConfig([
-  flatConfig({
-    // 指定环境
-    languageOptions: {
-      ecmaVersion: 'latest', // 使用最新版本的 ECMAScript
-      sourceType: 'module', // 指定源代码模块类型
-      globals: {
-        // 定义全局变量
-        myGlobal: 'readonly',
-      },
-    },
-    // 指定插件
-    plugins: ['plugin-name'], // 例如: 'react', 'jsx-a11y', 'import'
-    // 指定规则
-    rules: {
-      'no-console': 'warn', // 禁用 console 语句，但允许在测试中使用
-      'no-unused-vars': 'error', // 禁用未使用的变量
-      // 其他规则...
-    },
-    // 指定文件匹配模式
-    files: ['**/*.js', '**/*.jsx'], // 匹配所有 js 和 jsx 文件
-    // 指定排除文件
-    ignores: ['**/node_modules/**', '**/dist/**'], // 排除 node_modules 和 dist 目录
-    // 指定解析器
-    parser: '@babel/eslint-parser', // 使用 Babel 解析器
-    // 指定扩展配置
-    extends: ['eslint:recommended', 'plugin:react/recommended'], // 扩展推荐的规则集
-  }),
-]);
-解释
-defineConfig: 这个函数用于创建 ESLint 配置对象。它接受一个配置对象或配置对象的数组。
-flatConfig: 这个函数用于创建一个扁平的配置对象，它是 eslint.config.js 文件中的基本配置单元。
-languageOptions: 这个对象用于配置语言相关的选项，如 ECMAScript 版本、源类型、全局变量等。
-plugins: 这个数组用于指定要使用的 ESLint 插件。
-rules: 这个对象用于定义具体的 ESLint 规则及其级别。
-files: 这个数组用于指定要应用这些配置的文件匹配模式。
-ignores: 这个数组用于指定要排除的文件或目录。
-parser: 这个字段用于指定自定义的解析器。
-extends: 这个数组用于指定要继承的配置文件或配置集。
-使用 eslint.config.js 的主要优点是它提供了更清晰的配置结构，支持模块化配置，以及更好的性能优化。如果你的项目中使用了 ESLint v9.16 或更高版本，推荐使用这种新的配置方式。
-## **参考说明**
-
-- **前端规范**：请参阅 [Jinshanshan/frontend/.cursorrules]
-- **后端规范**：请参阅 [Jinshanshan/backend/.cursorrules]

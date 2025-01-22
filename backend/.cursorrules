@@ -126,9 +126,9 @@ backend/
 │   │   └── api.response.types.ts  # API 响应类型
 │   └── app.ts               # 应用入口文件
 ├── test/                    # 测试相关配置
-│   ├── setupTests.ts        # 测试环境配置
-│   ├── testUtils.ts         # 通用测试工具
-│   └── jest.config.ts       # Jest 配置文件
+│   ├── setup.ts            # 测试环境配置
+│   ├── testUtils.ts        # 通用测试工具
+└── vitest.config.ts        # Vitest 配置文件（移到根目录）
 
 
 #管理员后台功能
@@ -162,8 +162,8 @@ POST   /payment/callback         # 支付网关回调
 
 interface ApiResponse<T> {
   code: number;
-  data: T;
   message: string;
+  data: T;
   timestamp: number;
 }
 
@@ -242,3 +242,22 @@ Swagger/OpenAPI：API文档生成
 
 #数据库设计
 在数据库模型中，管理员可以有 role 字段来区分权限。需要合理设计数据模型，避免冗余。
+
+## **测试规范**
+
+### **框架**
+- 使用 Vitest 进行单元测试和集成测试
+- 使用 Supertest 进行 API 测试
+- 使用 Supertest 进行 E2E 测试（推荐）
+### **覆盖率要求**
+- **语句**：80%
+- **分支**：80%
+- **函数**：90%
+- **行**：80%
+
+### **测试配置**
+- 测试初始化文件：`test/setup.ts`
+- Vitest 配置文件：`vitest.config.ts`
+
+### **测试环境**
+```
