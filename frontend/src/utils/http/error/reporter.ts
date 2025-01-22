@@ -22,11 +22,17 @@ interface ErrorReporterOptions {
   sampleRate?: number;
   beforeReport?: (data: ErrorReportData) => ErrorReportData | false;
   maxQueueSize?: number;
+  maxRetries?: number;
+  initialRetryDelay?: number;
 }
 
 export class ErrorReporter {
   private static instance: ErrorReporter;
-  private queue: ErrorReportData[] = [];
+  private queue: Array<{
+    data: ErrorReportData;
+    retries: number;
+    nextRetry?: number;
+  }> = [];
   private options: Required<ErrorReporterOptions>;
   private isReporting = false;
 
@@ -34,7 +40,9 @@ export class ErrorReporter {
     endpoint: '/api/error-report',
     sampleRate: 1.0,
     beforeReport: data => data,
-    maxQueueSize: 100
+    maxQueueSize: 100,
+    maxRetries: 3,
+    initialRetryDelay: 1000
   };
 
   private constructor(options?: ErrorReporterOptions) {
@@ -82,9 +90,22 @@ export class ErrorReporter {
 
   private addToQueue(data: ErrorReportData): void {
     if (this.queue.length >= this.options.maxQueueSize) {
-      this.queue.shift(); // 移除最早的错误报告
+      // 移除最早的且重试次数最多的错误报告
+      const index = this.queue.findIndex(item => 
+        item.retries >= this.options.maxRetries
+      );
+      if (index !== -1) {
+        this.queue.splice(index, 1);
+      } else {
+        this.queue.shift();
+      }
     }
-    this.queue.push(data);
+    
+    this.queue.push({
+      data,
+      retries: 0,
+      nextRetry: Date.now()
+    });
   }
 
   private async processQueue(): Promise<void> {
@@ -95,36 +116,64 @@ export class ErrorReporter {
     this.isReporting = true;
 
     try {
-      while (this.queue.length > 0) {
-        const batch = this.queue.splice(0, 10); // 每次处理10条
-        await this.sendErrorReport(batch);
+      const now = Date.now();
+      const readyItems = this.queue.filter(item => 
+        !item.nextRetry || item.nextRetry <= now
+      );
+
+      if (readyItems.length === 0) {
+        this.isReporting = false;
+        return;
+      }
+
+      const batch = readyItems.splice(0, 10);
+      const batchData = batch.map(item => item.data);
+      
+      try {
+        await this.sendErrorReport(batchData);
+        // 发送成功，从队列中移除
+        this.queue = this.queue.filter(item => 
+          !batch.includes(item)
+        );
+      } catch (error) {
+        // 更新重试信息
+        batch.forEach(item => {
+          if (item.retries < this.options.maxRetries) {
+            item.retries++;
+            // 使用指数退避策略
+            const delay = this.options.initialRetryDelay * Math.pow(2, item.retries - 1);
+            item.nextRetry = Date.now() + Math.min(delay, 30000); // 最大延迟30秒
+          }
+        });
+        
+        // 重新加入未达到最大重试次数的项
+        const retriableItems = batch.filter(item => 
+          item.retries < this.options.maxRetries
+        );
+        if (retriableItems.length > 0) {
+          this.queue.unshift(...retriableItems);
+        }
       }
     } finally {
       this.isReporting = false;
+      // 如果队列中还有项目，继续处理
+      if (this.queue.length > 0) {
+        setTimeout(() => this.processQueue(), 1000);
+      }
     }
   }
 
-  private async sendErrorReport(data: ErrorReportData | ErrorReportData[]): Promise<void> {
-    try {
-      const response = await fetch(this.options.endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
+  private async sendErrorReport(data: ErrorReportData[]): Promise<void> {
+    const response = await fetch(this.options.endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
 
-      if (!response.ok) {
-        throw new Error(`Error reporting failed: ${response.statusText}`);
-      }
-    } catch (error) {
-      console.error('Failed to send error report:', error);
-      // 如果发送失败，将数据重新加入队列
-      if (Array.isArray(data)) {
-        this.queue.unshift(...data);
-      } else {
-        this.queue.unshift(data);
-      }
+    if (!response.ok) {
+      throw new Error(`Error reporting failed: ${response.statusText}`);
     }
   }
 } 

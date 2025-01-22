@@ -11,22 +11,27 @@ describe('Error Handling Integration', () => {
   let fetchMock: Mock;
 
   beforeEach(() => {
-    // 重置所有mock
+    // Reset all mocks and timers
     vi.restoreAllMocks();
+    vi.useFakeTimers();
     
     // Mock fetch
     fetchMock = vi.fn();
     global.fetch = fetchMock;
     
-    // 重置单例实例
+    // Reset singleton instance
     ErrorNotificationManager.resetInstance();
     
-    // 获取新实例
+    // Get new instance
     notificationManager = ErrorNotificationManager.getInstance();
     
-    // Mock通知处理函数
+    // Mock notification handler
     showNotification = vi.fn();
     notificationManager.setNotificationHandler(showNotification);
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   describe('Error Retry', () => {
@@ -42,8 +47,16 @@ describe('Error Handling Integration', () => {
         .mockRejectedValueOnce(error)
         .mockResolvedValueOnce('success');
 
-      const retryMiddleware = new ErrorRetryMiddleware();
-      const result = await retryMiddleware.handle(operation, error);
+      const retryMiddleware = new ErrorRetryMiddleware({ 
+        maxRetries: 3,
+        retryDelay: 100
+      });
+
+      const promiseResult = retryMiddleware.handle(operation, error);
+      
+      // Run all timers at once
+      await vi.runAllTimersAsync();
+      const result = await promiseResult;
 
       expect(result).toBe('success');
       expect(operation).toHaveBeenCalledTimes(3);
@@ -58,13 +71,40 @@ describe('Error Handling Integration', () => {
       });
 
       const operation = vi.fn().mockRejectedValue(error);
-      const retryMiddleware = new ErrorRetryMiddleware({ maxRetries: 2 });
+      const retryMiddleware = new ErrorRetryMiddleware({ 
+        maxRetries: 2,
+        retryDelay: 100
+      });
 
-      await expect(retryMiddleware.handle(operation, error))
-        .rejects.toThrow(error);
-
+      const promise = retryMiddleware.handle(operation, error);
+      
+      // Run all timers at once
+      await vi.runAllTimersAsync();
+      
+      await expect(promise).rejects.toEqual(
+        expect.objectContaining({
+          type: HttpErrorType.NETWORK,
+          message: 'Network error',
+          recoverable: false,
+          retryCount: 2
+        })
+      );
+      
       expect(operation).toHaveBeenCalledTimes(2);
-      expect(error.retryCount).toBe(2);
+    });
+
+    test('should not retry unrecoverable errors', async () => {
+      const error = new HttpError({
+        type: HttpErrorType.NETWORK,
+        message: 'Network error',
+        recoverable: false
+      });
+
+      const operation = vi.fn();
+      const retryMiddleware = new ErrorRetryMiddleware();
+
+      await expect(retryMiddleware.handle(operation, error)).rejects.toBe(error);
+      expect(operation).not.toHaveBeenCalled();
       expect(error.recoverable).toBe(false);
     });
   });
@@ -88,10 +128,7 @@ describe('Error Handling Integration', () => {
         sampleRate: 1.0
       });
 
-      reporter.report(error);
-
-      // 等待异步操作完成
-      await new Promise(resolve => setTimeout(resolve, 0));
+      await reporter.report(error);
 
       expect(fetchMock).toHaveBeenCalledWith(
         '/api/error-report',
@@ -105,7 +142,7 @@ describe('Error Handling Integration', () => {
       );
     });
 
-    test('should respect sample rate', () => {
+    test('should respect sample rate', async () => {
       const error = new HttpError({
         type: HttpErrorType.SERVER,
         message: 'Server error'
@@ -115,7 +152,7 @@ describe('Error Handling Integration', () => {
         sampleRate: 0
       });
 
-      reporter.report(error);
+      await reporter.report(error);
       expect(fetchMock).not.toHaveBeenCalled();
     });
   });
@@ -129,7 +166,9 @@ describe('Error Handling Integration', () => {
         severity: 'critical'
       });
 
-      await notificationManager.notify(error);
+      const notifyPromise = notificationManager.notify(error);
+      await vi.runAllTimersAsync();
+      await notifyPromise;
 
       expect(showNotification).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -146,7 +185,9 @@ describe('Error Handling Integration', () => {
       });
 
       notificationManager.ignoreErrorType(HttpErrorType.CANCEL);
-      await notificationManager.notify(error);
+      const notifyPromise = notificationManager.notify(error);
+      await vi.runAllTimersAsync();
+      await notifyPromise;
 
       expect(showNotification).not.toHaveBeenCalled();
     });
@@ -163,7 +204,9 @@ describe('Error Handling Integration', () => {
         { type: 'info', duration: 3000 }
       );
 
-      await notificationManager.notify(error);
+      const notifyPromise = notificationManager.notify(error);
+      await vi.runAllTimersAsync();
+      await notifyPromise;
 
       expect(showNotification).toHaveBeenCalledWith(
         expect.objectContaining({

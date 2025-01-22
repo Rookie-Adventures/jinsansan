@@ -1,7 +1,7 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import { resolve } from 'path'
+import react from '@vitejs/plugin-react';
+import { resolve } from 'path';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [react()],
@@ -25,6 +25,38 @@ export default defineConfig({
         '**/types/',
       ],
     },
-    include: ['src/**/*.test.{ts,tsx}'],
+    include: [
+      '**/src/**/*.{test,spec}.{ts,tsx}',
+      '**/src/**/__tests__/**/*.{ts,tsx}'
+    ],
+    exclude: [
+      'node_modules',
+      'dist',
+      'build',
+      '.idea',
+      '.git',
+      '.cache'
+    ],
+    reporters: ['default'],
+    watch: false,
+    isolate: true,
+    clearMocks: true,
+    mockReset: true,
+    restoreMocks: true,
+    testTimeout: 5000,
+    hookTimeout: 5000,
+    teardownTimeout: 5000,
+    maxConcurrency: 1,
+    sequence: {
+      shuffle: false,
+      concurrent: false,
+      setupFiles: 'list'
+    },
+    pool: 'threads',
+    poolOptions: {
+      threads: {
+        singleThread: true
+      }
+    }
   },
 }) 

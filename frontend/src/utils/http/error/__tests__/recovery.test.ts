@@ -1,16 +1,22 @@
-import { ErrorRecoveryManager } from '../recovery';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { HttpError } from '../error';
+import { ErrorRecoveryManager } from '../recovery';
 import { HttpErrorType } from '../types';
-import { vi, describe, test, expect, beforeEach } from 'vitest';
 
 describe('ErrorRecoveryManager', () => {
   let manager: ErrorRecoveryManager;
 
   beforeEach(() => {
-    // 清除单例实例
     vi.restoreAllMocks();
-    // 获取新实例
+    vi.useFakeTimers();
+    // Reset the singleton instance by manipulating the private field
+    // @ts-expect-error Accessing private static field for testing
+    ErrorRecoveryManager.instance = undefined;
     manager = ErrorRecoveryManager.getInstance();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   describe('getInstance', () => {
@@ -30,7 +36,10 @@ describe('ErrorRecoveryManager', () => {
         retryCount: 1
       });
 
-      const result = await manager.attemptRecovery(networkError);
+      const recoveryPromise = manager.attemptRecovery(networkError);
+      await vi.runAllTimersAsync();
+      const result = await recoveryPromise;
+      
       expect(result).toBe(true);
     });
 
@@ -54,7 +63,10 @@ describe('ErrorRecoveryManager', () => {
         retryCount: 1
       });
 
-      const result = await manager.attemptRecovery(timeoutError);
+      const recoveryPromise = manager.attemptRecovery(timeoutError);
+      await vi.runAllTimersAsync();
+      const result = await recoveryPromise;
+      
       expect(result).toBe(true);
     });
 

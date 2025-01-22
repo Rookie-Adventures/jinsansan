@@ -21,8 +21,13 @@ describe('ErrorLogger', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.useFakeTimers();
     ErrorLogger.resetInstance();
     logger = ErrorLogger.getInstance();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   afterAll(() => {

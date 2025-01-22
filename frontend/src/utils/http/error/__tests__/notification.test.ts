@@ -1,18 +1,20 @@
-import { ErrorNotificationManager } from '../notification';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { HttpError } from '../error';
+import { ErrorNotificationManager } from '../notification';
 import { HttpErrorType } from '../types';
-import { vi, describe, test, expect, beforeEach } from 'vitest';
 
 describe('ErrorNotificationManager', () => {
   let manager: ErrorNotificationManager;
 
   beforeEach(() => {
-    // 恢复所有 mock
     vi.restoreAllMocks();
-    // 重置单例实例
+    vi.useFakeTimers();
     ErrorNotificationManager.resetInstance();
-    // 获取新实例
     manager = ErrorNotificationManager.getInstance();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   describe('getInstance', () => {
@@ -24,7 +26,7 @@ describe('ErrorNotificationManager', () => {
   });
 
   describe('notify', () => {
-    test('should show notification for critical errors', () => {
+    test('should show notification for critical errors', async () => {
       const showNotification = vi.fn();
       manager.setNotificationHandler(showNotification);
 
@@ -34,7 +36,10 @@ describe('ErrorNotificationManager', () => {
         severity: 'critical'
       });
 
-      manager.notify(error);
+      const notifyPromise = manager.notify(error);
+      vi.advanceTimersByTime(0);
+      await notifyPromise;
+
       expect(showNotification).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'error',
@@ -43,7 +48,7 @@ describe('ErrorNotificationManager', () => {
       );
     });
 
-    test('should show warning notification for warning errors', () => {
+    test('should show warning notification for warning errors', async () => {
       const showNotification = vi.fn();
       manager.setNotificationHandler(showNotification);
 
@@ -53,7 +58,10 @@ describe('ErrorNotificationManager', () => {
         severity: 'warning'
       });
 
-      manager.notify(error);
+      const notifyPromise = manager.notify(error);
+      vi.advanceTimersByTime(0);
+      await notifyPromise;
+
       expect(showNotification).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'warning',
@@ -62,7 +70,7 @@ describe('ErrorNotificationManager', () => {
       );
     });
 
-    test('should not show notification for info errors by default', () => {
+    test('should not show notification for info errors by default', async () => {
       const showNotification = vi.fn();
       manager.setNotificationHandler(showNotification);
 
@@ -72,13 +80,16 @@ describe('ErrorNotificationManager', () => {
         severity: 'info'
       });
 
-      manager.notify(error);
+      const notifyPromise = manager.notify(error);
+      vi.advanceTimersByTime(0);
+      await notifyPromise;
+
       expect(showNotification).not.toHaveBeenCalled();
     });
   });
 
   describe('setNotificationLevel', () => {
-    test('should only show notifications above set level', () => {
+    test('should only show notifications above set level', async () => {
       const showNotification = vi.fn();
       manager.setNotificationHandler(showNotification);
       manager.setNotificationLevel('critical');
@@ -95,8 +106,11 @@ describe('ErrorNotificationManager', () => {
         severity: 'critical'
       });
 
-      manager.notify(warningError);
-      manager.notify(criticalError);
+      const warningPromise = manager.notify(warningError);
+      const criticalPromise = manager.notify(criticalError);
+      
+      vi.advanceTimersByTime(0);
+      await Promise.all([warningPromise, criticalPromise]);
 
       expect(showNotification).toHaveBeenCalledTimes(1);
       expect(showNotification).toHaveBeenCalledWith(
@@ -108,7 +122,7 @@ describe('ErrorNotificationManager', () => {
   });
 
   describe('setNotificationHandler', () => {
-    test('should use custom notification handler', () => {
+    test('should use custom notification handler', async () => {
       const customHandler = vi.fn();
       manager.setNotificationHandler(customHandler);
 
@@ -118,11 +132,14 @@ describe('ErrorNotificationManager', () => {
         severity: 'warning'
       });
 
-      manager.notify(error);
+      const notifyPromise = manager.notify(error);
+      vi.advanceTimersByTime(0);
+      await notifyPromise;
+
       expect(customHandler).toHaveBeenCalled();
     });
 
-    test('should format notification message', () => {
+    test('should format notification message', async () => {
       const showNotification = vi.fn();
       manager.setNotificationHandler(showNotification);
 
@@ -134,7 +151,10 @@ describe('ErrorNotificationManager', () => {
         severity: 'warning'
       });
 
-      manager.notify(error);
+      const notifyPromise = manager.notify(error);
+      vi.advanceTimersByTime(0);
+      await notifyPromise;
+
       expect(showNotification).toHaveBeenCalledWith(
         expect.objectContaining({
           message: expect.stringContaining('Authentication failed'),
@@ -145,7 +165,7 @@ describe('ErrorNotificationManager', () => {
   });
 
   describe('shouldNotify', () => {
-    test('should not notify for ignored error types', () => {
+    test('should not notify for ignored error types', async () => {
       const showNotification = vi.fn();
       manager.setNotificationHandler(showNotification);
       manager.ignoreErrorType(HttpErrorType.NETWORK);
@@ -155,11 +175,14 @@ describe('ErrorNotificationManager', () => {
         message: 'Network error'
       });
 
-      manager.notify(error);
+      const notifyPromise = manager.notify(error);
+      vi.advanceTimersByTime(0);
+      await notifyPromise;
+
       expect(showNotification).not.toHaveBeenCalled();
     });
 
-    test('should respect notification rules', () => {
+    test('should respect notification rules', async () => {
       const showNotification = vi.fn();
       manager.setNotificationHandler(showNotification);
       
@@ -174,7 +197,10 @@ describe('ErrorNotificationManager', () => {
         status: 404
       });
 
-      manager.notify(error);
+      const notifyPromise = manager.notify(error);
+      vi.advanceTimersByTime(0);
+      await notifyPromise;
+
       expect(showNotification).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'info',

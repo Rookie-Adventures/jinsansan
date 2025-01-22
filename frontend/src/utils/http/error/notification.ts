@@ -1,3 +1,4 @@
+import { errorConfig } from './config';
 import { HttpError as HttpErrorClass } from './error';
 import { errorMessages } from './messages';
 import { ErrorReporter } from './reporter';
@@ -26,15 +27,21 @@ export class ErrorNotificationManager {
   private retryMiddleware: ErrorRetryMiddleware;
   private errorReporter: ErrorReporter;
 
-  private readonly defaultOptions: NotificationOptions = {
-    duration: 5000,
+  private readonly defaultOptions: Required<Pick<NotificationOptions, 'duration' | 'position' | 'type'>> = {
+    duration: errorConfig.notification.defaultDuration,
     position: 'top',
     type: 'error',
   };
 
   private constructor() {
     this.retryMiddleware = new ErrorRetryMiddleware();
-    this.errorReporter = ErrorReporter.getInstance();
+    this.errorReporter = ErrorReporter.getInstance({
+      endpoint: errorConfig.reporting.endpoint,
+      sampleRate: errorConfig.reporting.sampleRate,
+      maxQueueSize: errorConfig.reporting.maxQueueSize,
+      maxRetries: errorConfig.reporting.maxRetries,
+      initialRetryDelay: errorConfig.reporting.initialRetryDelay
+    });
   }
 
   static getInstance(): ErrorNotificationManager {
@@ -61,14 +68,15 @@ export class ErrorNotificationManager {
   }
 
   addNotificationRule(condition: NotificationRule, options: NotificationOptions): void {
+    if (options.duration) {
+      options.duration = Math.min(options.duration, errorConfig.notification.maxDuration);
+    }
     this.notificationRules.push({ condition, options });
   }
 
   async notify(error: HttpError): Promise<void> {
-    // 确保 error 具有必需的属性
     const httpError = error as HttpErrorClass;
     
-    // 尝试重试
     try {
       await this.retryMiddleware.handle(
         () => Promise.reject(httpError),
@@ -77,9 +85,7 @@ export class ErrorNotificationManager {
     } catch (retryError) {
       if (retryError instanceof Error && 'type' in retryError) {
         const errorInstance = retryError as HttpErrorClass;
-        // 重试失败，继续显示通知
         this.showNotification(errorInstance);
-        // 上报错误
         this.errorReporter.report(errorInstance);
       }
     }
@@ -94,12 +100,17 @@ export class ErrorNotificationManager {
     const message = this.getErrorMessage(error);
     const description = this.getErrorDescription(error);
 
+    const duration = Math.min(
+      options.duration ?? this.defaultOptions.duration,
+      errorConfig.notification.maxDuration
+    );
+
     const notificationData = {
       message,
       description,
       ...this.defaultOptions,
       ...options,
-      duration: options.duration || this.defaultOptions.duration,
+      duration,
       position: options.position || this.defaultOptions.position,
       type: options.type || this.getNotificationTypeFromError(error)
     };
@@ -109,7 +120,6 @@ export class ErrorNotificationManager {
       return;
     }
 
-    // 触发全局通知事件
     const event = new CustomEvent('show-notification', {
       detail: notificationData,
     });
@@ -117,18 +127,15 @@ export class ErrorNotificationManager {
   }
 
   private shouldNotify(error: HttpErrorClass): boolean {
-    // 检查是否是被忽略的错误类型
     if (this.ignoredTypes.has(error.type)) {
       return false;
     }
 
-    // 检查是否有匹配的规则
     const matchingRule = this.notificationRules.find(rule => rule.condition(error));
     if (matchingRule) {
       return true;
     }
 
-    // 检查错误级别
     const severityLevels: ErrorSeverity[] = ['info', 'warning', 'critical'];
     const currentLevelIndex = severityLevels.indexOf(this.notificationLevel);
     const errorLevelIndex = severityLevels.indexOf(error.severity || 'info');
@@ -137,10 +144,15 @@ export class ErrorNotificationManager {
   }
 
   private getNotificationOptions(error: HttpErrorClass): NotificationOptions {
-    // 检查是否有匹配的通知规则
     const matchingRule = this.notificationRules.find(rule => rule.condition(error));
     if (matchingRule) {
-      return matchingRule.options;
+      return {
+        ...matchingRule.options,
+        duration: Math.min(
+          matchingRule.options.duration ?? this.defaultOptions.duration,
+          errorConfig.notification.maxDuration
+        )
+      };
     }
 
     return {
@@ -154,7 +166,6 @@ export class ErrorNotificationManager {
       return error.message || errorMessages[HttpErrorType.UNKNOWN].message;
     }
 
-    // 如果是React错误且在开发环境，替换错误信息
     if (error.type === HttpErrorType.REACT_ERROR && process.env.NODE_ENV === 'development') {
       return template.message.replace('${error}', error.message);
     }
