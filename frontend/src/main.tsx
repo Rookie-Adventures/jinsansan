@@ -11,7 +11,7 @@ import { persistor, store } from './store';
 async function startMockServiceWorker() {
   if (process.env.NODE_ENV === 'development') {
     const { worker } = await import('./mocks/browser');
-    return worker.start({
+    await worker.start({
       onUnhandledRequest: 'bypass',
     });
   }

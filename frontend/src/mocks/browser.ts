@@ -1,8 +1,5 @@
 import { setupWorker } from 'msw/browser'
-import { authHandlers } from './handlers/auth'
-
-// 合并所有处理器
-export const handlers = [...authHandlers]
+import { handlers } from './handlers'
 
 // 创建 worker 实例
 export const worker = setupWorker(...handlers)
