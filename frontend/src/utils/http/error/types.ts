@@ -8,10 +8,13 @@ export enum HttpErrorType {
   UNKNOWN = 'UNKNOWN',
   REACT_ERROR = 'REACT_ERROR',
   VALIDATION = 'VALIDATION',
-  BUSINESS = 'BUSINESS'
+  BUSINESS = 'BUSINESS',
+  INFO = 'INFO',
+  WARNING = 'WARNING',
+  ERROR = 'ERROR'
 }
 
-export type ErrorSeverity = 'critical' | 'warning' | 'info';
+export type ErrorSeverity = 'critical' | 'warning' | 'info' | 'error';
 
 export interface ErrorTrace {
   id: string;
@@ -43,4 +46,5 @@ export interface HttpError extends Error {
   severity?: ErrorSeverity;
   metadata?: ErrorMetadata;
   stack?: string;
+  description?: string;
 } 

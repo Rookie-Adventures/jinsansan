@@ -5,6 +5,7 @@ import { HttpErrorType } from './types';
 interface ErrorResponse {
   message?: string;
   errors?: Array<{ field: string; message: string }>;
+  code?: string;
 }
 
 interface ResponseLikeError {
@@ -21,7 +22,8 @@ export class HttpErrorFactory {
       return new HttpError({
         type: HttpErrorType.UNKNOWN,
         message: 'An unknown error occurred',
-        recoverable: false
+        recoverable: false,
+        severity: 'warning'
       });
     }
 
@@ -37,14 +39,16 @@ export class HttpErrorFactory {
       return new HttpError({
         type: HttpErrorType.CANCEL,
         message: (error as { message: string }).message || 'Request cancelled',
-        recoverable: false
+        recoverable: false,
+        severity: 'info'
       });
     }
 
     return new HttpError({
       type: HttpErrorType.UNKNOWN,
       message: error instanceof Error ? error.message : 'An unknown error occurred',
-      recoverable: false
+      recoverable: false,
+      severity: 'warning'
     });
   }
 
@@ -70,33 +74,68 @@ export class HttpErrorFactory {
   private static createFromAxiosError(error: AxiosError<ErrorResponse> | ResponseLikeError): HttpError {
     const status = error.response?.status;
     const responseData = error.response?.data;
-    const message = responseData?.message || (error as { message?: string }).message || 'Unknown error';
+    const message = responseData?.message || (error as { message?: string }).message || '未知错误';
+    const code = responseData?.code;
 
     if (this.isAxiosError(error)) {
       if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
         return new HttpError({
           type: HttpErrorType.TIMEOUT,
           message: '请求超时，请稍后重试',
-          recoverable: true
+          recoverable: true,
+          severity: 'warning',
+          code
         });
       }
 
       if (error.message === 'Network Error') {
         return new HttpError({
           type: HttpErrorType.NETWORK,
-          message: error.message,
-          recoverable: true
+          message: '网络连接失败，请检查网络设置',
+          recoverable: true,
+          severity: 'warning',
+          code
         });
       }
     }
 
     switch (status) {
+      case 400:
+        return new HttpError({
+          type: HttpErrorType.CLIENT,
+          message,
+          status,
+          recoverable: false,
+          severity: 'warning',
+          code,
+          data: responseData?.errors
+        });
       case 401:
         return new HttpError({
           type: HttpErrorType.AUTH,
-          message,
+          message: message || '用户未登录或登录已过期',
           status,
-          recoverable: true
+          recoverable: true,
+          severity: 'warning',
+          code
+        });
+      case 403:
+        return new HttpError({
+          type: HttpErrorType.AUTH,
+          message: message || '没有权限访问该资源',
+          status,
+          recoverable: false,
+          severity: 'warning',
+          code
+        });
+      case 404:
+        return new HttpError({
+          type: HttpErrorType.CLIENT,
+          message: message || '请求的资源不存在',
+          status,
+          recoverable: false,
+          severity: 'warning',
+          code
         });
       case 422:
         return new HttpError({
@@ -104,21 +143,39 @@ export class HttpErrorFactory {
           message,
           status,
           data: responseData?.errors,
-          recoverable: false
+          recoverable: false,
+          severity: 'warning',
+          code
+        });
+      case 429:
+        return new HttpError({
+          type: HttpErrorType.CLIENT,
+          message: message || '请求过于频繁，请稍后重试',
+          status,
+          recoverable: true,
+          severity: 'warning',
+          code
         });
       case 500:
+      case 502:
+      case 503:
+      case 504:
         return new HttpError({
           type: HttpErrorType.SERVER,
-          message,
+          message: message || '服务器错误，请稍后重试',
           status,
-          recoverable: true
+          recoverable: true,
+          severity: 'critical',
+          code
         });
       default:
         return new HttpError({
           type: HttpErrorType.UNKNOWN,
           message,
           status,
-          recoverable: false
+          recoverable: false,
+          severity: 'warning',
+          code
         });
     }
   }
@@ -127,8 +184,9 @@ export class HttpErrorFactory {
     if (error.message.includes('Network Error')) {
       return new HttpError({
         type: HttpErrorType.NETWORK,
-        message: error.message,
-        recoverable: true
+        message: 'Network Error',
+        recoverable: true,
+        severity: 'warning'
       });
     }
 
@@ -136,14 +194,25 @@ export class HttpErrorFactory {
       return new HttpError({
         type: HttpErrorType.TIMEOUT,
         message: '请求超时，请稍后重试',
-        recoverable: true
+        recoverable: true,
+        severity: 'warning'
+      });
+    }
+
+    if (error instanceof TypeError) {
+      return new HttpError({
+        type: HttpErrorType.CLIENT,
+        message: error.message,
+        recoverable: false,
+        severity: 'warning'
       });
     }
 
     return new HttpError({
       type: HttpErrorType.UNKNOWN,
       message: error.message,
-      recoverable: false
+      recoverable: false,
+      severity: 'warning'
     });
   }
 } 

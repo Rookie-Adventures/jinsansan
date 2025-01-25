@@ -20,31 +20,26 @@ describe('ErrorBoundary', () => {
     throw new Error('Test error');
   };
 
-  let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
+  // 定义 console.error 的类型
+  type ConsoleError = (message?: any, ...args: any[]) => void;
+  let consoleErrorSpy: import('vitest').SpyInstance<[message?: any, ...args: any[]], void>;
 
-  beforeAll(() => {
-    // 使用 vi.spyOn 来监听 console.error
+  beforeEach(() => {
     consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
   });
 
-  afterAll(() => {
-    // 恢复 console.error
+  afterEach(() => {
     consoleErrorSpy.mockRestore();
-  });
-
-  beforeEach(() => {
-    vi.clearAllMocks();
-    consoleErrorSpy.mockClear();
   });
 
   test('should render children when no error occurs', () => {
     const { container } = render(
       <ErrorBoundary>
-        <div>Normal content</div>
+        <div>Test Content</div>
       </ErrorBoundary>
     );
     
-    expect(container).toHaveTextContent('Normal content');
+    expect(container).toHaveTextContent('Test Content');
   });
 
   test('should render fallback UI when error occurs', () => {

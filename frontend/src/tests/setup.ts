@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 import { cleanup } from '@testing-library/react'
 import { setupServer } from 'msw/node'
-import { afterEach, beforeAll, vi } from 'vitest'
+import { afterAll, afterEach, beforeAll, beforeEach, Mock, vi } from 'vitest'
 import { handlers } from '../mocks/handlers'
 
 // MSW 服务器设置
@@ -22,44 +22,90 @@ vi.mock('react-router-dom', async () => {
   }
 })
 
+// Mock localStorage
+interface MockStorage {
+  [key: string]: any;
+  getItem: Mock;
+  setItem: Mock;
+  removeItem: Mock;
+  clear: Mock;
+  key: Mock;
+  length: number;
+}
+
+const createMockStorage = (): MockStorage => ({
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  removeItem: vi.fn(),
+  clear: vi.fn(),
+  length: 0,
+  key: vi.fn(),
+  [Symbol.iterator]: function* () {
+    yield* Object.entries(this)
+  }
+});
+
+const localStorageMock = createMockStorage();
+
+// Mock window.fetch
+const fetchMock = vi.fn();
+
 // 环境设置
 beforeAll(() => {
   // 启动 MSW
   server.listen({ onUnhandledRequest: 'error' })
   
-  // Mock localStorage
-  const localStorageMock = {
-    getItem: vi.fn(),
-    setItem: vi.fn(),
-    removeItem: vi.fn(),
-    clear: vi.fn(),
-    length: 0,
-    key: vi.fn()
-  }
-  global.localStorage = localStorageMock
+  // Mock window 对象
+  Object.defineProperty(window, 'localStorage', {
+    value: localStorageMock,
+    writable: true
+  })
+  
+  global.fetch = fetchMock
   
   // Mock window.matchMedia
-  global.matchMedia = vi.fn().mockImplementation(query => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  }))
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: vi.fn().mockImplementation(query => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }))
+  })
+
+  // 设置 fake timers
+  vi.useFakeTimers()
+})
+
+beforeEach(() => {
+  // 重置所有 mocks
+  vi.clearAllMocks()
+  localStorageMock.clear.mockClear()
+  fetchMock.mockClear()
+  
+  // 重置 localStorage 数据
+  Object.keys(localStorageMock).forEach(key => {
+    if (typeof key === 'string' && !['getItem', 'setItem', 'removeItem', 'clear', 'key', 'length'].includes(key)) {
+      delete localStorageMock[key]
+    }
+  })
 })
 
 // 每个测试后清理
 afterEach(() => {
   cleanup()
   server.resetHandlers()
-  localStorage.clear()
 })
 
 // 所有测试结束后清理
 afterAll(() => {
   server.close()
-  vi.clearAllMocks()
+  vi.clearAllTimers()
+  vi.useRealTimers()
+  vi.restoreAllMocks()
 }) 

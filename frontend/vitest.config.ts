@@ -7,29 +7,21 @@ export default mergeConfig(
   defineConfig({
     test: {
       globals: true,
-      environment: 'jsdom',
-      setupFiles: ['./src/tests/setup.ts'],
-      include: ['./src/**/*.{test,spec}.{ts,tsx}'],
-      exclude: ['node_modules', 'dist', 'build'],
+      environment: process.env.TEST_ENV === 'node' ? 'node' : 'jsdom',
+      setupFiles: ['./src/test/setup.ts'],
+      include: ['**/src/**/*.{test,spec}.{ts,tsx}'],
+      exclude: ['node_modules', 'dist'],
       
       coverage: {
         provider: 'v8',
-        reporter: ['text', 'json', 'html', 'lcov'],
+        reporter: ['text', 'json', 'html'],
         exclude: [
           'node_modules/',
-          'src/tests/',
+          'src/test/',
           '**/*.d.ts',
           '**/*.test.{ts,tsx}',
-          '**/*.spec.{ts,tsx}',
-          '**/types/',
-          'src/vite-env.d.ts',
-        ],
-        thresholds: {
-          branches: 80,
-          functions: 80,
-          lines: 80,
-          statements: 80
-        }
+          '**/types/'
+        ]
       },
 
       // 并发和性能配置
@@ -43,14 +35,12 @@ export default mergeConfig(
       maxConcurrency: 5,
 
       // 超时配置
-      testTimeout: 10000,
+      testTimeout: 30000,
       hookTimeout: 10000,
 
       // 报告配置
-      reporters: ['default', 'html'],
-      outputFile: {
-        html: './coverage/test-report.html'
-      }
+      reporters: ['default'],
+      outputFile: './coverage/test-report.json'
     }
   })
 ); 

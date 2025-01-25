@@ -9,6 +9,9 @@ import { HttpErrorType } from './error/types';
 // 扩展 AxiosRequestConfig 类型
 interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
   cached?: boolean;
+  cache?: {
+    enable?: boolean;
+  };
 }
 
 export class HttpClient {
@@ -64,10 +67,19 @@ export class HttpClient {
           if (extendedConfig.method?.toLowerCase() === 'get') {
             const cacheKey = cacheManager.getCacheKey(extendedConfig);
             const cachedData = cacheManager.get(cacheKey);
-            if (cachedData) {
-              extendedConfig.cached = true;
-              extendedConfig.data = cachedData;
-              return extendedConfig;
+            if (cachedData && extendedConfig.cache?.enable !== false) {
+              return Promise.reject({
+                config: extendedConfig,
+                response: {
+                  status: 304,
+                  data: cachedData,
+                  headers: {},
+                  config: extendedConfig,
+                  statusText: 'Not Modified'
+                },
+                isAxiosError: true,
+                toJSON: () => ({})
+              });
             }
           }
 
@@ -143,6 +155,11 @@ export class HttpClient {
         return Promise.reject(httpError);
       }
     );
+  }
+
+  private generateCacheKey(config: AxiosRequestConfig): string {
+    const { method, url, params, data } = config;
+    return `${method}-${url}-${JSON.stringify(params)}-${JSON.stringify(data)}`;
   }
 
   async request<T>(config: AxiosRequestConfig): Promise<T> {

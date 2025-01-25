@@ -1,6 +1,4 @@
 import { errorConfig } from './config';
-import { HttpError as HttpErrorClass } from './error';
-import { errorMessages } from './messages';
 import { ErrorReporter } from './reporter';
 import { ErrorRetryMiddleware } from './retry';
 import { HttpErrorType, type ErrorSeverity, type HttpError } from './types';
@@ -12,7 +10,7 @@ interface NotificationOptions {
   description?: string;
 }
 
-type NotificationHandler = (options: NotificationOptions & { message: string }) => void;
+type NotificationHandler = (options: Required<NotificationOptions> & { message: string }) => void;
 type NotificationRule = (error: HttpError) => boolean;
 
 export class ErrorNotificationManager {
@@ -75,137 +73,136 @@ export class ErrorNotificationManager {
   }
 
   async notify(error: HttpError): Promise<void> {
-    const httpError = error as HttpErrorClass;
-    
-    try {
-      await this.retryMiddleware.handle(
-        () => Promise.reject(httpError),
-        httpError
-      );
-    } catch (retryError) {
-      if (retryError instanceof Error && 'type' in retryError) {
-        const errorInstance = retryError as HttpErrorClass;
-        this.showNotification(errorInstance);
-        this.errorReporter.report(errorInstance);
-      }
-    }
-  }
-
-  private showNotification(error: HttpErrorClass): void {
-    if (!this.shouldNotify(error)) {
+    if (!this.shouldNotify(error) || !this.notificationHandler) {
       return;
     }
 
-    const options = this.getNotificationOptions(error);
-    const message = this.getErrorMessage(error);
-    const description = this.getErrorDescription(error);
-
-    const duration = Math.min(
-      options.duration ?? this.defaultOptions.duration,
-      errorConfig.notification.maxDuration
-    );
-
-    const notificationData = {
-      message,
-      description,
-      ...this.defaultOptions,
-      ...options,
-      duration,
-      position: options.position || this.defaultOptions.position,
-      type: options.type || this.getNotificationTypeFromError(error)
+    // 查找匹配的自定义规则
+    const matchedRule = this.notificationRules.find(rule => rule.condition(error));
+    
+    const notification = {
+      type: matchedRule?.options.type || this.getNotificationType(error.severity || 'error'),
+      message: error.message || '未知错误',
+      description: this.getErrorDescription(error),
+      duration: matchedRule?.options.duration || this.getDuration(error.severity || 'error'),
+      position: matchedRule?.options.position || 'top'
     };
 
-    if (this.notificationHandler) {
-      this.notificationHandler(notificationData);
-      return;
-    }
-
-    const event = new CustomEvent('show-notification', {
-      detail: notificationData,
-    });
-    window.dispatchEvent(event);
+    await Promise.resolve(); // 确保在下一个微任务中执行
+    this.notificationHandler(notification);
   }
 
-  private shouldNotify(error: HttpErrorClass): boolean {
+  private shouldNotify(error: HttpError): boolean {
+    // 先检查是否被忽略
     if (this.ignoredTypes.has(error.type)) {
       return false;
     }
 
-    const matchingRule = this.notificationRules.find(rule => rule.condition(error));
-    if (matchingRule) {
+    // 检查自定义规则
+    const matchedRule = this.notificationRules.find(rule => rule.condition(error));
+    if (matchedRule) {
       return true;
     }
 
-    const severityLevels: ErrorSeverity[] = ['info', 'warning', 'critical'];
-    const currentLevelIndex = severityLevels.indexOf(this.notificationLevel);
-    const errorLevelIndex = severityLevels.indexOf(error.severity || 'info');
-
-    return errorLevelIndex >= currentLevelIndex;
+    // 检查严重程度
+    const errorLevel = this.getSeverityLevel(error.severity || 'error');
+    const currentLevel = this.getSeverityLevelValue(this.notificationLevel);
+    return errorLevel >= currentLevel;
   }
 
-  private getNotificationOptions(error: HttpErrorClass): NotificationOptions {
-    const matchingRule = this.notificationRules.find(rule => rule.condition(error));
-    if (matchingRule) {
-      return {
-        ...matchingRule.options,
-        duration: Math.min(
-          matchingRule.options.duration ?? this.defaultOptions.duration,
-          errorConfig.notification.maxDuration
-        )
-      };
-    }
-
-    return {
-      type: this.getNotificationTypeFromError(error)
-    };
-  }
-
-  private getErrorMessage(error: HttpErrorClass): string {
-    const template = errorMessages[error.type];
-    if (!template) {
-      return error.message || errorMessages[HttpErrorType.UNKNOWN].message;
-    }
-
-    if (error.type === HttpErrorType.REACT_ERROR && process.env.NODE_ENV === 'development') {
-      return template.message.replace('${error}', error.message);
-    }
-
-    return template.message;
-  }
-
-  private getErrorDescription(error: HttpErrorClass): string {
-    const template = errorMessages[error.type];
-    const parts = [template?.description || ''];
-
-    if (error.status) {
-      parts.push(`状态码: ${error.status}`);
-    }
-
-    if (error.metadata) {
-      if (error.metadata.requestId) {
-        parts.push(`请求ID: ${error.metadata.requestId}`);
-      }
-      if (error.metadata.timestamp) {
-        parts.push(`时间: ${error.metadata.timestamp}`);
-      }
-      if (error.metadata.userId) {
-        parts.push(`用户ID: ${error.metadata.userId}`);
-      }
-    }
-
-    return parts.filter(Boolean).join(' | ');
-  }
-
-  private getNotificationTypeFromError(error: HttpErrorClass): 'error' | 'warning' | 'info' {
-    switch (error.severity) {
+  private getNotificationType(severity: string): 'error' | 'warning' | 'info' {
+    switch (severity.toLowerCase()) {
       case 'critical':
+      case 'error':
         return 'error';
       case 'warning':
         return 'warning';
-      case 'info':
-        return 'info';
       default:
-        return 'error';
+        return 'info';
+    }
+  }
+
+  private getErrorDescription(error: HttpError): string {
+    const parts: string[] = [];
+    
+    if (error.status) {
+      parts.push(`状态码: ${error.status}`);
+    }
+    
+    if (error.code) {
+      parts.push(`错误码: ${error.code}`);
+    }
+
+    // 根据错误类型添加详细描述
+    switch (error.type) {
+      case HttpErrorType.SERVER:
+        parts.push('服务器内部错误');
+        break;
+      case HttpErrorType.CLIENT:
+        parts.push('请检查输入参数');
+        break;
+      case HttpErrorType.NETWORK:
+        parts.push('网络连接错误');
+        break;
+      case HttpErrorType.AUTH:
+        parts.push('认证失败');
+        break;
+      case HttpErrorType.VALIDATION:
+        parts.push('请检查输入参数');
+        break;
+      default:
+        if (error.description) {
+          parts.push(error.description);
+        } else if (error.message) {
+          parts.push(error.message);
+        } else {
+          parts.push('发生未知错误');
+        }
+    }
+    
+    return parts.join(' | ');
+  }
+
+  private getDuration(severity: string): number {
+    switch (severity.toLowerCase()) {
+      case 'critical':
+        return 0; // 不自动关闭
+      case 'error':
+        return 5000;
+      case 'warning':
+        return 4000;
+      default:
+        return 3000;
+    }
+  }
+
+  private getSeverityLevel(severity: string): number {
+    switch (severity) {
+      case 'critical':
+        return 4;
+      case 'error':
+        return 3;
+      case 'warning':
+        return 2;
+      case 'info':
+        return 1;
+      default:
+        return 0;
+    }
+  }
+
+  private getSeverityLevelValue(severity: ErrorSeverity): number {
+    switch (severity) {
+      case 'critical':
+        return 4;
+      case 'error':
+        return 3;
+      case 'warning':
+        return 2;
+      case 'info':
+        return 1;
+      default:
+        return 0;
     }
   }
 }

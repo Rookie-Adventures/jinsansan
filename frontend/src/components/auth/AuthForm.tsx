@@ -59,6 +59,8 @@ const PasswordField: React.FC<{
             onClick={onTogglePassword} 
             edge="end"
             disabled={disabled}
+            data-testid="password-visibility-toggle"
+            aria-label={showPassword ? '隐藏密码' : '显示密码'}
           >
             {showPassword ? <VisibilityOff /> : <Visibility />}
           </IconButton>
@@ -77,7 +79,11 @@ const AuthForm: React.FC<AuthFormProps> = ({
   onFormChange,
   onTogglePassword,
 }) => (
-  <Box component="form" onSubmit={onSubmit}>
+  <Box 
+    component="form" 
+    onSubmit={onSubmit}
+    data-testid="auth-form"
+  >
     <FormHeader type={type} />
     
     <TextField
@@ -115,7 +121,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
     {type === 'register' && (
       <PasswordField
         label="确认密码"
-        value={(formData as RegisterFormData).confirmPassword}
+        value={(formData as RegisterFormData).confirmPassword || ''}
         showPassword={showPassword}
         disabled={disabled}
         onChange={(value) => onFormChange({ confirmPassword: value })}
@@ -124,11 +130,10 @@ const AuthForm: React.FC<AuthFormProps> = ({
     )}
 
     <Button
+      type="submit"
       fullWidth
       variant="contained"
-      color="primary"
       size="large"
-      type="submit"
       disabled={disabled}
       sx={{ mt: 3 }}
     >

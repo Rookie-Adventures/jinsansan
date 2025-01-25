@@ -1,19 +1,26 @@
-import React from 'react';
-import {
-  Box,
-  TextField,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Switch,
-  FormControlLabel,
-  Button,
-  Stack,
-  Typography,
-} from '@mui/material';
 import type { AlertRule, AlertRuleType, AlertSeverity, MetricType } from '@/infrastructure/monitoring/types';
+import {
+    Box,
+    Button,
+    FormControl,
+    FormControlLabel,
+    FormHelperText,
+    InputLabel,
+    MenuItem,
+    Select,
+    Stack,
+    styled,
+    Switch,
+    TextField,
+    Typography
+} from '@mui/material';
+import React from 'react';
 import { sanitizeInput } from '../../utils/security';
+
+// 创建带有测试ID的自定义组件
+const StyledFormHelperText = styled(FormHelperText)<{ 'data-testid'?: string }>(
+  ({ theme }) => ({})
+);
 
 type AlertRuleFormData = Required<Omit<AlertRule, 'id'>>;
 
@@ -54,33 +61,106 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
   });
 
   const [errors, setErrors] = React.useState<Record<string, string>>({});
+  const [touched, setTouched] = React.useState<Record<string, boolean>>({});
 
   const validateEmail = (email: string): boolean => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
+  const handleBlur = (field: string) => {
+    setTouched(prev => ({ ...prev, [field]: true }));
+    validateField(field);
+  };
+
+  const validateField = (field: string) => {
+    let error = '';
+    
+    switch (field) {
+      case 'name':
+        if (!formData.name.trim()) {
+          error = '规则名称不能为空';
+        }
+        break;
+      case 'threshold':
+        if (formData.condition.value < 0) {
+          error = '阈值不能为负数';
+        }
+        break;
+      case 'email':
+        if (formData.notification.email?.length) {
+          const invalidEmails = formData.notification.email.filter(
+            email => !validateEmail(email)
+          );
+          if (invalidEmails.length > 0) {
+            error = '邮箱格式不正确';
+          }
+        }
+        break;
+    }
+
+    setErrors(prev => ({
+      ...prev,
+      [field]: error
+    }));
+
+    return !error;
+  };
+
   const validateForm = (): boolean => {
-    const newErrors: Record<string, string> = {};
+    const fields = ['name', 'threshold', 'email'];
+    const validations = fields.map(field => validateField(field));
+    return validations.every(Boolean);
+  };
 
-    if (!formData.name.trim()) {
-      newErrors.name = '规则名称不能为空';
+  const handleSubmit = (e: React.FormEvent): void => {
+    e.preventDefault();
+    const isValid = validateForm();
+    console.log('Form validation result:', isValid, errors);
+    if (isValid) {
+      const sanitizedData: AlertRuleFormData = {
+        ...formData,
+        name: sanitizeInput(formData.name)
+      };
+      onSubmit(sanitizedData);
     }
+  };
 
-    if (formData.condition.value < 0) {
-      newErrors.threshold = '阈值不能为负数';
-    }
-
-    if (formData.notification.email?.length) {
-      const invalidEmails = formData.notification.email.filter(
-        email => !validateEmail(email)
-      );
-      if (invalidEmails.length > 0) {
-        newErrors.email = '邮箱格式不正确';
+  const handleThresholdChange = (value: number) => {
+    console.log('Threshold changed:', value);
+    
+    setFormData(prev => ({
+      ...prev,
+      condition: {
+        ...prev.condition,
+        value
       }
-    }
+    }));
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    validateThreshold(value);
+  };
+
+  const validateThreshold = (value: number) => {
+    console.log('Validating threshold:', value);
+    if (value < 0) {
+      console.log('Setting threshold error');
+      setErrors(prev => ({
+        ...prev,
+        threshold: '阈值不能为负数'
+      }));
+      return false;
+    } else {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors.threshold;
+        return newErrors;
+      });
+      return true;
+    }
+  };
+
+  const handleThresholdBlur = () => {
+    console.log('Threshold blur, current value:', formData.condition.value);
+    validateThreshold(Number(formData.condition.value));
   };
 
   const handleChange = <K extends keyof AlertRuleFormData>(
@@ -93,21 +173,84 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent): void => {
-    e.preventDefault();
-    if (validateForm()) {
-      const sanitizedData: AlertRuleFormData = {
-        ...formData,
-        name: sanitizeInput(formData.name)
-      };
-      onSubmit(sanitizedData);
-    }
-  };
+  // 修改阈值输入部分的渲染
+  const renderThresholdField = () => (
+    <FormControl fullWidth error={touched.threshold && !!errors.threshold}>
+      <InputLabel>阈值</InputLabel>
+      <TextField
+        fullWidth
+        type="number"
+        value={formData.condition.value}
+        onChange={(e) => {
+          const value = Number(e.target.value);
+          handleChange('condition', {
+            ...formData.condition,
+            value
+          });
+          if (touched.threshold) {
+            validateField('threshold');
+          }
+        }}
+        onBlur={() => handleBlur('threshold')}
+        error={touched.threshold && !!errors.threshold}
+        inputProps={{
+          'aria-label': '阈值',
+          'data-testid': 'threshold-input'
+        }}
+      />
+      <FormHelperText
+        error
+        data-testid="threshold-error-text"
+      >
+        {(touched.threshold && errors.threshold) || ' '}
+      </FormHelperText>
+    </FormControl>
+  );
+
+  // 修改名称输入部分的渲染
+  const renderNameField = () => (
+    <FormControl fullWidth error={touched.name && !!errors.name}>
+      <TextField
+        fullWidth
+        label="规则名称"
+        value={formData.name}
+        onChange={(e) => {
+          handleChange('name', e.target.value);
+          if (touched.name) {
+            validateField('name');
+          }
+        }}
+        onBlur={() => handleBlur('name')}
+        error={touched.name && !!errors.name}
+        required
+        inputProps={{
+          'aria-label': '规则名称'
+        }}
+      />
+      <FormHelperText
+        error
+        data-testid="name-error-text"
+      >
+        {(touched.name && errors.name) || ' '}
+      </FormHelperText>
+    </FormControl>
+  );
 
   return (
     <Box 
       component="form" 
-      onSubmit={handleSubmit} 
+      onSubmit={(e) => {
+        e.preventDefault();
+        // 提交时设置所有字段为已触碰
+        setTouched({
+          name: true,
+          threshold: true,
+          email: true
+        });
+        if (validateForm()) {
+          onSubmit(formData);
+        }
+      }}
       sx={{ width: '100%', maxWidth: 600 }}
       role="form"
       aria-label="告警规则表单"
@@ -117,18 +260,7 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
           {rule ? '编辑告警规则' : '新建告警规则'}
         </Typography>
 
-        <TextField
-          fullWidth
-          label="规则名称"
-          value={formData.name}
-          onChange={(e) => handleChange('name', e.target.value)}
-          error={!!errors.name}
-          helperText={errors.name}
-          required
-          inputProps={{
-            'aria-label': '规则名称'
-          }}
-        />
+        {renderNameField()}
 
         <FormControl fullWidth>
           <InputLabel id="rule-type-label">规则类型</InputLabel>
@@ -168,48 +300,34 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
           </Select>
         </FormControl>
 
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <FormControl sx={{ flex: 1 }} error={!!errors.threshold}>
-            <InputLabel id="operator-label">操作符</InputLabel>
-            <Select
-              labelId="operator-label"
-              value={formData.condition.operator}
-              label="操作符"
-              onChange={(e) =>
-                handleChange('condition', {
-                  ...formData.condition,
-                  operator: e.target.value as AlertRule['condition']['operator']
-                })
-              }
-              inputProps={{
-                'aria-label': '操作符'
-              }}
-            >
-              {OPERATORS.map(op => (
-                <MenuItem key={op} value={op}>
-                  {op}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+        <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            <FormControl sx={{ flex: 1 }}>
+              <InputLabel id="operator-label">操作符</InputLabel>
+              <Select
+                labelId="operator-label"
+                value={formData.condition.operator}
+                label="操作符"
+                onChange={(e) =>
+                  handleChange('condition', {
+                    ...formData.condition,
+                    operator: e.target.value as AlertRule['condition']['operator']
+                  })
+                }
+                inputProps={{
+                  'aria-label': '操作符'
+                }}
+              >
+                {OPERATORS.map(op => (
+                  <MenuItem key={op} value={op}>
+                    {op}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
-          <TextField
-            sx={{ flex: 1 }}
-            type="number"
-            label="阈值"
-            value={formData.condition.value}
-            onChange={(e) =>
-              handleChange('condition', {
-                ...formData.condition,
-                value: Number(e.target.value)
-              })
-            }
-            error={!!errors.threshold}
-            helperText={errors.threshold}
-            inputProps={{
-              'aria-label': '阈值'
-            }}
-          />
+            {renderThresholdField()}
+          </Box>
         </Box>
 
         <FormControl fullWidth>

@@ -1,5 +1,5 @@
 import type { AlertRule } from '@/infrastructure/monitoring/types';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AlertRuleForm } from '../AlertRuleForm';
@@ -79,49 +79,71 @@ describe('AlertRuleForm', () => {
 
   // 表单验证测试
   describe('表单验证', () => {
-    it('validates required fields', async () => {
-      render(
-        <AlertRuleForm
-          onSubmit={mockOnSubmit}
-          onCancel={mockOnCancel}
+    test('validates required fields', async () => {
+      const { getByRole, findByTestId } = render(
+        <AlertRuleForm 
+          onSubmit={vi.fn()} 
+          onCancel={vi.fn()} 
         />
       );
-
-      fireEvent.submit(screen.getByRole('form'));
-      expect(await screen.findByText('规则名称不能为空')).toBeInTheDocument();
-      expect(mockOnSubmit).not.toHaveBeenCalled();
+      
+      // 提交空表单（这会触发所有字段的验证）
+      const submitButton = getByRole('button', { name: '保存' });
+      await user.click(submitButton);
+      
+      // 等待错误消息出现并验证
+      await waitFor(async () => {
+        const errorElement = await findByTestId('name-error-text');
+        expect(errorElement).toBeInTheDocument();
+        expect(errorElement.textContent).toBe('规则名称不能为空');
+      }, { timeout: 3000 });
     });
 
-    it('validates email format', async () => {
-      render(
-        <AlertRuleForm
-          onSubmit={mockOnSubmit}
-          onCancel={mockOnCancel}
+    test('validates email format', async () => {
+      const { getByLabelText, getByRole } = render(
+        <AlertRuleForm 
+          onSubmit={vi.fn()} 
+          onCancel={vi.fn()} 
         />
       );
-
-      const emailInput = screen.getByLabelText('通知邮箱');
-      await user.type(emailInput, 'invalid-email');
-      fireEvent.submit(screen.getByRole('form'));
-
-      expect(await screen.findByText('邮箱格式不正确')).toBeInTheDocument();
-      expect(mockOnSubmit).not.toHaveBeenCalled();
+      
+      // 输入必填字段
+      await user.type(getByLabelText('规则名称'), 'Test Rule');
+      
+      // 输入无效的邮箱
+      await user.type(getByLabelText('通知邮箱'), 'invalid-email');
+      
+      // 提交表单
+      await user.click(getByRole('button', { name: '保存' }));
+      
+      // 等待验证完成
+      await waitFor(() => {
+        expect(screen.getByText('邮箱格式不正确')).toBeInTheDocument();
+      });
     });
 
-    it('validates threshold values', async () => {
-      render(
-        <AlertRuleForm
-          onSubmit={mockOnSubmit}
-          onCancel={mockOnCancel}
+    test('validates threshold values', async () => {
+      const { getByTestId, findByTestId } = render(
+        <AlertRuleForm 
+          onSubmit={vi.fn()} 
+          onCancel={vi.fn()} 
         />
       );
-
-      const thresholdInput = screen.getByLabelText('阈值');
-      fireEvent.change(thresholdInput, { target: { value: '-1' } });
-      fireEvent.submit(screen.getByRole('form'));
-
-      expect(await screen.findByText('阈值不能为负数')).toBeInTheDocument();
-      expect(mockOnSubmit).not.toHaveBeenCalled();
+      
+      // 输入无效的阈值
+      const thresholdInput = getByTestId('threshold-input');
+      await user.clear(thresholdInput);
+      await user.type(thresholdInput, '-1');
+      
+      // 触发验证（通过失去焦点）
+      await user.tab();
+      
+      // 等待错误消息出现并验证
+      await waitFor(async () => {
+        const errorElement = await findByTestId('threshold-error-text');
+        expect(errorElement).toBeInTheDocument();
+        expect(errorElement.textContent).toBe('阈值不能为负数');
+      }, { timeout: 3000 });
     });
   });
 

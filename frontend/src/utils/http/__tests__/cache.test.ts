@@ -1,6 +1,5 @@
-import { describe, expect, test, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { HttpRequestManager } from '../manager';
-import type { CacheData } from '../types';
 
 describe('HttpRequestManager Cache Tests', () => {
   let manager: HttpRequestManager;
@@ -52,8 +51,10 @@ describe('HttpRequestManager Cache Tests', () => {
 
       manager.setCacheData(key, data, ttl);
       
-      // 等待缓存过期
-      await new Promise(resolve => setTimeout(resolve, 200));
+      // 使用真实的定时器来等待缓存过期
+      vi.useRealTimers();
+      await new Promise(resolve => setTimeout(resolve, 150));
+      vi.useFakeTimers();
       
       const cachedData = manager.getCacheData<typeof data>(key);
       expect(cachedData).toBeNull();

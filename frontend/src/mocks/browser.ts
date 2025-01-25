@@ -9,4 +9,6 @@ if (process.env.NODE_ENV === 'development') {
   worker.start({
     onUnhandledRequest: 'bypass', // 对未处理的请求直接放行
   })
-} 
+}
+
+export { handlers }

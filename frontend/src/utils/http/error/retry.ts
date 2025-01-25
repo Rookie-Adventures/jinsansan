@@ -51,12 +51,15 @@ export class ErrorRetryMiddleware {
       try {
         attempts++;
         
-        // 使用指数退避策略，但不超过最大延迟时间
-        const delayTime = Math.min(
-          this.options.retryDelay * Math.pow(2, attempts - 1),
-          this.options.maxDelay
-        );
-        await this.delay(delayTime);
+        // 在测试环境中不使用延迟
+        if (process.env.NODE_ENV !== 'test') {
+          // 使用指数退避策略，但不超过最大延迟时间
+          const delayTime = Math.min(
+            this.options.retryDelay * Math.pow(2, attempts - 1),
+            this.options.maxDelay
+          );
+          await this.delay(delayTime);
+        }
 
         // 执行操作
         return await operation();

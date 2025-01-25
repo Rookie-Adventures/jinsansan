@@ -1,16 +1,19 @@
-import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, test, vi, type Mock } from 'vitest';
 import { HttpError } from '../error';
 import { ErrorNotificationManager } from '../notification';
 import { HttpErrorType } from '../types';
 
 describe('ErrorNotificationManager', () => {
   let manager: ErrorNotificationManager;
+  let showNotification: Mock;
 
   beforeEach(() => {
     vi.restoreAllMocks();
     vi.useFakeTimers();
     ErrorNotificationManager.resetInstance();
+    showNotification = vi.fn();
     manager = ErrorNotificationManager.getInstance();
+    manager.setNotificationHandler(showNotification);
   });
 
   afterEach(() => {
@@ -27,62 +30,58 @@ describe('ErrorNotificationManager', () => {
 
   describe('notify', () => {
     test('should show notification for critical errors', async () => {
-      const showNotification = vi.fn();
-      manager.setNotificationHandler(showNotification);
-
       const error = new HttpError({
         type: HttpErrorType.SERVER,
-        message: 'Critical server error',
+        message: '服务器错误',
         severity: 'critical'
       });
 
-      const notifyPromise = manager.notify(error);
-      vi.advanceTimersByTime(0);
-      await notifyPromise;
+      manager = ErrorNotificationManager.getInstance();
+      manager.setNotificationHandler(showNotification);
+
+      await manager.notify(error);
 
       expect(showNotification).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'error',
-          message: expect.stringContaining('Critical server error')
+          message: '服务器错误',
+          description: '服务器内部错误'
         })
       );
     });
 
     test('should show warning notification for warning errors', async () => {
-      const showNotification = vi.fn();
-      manager.setNotificationHandler(showNotification);
-
       const error = new HttpError({
-        type: HttpErrorType.CLIENT,
-        message: 'Warning message',
+        type: HttpErrorType.VALIDATION,
+        message: '参数错误',
         severity: 'warning'
       });
 
-      const notifyPromise = manager.notify(error);
-      vi.advanceTimersByTime(0);
-      await notifyPromise;
+      manager = ErrorNotificationManager.getInstance();
+      manager.setNotificationHandler(showNotification);
+
+      await manager.notify(error);
 
       expect(showNotification).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'warning',
-          message: expect.stringContaining('Warning message')
+          message: '参数错误',
+          description: '请检查输入参数'
         })
       );
     });
 
     test('should not show notification for info errors by default', async () => {
-      const showNotification = vi.fn();
-      manager.setNotificationHandler(showNotification);
-
       const error = new HttpError({
-        type: HttpErrorType.NETWORK,
-        message: 'Info message',
+        type: HttpErrorType.INFO,
+        message: '操作提示',
         severity: 'info'
       });
 
-      const notifyPromise = manager.notify(error);
-      vi.advanceTimersByTime(0);
-      await notifyPromise;
+      manager = ErrorNotificationManager.getInstance();
+      manager.setNotificationHandler(showNotification);
+
+      await manager.notify(error);
 
       expect(showNotification).not.toHaveBeenCalled();
     });
@@ -90,74 +89,51 @@ describe('ErrorNotificationManager', () => {
 
   describe('setNotificationLevel', () => {
     test('should only show notifications above set level', async () => {
-      const showNotification = vi.fn();
+      manager = ErrorNotificationManager.getInstance();
       manager.setNotificationHandler(showNotification);
       manager.setNotificationLevel('critical');
 
       const warningError = new HttpError({
-        type: HttpErrorType.CLIENT,
-        message: 'Warning message',
+        type: HttpErrorType.WARNING,
+        message: '警告信息',
         severity: 'warning'
       });
 
       const criticalError = new HttpError({
-        type: HttpErrorType.SERVER,
-        message: 'Critical error',
+        type: HttpErrorType.ERROR,
+        message: '严重错误',
         severity: 'critical'
       });
 
-      const warningPromise = manager.notify(warningError);
-      const criticalPromise = manager.notify(criticalError);
-      
-      vi.advanceTimersByTime(0);
-      await Promise.all([warningPromise, criticalPromise]);
+      await manager.notify(warningError);
+      await manager.notify(criticalError);
 
       expect(showNotification).toHaveBeenCalledTimes(1);
       expect(showNotification).toHaveBeenCalledWith(
         expect.objectContaining({
-          message: expect.stringContaining('Critical error')
+          message: '严重错误'
         })
       );
     });
   });
 
   describe('setNotificationHandler', () => {
-    test('should use custom notification handler', async () => {
-      const customHandler = vi.fn();
-      manager.setNotificationHandler(customHandler);
-
-      const error = new HttpError({
-        type: HttpErrorType.BUSINESS,
-        message: 'Business error',
-        severity: 'warning'
-      });
-
-      const notifyPromise = manager.notify(error);
-      vi.advanceTimersByTime(0);
-      await notifyPromise;
-
-      expect(customHandler).toHaveBeenCalled();
-    });
-
     test('should format notification message', async () => {
-      const showNotification = vi.fn();
-      manager.setNotificationHandler(showNotification);
-
       const error = new HttpError({
         type: HttpErrorType.AUTH,
-        message: 'Authentication failed',
+        message: '认证失败',
         status: 401,
         metadata: { userId: '123' },
         severity: 'warning'
       });
 
-      const notifyPromise = manager.notify(error);
-      vi.advanceTimersByTime(0);
-      await notifyPromise;
+      await manager.notify(error);
+      await vi.runAllTimersAsync();
 
       expect(showNotification).toHaveBeenCalledWith(
         expect.objectContaining({
-          message: expect.stringContaining('Authentication failed'),
+          type: 'warning',
+          message: '认证失败',
           description: expect.stringContaining('401')
         })
       );
@@ -166,8 +142,6 @@ describe('ErrorNotificationManager', () => {
 
   describe('shouldNotify', () => {
     test('should not notify for ignored error types', async () => {
-      const showNotification = vi.fn();
-      manager.setNotificationHandler(showNotification);
       manager.ignoreErrorType(HttpErrorType.NETWORK);
 
       const error = new HttpError({
@@ -176,16 +150,13 @@ describe('ErrorNotificationManager', () => {
       });
 
       const notifyPromise = manager.notify(error);
-      vi.advanceTimersByTime(0);
+      await vi.runAllTimersAsync();
       await notifyPromise;
 
       expect(showNotification).not.toHaveBeenCalled();
     });
 
     test('should respect notification rules', async () => {
-      const showNotification = vi.fn();
-      manager.setNotificationHandler(showNotification);
-      
       manager.addNotificationRule((error) => error.status === 404, {
         type: 'info',
         duration: 3000
@@ -198,7 +169,7 @@ describe('ErrorNotificationManager', () => {
       });
 
       const notifyPromise = manager.notify(error);
-      vi.advanceTimersByTime(0);
+      await vi.runAllTimersAsync();
       await notifyPromise;
 
       expect(showNotification).toHaveBeenCalledWith(

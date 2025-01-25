@@ -32,6 +32,16 @@ export const handlers = [
     })
   }),
 
+  // 路由分析数据上报接口
+  http.post('/api/analytics/route', async ({ request }) => {
+    const body = await request.json()
+    return HttpResponse.json({
+      code: 200,
+      message: 'success',
+      data: body
+    })
+  }),
+
   // 登录接口模拟
   http.post('/auth/login', async ({ request }) => {
     const body = await request.json() as { username: string; password: string }
