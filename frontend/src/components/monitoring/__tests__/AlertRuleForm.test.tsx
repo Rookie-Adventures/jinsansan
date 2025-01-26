@@ -80,27 +80,25 @@ describe('AlertRuleForm', () => {
 
   // 表单验证测试
   describe('表单验证', () => {
-    test('validates threshold values', async () => {
+    it('validates threshold values', async () => {
       const { getByTestId, findByTestId } = render(
         <AlertRuleForm 
           onSubmit={vi.fn()} 
           onCancel={vi.fn()} 
         />
       );
-      
-      // 输入无效的阈值
+
       const thresholdInput = getByTestId('threshold-input');
-      await act(async () => {
-        await user.clear(thresholdInput);
-        await user.type(thresholdInput, '-1');
-        await user.tab();
-      });
       
-      // 等待错误消息出现并验证
-      await waitFor(async () => {
-        const errorElement = await findByTestId('threshold-error-text');
-        console.log('Threshold error text:', errorElement.textContent);
-        expect(errorElement).toBeInTheDocument();
+      await act(async () => {
+        fireEvent.change(thresholdInput, { target: { value: '-1' } });
+      });
+
+      // 使用 findByTestId 等待错误消息出现
+      const errorElement = await findByTestId('threshold-error-text');
+      
+      // 等待状态更新完成
+      await waitFor(() => {
         expect(errorElement.textContent?.trim()).toBe('阈值不能为负数');
       });
     });
@@ -113,12 +111,18 @@ describe('AlertRuleForm', () => {
         />
       );
       
+      // 确保规则名称字段为空
+      const nameInput = screen.getByLabelText('规则名称');
+      await act(async () => {
+        await user.clear(nameInput);
+      });
+
       // 提交空表单
       const submitButton = getByRole('button', { name: '保存' });
       await act(async () => {
         await user.click(submitButton);
       });
-      
+
       // 等待错误消息出现并验证
       await waitFor(async () => {
         const errorElement = await findByTestId('name-error-text');

@@ -1,18 +1,18 @@
 import type { AlertRule, AlertRuleType, AlertSeverity, MetricType } from '@/infrastructure/monitoring/types';
 import {
-    Box,
-    Button,
-    FormControl,
-    FormControlLabel,
-    FormHelperText,
-    InputLabel,
-    MenuItem,
-    Select,
-    Stack,
-    styled,
-    Switch,
-    TextField,
-    Typography
+  Box,
+  Button,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  styled,
+  Switch,
+  TextField,
+  Typography
 } from '@mui/material';
 import React from 'react';
 import { sanitizeInput } from '../../utils/security';
@@ -98,16 +98,10 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
         break;
     }
 
-    console.log(`Validating ${field}:`, error);
-    console.log('Current formData:', formData);
-    console.log('Current errors state before update:', errors);
-
     setErrors(prev => ({
       ...prev,
       [field]: error
     }));
-
-    console.log('Updated errors state:', errors);
 
     return !error;
   };
@@ -149,20 +143,26 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
       }
     }));
 
-    // 立即验证并设置错误
-    if (value < 0) {
-      setErrors(prev => ({
-        ...prev,
-        threshold: '阈值不能为负数'
-      }));
-    } else {
-      setErrors(prev => {
-        const newErrors = { ...prev };
-        delete newErrors.threshold;
-        return newErrors;
-      });
-    }
+    setTouched(prev => ({ ...prev, threshold: true }));
   };
+
+  // 使用 useEffect 监听值的变化
+  React.useEffect(() => {
+    if (touched.threshold) {
+      if (formData.condition.value < 0) {
+        setErrors(prev => ({
+          ...prev,
+          threshold: '阈值不能为负数'
+        }));
+      } else {
+        setErrors(prev => {
+          const newErrors = { ...prev };
+          delete newErrors.threshold;
+          return newErrors;
+        });
+      }
+    }
+  }, [formData.condition.value, touched.threshold]);
 
   const handleChange = <K extends keyof AlertRuleFormData>(
     field: K,
@@ -183,7 +183,7 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
         type="number"
         value={formData.condition.value}
         onChange={(e) => handleThresholdChange(Number(e.target.value))}
-        onBlur={() => validateField('threshold')}
+        onBlur={() => handleBlur('threshold')}
         error={!!errors.threshold}
         inputProps={{
           'aria-label': '阈值',
