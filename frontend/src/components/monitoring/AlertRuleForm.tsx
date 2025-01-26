@@ -98,10 +98,16 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
         break;
     }
 
+    console.log(`Validating ${field}:`, error);
+    console.log('Current formData:', formData);
+    console.log('Current errors state before update:', errors);
+
     setErrors(prev => ({
       ...prev,
       [field]: error
     }));
+
+    console.log('Updated errors state:', errors);
 
     return !error;
   };
@@ -114,20 +120,27 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
+    setTouched({
+      name: true,
+      threshold: true,
+      email: true
+    });
+
     const isValid = validateForm();
-    console.log('Form validation result:', isValid, errors);
     if (isValid) {
       const sanitizedData: AlertRuleFormData = {
         ...formData,
-        name: sanitizeInput(formData.name)
+        name: sanitizeInput(formData.name),
+        notification: {
+          ...formData.notification,
+          email: formData.notification.email?.map(email => sanitizeInput(email)) || []
+        }
       };
       onSubmit(sanitizedData);
     }
   };
 
   const handleThresholdChange = (value: number) => {
-    console.log('Threshold changed:', value);
-    
     setFormData(prev => ({
       ...prev,
       condition: {
@@ -136,31 +149,19 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
       }
     }));
 
-    validateThreshold(value);
-  };
-
-  const validateThreshold = (value: number) => {
-    console.log('Validating threshold:', value);
+    // 立即验证并设置错误
     if (value < 0) {
-      console.log('Setting threshold error');
       setErrors(prev => ({
         ...prev,
         threshold: '阈值不能为负数'
       }));
-      return false;
     } else {
       setErrors(prev => {
         const newErrors = { ...prev };
         delete newErrors.threshold;
         return newErrors;
       });
-      return true;
     }
-  };
-
-  const handleThresholdBlur = () => {
-    console.log('Threshold blur, current value:', formData.condition.value);
-    validateThreshold(Number(formData.condition.value));
   };
 
   const handleChange = <K extends keyof AlertRuleFormData>(
@@ -175,24 +176,15 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
 
   // 修改阈值输入部分的渲染
   const renderThresholdField = () => (
-    <FormControl fullWidth error={touched.threshold && !!errors.threshold}>
+    <FormControl fullWidth error={!!errors.threshold}>
       <InputLabel>阈值</InputLabel>
       <TextField
         fullWidth
         type="number"
         value={formData.condition.value}
-        onChange={(e) => {
-          const value = Number(e.target.value);
-          handleChange('condition', {
-            ...formData.condition,
-            value
-          });
-          if (touched.threshold) {
-            validateField('threshold');
-          }
-        }}
-        onBlur={() => handleBlur('threshold')}
-        error={touched.threshold && !!errors.threshold}
+        onChange={(e) => handleThresholdChange(Number(e.target.value))}
+        onBlur={() => validateField('threshold')}
+        error={!!errors.threshold}
         inputProps={{
           'aria-label': '阈值',
           'data-testid': 'threshold-input'
@@ -202,26 +194,24 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
         error
         data-testid="threshold-error-text"
       >
-        {(touched.threshold && errors.threshold) || ' '}
+        {errors.threshold || '\u200B'}
       </FormHelperText>
     </FormControl>
   );
 
   // 修改名称输入部分的渲染
   const renderNameField = () => (
-    <FormControl fullWidth error={touched.name && !!errors.name}>
+    <FormControl fullWidth error={!!errors.name}>
       <TextField
         fullWidth
         label="规则名称"
         value={formData.name}
         onChange={(e) => {
           handleChange('name', e.target.value);
-          if (touched.name) {
-            validateField('name');
-          }
+          validateField('name');
         }}
-        onBlur={() => handleBlur('name')}
-        error={touched.name && !!errors.name}
+        onBlur={() => validateField('name')}
+        error={!!errors.name}
         required
         inputProps={{
           'aria-label': '规则名称'
@@ -231,26 +221,19 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
         error
         data-testid="name-error-text"
       >
-        {(touched.name && errors.name) || ' '}
+        {errors.name || '\u200B'}
       </FormHelperText>
     </FormControl>
   );
 
+  React.useEffect(() => {
+    console.log('Errors state updated:', errors);
+  }, [errors]);
+
   return (
     <Box 
       component="form" 
-      onSubmit={(e) => {
-        e.preventDefault();
-        // 提交时设置所有字段为已触碰
-        setTouched({
-          name: true,
-          threshold: true,
-          email: true
-        });
-        if (validateForm()) {
-          onSubmit(formData);
-        }
-      }}
+      onSubmit={handleSubmit}
       sx={{ width: '100%', maxWidth: 600 }}
       role="form"
       aria-label="告警规则表单"
