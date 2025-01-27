@@ -7,89 +7,113 @@ interface ErrorMessageTemplate {
 
 // 开发环境错误消息
 const devErrorMessages: Record<HttpErrorType, ErrorMessageTemplate> = {
-  [HttpErrorType.NETWORK]: {
-    message: '网络连接失败 (DEV)',
-    description: '无法连接到服务器，请检查网络设置和服务器状态'
+  NETWORK: {
+    message: '网络连接失败',
+    description: '请检查您的网络连接并重试'
   },
-  [HttpErrorType.TIMEOUT]: {
-    message: '请求超时 (DEV)',
-    description: '服务器响应时间过长，请检查服务器性能'
+  TIMEOUT: {
+    message: '请求超时',
+    description: '服务器响应时间过长，请稍后重试'
   },
-  [HttpErrorType.AUTH]: {
-    message: '认证失败 (DEV)',
-    description: '请检查认证信息和权限配置'
+  AUTH: {
+    message: '认证失败',
+    description: '您的登录状态已过期，请重新登录'
   },
-  [HttpErrorType.SERVER]: {
-    message: '服务器错误 (DEV)',
-    description: '服务器内部错误，请检查服务器日志'
+  SERVER: {
+    message: '服务器错误',
+    description: '服务器处理请求时发生错误，请稍后重试'
   },
-  [HttpErrorType.CLIENT]: {
-    message: '客户端错误 (DEV)',
-    description: '请求参数错误，请检查API文档'
+  CLIENT: {
+    message: '客户端错误',
+    description: '请求参数有误，请检查后重试'
   },
-  [HttpErrorType.VALIDATION]: {
-    message: '数据验证失败 (DEV)',
-    description: '输入数据不符合验证规则，请检查验证器配置'
+  CANCEL: {
+    message: '请求已取消',
+    description: '您的操作已被取消'
   },
-  [HttpErrorType.BUSINESS]: {
-    message: '业务逻辑错误 (DEV)',
-    description: '业务规则验证失败，请检查业务逻辑'
+  REACT_ERROR: {
+    message: '页面渲染错误',
+    description: '页面组件渲染失败，请刷新页面'
   },
-  [HttpErrorType.CANCEL]: {
-    message: '请求已取消 (DEV)',
-    description: '用户或系统取消了请求'
+  VALIDATION: {
+    message: '数据验证失败',
+    description: '请检查输入的数据是否符合要求'
   },
-  [HttpErrorType.REACT_ERROR]: {
-    message: 'React错误: ${error}',
-    description: '组件渲染错误，请检查组件代码'
+  BUSINESS: {
+    message: '业务处理失败',
+    description: '操作无法完成，请检查后重试'
   },
-  [HttpErrorType.UNKNOWN]: {
-    message: '未知错误 (DEV)',
-    description: '发生未预期的错误，请检查系统日志'
+  UNKNOWN: {
+    message: '未知错误',
+    description: '发生未知错误，请刷新页面或联系支持'
+  },
+  INFO: {
+    message: '提示信息',
+    description: '系统提示信息'
+  },
+  WARNING: {
+    message: '警告信息',
+    description: '系统警告信息'
+  },
+  ERROR: {
+    message: '错误信息',
+    description: '系统错误信息'
   }
 };
 
 // 生产环境错误消息
 const prodErrorMessages: Record<HttpErrorType, ErrorMessageTemplate> = {
-  [HttpErrorType.NETWORK]: {
-    message: '网络连接失败，请检查网络设置',
-    description: '无法连接到服务器，请确保网络连接正常'
+  NETWORK: {
+    message: '网络连接失败',
+    description: '请检查您的网络连接并重试'
   },
-  [HttpErrorType.TIMEOUT]: {
-    message: '请求超时，请稍后重试',
-    description: '服务器响应时间过长'
+  TIMEOUT: {
+    message: '请求超时',
+    description: '服务器响应时间过长，请稍后重试'
   },
-  [HttpErrorType.AUTH]: {
+  AUTH: {
     message: '认证失败',
-    description: '请检查您的登录状态'
+    description: '您的登录状态已过期，请重新登录'
   },
-  [HttpErrorType.SERVER]: {
-    message: '服务器错误，请稍后重试',
-    description: '服务器内部发生错误'
+  SERVER: {
+    message: '服务器错误',
+    description: '服务器处理请求时发生错误，请稍后重试'
   },
-  [HttpErrorType.CLIENT]: {
-    message: '请求参数错误',
-    description: '请检查输入参数是否正确'
+  CLIENT: {
+    message: '客户端错误',
+    description: '请求参数有误，请检查后重试'
   },
-  [HttpErrorType.VALIDATION]: {
-    message: '输入数据验证失败',
-    description: '请检查输入数据是否符合要求'
-  },
-  [HttpErrorType.BUSINESS]: {
-    message: '操作失败，请检查后重试',
-    description: '业务处理过程中发生错误'
-  },
-  [HttpErrorType.CANCEL]: {
+  CANCEL: {
     message: '请求已取消',
-    description: '用户取消了请求'
+    description: '您的操作已被取消'
   },
-  [HttpErrorType.REACT_ERROR]: {
-    message: '页面显示异常，请刷新重试',
-    description: '页面渲染过程中发生错误'
+  REACT_ERROR: {
+    message: '页面渲染错误',
+    description: '页面组件渲染失败，请刷新页面'
   },
-  [HttpErrorType.UNKNOWN]: {
-    message: '发生未知错误，请稍后重试',
-    description: '系统发生未知错误'
+  VALIDATION: {
+    message: '数据验证失败',
+    description: '请检查输入的数据是否符合要求'
+  },
+  BUSINESS: {
+    message: '业务处理失败',
+    description: '操作无法完成，请检查后重试'
+  },
+  UNKNOWN: {
+    message: '系统错误',
+    description: '请刷新页面或联系支持'
+  },
+  INFO: {
+    message: '提示信息',
+    description: '系统提示信息'
+  },
+  WARNING: {
+    message: '警告信息',
+    description: '系统警告信息'
+  },
+  ERROR: {
+    message: '错误信息',
+    description: '系统错误信息'
   }
 };
 

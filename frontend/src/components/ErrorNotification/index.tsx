@@ -1,4 +1,4 @@
-import { Alert, Snackbar, AlertTitle, Button, Stack } from '@mui/material';
+import { Alert, AlertTitle, Button, Snackbar, Stack } from '@mui/material';
 import React from 'react';
 
 import { errorRecoveryManager } from '@/utils/http/error/recovery';
@@ -82,6 +82,24 @@ const errorMessages: Record<HttpErrorType, ErrorConfig> = {
     title: '业务错误',
     severity: 'warning',
     description: '操作无法完成',
+    recoverable: false
+  },
+  INFO: {
+    title: '提示信息',
+    severity: 'info',
+    description: '操作提示',
+    recoverable: false
+  },
+  WARNING: {
+    title: '警告信息',
+    severity: 'warning',
+    description: '操作警告',
+    recoverable: false
+  },
+  ERROR: {
+    title: '错误信息',
+    severity: 'error',
+    description: '操作错误',
     recoverable: false
   }
 };
