@@ -19,8 +19,9 @@
     "msw:generate": "msw init public --save",
     "check:all": "npm run check:duplicates && npm run check:deadcode",
     "check:duplicates": "jscpd src/ --ignore \"**/*.test.{ts,tsx}\" --reporters html,console --output reports/duplicates",
-    "check:deadcode": "eslint src/ --ext .ts,.tsx --max-warnings 0 --rule 'no-unused-vars: \"error\"' --rule '@typescript-eslint/no-unused-vars: \"error\"'",
-    "find:unused-files": "npx find-unused-exports --config unused-exports.config.js"
+    "check:deadcode": "eslint \"./src/**/*.{ts,tsx}\" --max-warnings 0",
+    "check:unused": "ts-prune -p tsconfig.json",
+    "find:unused-files": "find-unused-exports src/main.tsx src/App.tsx --ext .ts,.tsx,.js,.jsx --ignore \"**/*.test.{ts,tsx}\" \"**/*.spec.{ts,tsx}\" \"**/types/**\""
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
