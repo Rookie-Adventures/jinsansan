@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/21</span>
+                <span class='fraction'>0/32</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/21</span>
+                <span class='fraction'>0/32</span>
             </div>
         
             
@@ -95,30 +95,30 @@
 <a name='L30'></a><a href='#L30'>30</a>
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -126,30 +126,30 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { useCallback } from 'react';<span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span></span>
-&nbsp;
-import { http } from '@/utils/http';
-import type { HttpRequestConfig } from '@/utils/http/types';
-&nbsp;
-type RequestConfig = Omit&lt;HttpRequestConfig, 'url' | 'method'&gt;;
-type RequestConfigWithoutData = Omit&lt;HttpRequestConfig, 'url' | 'method' | 'data'&gt;;
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >import { http } from '@/utils/http';</span>
+<span class="cstat-no" title="statement not covered" >import type { HttpRequestConfig } from '@/utils/http/types';</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >type RequestConfig = Omit&lt;HttpRequestConfig, 'url' | 'method'&gt;;</span>
+<span class="cstat-no" title="statement not covered" >type RequestConfigWithoutData = Omit&lt;HttpRequestConfig, 'url' | 'method' | 'data'&gt;;</span>
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >export const useHttp = () =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  const get = useCallback(async &lt;T&gt;(url: string, config?: RequestConfig) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    return http.get&lt;T&gt;(url, config);</span>
 <span class="cstat-no" title="statement not covered" >  }, []);</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  const post = useCallback(async &lt;T&gt;(url: string, data?: unknown, config?: RequestConfigWithoutData) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    return http.post&lt;T&gt;(url, data, config);</span>
 <span class="cstat-no" title="statement not covered" >  }, []);</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  const put = useCallback(async &lt;T&gt;(url: string, data?: unknown, config?: RequestConfigWithoutData) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    return http.put&lt;T&gt;(url, data, config);</span>
 <span class="cstat-no" title="statement not covered" >  }, []);</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  const del = useCallback(async &lt;T&gt;(url: string, config?: RequestConfig) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    return http.delete&lt;T&gt;(url, config);</span>
 <span class="cstat-no" title="statement not covered" >  }, []);</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  return {</span>
 <span class="cstat-no" title="statement not covered" >    get,</span>
 <span class="cstat-no" title="statement not covered" >    post,</span>
@@ -163,7 +163,7 @@ type RequestConfigWithoutData = Omit&lt;HttpRequestConfig, 'url' | 'method' | 'd
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-19T09:21:55.981Z
+                at 2025-01-30T01:37:25.158Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

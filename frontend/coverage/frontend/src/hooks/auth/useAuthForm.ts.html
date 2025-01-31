@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/19</span>
+                <span class='fraction'>0/28</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/19</span>
+                <span class='fraction'>0/28</span>
             </div>
         
             
@@ -91,26 +91,26 @@
 <a name='L26'></a><a href='#L26'>26</a>
 <a name='L27'></a><a href='#L27'>27</a>
 <a name='L28'></a><a href='#L28'>28</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -118,26 +118,26 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { useState, useCallback } from 'react';<span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span></span>
-import type { LoginFormData, RegisterFormData } from '@/types/auth';
-&nbsp;
-interface UseAuthFormOptions&lt;T extends LoginFormData | RegisterFormData&gt; {
-  initialData: T;
-}
-&nbsp;
+<span class="cstat-no" title="statement not covered" >import type { LoginFormData, RegisterFormData } from '@/types/auth';</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >interface UseAuthFormOptions&lt;T extends LoginFormData | RegisterFormData&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  initialData: T;</span>
+<span class="cstat-no" title="statement not covered" >}</span>
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >export const useAuthForm = &lt;T extends LoginFormData | RegisterFormData&gt;({ </span>
 <span class="cstat-no" title="statement not covered" >  initialData </span>
 <span class="cstat-no" title="statement not covered" >}: UseAuthFormOptions&lt;T&gt;) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  const [formData, setFormData] = useState&lt;T&gt;(initialData);</span>
 <span class="cstat-no" title="statement not covered" >  const [showPassword, setShowPassword] = useState(false);</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  const handleFormChange = useCallback((data: Partial&lt;T&gt;) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setFormData(prev =&gt; ({ ...prev, ...data }));</span>
 <span class="cstat-no" title="statement not covered" >  }, []);</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  const togglePasswordVisibility = useCallback(() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setShowPassword(prev =&gt; !prev);</span>
 <span class="cstat-no" title="statement not covered" >  }, []);</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  return {</span>
 <span class="cstat-no" title="statement not covered" >    formData,</span>
 <span class="cstat-no" title="statement not covered" >    showPassword,</span>
@@ -151,7 +151,7 @@ interface UseAuthFormOptions&lt;T extends LoginFormData | RegisterFormData&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-19T09:21:55.981Z
+                at 2025-01-30T01:37:25.158Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/31</span>
+                <span class='fraction'>0/38</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/31</span>
+                <span class='fraction'>0/38</span>
             </div>
         
             
@@ -105,12 +105,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -120,15 +114,21 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -143,30 +143,30 @@
 <span class="cstat-no" title="statement not covered" >import ReactDOM from 'react-dom/client';</span>
 <span class="cstat-no" title="statement not covered" >import { Provider } from 'react-redux';</span>
 <span class="cstat-no" title="statement not covered" >import { PersistGate } from 'redux-persist/integration/react';</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >import { App } from './App';</span>
 <span class="cstat-no" title="statement not covered" >import Loading from './components/common/Loading';</span>
 <span class="cstat-no" title="statement not covered" >import { persistor, store } from './store';</span>
-&nbsp;
-// 开发环境下启动 MSW
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >// 开发环境下启动 MSW</span>
 <span class="cstat-no" title="statement not covered" >async function startMockServiceWorker() {</span>
 <span class="cstat-no" title="statement not covered" >  if (process.env.NODE_ENV === 'development') {</span>
 <span class="cstat-no" title="statement not covered" >    const { worker } = await import('./mocks/browser');</span>
-<span class="cstat-no" title="statement not covered" >    return worker.start({</span>
+<span class="cstat-no" title="statement not covered" >    await worker.start({</span>
 <span class="cstat-no" title="statement not covered" >      onUnhandledRequest: 'bypass',</span>
 <span class="cstat-no" title="statement not covered" >    });</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" >  return Promise.resolve();</span>
 <span class="cstat-no" title="statement not covered" >}</span>
-&nbsp;
-// 初始化应用
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >// 初始化应用</span>
 <span class="cstat-no" title="statement not covered" >startMockServiceWorker().then(() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  const rootElement = document.getElementById('root');</span>
-  
+<span class="cstat-no" title="statement not covered" >  </span>
 <span class="cstat-no" title="statement not covered" >  if (!rootElement) {</span>
 <span class="cstat-no" title="statement not covered" >    throw new Error('Failed to find the root element');</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  ReactDOM.createRoot(rootElement).render(</span>
 <span class="cstat-no" title="statement not covered" >    &lt;React.StrictMode&gt;</span>
 <span class="cstat-no" title="statement not covered" >      &lt;Provider store={store}&gt;</span>
@@ -184,7 +184,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-19T09:21:55.981Z
+                at 2025-01-30T01:37:25.158Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

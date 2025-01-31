@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/36</span>
+                <span class='fraction'>0/51</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/36</span>
+                <span class='fraction'>0/51</span>
             </div>
         
             
@@ -114,19 +114,6 @@
 <a name='L49'></a><a href='#L49'>49</a>
 <a name='L50'></a><a href='#L50'>50</a>
 <a name='L51'></a><a href='#L51'>51</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -139,7 +126,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -149,7 +135,21 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -164,19 +164,19 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { yupResolver } from '@hookform/resolvers/yup';<span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span></span>
-import { DefaultValues, Resolver, useForm as useHookForm } from 'react-hook-form';
-import type { ObjectSchema } from 'yup';
-&nbsp;
-interface FormData {
-  [key: string]: unknown;
-}
-&nbsp;
-interface UseFormProps&lt;T extends FormData&gt; {
-  defaultValues?: DefaultValues&lt;T&gt;;
-  schema?: ObjectSchema&lt;T&gt;;
-  mode?: 'onSubmit' | 'onChange' | 'onBlur' | 'onTouched' | 'all';
-}
-&nbsp;
+<span class="cstat-no" title="statement not covered" >import { DefaultValues, Resolver, useForm as useHookForm } from 'react-hook-form';</span>
+<span class="cstat-no" title="statement not covered" >import type { ObjectSchema } from 'yup';</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >interface FormData {</span>
+<span class="cstat-no" title="statement not covered" >  [key: string]: unknown;</span>
+<span class="cstat-no" title="statement not covered" >}</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >interface UseFormProps&lt;T extends FormData&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  defaultValues?: DefaultValues&lt;T&gt;;</span>
+<span class="cstat-no" title="statement not covered" >  schema?: ObjectSchema&lt;T&gt;;</span>
+<span class="cstat-no" title="statement not covered" >  mode?: 'onSubmit' | 'onChange' | 'onBlur' | 'onTouched' | 'all';</span>
+<span class="cstat-no" title="statement not covered" >}</span>
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >export const useForm = &lt;T extends FormData&gt;({</span>
 <span class="cstat-no" title="statement not covered" >  defaultValues,</span>
 <span class="cstat-no" title="statement not covered" >  schema,</span>
@@ -189,7 +189,7 @@ interface UseFormProps&lt;T extends FormData&gt; {
 <span class="cstat-no" title="statement not covered" >      : undefined,</span>
 <span class="cstat-no" title="statement not covered" >    mode,</span>
 <span class="cstat-no" title="statement not covered" >  });</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  const {</span>
 <span class="cstat-no" title="statement not covered" >    handleSubmit,</span>
 <span class="cstat-no" title="statement not covered" >    formState: { errors, isSubmitting, isDirty, isValid },</span>
@@ -199,7 +199,7 @@ interface UseFormProps&lt;T extends FormData&gt; {
 <span class="cstat-no" title="statement not covered" >    trigger,</span>
 <span class="cstat-no" title="statement not covered" >    control,</span>
 <span class="cstat-no" title="statement not covered" >  } = methods;</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  return {</span>
 <span class="cstat-no" title="statement not covered" >    handleSubmit,</span>
 <span class="cstat-no" title="statement not covered" >    errors,</span>
@@ -220,7 +220,7 @@ interface UseFormProps&lt;T extends FormData&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-19T09:21:55.981Z
+                at 2025-01-30T01:37:25.158Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

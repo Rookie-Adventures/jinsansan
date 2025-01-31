@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>0/39</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>0/39</span>
             </div>
         
             
@@ -102,77 +102,77 @@
 <a name='L37'></a><a href='#L37'>37</a>
 <a name='L38'></a><a href='#L38'>38</a>
 <a name='L39'></a><a href='#L39'>39</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { http } from '../http/HttpClient';<span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span></span>
-&nbsp;
-export interface FilterValue {
-  value: string | number | boolean;
-  operator?: 'eq' | 'neq' | 'gt' | 'gte' | 'lt' | 'lte' | 'contains' | 'startsWith' | 'endsWith';
-}
-&nbsp;
-export interface SearchParams {
-  keyword: string;
-  filters?: Record&lt;string, FilterValue&gt;;
-  page?: number;
-  pageSize?: number;
-  sortBy?: string;
-  sortOrder?: 'asc' | 'desc';
-}
-&nbsp;
-export interface SearchResult&lt;T&gt; {
-  items: T[];
-  total: number;
-  page: number;
-  pageSize: number;
-}
-&nbsp;
-export interface SearchService {
-  search&lt;T&gt;(params: SearchParams): Promise&lt;SearchResult&lt;T&gt;&gt;;
-  advancedSearch&lt;T&gt;(params: SearchParams): Promise&lt;SearchResult&lt;T&gt;&gt;;
-}
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >export interface FilterValue {</span>
+<span class="cstat-no" title="statement not covered" >  value: string | number | boolean;</span>
+<span class="cstat-no" title="statement not covered" >  operator?: 'eq' | 'neq' | 'gt' | 'gte' | 'lt' | 'lte' | 'contains' | 'startsWith' | 'endsWith';</span>
+<span class="cstat-no" title="statement not covered" >}</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >export interface SearchParams {</span>
+<span class="cstat-no" title="statement not covered" >  keyword: string;</span>
+<span class="cstat-no" title="statement not covered" >  filters?: Record&lt;string, FilterValue&gt;;</span>
+<span class="cstat-no" title="statement not covered" >  page?: number;</span>
+<span class="cstat-no" title="statement not covered" >  pageSize?: number;</span>
+<span class="cstat-no" title="statement not covered" >  sortBy?: string;</span>
+<span class="cstat-no" title="statement not covered" >  sortOrder?: 'asc' | 'desc';</span>
+<span class="cstat-no" title="statement not covered" >}</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >export interface SearchResult&lt;T&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  items: T[];</span>
+<span class="cstat-no" title="statement not covered" >  total: number;</span>
+<span class="cstat-no" title="statement not covered" >  page: number;</span>
+<span class="cstat-no" title="statement not covered" >  pageSize: number;</span>
+<span class="cstat-no" title="statement not covered" >}</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >export interface SearchService {</span>
+<span class="cstat-no" title="statement not covered" >  search&lt;T&gt;(params: SearchParams): Promise&lt;SearchResult&lt;T&gt;&gt;;</span>
+<span class="cstat-no" title="statement not covered" >  advancedSearch&lt;T&gt;(params: SearchParams): Promise&lt;SearchResult&lt;T&gt;&gt;;</span>
+<span class="cstat-no" title="statement not covered" >}</span>
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >export class SearchServiceImpl implements SearchService {</span>
 <span class="cstat-no" title="statement not covered" >  async search&lt;T&gt;(params: SearchParams): Promise&lt;SearchResult&lt;T&gt;&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    const response = await http.get('/api/search', { params });</span>
 <span class="cstat-no" title="statement not covered" >    return response.data;</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  async advancedSearch&lt;T&gt;(params: SearchParams): Promise&lt;SearchResult&lt;T&gt;&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    const response = await http.get('/api/search/advanced', { params });</span>
 <span class="cstat-no" title="statement not covered" >    return response.data;</span>
@@ -184,7 +184,7 @@ export interface SearchService {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-19T09:21:55.981Z
+                at 2025-01-30T01:37:25.158Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

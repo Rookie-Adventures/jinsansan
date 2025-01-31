@@ -1,155 +1,225 @@
-# 前端测试计划
+# 前端测试计划文档
 
-## 测试架构
+> 状态：🚧 进行中
+> 
+> 更新日期：2024-03-22
+> 
+> 目标覆盖率：80%
+> 
+> 当前覆盖率：
+> - 语句覆盖率：33.53%
+> - 分支覆盖率：68.65%
+> - 函数覆盖率：58.72%
+> - 行覆盖率：33.53%
 
-按照前端规范，测试文件应与源文件放在同一目录下：
+## 一、优先级测试计划
 
+### P0：核心功能模块（本周）
+1. **PerformanceMonitor.ts** (当前65.33%)
+   - 未覆盖行：32-48, 51-66, 69-85, 93-94
+   ```typescript
+   // 需补充测试：
+   - 页面加载性能监控
+   - 资源加载监控
+   - 用户交互监控
+   - 自定义指标追踪
+   ```
+
+2. **RouterAnalytics.ts** (当前48.77%)
+   - 未覆盖行：144-156, 159-180, 184-208, 211-259, 262-276, 279-280
+   ```typescript
+   // 需补充测试：
+   - 路由变化追踪
+   - 性能指标收集
+   - 错误处理逻辑
+   ```
+
+3. **http/manager.ts** (当前74.35%)
+   - 未覆盖行：338-339, 356-360, 372-379, 385-392, 402-409, 417-420
+   ```typescript
+   // 需补充测试：
+   - 请求队列管理
+   - 并发控制
+   - 错误恢复策略
+   ```
+
+### P1：基础设施层（下周）
+1. **HttpClient.ts** (当前0%)
+   ```typescript
+   // 需补充测试：
+   - 基础请求方法
+   - 拦截器机制
+   - 错误处理
+   - 重试机制
+   ```
+
+2. **Logger.ts** (当前0%)
+   ```typescript
+   // 需补充测试：
+   - 日志级别控制
+   - 日志格式化
+   - 日志持久化
+   ```
+
+3. **store/slices/** (当前0%)
+   ```typescript
+   // 需补充测试：
+   - appSlice.ts
+   - authSlice.ts
+   - error.ts
+   ```
+
+### P2：组件层（本月）
+1. **auth组件** (当前35.89%)
+   - AuthForm.tsx (需补充验证逻辑测试)
+   - LoginForm.tsx (完全无覆盖)
+   - RegisterForm.tsx (完全无覆盖)
+
+2. **common组件** (大部分0%)
+   - ErrorNotification.tsx
+   - FileUploader.tsx
+   - SearchBar.tsx
+   - ThemeToggle.tsx
+
+3. **feedback组件** (当前0%)
+   - LoadingBar.tsx
+   - Toast.tsx
+   - TopProgressBar.tsx
+
+## 二、具体行动计划
+
+### 第一周：核心功能测试
+1. **Day 1-2: PerformanceMonitor**
+   ```typescript
+   describe('PerformanceMonitor', () => {
+     it('should track page load metrics', async () => {
+       // 测试页面加载指标收集
+     });
+     
+     it('should monitor resource loading', () => {
+       // 测试资源加载监控
+     });
+     
+     it('should track user interactions', () => {
+       // 测试用户交互跟踪
+     });
+   });
+   ```
+
+2. **Day 3-4: RouterAnalytics**
+   ```typescript
+   describe('RouterAnalytics', () => {
+     it('should track route changes', () => {
+       // 测试路由变化追踪
+     });
+     
+     it('should collect performance metrics', () => {
+       // 测试性能指标收集
+     });
+     
+     it('should handle errors properly', () => {
+       // 测试错误处理
+     });
+   });
+   ```
+
+3. **Day 5: HTTP Manager**
+   ```typescript
+   describe('HttpManager', () => {
+     it('should manage request queue', () => {
+       // 测试请求队列管理
+     });
+     
+     it('should handle concurrent requests', () => {
+       // 测试并发请求处理
+     });
+   });
+   ```
+
+### 第二周：基础设施测试
+1. **Day 1-2: HttpClient**
+2. **Day 3: Logger**
+3. **Day 4-5: Store Slices**
+
+### 第三周：组件测试
+1. **Day 1-2: Auth Components**
+2. **Day 3-4: Common Components**
+3. **Day 5: Feedback Components**
+
+## 三、测试规范
+
+### 1. 文件组织
 ```
-frontend/src/
-├── components/        # 组件目录
-│   ├── common/       
-│   │   └── Button/
-│   │       ├── Button.tsx
-│   │       ├── Button.test.tsx      # 组件单元测试
-│   │       └── Button.spec.tsx      # 组件集成测试
-│   └── business/     
-├── utils/            
-│   ├── http/
-│   │   ├── client.ts
-│   │   └── client.test.ts          # 工具函数测试
-│   └── security/
-│       ├── auth.ts
-│       └── auth.test.ts            # 认证工具测试
-├── hooks/            
-│   └── auth/
-│       ├── useAuth.ts
-│       └── useAuth.test.ts         # Hook 测试
-├── store/
-│   ├── slices/
-│   │   ├── auth.ts
-│   │   └── auth.test.ts           # Redux slice 测试
-│   └── index.ts
-└── e2e/              # 端到端测试（唯一独立的测试目录）
-    └── flows/
-        ├── auth.e2e.ts
-        └── admin.e2e.ts
+src/
+└── __tests__/
+    ├── unit/                 # 单元测试
+    ├── integration/          # 集成测试
+    └── e2e/                  # 端到端测试
 ```
 
-## 测试优先级和进度
+### 2. 命名规范
+```typescript
+// 单元测试
+describe('UnitName', () => {
+  describe('methodName', () => {
+    it('should behave...', () => {
+      // 测试代码
+    });
+  });
+});
 
-### 1. 基础设施测试 [ ]
-
-#### 1.1 HTTP 客户端 [ ]
-- [ ] 基本请求测试
-- [ ] 错误处理测试
-- [ ] 重试机制测试
-- [ ] 请求拦截器测试
-- [ ] 响应拦截器测试
-- [ ] 缓存机制测试
-
-#### 1.2 认证管理器 [ ]
-- [ ] 登录/登出测试
-- [ ] Token 管理测试
-- [ ] 会话管理测试
-- [ ] 权限检查测试
-- [ ] 自动刷新 Token 测试
-
-#### 1.3 Store 配置 [ ]
-- [ ] Redux Store 初始化测试
-- [ ] Action Creators 测试
-- [ ] Reducers 测试
-- [ ] 中间件测试
-- [ ] 状态持久化测试
-
-#### 1.4 路由配置 [ ]
-- [ ] 路由守卫测试
-- [ ] 路由参数测试
-- [ ] 路由跳转测试
-- [ ] 404 处理测试
-
-### 2. 功能测试 [ ]
-
-#### 2.1 用户认证功能 [ ]
-- [ ] 登录表单验证
-- [ ] 注册流程测试
-- [ ] 密码重置测试
-- [ ] 记住登录测试
-
-#### 2.2 权限控制 [ ]
-- [ ] 角色权限测试
-- [ ] 页面访问控制测试
-- [ ] 功能权限测试
-- [ ] 动态权限测试
-
-#### 2.3 数据管理 [ ]
-- [ ] 数据加载测试
-- [ ] 数据缓存测试
-- [ ] 数据更新测试
-- [ ] 数据同步测试
-
-### 3. 集成测试 [ ]
-
-#### 3.1 API 集成 [ ]
-- [ ] 认证 API 测试
-- [ ] 业务 API 测试
-- [ ] 错误处理测试
-- [ ] 网络异常测试
-
-#### 3.2 页面集成 [ ]
-- [ ] 页面渲染测试
-- [ ] 组件交互测试
-- [ ] 状态更新测试
-- [ ] 性能测试
-
-## 测试覆盖率要求
-
-- 分支覆盖率：80%
-- 函数覆盖率：80%
-- 行覆盖率：80%
-- 语句覆盖率：80%
-
-## 测试工具
-
-- 测试框架：Vitest
-- UI 测试：@testing-library/react
-- Mock 服务：MSW (Mock Service Worker)
-- 覆盖率工具：@vitest/coverage-v8
-
-## 运行测试
-
-```bash
-# 运行所有测试
-npm test
-
-# 监视模式
-npm run test:watch
-
-# 生成覆盖率报告
-npm run test:coverage
-
-# UI 模式运行测试
-npm run test:ui
+// 集成测试
+describe('Integration: ModuleName', () => {
+  // 测试代码
+});
 ```
 
-## 注意事项
+### 3. 测试覆盖率要求
+- 核心功能模块：90%+
+- 基础设施层：80%+
+- 组件层：70%+
+- 工具函数：60%+
 
-1. 每个测试文件应该遵循以下命名规范：
-   - 单元测试：`*.test.ts`
-   - 集成测试：`*.spec.ts`
-   - E2E测试：`*.e2e.ts`
+## 四、进度追踪
 
-2. 测试文件应与被测试的文件放在同一目录下
+### 每日检查清单
+1. 运行覆盖率报告
+   ```bash
+   npm run test:coverage
+   ```
 
-3. 每个测试用例应该是独立的，不依赖于其他测试的状态
+2. 更新进度表
+   ```markdown
+   | 模块 | 当前覆盖率 | 目标覆盖率 | 状态 |
+   |-----|------------|------------|------|
+   ```
 
-4. 使用 `beforeEach` 和 `afterEach` 确保测试环境的清洁
+3. 提交代码审查
+   - 测试用例是否完整
+   - 是否覆盖边界条件
+   - 是否包含文档注释
 
-5. 合理使用 Mock，避免不必要的外部依赖
+## 五、注意事项
 
-## 进度追踪
+1. **优先级原则**
+   - 先补充核心功能测试
+   - 优先覆盖未测试的代码行
+   - 关注错误处理路径
 
-- [ ] 基础设施测试 (0/4)
-- [ ] 功能测试 (0/3)
-- [ ] 集成测试 (0/2)
+2. **测试质量**
+   - 避免重复测试
+   - 确保测试独立性
+   - 合理使用 mock
 
-总体进度：0/9 (0%) 
+3. **维护建议**
+   - 及时更新测试文档
+   - 定期重构测试代码
+   - 保持测试简单明确
+
+## 六、更新记录
+
+### 2024-03-22
+- 基于覆盖率报告更新测试计划
+- 细化具体模块的测试任务
+- 添加未覆盖代码行信息
+- 优化优先级排序 

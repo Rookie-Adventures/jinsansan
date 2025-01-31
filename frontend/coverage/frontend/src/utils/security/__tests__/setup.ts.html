@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/42</span>
+                <span class='fraction'>0/55</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/42</span>
+                <span class='fraction'>0/55</span>
             </div>
         
             
@@ -118,21 +118,6 @@
 <a name='L53'></a><a href='#L53'>53</a>
 <a name='L54'></a><a href='#L54'>54</a>
 <a name='L55'></a><a href='#L55'>55</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -151,29 +136,44 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { vi } from 'vitest';<span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span></span>
-&nbsp;
-// Mock localStorage with a working implementation
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >// Mock localStorage with a working implementation</span>
 <span class="cstat-no" title="statement not covered" >const store = new Map&lt;string, string&gt;();</span>
 <span class="cstat-no" title="statement not covered" >const localStorageMock = {</span>
 <span class="cstat-no" title="statement not covered" >  getItem: vi.fn((key: string) =&gt; store.get(key) || null),</span>
@@ -183,10 +183,10 @@
 <span class="cstat-no" title="statement not covered" >  length: 0,</span>
 <span class="cstat-no" title="statement not covered" >  key: vi.fn((index: number) =&gt; null),</span>
 <span class="cstat-no" title="statement not covered" >} as Storage;</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >global.localStorage = localStorageMock;</span>
-&nbsp;
-// Mock fetch
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >// Mock fetch</span>
 <span class="cstat-no" title="statement not covered" >const mockHeaders = new Headers();</span>
 <span class="cstat-no" title="statement not covered" >const mockResponse: Response = {</span>
 <span class="cstat-no" title="statement not covered" >  ok: true,</span>
@@ -205,22 +205,22 @@
 <span class="cstat-no" title="statement not covered" >  formData: () =&gt; Promise.resolve(new FormData()),</span>
 <span class="cstat-no" title="statement not covered" >  text: () =&gt; Promise.resolve(''),</span>
 <span class="cstat-no" title="statement not covered" >} as Response;</span>
-&nbsp;
-type FetchImpl = (input: RequestInfo | URL, init?: RequestInit) =&gt; Promise&lt;Response&gt;;
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >type FetchImpl = (input: RequestInfo | URL, init?: RequestInit) =&gt; Promise&lt;Response&gt;;</span>
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >const fetchMock = vi.fn().mockImplementation(() =&gt; Promise.resolve(mockResponse));</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >global.fetch = fetchMock;</span>
-&nbsp;
-// Mock navigator
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >// Mock navigator</span>
 <span class="cstat-no" title="statement not covered" >Object.defineProperty(global, 'navigator', {</span>
 <span class="cstat-no" title="statement not covered" >  value: {</span>
 <span class="cstat-no" title="statement not covered" >    userAgent: 'test-agent',</span>
 <span class="cstat-no" title="statement not covered" >  },</span>
 <span class="cstat-no" title="statement not covered" >  writable: true,</span>
 <span class="cstat-no" title="statement not covered" >});</span>
-&nbsp;
-// Reset mocks before each test
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >// Reset mocks before each test</span>
 <span class="cstat-no" title="statement not covered" >beforeEach(() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  vi.clearAllMocks();</span>
 <span class="cstat-no" title="statement not covered" >  store.clear();</span>
@@ -232,7 +232,7 @@ type FetchImpl = (input: RequestInfo | URL, init?: RequestInit) =&gt; Promise&lt
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-19T09:21:55.981Z
+                at 2025-01-30T01:37:25.158Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>

@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/17</span>
+                <span class='fraction'>0/30</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/17</span>
+                <span class='fraction'>0/30</span>
             </div>
         
             
@@ -94,25 +94,6 @@
 <a name='L29'></a><a href='#L29'>29</a>
 <a name='L30'></a><a href='#L30'>30</a>
 <a name='L31'></a><a href='#L31'>31</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -121,28 +102,47 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { CssBaseline, ThemeProvider } from '@mui/material';<span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span></span>
-import { useDispatch, useSelector } from 'react-redux';
-import { RouterProvider } from 'react-router-dom';
-&nbsp;
-import ErrorBoundary from '@/components/ErrorBoundary';
-import { ErrorNotification } from '@/components/ErrorNotification';
-import { router } from '@/router';
-import type { RootState } from '@/store';
-import { clearError } from '@/store/slices/error';
-import { theme } from '@/theme';
-&nbsp;
+<span class="cstat-no" title="statement not covered" >import { useDispatch, useSelector } from 'react-redux';</span>
+<span class="cstat-no" title="statement not covered" >import { RouterProvider } from 'react-router-dom';</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >import ErrorBoundary from '@/components/ErrorBoundary';</span>
+<span class="cstat-no" title="statement not covered" >import { ErrorNotification } from '@/components/ErrorNotification';</span>
+<span class="cstat-no" title="statement not covered" >import { router } from '@/router';</span>
+<span class="cstat-no" title="statement not covered" >import type { RootState } from '@/store';</span>
+<span class="cstat-no" title="statement not covered" >import { clearError } from '@/store/slices/error';</span>
+<span class="cstat-no" title="statement not covered" >import { theme } from '@/theme';</span>
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >export const App = () =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  const error = useSelector((state: RootState) =&gt; state.error.current);</span>
 <span class="cstat-no" title="statement not covered" >  const isDarkMode = useSelector((state: RootState) =&gt; state.app.darkMode);</span>
 <span class="cstat-no" title="statement not covered" >  const dispatch = useDispatch();</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  const handleErrorClose = () =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    dispatch(clearError());</span>
 <span class="cstat-no" title="statement not covered" >  };</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  return (</span>
 <span class="cstat-no" title="statement not covered" >    &lt;ThemeProvider theme={theme(isDarkMode)}&gt;</span>
 <span class="cstat-no" title="statement not covered" >      &lt;CssBaseline /&gt;</span>
@@ -151,7 +151,7 @@ import { theme } from '@/theme';
 <span class="cstat-no" title="statement not covered" >        &lt;ErrorNotification error={error} onClose={handleErrorClose} /&gt;</span>
 <span class="cstat-no" title="statement not covered" >      &lt;/ErrorBoundary&gt;</span>
 <span class="cstat-no" title="statement not covered" >    &lt;/ThemeProvider&gt;</span>
-  );
+<span class="cstat-no" title="statement not covered" >  );</span>
 <span class="cstat-no" title="statement not covered" >};</span>
 &nbsp;</pre></td></tr></table></pre>
 
@@ -160,7 +160,7 @@ import { theme } from '@/theme';
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-19T09:21:55.981Z
+                at 2025-01-30T01:37:25.158Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
