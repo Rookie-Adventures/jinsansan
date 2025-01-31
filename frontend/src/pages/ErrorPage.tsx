@@ -22,12 +22,10 @@ const ErrorPage: React.FC = () => {
         <Typography variant="h5" color="textSecondary" gutterBottom>
           Sorry, an unexpected error has occurred.
         </Typography>
-        <Typography color="textSecondary">
-          {error?.message || 'Unknown error'}
-        </Typography>
+        <Typography color="textSecondary">{error?.message || 'Unknown error'}</Typography>
       </Box>
     </Container>
   );
 };
 
-export default ErrorPage; 
+export default ErrorPage;

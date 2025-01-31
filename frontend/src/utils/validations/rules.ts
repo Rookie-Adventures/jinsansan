@@ -1,14 +1,11 @@
 import * as yup from 'yup';
 
 // 通用规则
-export const required = (message = '此字段为必填项') =>
-  yup.string().required(message);
+export const required = (message = '此字段为必填项') => yup.string().required(message);
 
-export const email = (message = '请输入有效的邮箱地址') =>
-  yup.string().email(message).required();
+export const email = (message = '请输入有效的邮箱地址') => yup.string().email(message).required();
 
-export const url = (message = '请输入有效的URL') =>
-  yup.string().url(message).required();
+export const url = (message = '请输入有效的URL') => yup.string().url(message).required();
 
 export const min = (min: number, message = `最小长度为 ${min} 个字符`) =>
   yup.string().min(min, message).required();
@@ -21,10 +18,7 @@ export const password = (message = '密码必须包含至少8个字符，包括�
   yup
     .string()
     .min(8, '密码至少需要8个字符')
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-      message
-    )
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/, message)
     .required();
 
 // 手机号规则
@@ -50,10 +44,8 @@ export const confirmPassword = (ref: string, message = '两次输入的密码不
 
 // 数字规则
 export const number = {
-  integer: (message = '请输入整数') =>
-    yup.number().integer(message).required(),
-  positive: (message = '请输入正数') =>
-    yup.number().positive(message).required(),
+  integer: (message = '请输入整数') => yup.number().integer(message).required(),
+  positive: (message = '请输入正数') => yup.number().positive(message).required(),
   range: (min: number, max: number, message = `请输入 ${min} 到 ${max} 之间的数字`) =>
     yup.number().min(min).max(max).required(message),
-}; 
+};

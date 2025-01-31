@@ -18,7 +18,7 @@ export class EncryptionManager {
   private config: EncryptionConfig = {
     algorithm: 'AES',
     keySize: 256,
-    iterations: 1000
+    iterations: 1000,
   };
 
   private constructor() {}
@@ -36,7 +36,7 @@ export class EncryptionManager {
   private generateKey(salt: string, passphrase: string): string {
     return CryptoJS.PBKDF2(passphrase, salt, {
       keySize: this.config.keySize / 32,
-      iterations: this.config.iterations
+      iterations: this.config.iterations,
     }).toString();
   }
 
@@ -112,8 +112,8 @@ export class EncryptionManager {
         context: {
           operation,
           timestamp: Date.now(),
-          source: 'EncryptionManager'
-        }
+          source: 'EncryptionManager',
+        },
       }
     );
   }
@@ -126,12 +126,12 @@ export class EncryptionManager {
         context: {
           operation,
           timestamp: Date.now(),
-          source: 'EncryptionManager'
-        }
+          source: 'EncryptionManager',
+        },
       }
     );
   }
 }
 
 // 导出单例实例
-export const encryptionManager = EncryptionManager.getInstance(); 
+export const encryptionManager = EncryptionManager.getInstance();

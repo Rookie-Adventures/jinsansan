@@ -46,7 +46,7 @@ export class ErrorReporter {
     maxRetries: 3,
     initialRetryDelay: 1000,
     batchSize: 10,
-    flushInterval: 5000
+    flushInterval: 5000,
   };
 
   private constructor(options?: ErrorReporterOptions) {
@@ -112,15 +112,15 @@ export class ErrorReporter {
         type: error.type,
         status: error.status,
         code: error.code,
-        severity: error.severity
+        severity: error.severity,
       },
       trace: error.trace,
       metadata: error.metadata,
       environment: {
         userAgent: navigator.userAgent,
         timestamp: Date.now(),
-        url: window.location.href
-      }
+        url: window.location.href,
+      },
     };
 
     // 应用前置处理
@@ -132,7 +132,7 @@ export class ErrorReporter {
     }
 
     this.queue.push(errorReport);
-    
+
     // 在测试环境中立即处理队列
     if (process.env.NODE_ENV === 'test') {
       await this.processQueue();
@@ -148,13 +148,13 @@ export class ErrorReporter {
     try {
       this.isReporting = true;
       const batch = this.queue.splice(0, this.options.batchSize);
-      
+
       const response = await fetch(this.options.endpoint, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(batch)
+        body: JSON.stringify(batch),
       });
 
       if (!response.ok) {
@@ -166,7 +166,7 @@ export class ErrorReporter {
       console.error('Error reporting failed:', error);
     } finally {
       this.isReporting = false;
-      
+
       // 如果队列中还有未处理的错误，继续处理
       if (this.queue.length > 0 && process.env.NODE_ENV === 'test') {
         await this.processQueue();
@@ -177,4 +177,4 @@ export class ErrorReporter {
   public async flushNow(): Promise<void> {
     await this.processQueue();
   }
-} 
+}

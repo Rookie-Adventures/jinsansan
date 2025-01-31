@@ -31,7 +31,9 @@
     "src/**/*.d.ts",
     "src/utils/**/*.d.ts",
     "src/utils/http/**/*.d.ts",
-    "src/utils/security/**/*.d.ts"
+    "src/utils/security/**/*.d.ts",
+    "src/**/__tests__/**/*.ts",
+    "src/**/__tests__/**/*.tsx"
   ],
   "exclude": ["node_modules", "dist"]
 }

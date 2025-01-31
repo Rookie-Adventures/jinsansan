@@ -29,7 +29,7 @@ export class RequestManager {
 
   // 取消所有请求
   cancelAllRequests(): void {
-    this.cancelTokens.forEach((source) => {
+    this.cancelTokens.forEach(source => {
       source.cancel('所有请求已取消');
     });
     this.cancelTokens.clear();
@@ -57,4 +57,4 @@ export class RequestManager {
   }
 }
 
-export const requestManager = new RequestManager(); 
+export const requestManager = new RequestManager();

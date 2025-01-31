@@ -17,11 +17,11 @@ const errorSlice = createSlice({
     setError: (state, action: PayloadAction<HttpError>) => {
       state.current = action.payload;
     },
-    clearError: (state) => {
+    clearError: state => {
       state.current = null;
     },
   },
 });
 
 export const { setError, clearError } = errorSlice.actions;
-export default errorSlice.reducer; 
+export default errorSlice.reducer;

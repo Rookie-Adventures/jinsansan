@@ -1,14 +1,14 @@
 import React from 'react';
 import { Grid, Card, CardContent, Typography, Box, useTheme, Container } from '@mui/material';
-import { 
-  Speed, 
-  Security, 
+import {
+  Speed,
+  Security,
   CloudSync,
   Psychology,
   Token,
   Autorenew,
   DataObject,
-  Settings
+  Settings,
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 
@@ -60,18 +60,20 @@ const FeatureSection: React.FC = () => {
 
   return (
     <Container maxWidth="lg">
-      <Box sx={{ 
-        py: { xs: 4, md: 6 },
-        px: { xs: 2, sm: 3 },
-        background: 'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(245,247,250,0.5) 100%)',
-        width: '100%'
-      }}>
+      <Box
+        sx={{
+          py: { xs: 4, md: 6 },
+          px: { xs: 2, sm: 3 },
+          background: 'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(245,247,250,0.5) 100%)',
+          width: '100%',
+        }}
+      >
         <Typography
           variant="h3"
           component="h2"
           align="center"
           gutterBottom
-          sx={{ 
+          sx={{
             mb: 2,
             fontSize: { xs: '2rem', md: '3rem' },
             fontWeight: 'bold',
@@ -125,7 +127,7 @@ const FeatureSection: React.FC = () => {
                         justifyContent: 'center',
                         mb: 2,
                         color: 'primary.main',
-                        '& > svg': { 
+                        '& > svg': {
                           fontSize: { xs: 32, md: 40 },
                           filter: 'drop-shadow(0px 2px 4px rgba(0,0,0,0.1))',
                         },
@@ -138,7 +140,7 @@ const FeatureSection: React.FC = () => {
                       variant="h6"
                       component="h3"
                       align="center"
-                      sx={{ 
+                      sx={{
                         fontWeight: 'bold',
                         fontSize: { xs: '1rem', md: '1.15rem' },
                         mb: 1,
@@ -168,4 +170,4 @@ const FeatureSection: React.FC = () => {
   );
 };
 
-export default FeatureSection; 
+export default FeatureSection;

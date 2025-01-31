@@ -103,4 +103,4 @@ export class PriorityQueue<T> {
   toArray(): T[] {
     return this.items.map(item => item.id);
   }
-} 
+}

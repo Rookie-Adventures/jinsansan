@@ -33,7 +33,7 @@ describe('ErrorNotificationManager', () => {
       const error = new HttpError({
         type: HttpErrorType.SERVER,
         message: '服务器错误',
-        severity: 'critical'
+        severity: 'critical',
       });
 
       manager = ErrorNotificationManager.getInstance();
@@ -45,7 +45,7 @@ describe('ErrorNotificationManager', () => {
         expect.objectContaining({
           type: 'error',
           message: '服务器错误',
-          description: '服务器内部错误'
+          description: '服务器内部错误',
         })
       );
     });
@@ -54,7 +54,7 @@ describe('ErrorNotificationManager', () => {
       const error = new HttpError({
         type: HttpErrorType.VALIDATION,
         message: '参数错误',
-        severity: 'warning'
+        severity: 'warning',
       });
 
       manager = ErrorNotificationManager.getInstance();
@@ -66,7 +66,7 @@ describe('ErrorNotificationManager', () => {
         expect.objectContaining({
           type: 'warning',
           message: '参数错误',
-          description: '请检查输入参数'
+          description: '请检查输入参数',
         })
       );
     });
@@ -75,7 +75,7 @@ describe('ErrorNotificationManager', () => {
       const error = new HttpError({
         type: HttpErrorType.INFO,
         message: '操作提示',
-        severity: 'info'
+        severity: 'info',
       });
 
       manager = ErrorNotificationManager.getInstance();
@@ -96,13 +96,13 @@ describe('ErrorNotificationManager', () => {
       const warningError = new HttpError({
         type: HttpErrorType.WARNING,
         message: '警告信息',
-        severity: 'warning'
+        severity: 'warning',
       });
 
       const criticalError = new HttpError({
         type: HttpErrorType.ERROR,
         message: '严重错误',
-        severity: 'critical'
+        severity: 'critical',
       });
 
       await manager.notify(warningError);
@@ -111,7 +111,7 @@ describe('ErrorNotificationManager', () => {
       expect(showNotification).toHaveBeenCalledTimes(1);
       expect(showNotification).toHaveBeenCalledWith(
         expect.objectContaining({
-          message: '严重错误'
+          message: '严重错误',
         })
       );
     });
@@ -124,7 +124,7 @@ describe('ErrorNotificationManager', () => {
         message: '认证失败',
         status: 401,
         metadata: { userId: '123' },
-        severity: 'warning'
+        severity: 'warning',
       });
 
       await manager.notify(error);
@@ -134,7 +134,7 @@ describe('ErrorNotificationManager', () => {
         expect.objectContaining({
           type: 'warning',
           message: '认证失败',
-          description: expect.stringContaining('401')
+          description: expect.stringContaining('401'),
         })
       );
     });
@@ -146,7 +146,7 @@ describe('ErrorNotificationManager', () => {
 
       const error = new HttpError({
         type: HttpErrorType.NETWORK,
-        message: 'Network error'
+        message: 'Network error',
       });
 
       const notifyPromise = manager.notify(error);
@@ -157,15 +157,15 @@ describe('ErrorNotificationManager', () => {
     });
 
     test('should respect notification rules', async () => {
-      manager.addNotificationRule((error) => error.status === 404, {
+      manager.addNotificationRule(error => error.status === 404, {
         type: 'info',
-        duration: 3000
+        duration: 3000,
       });
 
       const error = new HttpError({
         type: HttpErrorType.CLIENT,
         message: 'Not found',
-        status: 404
+        status: 404,
       });
 
       const notifyPromise = manager.notify(error);
@@ -175,9 +175,9 @@ describe('ErrorNotificationManager', () => {
       expect(showNotification).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'info',
-          duration: 3000
+          duration: 3000,
         })
       );
     });
   });
-}); 
+});

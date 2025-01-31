@@ -19,4 +19,4 @@ describe('Loading Component', () => {
     const progressbar = screen.getByRole('progressbar');
     expect(progressbar).toHaveClass('MuiCircularProgress-colorSecondary');
   });
-}); 
+});

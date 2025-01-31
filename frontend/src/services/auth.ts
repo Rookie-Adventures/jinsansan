@@ -13,7 +13,7 @@ export interface ApiError {
 }
 
 const defaultHeaders = new AxiosHeaders({
-  'Content-Type': 'application/json'
+  'Content-Type': 'application/json',
 });
 
 export const authApi = {
@@ -23,7 +23,7 @@ export const authApi = {
         method: 'POST',
         url: '/auth/login',
         data,
-        headers: defaultHeaders
+        headers: defaultHeaders,
       });
       return response.data;
     } catch (error) {
@@ -38,7 +38,7 @@ export const authApi = {
         method: 'POST',
         url: '/auth/register',
         data,
-        headers: defaultHeaders
+        headers: defaultHeaders,
       });
       return response.data;
     } catch (error) {
@@ -52,7 +52,7 @@ export const authApi = {
       await request({
         method: 'POST',
         url: '/auth/logout',
-        headers: defaultHeaders
+        headers: defaultHeaders,
       });
     } catch (error) {
       const apiError = error as ApiError;
@@ -65,7 +65,7 @@ export const authApi = {
       const response = await request<User>({
         method: 'GET',
         url: '/auth/me',
-        headers: defaultHeaders
+        headers: defaultHeaders,
       });
       return response.data;
     } catch (error) {
@@ -73,4 +73,4 @@ export const authApi = {
       throw new Error(apiError.message || '获取用户信息失败，请重试');
     }
   },
-}; 
+};

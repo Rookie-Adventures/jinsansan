@@ -14,14 +14,16 @@ describe('RouterAnalytics', () => {
     it('should track route changes', () => {
       routerAnalytics.trackRoute('/home', 'push');
       const analytics = routerAnalytics.getAnalytics();
-      
-      expect(analytics).toContainEqual(expect.objectContaining({
-        path: '/home',
-        navigationType: 'push',
-        timestamp: expect.any(Number)
-      }));
+
+      expect(analytics).toContainEqual(
+        expect.objectContaining({
+          path: '/home',
+          navigationType: 'push',
+          timestamp: expect.any(Number),
+        })
+      );
     });
   });
 
   // ... rest of the test cases ...
-}); 
+});

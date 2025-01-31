@@ -11,9 +11,7 @@ interface ErrorContextType {
 
 const ErrorContext = createContext<ErrorContextType | undefined>(undefined);
 
-export const ErrorProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const ErrorProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [error, setError] = useState<HttpError | null>(null);
 
   const clearError = useCallback(() => {
@@ -34,4 +32,4 @@ export const useError = (): ErrorContextType => {
     throw new Error('useError must be used within an ErrorProvider');
   }
   return context;
-}; 
+};

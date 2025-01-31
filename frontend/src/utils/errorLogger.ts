@@ -29,7 +29,7 @@ class ErrorLogger {
       level,
       message: error.message,
       stack: error.stack,
-      ...context
+      ...context,
     };
 
     if (process.env.NODE_ENV === 'development') {
@@ -53,4 +53,4 @@ class ErrorLogger {
   }
 }
 
-export const errorLogger = ErrorLogger.getInstance(); 
+export const errorLogger = ErrorLogger.getInstance();

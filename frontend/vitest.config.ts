@@ -14,14 +14,15 @@ export default mergeConfig(
       
       coverage: {
         provider: 'v8',
-        reporter: ['text', 'json', 'html'],
+        reporter: ['text', 'json', 'html', 'lcov'],
         exclude: [
           'node_modules/',
           'src/test/',
           '**/*.d.ts',
           '**/*.test.{ts,tsx}',
           '**/types/'
-        ]
+        ],
+        reportsDirectory: './coverage'
       },
 
       // 并发和性能配置

@@ -5,14 +5,14 @@ import { ErrorBoundary } from '../index';
 
 const mockLog = vi.fn();
 const mockLogger = {
-  log: mockLog
+  log: mockLog,
 };
 
 // 模拟 ErrorLogger
 vi.mock('@/utils/http/error/logger', () => ({
   ErrorLogger: {
-    getInstance: () => mockLogger
-  }
+    getInstance: () => mockLogger,
+  },
 }));
 
 describe('ErrorBoundary', () => {
@@ -38,7 +38,7 @@ describe('ErrorBoundary', () => {
         <div>Test Content</div>
       </ErrorBoundary>
     );
-    
+
     expect(container).toHaveTextContent('Test Content');
   });
 
@@ -48,7 +48,7 @@ describe('ErrorBoundary', () => {
         <ThrowError />
       </ErrorBoundary>
     );
-    
+
     expect(container).toHaveTextContent('Error occurred');
   });
 
@@ -58,7 +58,7 @@ describe('ErrorBoundary', () => {
         <ThrowError />
       </ErrorBoundary>
     );
-    
+
     expect(screen.getByText('出错了')).toBeInTheDocument();
     expect(screen.getByText('Test error')).toBeInTheDocument();
   });
@@ -69,25 +69,27 @@ describe('ErrorBoundary', () => {
         <ThrowError />
       </ErrorBoundary>
     );
-    
-    expect(mockLog).toHaveBeenCalledWith(expect.objectContaining({
-      type: HttpErrorType.REACT_ERROR,
-      message: 'Test error'
-    }));
+
+    expect(mockLog).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: HttpErrorType.REACT_ERROR,
+        message: 'Test error',
+      })
+    );
   });
 
   test('should call onReset when retry button clicked', () => {
     const onReset = vi.fn();
-    
+
     render(
       <ErrorBoundary onReset={onReset}>
         <ThrowError />
       </ErrorBoundary>
     );
-    
+
     const retryButton = screen.getByText('重试');
     retryButton.click();
-    
+
     expect(onReset).toHaveBeenCalled();
   });
 
@@ -129,14 +131,14 @@ describe('ErrorBoundary', () => {
         </div>
       </ErrorBoundary>
     );
-    
+
     expect(mockLog).toHaveBeenCalledWith(
       expect.objectContaining({
         type: HttpErrorType.REACT_ERROR,
         message: 'Test error',
         data: expect.objectContaining({
-          componentStack: expect.any(String)
-        })
+          componentStack: expect.any(String),
+        }),
       })
     );
   });
@@ -165,4 +167,4 @@ describe('ErrorBoundary', () => {
 
     expect(screen.getByText('Multiple errors')).toBeInTheDocument();
   });
-}); 
+});

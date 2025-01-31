@@ -11,33 +11,39 @@ import { HttpErrorType } from '@/utils/http/error/types';
 export const useAuth = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { user, token, loading, error } = useAppSelector((state) => state.auth);
+  const { user, token, loading, error } = useAppSelector(state => state.auth);
 
-  const handleLogin = useCallback(async (data: LoginFormData) => {
-    try {
-      await dispatch(login(data)).unwrap();
-      navigate('/');
-    } catch (err) {
-      const httpError = HttpErrorFactory.create(err);
-      if (httpError.type === HttpErrorType.AUTH) {
-        navigate('/login');
+  const handleLogin = useCallback(
+    async (data: LoginFormData) => {
+      try {
+        await dispatch(login(data)).unwrap();
+        navigate('/');
+      } catch (err) {
+        const httpError = HttpErrorFactory.create(err);
+        if (httpError.type === HttpErrorType.AUTH) {
+          navigate('/login');
+        }
+        throw err;
       }
-      throw err;
-    }
-  }, [dispatch, navigate]);
+    },
+    [dispatch, navigate]
+  );
 
-  const handleRegister = useCallback(async (data: RegisterFormData) => {
-    try {
-      await dispatch(register(data)).unwrap();
-      navigate('/');
-    } catch (err) {
-      const httpError = HttpErrorFactory.create(err);
-      if (httpError.type === HttpErrorType.AUTH) {
-        navigate('/register');
+  const handleRegister = useCallback(
+    async (data: RegisterFormData) => {
+      try {
+        await dispatch(register(data)).unwrap();
+        navigate('/');
+      } catch (err) {
+        const httpError = HttpErrorFactory.create(err);
+        if (httpError.type === HttpErrorType.AUTH) {
+          navigate('/register');
+        }
+        throw err;
       }
-      throw err;
-    }
-  }, [dispatch, navigate]);
+    },
+    [dispatch, navigate]
+  );
 
   const handleLogout = useCallback(async () => {
     try {
@@ -77,4 +83,4 @@ export const useAuth = () => {
     logout: handleLogout,
     getCurrentUser: fetchCurrentUser,
   };
-}; 
+};

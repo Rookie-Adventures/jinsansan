@@ -21,13 +21,13 @@ describe('AlertManager', () => {
       metric: 'cpu_usage',
       condition: {
         operator: '>',
-        value: 80
+        value: 80,
       },
       severity: 'warning',
       enabled: true,
       notification: {
-        email: ['test@example.com']
-      }
+        email: ['test@example.com'],
+      },
     };
 
     it('应该能够添加新规则', () => {
@@ -39,7 +39,7 @@ describe('AlertManager', () => {
       alertManager.addRule(testRule);
       const updatedRule = {
         ...testRule,
-        name: '更新后的规则名称'
+        name: '更新后的规则名称',
       };
       alertManager.updateRule(updatedRule);
       expect(alertManager.getRule(testRule.id)).toEqual(updatedRule);
@@ -55,7 +55,7 @@ describe('AlertManager', () => {
       const rule2: AlertRule = {
         ...testRule,
         id: 'test-rule-2',
-        name: '测试规则2'
+        name: '测试规则2',
       };
       alertManager.addRule(testRule);
       alertManager.addRule(rule2);
@@ -74,13 +74,13 @@ describe('AlertManager', () => {
       metric: 'cpu_usage',
       condition: {
         operator: '>',
-        value: 80
+        value: 80,
       },
       severity: 'warning',
       enabled: true,
       notification: {
-        email: ['test@example.com']
-      }
+        email: ['test@example.com'],
+      },
     };
 
     beforeEach(() => {
@@ -102,7 +102,7 @@ describe('AlertManager', () => {
         expect.objectContaining({
           type: 'trigger',
           rule: testRule,
-          value: 85
+          value: 85,
         })
       );
     });
@@ -113,7 +113,7 @@ describe('AlertManager', () => {
       for (let i = 0; i < 5; i++) {
         alertManager.evaluateMetric('cpu_usage', 85, baseTime + i * 60000);
       }
-      
+
       // 然后恢复正常
       alertManager.evaluateMetric('cpu_usage', 75, baseTime + 300000);
 
@@ -122,7 +122,7 @@ describe('AlertManager', () => {
         expect.objectContaining({
           type: 'resolve',
           rule: testRule,
-          value: 75
+          value: 75,
         })
       );
     });
@@ -141,23 +141,30 @@ describe('AlertManager', () => {
     });
 
     it('应该正确处理不同操作符的条件', () => {
-      const operators: Array<'>' | '<' | '>=' | '<=' | '==' | '!='> = ['>', '<', '>=', '<=', '==', '!='];
+      const operators: Array<'>' | '<' | '>=' | '<=' | '==' | '!='> = [
+        '>',
+        '<',
+        '>=',
+        '<=',
+        '==',
+        '!=',
+      ];
       const testValues = [75, 80, 85];
-      
+
       operators.forEach(operator => {
         const rule: AlertRule = {
           ...testRule,
           condition: {
             operator,
-            value: 80
-          }
+            value: 80,
+          },
         };
 
         testValues.forEach(value => {
           // 每个值测试前清除状态并添加规则
           alertManager.clearState();
           alertManager.addRule(rule);
-          
+
           const baseTime = Date.now();
           // 确保有足够的连续记录，每次间隔 60 秒，总共 5 分钟
           for (let i = 0; i < 5; i++) {
@@ -166,13 +173,20 @@ describe('AlertManager', () => {
 
           const shouldTrigger = (() => {
             switch (operator) {
-              case '>': return value > 80;
-              case '<': return value < 80;
-              case '>=': return value >= 80;
-              case '<=': return value <= 80;
-              case '==': return value === 80;
-              case '!=': return value !== 80;
-              default: return false;
+              case '>':
+                return value > 80;
+              case '<':
+                return value < 80;
+              case '>=':
+                return value >= 80;
+              case '<=':
+                return value <= 80;
+              case '==':
+                return value === 80;
+              case '!=':
+                return value !== 80;
+              default:
+                return false;
             }
           })();
 
@@ -197,13 +211,13 @@ describe('AlertManager', () => {
       metric: 'cpu_usage',
       condition: {
         operator: '>',
-        value: 80
+        value: 80,
       },
       severity: 'warning',
       enabled: true,
       notification: {
-        email: ['test@example.com']
-      }
+        email: ['test@example.com'],
+      },
     };
 
     beforeEach(() => {
@@ -212,12 +226,12 @@ describe('AlertManager', () => {
 
     it('应该正确记录告警历史', () => {
       const baseTime = Date.now();
-      
+
       // 触发告警
       for (let i = 0; i < 5; i++) {
         alertManager.evaluateMetric('cpu_usage', 85, baseTime + i * 60000);
       }
-      
+
       // 解除告警
       alertManager.evaluateMetric('cpu_usage', 75, baseTime + 300000);
 
@@ -226,7 +240,7 @@ describe('AlertManager', () => {
       expect(history[0]).toMatchObject({
         ruleId: testRule.id,
         status: 'resolved',
-        value: 85
+        value: 85,
       });
     });
 
@@ -238,10 +252,10 @@ describe('AlertManager', () => {
       for (let j = 0; j < 3; j++) {
         // 触发告警
         for (let i = 0; i < 5; i++) {
-          alertManager.evaluateMetric('cpu_usage', 85, baseTime + (j * 300000) + (i * 60000));
+          alertManager.evaluateMetric('cpu_usage', 85, baseTime + j * 300000 + i * 60000);
         }
         // 解除告警
-        alertManager.evaluateMetric('cpu_usage', 75, baseTime + (j * 300000) + 300000);
+        alertManager.evaluateMetric('cpu_usage', 75, baseTime + j * 300000 + 300000);
       }
 
       const history = alertManager.getAlertHistory();
@@ -257,13 +271,13 @@ describe('AlertManager', () => {
       metric: 'cpu_usage',
       condition: {
         operator: '>',
-        value: 80
+        value: 80,
       },
       severity: 'warning',
       enabled: true,
       notification: {
-        email: ['test@example.com']
-      }
+        email: ['test@example.com'],
+      },
     };
 
     beforeEach(() => {
@@ -285,7 +299,7 @@ describe('AlertManager', () => {
 
     it('应该能够移除通知处理器', () => {
       alertManager.removeNotificationHandler(mockNotificationHandler);
-      
+
       const baseTime = Date.now();
       for (let i = 0; i < 5; i++) {
         alertManager.evaluateMetric('cpu_usage', 85, baseTime + i * 60000);
@@ -299,7 +313,7 @@ describe('AlertManager', () => {
         throw new Error('通知处理器错误');
       });
       const successHandler = vi.fn();
-      
+
       alertManager.setNotificationHandler(errorHandler);
       alertManager.addNotificationHandler(successHandler);
 
@@ -312,4 +326,4 @@ describe('AlertManager', () => {
       expect(successHandler).toHaveBeenCalled();
     });
   });
-}); 
+});

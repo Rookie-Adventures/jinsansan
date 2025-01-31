@@ -13,10 +13,10 @@ describe('Error Handling Integration', () => {
   beforeEach(() => {
     vi.restoreAllMocks();
     vi.useFakeTimers();
-    
+
     fetchMock = vi.fn().mockResolvedValue({ ok: true });
     global.fetch = fetchMock;
-    
+
     ErrorNotificationManager.resetInstance();
     notificationManager = ErrorNotificationManager.getInstance();
     showNotification = vi.fn();
@@ -38,17 +38,18 @@ describe('Error Handling Integration', () => {
       const error = new HttpError({
         type: HttpErrorType.NETWORK,
         message: 'Network error',
-        recoverable: true
+        recoverable: true,
       });
 
-      const operation = vi.fn()
+      const operation = vi
+        .fn()
         .mockRejectedValueOnce(error)
         .mockRejectedValueOnce(error)
         .mockResolvedValueOnce('success');
 
-      const retryMiddleware = new ErrorRetryMiddleware({ 
+      const retryMiddleware = new ErrorRetryMiddleware({
         maxRetries: 3,
-        retryDelay: 0
+        retryDelay: 0,
       });
 
       const result = await retryMiddleware.handle(operation, error);
@@ -63,21 +64,21 @@ describe('Error Handling Integration', () => {
         type: HttpErrorType.NETWORK,
         message: 'Network error',
         recoverable: true,
-        severity: 'info'
+        severity: 'info',
       });
 
       const operation = vi.fn().mockRejectedValue(error);
-      const retryMiddleware = new ErrorRetryMiddleware({ 
+      const retryMiddleware = new ErrorRetryMiddleware({
         maxRetries: 2,
-        retryDelay: 0
+        retryDelay: 0,
       });
 
       await expect(retryMiddleware.handle(operation, error)).rejects.toMatchObject({
         type: HttpErrorType.NETWORK,
         message: 'Network error',
-        severity: 'info'
+        severity: 'info',
       });
-      
+
       expect(operation).toHaveBeenCalledTimes(2);
     });
 
@@ -85,7 +86,7 @@ describe('Error Handling Integration', () => {
       const error = new HttpError({
         type: HttpErrorType.NETWORK,
         message: 'Network error',
-        recoverable: false
+        recoverable: false,
       });
 
       const operation = vi.fn();
@@ -100,12 +101,14 @@ describe('Error Handling Integration', () => {
   describe('Error Reporting', () => {
     beforeEach(() => {
       fetchMock = vi.fn().mockImplementation((url: string, init?: RequestInit) => {
-        return Promise.resolve(new Response(JSON.stringify({ success: true }), {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' }
-        }));
+        return Promise.resolve(
+          new Response(JSON.stringify({ success: true }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+          })
+        );
       });
-      
+
       global.fetch = fetchMock as typeof global.fetch;
     });
 
@@ -117,14 +120,14 @@ describe('Error Handling Integration', () => {
         data: { detail: 'Connection failed' },
         recoverable: true,
         severity: 'warning',
-        retryCount: 0
+        retryCount: 0,
       });
 
       const reporter = ErrorReporter.getInstance({
         endpoint: '/api/error-report',
         sampleRate: 1.0,
         batchSize: 1,
-        flushInterval: 0
+        flushInterval: 0,
       });
 
       await reporter.report(error);
@@ -134,9 +137,9 @@ describe('Error Handling Integration', () => {
         expect.objectContaining({
           method: 'POST',
           headers: expect.objectContaining({
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           }),
-          body: expect.any(String)
+          body: expect.any(String),
         })
       );
 
@@ -145,9 +148,9 @@ describe('Error Handling Integration', () => {
         error: {
           type: error.type,
           message: error.message,
-          status: error.status
+          status: error.status,
         },
-        environment: expect.any(Object)
+        environment: expect.any(Object),
       });
     });
 
@@ -156,19 +159,19 @@ describe('Error Handling Integration', () => {
         type: HttpErrorType.SERVER,
         message: 'Server error',
         severity: 'error',
-        recoverable: false
+        recoverable: false,
       });
 
       const reporter = ErrorReporter.getInstance({
         endpoint: '/api/error-report',
         sampleRate: 0,
         batchSize: 1,
-        flushInterval: 0
+        flushInterval: 0,
       });
 
       const mockRandom = vi.spyOn(Math, 'random').mockReturnValue(1);
       await reporter.report(error);
-      
+
       expect(fetchMock).not.toHaveBeenCalled();
       mockRandom.mockRestore();
     });
@@ -179,7 +182,7 @@ describe('Error Handling Integration', () => {
       const error = new HttpError({
         type: HttpErrorType.SERVER,
         message: '服务器错误',
-        severity: 'error'
+        severity: 'error',
       });
 
       const notificationManager = ErrorNotificationManager.getInstance();
@@ -190,7 +193,7 @@ describe('Error Handling Integration', () => {
       expect(showNotification).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'error',
-          message: '服务器错误'
+          message: '服务器错误',
         })
       );
     });
@@ -198,7 +201,7 @@ describe('Error Handling Integration', () => {
     test('should not show notification for ignored error types', async () => {
       const error = new HttpError({
         type: HttpErrorType.CANCEL,
-        message: '操作已取消'
+        message: '操作已取消',
       });
 
       notificationManager.ignoreErrorType(HttpErrorType.CANCEL);
@@ -211,14 +214,14 @@ describe('Error Handling Integration', () => {
       const error = new HttpError({
         type: HttpErrorType.CLIENT,
         message: '未找到资源',
-        status: 404
+        status: 404,
       });
 
       const notificationManager = ErrorNotificationManager.getInstance();
-      notificationManager.addNotificationRule(
-        (err) => err.status === 404,
-        { type: 'info', duration: 3000 }
-      );
+      notificationManager.addNotificationRule(err => err.status === 404, {
+        type: 'info',
+        duration: 3000,
+      });
 
       await notificationManager.notify(error);
 
@@ -226,9 +229,9 @@ describe('Error Handling Integration', () => {
         expect.objectContaining({
           type: 'info',
           duration: 3000,
-          message: '未找到资源'
+          message: '未找到资源',
         })
       );
     });
   });
-}); 
+});

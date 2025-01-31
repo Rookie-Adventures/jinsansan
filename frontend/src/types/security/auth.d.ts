@@ -37,4 +37,4 @@ declare class AuthManager {
 }
 
 export const authManager: AuthManager;
-export type { AuthEvent }; 
+export type { AuthEvent };

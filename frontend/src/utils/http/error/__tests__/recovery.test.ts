@@ -33,13 +33,13 @@ describe('ErrorRecoveryManager', () => {
         type: HttpErrorType.NETWORK,
         message: 'Network error',
         recoverable: true,
-        retryCount: 1
+        retryCount: 1,
       });
 
       const recoveryPromise = manager.attemptRecovery(networkError);
       await vi.runAllTimersAsync();
       const result = await recoveryPromise;
-      
+
       expect(result).toBe(true);
     });
 
@@ -48,7 +48,7 @@ describe('ErrorRecoveryManager', () => {
         type: HttpErrorType.NETWORK,
         message: 'Network error',
         recoverable: true,
-        retryCount: 4
+        retryCount: 4,
       });
 
       const result = await manager.attemptRecovery(networkError);
@@ -60,13 +60,13 @@ describe('ErrorRecoveryManager', () => {
         type: HttpErrorType.TIMEOUT,
         message: 'Request timeout',
         recoverable: true,
-        retryCount: 1
+        retryCount: 1,
       });
 
       const recoveryPromise = manager.attemptRecovery(timeoutError);
       await vi.runAllTimersAsync();
       const result = await recoveryPromise;
-      
+
       expect(result).toBe(true);
     });
 
@@ -74,7 +74,7 @@ describe('ErrorRecoveryManager', () => {
       const unrecoverableError = new HttpError({
         type: HttpErrorType.CLIENT,
         message: 'Client error',
-        recoverable: false
+        recoverable: false,
       });
 
       const result = await manager.attemptRecovery(unrecoverableError);
@@ -85,17 +85,17 @@ describe('ErrorRecoveryManager', () => {
       // Mock localStorage
       const mockLocalStorage = {
         getItem: vi.fn().mockReturnValue('fake-refresh-token'),
-        removeItem: vi.fn()
+        removeItem: vi.fn(),
       };
       Object.defineProperty(window, 'localStorage', {
-        value: mockLocalStorage
+        value: mockLocalStorage,
       });
 
       const authError = new HttpError({
         type: HttpErrorType.AUTH,
         message: 'Unauthorized',
         status: 401,
-        recoverable: true
+        recoverable: true,
       });
 
       const result = await manager.attemptRecovery(authError);
@@ -107,17 +107,17 @@ describe('ErrorRecoveryManager', () => {
       // Mock localStorage
       const mockLocalStorage = {
         getItem: vi.fn().mockReturnValue(null),
-        removeItem: vi.fn()
+        removeItem: vi.fn(),
       };
       Object.defineProperty(window, 'localStorage', {
-        value: mockLocalStorage
+        value: mockLocalStorage,
       });
 
       const authError = new HttpError({
         type: HttpErrorType.AUTH,
         message: 'Unauthorized',
         status: 401,
-        recoverable: true
+        recoverable: true,
       });
 
       const result = await manager.attemptRecovery(authError);
@@ -131,7 +131,7 @@ describe('ErrorRecoveryManager', () => {
       const customStrategy = {
         shouldAttemptRecovery: vi.fn().mockReturnValue(true),
         recover: vi.fn().mockResolvedValue(undefined),
-        maxAttempts: 1
+        maxAttempts: 1,
       };
 
       manager.registerStrategy(HttpErrorType.BUSINESS, customStrategy);
@@ -139,7 +139,7 @@ describe('ErrorRecoveryManager', () => {
       const businessError = new HttpError({
         type: HttpErrorType.BUSINESS,
         message: 'Business error',
-        recoverable: true
+        recoverable: true,
       });
 
       await manager.attemptRecovery(businessError);
@@ -147,4 +147,4 @@ describe('ErrorRecoveryManager', () => {
       expect(customStrategy.recover).toHaveBeenCalled();
     });
   });
-}); 
+});

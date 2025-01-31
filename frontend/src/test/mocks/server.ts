@@ -8,4 +8,4 @@ export const server = setupServer(...handlers);
 // 配置服务器生命周期
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());
-afterAll(() => server.close()); 
+afterAll(() => server.close());

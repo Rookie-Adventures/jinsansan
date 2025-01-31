@@ -14,12 +14,7 @@ export const getThemeTransitionStyles = (theme: Theme) => ({
   // 全局过渡效果
   '*': {
     transition: theme.transitions.create(
-      [
-        'background-color',
-        'color',
-        'border-color',
-        'box-shadow',
-      ],
+      ['background-color', 'color', 'border-color', 'box-shadow'],
       {
         duration: THEME_TRANSITION_DURATION,
         easing: theme.transitions.easing.easeInOut,
@@ -28,21 +23,15 @@ export const getThemeTransitionStyles = (theme: Theme) => ({
   },
   // 特定元素过渡效果
   '.MuiPaper-root': {
-    transition: theme.transitions.create(
-      ['background-color', 'box-shadow'],
-      {
-        duration: THEME_TRANSITION_DURATION,
-        easing: theme.transitions.easing.easeInOut,
-      }
-    ),
+    transition: theme.transitions.create(['background-color', 'box-shadow'], {
+      duration: THEME_TRANSITION_DURATION,
+      easing: theme.transitions.easing.easeInOut,
+    }),
   },
   '.MuiAppBar-root': {
-    transition: theme.transitions.create(
-      ['background-color', 'box-shadow'],
-      {
-        duration: THEME_TRANSITION_DURATION,
-        easing: theme.transitions.easing.easeInOut,
-      }
-    ),
+    transition: theme.transitions.create(['background-color', 'box-shadow'], {
+      duration: THEME_TRANSITION_DURATION,
+      easing: theme.transitions.easing.easeInOut,
+    }),
   },
-}); 
+});

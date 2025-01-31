@@ -27,24 +27,14 @@ const tiers = [
     title: '专业版',
     subheader: '最受欢迎',
     price: '99',
-    description: [
-      '无限制调用次数',
-      '所有模型支持',
-      '优先响应速度',
-      '专属客服支持',
-    ],
+    description: ['无限制调用次数', '所有模型支持', '优先响应速度', '专属客服支持'],
     buttonText: '立即订阅',
     buttonVariant: 'contained',
   },
   {
     title: '企业版',
     price: '联系我们',
-    description: [
-      '定制化解决方案',
-      'API 独享配置',
-      '企业级 SLA 保障',
-      '7×24小时技术支持',
-    ],
+    description: ['定制化解决方案', 'API 独享配置', '企业级 SLA 保障', '7×24小时技术支持'],
     buttonText: '联系销售',
     buttonVariant: 'outlined',
   },
@@ -56,20 +46,22 @@ const PricingSection: React.FC = () => {
 
   return (
     <Container maxWidth="lg">
-      <Box sx={{ 
-        py: { xs: 4, md: 6 },
-        px: { xs: 2, sm: 3 },
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
-      }}>
+      <Box
+        sx={{
+          py: { xs: 4, md: 6 },
+          px: { xs: 2, sm: 3 },
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
         <Typography
           component="h2"
           variant="h3"
           align="center"
           gutterBottom
-          sx={{ 
+          sx={{
             mb: 2,
             fontSize: { xs: '2rem', md: '3rem' },
             fontWeight: 'bold',
@@ -98,7 +90,7 @@ const PricingSection: React.FC = () => {
                 xs={11}
                 sm={tier.title === '专业版' ? 11 : 6}
                 md={tier.title === '专业版' ? 4 : 4}
-                sx={{ 
+                sx={{
                   maxWidth: '360px',
                 }}
               >
@@ -115,9 +107,10 @@ const PricingSection: React.FC = () => {
                       display: 'flex',
                       flexDirection: 'column',
                       transition: 'all 0.3s ease-in-out',
-                      background: tier.title === '专业版' 
-                        ? 'linear-gradient(135deg, rgba(36,36,62,0.03) 0%, rgba(48,43,99,0.03) 100%)'
-                        : 'rgba(255, 255, 255, 0.8)',
+                      background:
+                        tier.title === '专业版'
+                          ? 'linear-gradient(135deg, rgba(36,36,62,0.03) 0%, rgba(48,43,99,0.03) 100%)'
+                          : 'rgba(255, 255, 255, 0.8)',
                       backdropFilter: 'blur(10px)',
                       border: '1px solid rgba(255, 255, 255, 0.3)',
                       borderRadius: 1,
@@ -125,9 +118,7 @@ const PricingSection: React.FC = () => {
                         transform: 'scale(1.05)',
                       }),
                       '&:hover': {
-                        transform: tier.title === '专业版' 
-                          ? 'scale(1.08)' 
-                          : 'scale(1.03)',
+                        transform: tier.title === '专业版' ? 'scale(1.08)' : 'scale(1.03)',
                         boxShadow: theme.shadows[8],
                       },
                     }}
@@ -140,14 +131,15 @@ const PricingSection: React.FC = () => {
                       }
                       subheader={tier.subheader}
                       titleTypographyProps={{ align: 'center' }}
-                      subheaderTypographyProps={{ 
+                      subheaderTypographyProps={{
                         align: 'center',
-                        sx: { color: 'primary.main', fontWeight: 'bold' }
+                        sx: { color: 'primary.main', fontWeight: 'bold' },
                       }}
                       sx={{
-                        backgroundColor: theme.palette.mode === 'light'
-                          ? 'rgba(255,255,255,0.9)'
-                          : 'rgba(0,0,0,0.1)',
+                        backgroundColor:
+                          theme.palette.mode === 'light'
+                            ? 'rgba(255,255,255,0.9)'
+                            : 'rgba(0,0,0,0.1)',
                         p: 1.5,
                       }}
                     />
@@ -160,9 +152,9 @@ const PricingSection: React.FC = () => {
                           mb: 1.5,
                         }}
                       >
-                        <Typography 
-                          component="h2" 
-                          variant={isMobile ? 'h4' : 'h3'} 
+                        <Typography
+                          component="h2"
+                          variant={isMobile ? 'h4' : 'h3'}
                           color="text.primary"
                           sx={{ fontWeight: 'bold' }}
                         >
@@ -176,7 +168,7 @@ const PricingSection: React.FC = () => {
                         )}
                       </Box>
                       <Box>
-                        {tier.description.map((line) => (
+                        {tier.description.map(line => (
                           <Box
                             key={line}
                             sx={{
@@ -200,7 +192,7 @@ const PricingSection: React.FC = () => {
                         variant={tier.buttonVariant as 'outlined' | 'contained'}
                         color={tier.title === '专业版' ? 'secondary' : 'primary'}
                         size="large"
-                        sx={{ 
+                        sx={{
                           width: '80%',
                           py: 1.5,
                           fontSize: '1.1rem',
@@ -221,4 +213,4 @@ const PricingSection: React.FC = () => {
   );
 };
 
-export default PricingSection; 
+export default PricingSection;

@@ -56,7 +56,7 @@ export class ErrorLogger {
     const severity = error.severity || 'error';
     const options = {
       level: this.mapSeverityToLevel(severity),
-      context: error.metadata
+      context: error.metadata,
     };
 
     // 使用全局 errorLogger
@@ -80,9 +80,12 @@ export class ErrorLogger {
       `[${error.type}]`,
       error.message,
       error.status ? `Status: ${error.status}` : '',
-      error.metadata ? Object.entries(error.metadata)
-        .map(([key, value]) => `${key}: ${value}`).join(', ') : '',
-      error.stack || ''
+      error.metadata
+        ? Object.entries(error.metadata)
+            .map(([key, value]) => `${key}: ${value}`)
+            .join(', ')
+        : '',
+      error.stack || '',
     ];
 
     return parts.filter(Boolean).join(' | ');
@@ -102,4 +105,4 @@ export class ErrorLogger {
   }
 }
 
-export const errorLogger = ErrorLogger.getInstance(); 
+export const errorLogger = ErrorLogger.getInstance();

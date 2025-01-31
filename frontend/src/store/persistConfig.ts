@@ -25,24 +25,21 @@ function transformSingleValue(value: unknown): unknown {
 }
 
 // 转换对象值
-function transformObjectValue(
-  value: Record<string, unknown>
-): Record<string, unknown> {
+function transformObjectValue(value: Record<string, unknown>): Record<string, unknown> {
   return Object.entries(value).reduce(
     (acc, [k, v]) => ({
       ...acc,
-      [k]: v && typeof v === 'object' && !(v instanceof Date)
-        ? transformObjectValue(v as Record<string, unknown>)
-        : transformSingleValue(v)
+      [k]:
+        v && typeof v === 'object' && !(v instanceof Date)
+          ? transformObjectValue(v as Record<string, unknown>)
+          : transformSingleValue(v),
     }),
     {}
   );
 }
 
 // 转换状态
-function transformState<T extends Record<string, unknown>>(
-  state: T
-): T {
+function transformState<T extends Record<string, unknown>>(state: T): T {
   if (!state) return state;
   return transformObjectValue(state) as T;
 }
@@ -55,17 +52,19 @@ function createDateTransform<T extends Record<string, unknown>>(): Transform<T, 
     },
     out: (state: T, _key: keyof T, _config: TransformConfig): T => {
       return transformState(state);
-    }
+    },
   };
 }
 
 // 创建基础配置
-export function createPersistConfig<T extends Record<string, unknown>>(key: string): PersistConfig<T> {
+export function createPersistConfig<T extends Record<string, unknown>>(
+  key: string
+): PersistConfig<T> {
   const debug = process.env.NODE_ENV !== 'production';
   const defaultPersistState = {
-    _persist: { version: 1, rehydrated: true }
+    _persist: { version: 1, rehydrated: true },
   } as T & PersistedState;
-  
+
   return {
     key,
     storage,
@@ -78,9 +77,9 @@ export function createPersistConfig<T extends Record<string, unknown>>(key: stri
       }
       return Promise.resolve({
         ...state,
-        ...defaultPersistState._persist
+        ...defaultPersistState._persist,
       } as T & PersistedState);
     },
     debug,
   };
-} 
+}

@@ -7,8 +7,8 @@ import { HttpErrorType } from '../types';
 // Mock errorLogger
 vi.mock('../../../errorLogger', () => ({
   errorLogger: {
-    log: vi.fn()
-  }
+    log: vi.fn(),
+  },
 }));
 
 describe('ErrorLogger', () => {
@@ -48,7 +48,7 @@ describe('ErrorLogger', () => {
         type: HttpErrorType.SERVER,
         message: 'Internal server error',
         status: 500,
-        severity: 'critical'
+        severity: 'critical',
       });
 
       logger.log(error);
@@ -60,7 +60,7 @@ describe('ErrorLogger', () => {
         type: HttpErrorType.CLIENT,
         message: 'Bad request',
         status: 400,
-        severity: 'warning'
+        severity: 'warning',
       });
 
       logger.log(error);
@@ -71,7 +71,7 @@ describe('ErrorLogger', () => {
       const error = new HttpError({
         type: HttpErrorType.NETWORK,
         message: 'Network timeout',
-        severity: 'info'
+        severity: 'info',
       });
 
       logger.log(error);
@@ -82,7 +82,7 @@ describe('ErrorLogger', () => {
       const metadata = {
         userId: '123',
         requestId: 'abc-xyz',
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       const error = new HttpError({
@@ -90,7 +90,7 @@ describe('ErrorLogger', () => {
         message: 'Unauthorized',
         status: 401,
         metadata,
-        severity: 'warning'
+        severity: 'warning',
       });
 
       logger.log(error);
@@ -105,13 +105,13 @@ describe('ErrorLogger', () => {
       const warningError = new HttpError({
         type: HttpErrorType.CLIENT,
         message: 'Warning message',
-        severity: 'warning'
+        severity: 'warning',
       });
 
       const criticalError = new HttpError({
         type: HttpErrorType.SERVER,
         message: 'Critical error',
-        severity: 'critical'
+        severity: 'critical',
       });
 
       logger.log(warningError);
@@ -130,7 +130,7 @@ describe('ErrorLogger', () => {
       const error = new HttpError({
         type: HttpErrorType.BUSINESS,
         message: 'Business error',
-        severity: 'warning'
+        severity: 'warning',
       });
 
       logger.log(error);
@@ -145,7 +145,7 @@ describe('ErrorLogger', () => {
         message: 'Server error',
         status: 500,
         stack: 'Error stack trace',
-        metadata: { requestId: 'xyz' }
+        metadata: { requestId: 'xyz' },
       });
 
       const formattedMessage = logger.formatError(error);
@@ -155,4 +155,4 @@ describe('ErrorLogger', () => {
       expect(formattedMessage).toContain('xyz');
     });
   });
-}); 
+});

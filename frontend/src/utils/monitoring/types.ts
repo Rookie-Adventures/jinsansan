@@ -11,7 +11,7 @@ export enum MetricType {
   RESPONSE_TIME = 'RESPONSE_TIME',
   ERROR_RATE = 'ERROR_RATE',
   RESOURCE_USAGE = 'RESOURCE_USAGE',
-  CUSTOM = 'CUSTOM'
+  CUSTOM = 'CUSTOM',
 }
 
 export interface PerformanceStats {
@@ -39,4 +39,4 @@ export interface MetricConfig {
   threshold?: number;
   unit?: string;
   description?: string;
-} 
+}

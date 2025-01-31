@@ -15,14 +15,14 @@ describe('HttpRequestManager Cache Tests', () => {
         method: 'GET',
         url: '/api/test',
         params: { id: 1 },
-        data: null
+        data: null,
       };
 
       const config2 = {
         method: 'GET',
         url: '/api/test',
         params: { id: 2 },
-        data: null
+        data: null,
       };
 
       const key1 = manager.generateCacheKey(config1);
@@ -50,12 +50,12 @@ describe('HttpRequestManager Cache Tests', () => {
       const ttl = 100; // 100毫秒
 
       manager.setCacheData(key, data, ttl);
-      
+
       // 使用真实的定时器来等待缓存过期
       vi.useRealTimers();
       await new Promise(resolve => setTimeout(resolve, 150));
       vi.useFakeTimers();
-      
+
       const cachedData = manager.getCacheData<typeof data>(key);
       expect(cachedData).toBeNull();
     });
@@ -80,13 +80,15 @@ describe('HttpRequestManager Cache Tests', () => {
       const ttl = 1000;
 
       // 模拟多个并发请求
-      const promises = Array(5).fill(null).map(async () => {
-        manager.setCacheData(key, data, ttl);
-        return manager.getCacheData<typeof data>(key);
-      });
+      const promises = Array(5)
+        .fill(null)
+        .map(async () => {
+          manager.setCacheData(key, data, ttl);
+          return manager.getCacheData<typeof data>(key);
+        });
 
       const results = await Promise.all(promises);
-      results.forEach((result) => {
+      results.forEach(result => {
         expect(result).toEqual(data);
       });
     });
@@ -98,7 +100,7 @@ describe('HttpRequestManager Cache Tests', () => {
       const items = [
         { key: 'key1', data: { id: 1 }, ttl: 1000 },
         { key: 'key2', data: { id: 2 }, ttl: 1000 },
-        { key: 'key3', data: { id: 3 }, ttl: 1000 }
+        { key: 'key3', data: { id: 3 }, ttl: 1000 },
       ];
 
       items.forEach(item => {
@@ -111,4 +113,4 @@ describe('HttpRequestManager Cache Tests', () => {
       expect(manager.cache.size).toBe(0);
     });
   });
-}); 
+});

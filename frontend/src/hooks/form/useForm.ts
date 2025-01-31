@@ -15,13 +15,11 @@ interface UseFormProps<T extends FormData> {
 export const useForm = <T extends FormData>({
   defaultValues,
   schema,
-  mode = 'onSubmit'
+  mode = 'onSubmit',
 }: UseFormProps<T> = {}) => {
   const methods = useHookForm<T>({
     defaultValues,
-    resolver: schema 
-      ? (yupResolver(schema) as unknown as Resolver<T>)
-      : undefined,
+    resolver: schema ? (yupResolver(schema) as unknown as Resolver<T>) : undefined,
     mode,
   });
 
@@ -48,4 +46,4 @@ export const useForm = <T extends FormData>({
     control,
     methods,
   };
-}; 
+};

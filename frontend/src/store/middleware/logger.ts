@@ -2,7 +2,7 @@
 import { Middleware } from '@reduxjs/toolkit';
 import type { AnyAction } from 'redux';
 
-export const loggerMiddleware: Middleware = (store) => (next) => (action) => {
+export const loggerMiddleware: Middleware = store => next => action => {
   if (process.env.NODE_ENV !== 'production') {
     const actionType = (action as AnyAction).type || 'unknown';
     console.group(actionType);
@@ -13,4 +13,4 @@ export const loggerMiddleware: Middleware = (store) => (next) => (action) => {
     return result;
   }
   return next(action);
-}; 
+};

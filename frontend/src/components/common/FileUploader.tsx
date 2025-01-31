@@ -12,10 +12,7 @@ interface FileUploaderProps {
   onError?: (error: Error) => void;
 }
 
-export const FileUploader: React.FC<FileUploaderProps> = ({
-  onUploadComplete,
-  onError
-}) => {
+export const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete, onError }) => {
   const [progress, setProgress] = useState(0);
   const fileService: FileService = new FileServiceImpl();
 
@@ -25,11 +22,11 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
 
     try {
       const result = await fileService.uploadCSV(file, {
-        onProgress: (progress) => setProgress(progress),
-        validateRow: (_row) => {
+        onProgress: progress => setProgress(progress),
+        validateRow: _row => {
           // 添加自定义验证逻辑
           return true;
-        }
+        },
       });
       onUploadComplete?.(result);
     } catch (error) {
@@ -39,14 +36,8 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
 
   return (
     <div>
-      <input
-        type="file"
-        accept=".csv"
-        onChange={handleFileChange}
-      />
-      {progress > 0 && progress < 100 && (
-        <div>上传进度: {progress}%</div>
-      )}
+      <input type="file" accept=".csv" onChange={handleFileChange} />
+      {progress > 0 && progress < 100 && <div>上传进度: {progress}%</div>}
     </div>
   );
-}; 
+};

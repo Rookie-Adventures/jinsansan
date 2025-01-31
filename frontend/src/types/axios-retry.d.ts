@@ -14,4 +14,4 @@ declare module 'axios-retry' {
 
   const axiosRetry: IAxiosRetry;
   export default axiosRetry;
-} 
+}

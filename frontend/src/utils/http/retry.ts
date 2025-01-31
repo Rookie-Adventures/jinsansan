@@ -21,10 +21,7 @@ const defaultConfig: RetryConfig = {
   },
 };
 
-export async function retry<T>(
-  fn: () => Promise<T>,
-  config?: Partial<RetryConfig>
-): Promise<T> {
+export async function retry<T>(fn: () => Promise<T>, config?: Partial<RetryConfig>): Promise<T> {
   const retryConfig = { ...defaultConfig, ...config };
   let lastError: unknown;
   let attempts = 0;
@@ -35,7 +32,7 @@ export async function retry<T>(
     } catch (error) {
       lastError = error;
       attempts++;
-      
+
       // 检查是否应该重试
       if (!retryConfig.enable || (retryConfig.shouldRetry && !retryConfig.shouldRetry(error))) {
         throw error;
@@ -52,7 +49,7 @@ export async function retry<T>(
       }
 
       // 等待后重试
-      await new Promise(resolve => 
+      await new Promise(resolve =>
         setTimeout(resolve, retryConfig.delay * Math.pow(2, attempts - 1))
       );
     }
@@ -63,4 +60,4 @@ export async function retry<T>(
 
 export const createRetry = (config?: Partial<RetryConfig>) => {
   return <T>(fn: () => Promise<T>) => retry(fn, config);
-}; 
+};

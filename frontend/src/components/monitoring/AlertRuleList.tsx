@@ -11,7 +11,7 @@ import {
   IconButton,
   Switch,
   Chip,
-  Tooltip
+  Tooltip,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -28,14 +28,14 @@ const severityColors: Record<AlertSeverity, 'default' | 'info' | 'warning' | 'er
   info: 'info',
   warning: 'warning',
   error: 'error',
-  critical: 'error'
+  critical: 'error',
 };
 
 export const AlertRuleList: React.FC<AlertRuleListProps> = ({
   rules,
   onEdit,
   onDelete,
-  onToggle
+  onToggle,
 }) => {
   return (
     <TableContainer component={Paper}>
@@ -52,13 +52,13 @@ export const AlertRuleList: React.FC<AlertRuleListProps> = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {rules.map((rule) => (
+          {rules.map(rule => (
             <TableRow key={rule.id}>
               <TableCell>
                 <Switch
                   size="small"
                   checked={rule.enabled}
-                  onChange={(e) => onToggle(rule.id, e.target.checked)}
+                  onChange={e => onToggle(rule.id, e.target.checked)}
                 />
               </TableCell>
               <TableCell>{rule.name}</TableCell>
@@ -67,19 +67,12 @@ export const AlertRuleList: React.FC<AlertRuleListProps> = ({
                 {rule.metric} {rule.condition.operator} {rule.condition.value}
               </TableCell>
               <TableCell>
-                <Chip
-                  label={rule.severity}
-                  size="small"
-                  color={severityColors[rule.severity]}
-                />
+                <Chip label={rule.severity} size="small" color={severityColors[rule.severity]} />
               </TableCell>
               <TableCell>
                 {rule.notification.email?.length ? (
                   <Tooltip title={rule.notification.email.join(', ')}>
-                    <Chip
-                      label={`${rule.notification.email.length} 个接收人`}
-                      size="small"
-                    />
+                    <Chip label={`${rule.notification.email.length} 个接收人`} size="small" />
                   </Tooltip>
                 ) : (
                   '未设置'
@@ -87,18 +80,10 @@ export const AlertRuleList: React.FC<AlertRuleListProps> = ({
               </TableCell>
               <TableCell>
                 <Box sx={{ display: 'flex', gap: 1 }}>
-                  <IconButton
-                    size="small"
-                    onClick={() => onEdit(rule)}
-                    color="primary"
-                  >
+                  <IconButton size="small" onClick={() => onEdit(rule)} color="primary">
                     <EditIcon fontSize="small" />
                   </IconButton>
-                  <IconButton
-                    size="small"
-                    onClick={() => onDelete(rule.id)}
-                    color="error"
-                  >
+                  <IconButton size="small" onClick={() => onDelete(rule.id)} color="error">
                     <DeleteIcon fontSize="small" />
                   </IconButton>
                 </Box>
@@ -109,4 +94,4 @@ export const AlertRuleList: React.FC<AlertRuleListProps> = ({
       </Table>
     </TableContainer>
   );
-}; 
+};

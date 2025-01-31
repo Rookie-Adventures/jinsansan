@@ -10,5 +10,10 @@
   "endOfLine": "auto",
   "bracketSameLine": false,
   "jsxSingleQuote": false,
-  "quoteProps": "as-needed"
+  "quoteProps": "as-needed",
+  "proseWrap": "preserve",
+  "htmlWhitespaceSensitivity": "css",
+  "vueIndentScriptAndStyle": true,
+  "embeddedLanguageFormatting": "auto",
+  "singleAttributePerLine": false
 } 

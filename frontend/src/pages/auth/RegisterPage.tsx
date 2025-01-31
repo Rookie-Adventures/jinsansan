@@ -5,15 +5,15 @@ import React from 'react';
 const RegisterPage: React.FC = () => (
   <AuthPage
     type="register"
-    initialData={{ 
-      username: '', 
-      password: '', 
-      email: '', 
-      confirmPassword: '' 
+    initialData={{
+      username: '',
+      password: '',
+      email: '',
+      confirmPassword: '',
     }}
   >
     <RegisterForm />
   </AuthPage>
 );
 
-export default RegisterPage; 
+export default RegisterPage;

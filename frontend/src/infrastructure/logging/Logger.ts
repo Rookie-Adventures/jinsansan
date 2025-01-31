@@ -60,7 +60,9 @@ export class Logger {
         });
       }
     } catch (error) {
-      errorLogger.log(error instanceof Error ? error : new Error('Failed to flush logs'), { level: 'error' });
+      errorLogger.log(error instanceof Error ? error : new Error('Failed to flush logs'), {
+        level: 'error',
+      });
     }
   }
 
@@ -89,4 +91,4 @@ export class Logger {
       this.log('debug', message, data);
     }
   }
-} 
+}

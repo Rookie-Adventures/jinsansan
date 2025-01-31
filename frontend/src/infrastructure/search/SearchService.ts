@@ -36,4 +36,4 @@ export class SearchServiceImpl implements SearchService {
     const response = await http.get('/api/search/advanced', { params });
     return response.data;
   }
-} 
+}

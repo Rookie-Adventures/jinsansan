@@ -25,7 +25,9 @@ export class ErrorNotificationManager {
   private retryMiddleware: ErrorRetryMiddleware;
   private errorReporter: ErrorReporter;
 
-  private readonly defaultOptions: Required<Pick<NotificationOptions, 'duration' | 'position' | 'type'>> = {
+  private readonly defaultOptions: Required<
+    Pick<NotificationOptions, 'duration' | 'position' | 'type'>
+  > = {
     duration: errorConfig.notification.defaultDuration,
     position: 'top',
     type: 'error',
@@ -38,7 +40,7 @@ export class ErrorNotificationManager {
       sampleRate: errorConfig.reporting.sampleRate,
       maxQueueSize: errorConfig.reporting.maxQueueSize,
       maxRetries: errorConfig.reporting.maxRetries,
-      initialRetryDelay: errorConfig.reporting.initialRetryDelay
+      initialRetryDelay: errorConfig.reporting.initialRetryDelay,
     });
   }
 
@@ -79,13 +81,13 @@ export class ErrorNotificationManager {
 
     // 查找匹配的自定义规则
     const matchedRule = this.notificationRules.find(rule => rule.condition(error));
-    
+
     const notification = {
       type: matchedRule?.options.type || this.getNotificationType(error.severity || 'error'),
       message: error.message || '未知错误',
       description: this.getErrorDescription(error),
       duration: matchedRule?.options.duration || this.getDuration(error.severity || 'error'),
-      position: matchedRule?.options.position || 'top'
+      position: matchedRule?.options.position || 'top',
     };
 
     await Promise.resolve(); // 确保在下一个微任务中执行
@@ -124,11 +126,11 @@ export class ErrorNotificationManager {
 
   private getErrorDescription(error: HttpError): string {
     const parts: string[] = [];
-    
+
     if (error.status) {
       parts.push(`状态码: ${error.status}`);
     }
-    
+
     if (error.code) {
       parts.push(`错误码: ${error.code}`);
     }
@@ -159,7 +161,7 @@ export class ErrorNotificationManager {
           parts.push('发生未知错误');
         }
     }
-    
+
     return parts.join(' | ');
   }
 
@@ -207,4 +209,4 @@ export class ErrorNotificationManager {
   }
 }
 
-export const errorNotificationManager = ErrorNotificationManager.getInstance(); 
+export const errorNotificationManager = ErrorNotificationManager.getInstance();

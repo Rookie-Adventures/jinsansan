@@ -66,13 +66,10 @@ class ErrorLogger {
   private readonly logOutput: LogOutput;
 
   private constructor() {
-    this.apiBaseUrl = process.env.NODE_ENV === 'test' 
-      ? 'http://localhost:3000'
-      : window.location.origin;
+    this.apiBaseUrl =
+      process.env.NODE_ENV === 'test' ? 'http://localhost:3000' : window.location.origin;
     this.isDevelopment = process.env.NODE_ENV === 'development';
-    this.logOutput = this.isDevelopment 
-      ? new DevLogOutput()
-      : new ProductionLogOutput();
+    this.logOutput = this.isDevelopment ? new DevLogOutput() : new ProductionLogOutput();
   }
 
   static getInstance(): ErrorLogger {
@@ -160,4 +157,4 @@ class ErrorLogger {
   }
 }
 
-export const errorLogger = ErrorLogger.getInstance(); 
+export const errorLogger = ErrorLogger.getInstance();

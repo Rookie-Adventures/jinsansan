@@ -23,85 +23,85 @@ const errorMessages: Record<HttpErrorType, ErrorConfig> = {
     severity: 'error',
     description: '请检查您的网络连接',
     action: '重试',
-    recoverable: true
+    recoverable: true,
   },
   TIMEOUT: {
     title: '请求超时',
     severity: 'warning',
     description: '服务器响应时间过长',
     action: '重试',
-    recoverable: true
+    recoverable: true,
   },
   AUTH: {
     title: '认证错误',
     severity: 'error',
     description: '您的登录状态已过期',
     action: '重新登录',
-    recoverable: true
+    recoverable: true,
   },
   SERVER: {
     title: '服务器错误',
     severity: 'error',
     description: '服务器处理请求时出错',
     action: '重试',
-    recoverable: true
+    recoverable: true,
   },
   CLIENT: {
     title: '客户端错误',
     severity: 'warning',
     description: '请求参数有误',
-    recoverable: false
+    recoverable: false,
   },
   CANCEL: {
     title: '请求已取消',
     severity: 'info',
     description: '操作已被取消',
-    recoverable: false
+    recoverable: false,
   },
   UNKNOWN: {
     title: '未知错误',
     severity: 'error',
     description: '发生未知错误',
     action: '刷新页面',
-    recoverable: false
+    recoverable: false,
   },
   REACT_ERROR: {
     title: '组件错误',
     severity: 'error',
     description: '页面渲染出错',
     action: '刷新页面',
-    recoverable: false
+    recoverable: false,
   },
   VALIDATION: {
     title: '验证错误',
     severity: 'warning',
     description: '请检查输入内容',
-    recoverable: false
+    recoverable: false,
   },
   BUSINESS: {
     title: '业务错误',
     severity: 'warning',
     description: '操作无法完成',
-    recoverable: false
+    recoverable: false,
   },
   INFO: {
     title: '提示信息',
     severity: 'info',
     description: '操作提示',
-    recoverable: false
+    recoverable: false,
   },
   WARNING: {
     title: '警告信息',
     severity: 'warning',
     description: '操作警告',
-    recoverable: false
+    recoverable: false,
   },
   ERROR: {
     title: '错误信息',
     severity: 'error',
     description: '操作错误',
-    recoverable: false
-  }
+    recoverable: false,
+  },
 };
 
 export const ErrorNotification: React.FC<ErrorNotificationProps> = ({ error, onClose }) => {
@@ -160,4 +160,4 @@ export const ErrorNotification: React.FC<ErrorNotificationProps> = ({ error, onC
       </Alert>
     </Snackbar>
   );
-}; 
+};

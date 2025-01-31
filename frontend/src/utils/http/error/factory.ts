@@ -23,7 +23,7 @@ export class HttpErrorFactory {
         type: HttpErrorType.UNKNOWN,
         message: 'An unknown error occurred',
         recoverable: false,
-        severity: 'warning'
+        severity: 'warning',
       });
     }
 
@@ -40,7 +40,7 @@ export class HttpErrorFactory {
         type: HttpErrorType.CANCEL,
         message: (error as { message: string }).message || 'Request cancelled',
         recoverable: false,
-        severity: 'info'
+        severity: 'info',
       });
     }
 
@@ -48,22 +48,24 @@ export class HttpErrorFactory {
       type: HttpErrorType.UNKNOWN,
       message: error instanceof Error ? error.message : 'An unknown error occurred',
       recoverable: false,
-      severity: 'warning'
+      severity: 'warning',
     });
   }
 
   private static isAxiosError(error: unknown): error is AxiosError<ErrorResponse> {
-    return Boolean(error && typeof error === 'object' && 'isAxiosError' in error && error.isAxiosError === true);
+    return Boolean(
+      error && typeof error === 'object' && 'isAxiosError' in error && error.isAxiosError === true
+    );
   }
 
   private static isResponseLikeError(error: unknown): error is ResponseLikeError {
     return Boolean(
       error &&
-      typeof error === 'object' &&
-      'response' in error &&
-      error.response &&
-      typeof error.response === 'object' &&
-      'status' in error.response
+        typeof error === 'object' &&
+        'response' in error &&
+        error.response &&
+        typeof error.response === 'object' &&
+        'status' in error.response
     );
   }
 
@@ -71,7 +73,9 @@ export class HttpErrorFactory {
     return Boolean(error && typeof error === 'object' && '__CANCEL__' in error);
   }
 
-  private static createFromAxiosError(error: AxiosError<ErrorResponse> | ResponseLikeError): HttpError {
+  private static createFromAxiosError(
+    error: AxiosError<ErrorResponse> | ResponseLikeError
+  ): HttpError {
     const status = error.response?.status;
     const responseData = error.response?.data;
     const message = responseData?.message || (error as { message?: string }).message || '未知错误';
@@ -84,7 +88,7 @@ export class HttpErrorFactory {
           message: '请求超时，请稍后重试',
           recoverable: true,
           severity: 'warning',
-          code
+          code,
         });
       }
 
@@ -94,7 +98,7 @@ export class HttpErrorFactory {
           message: '网络连接失败，请检查网络设置',
           recoverable: true,
           severity: 'warning',
-          code
+          code,
         });
       }
     }
@@ -108,7 +112,7 @@ export class HttpErrorFactory {
           recoverable: false,
           severity: 'warning',
           code,
-          data: responseData?.errors
+          data: responseData?.errors,
         });
       case 401:
         return new HttpError({
@@ -117,7 +121,7 @@ export class HttpErrorFactory {
           status,
           recoverable: true,
           severity: 'warning',
-          code
+          code,
         });
       case 403:
         return new HttpError({
@@ -126,7 +130,7 @@ export class HttpErrorFactory {
           status,
           recoverable: false,
           severity: 'warning',
-          code
+          code,
         });
       case 404:
         return new HttpError({
@@ -135,7 +139,7 @@ export class HttpErrorFactory {
           status,
           recoverable: false,
           severity: 'warning',
-          code
+          code,
         });
       case 422:
         return new HttpError({
@@ -145,7 +149,7 @@ export class HttpErrorFactory {
           data: responseData?.errors,
           recoverable: false,
           severity: 'warning',
-          code
+          code,
         });
       case 429:
         return new HttpError({
@@ -154,7 +158,7 @@ export class HttpErrorFactory {
           status,
           recoverable: true,
           severity: 'warning',
-          code
+          code,
         });
       case 500:
       case 502:
@@ -166,7 +170,7 @@ export class HttpErrorFactory {
           status,
           recoverable: true,
           severity: 'critical',
-          code
+          code,
         });
       default:
         return new HttpError({
@@ -175,7 +179,7 @@ export class HttpErrorFactory {
           status,
           recoverable: false,
           severity: 'warning',
-          code
+          code,
         });
     }
   }
@@ -186,7 +190,7 @@ export class HttpErrorFactory {
         type: HttpErrorType.NETWORK,
         message: 'Network Error',
         recoverable: true,
-        severity: 'warning'
+        severity: 'warning',
       });
     }
 
@@ -195,7 +199,7 @@ export class HttpErrorFactory {
         type: HttpErrorType.TIMEOUT,
         message: '请求超时，请稍后重试',
         recoverable: true,
-        severity: 'warning'
+        severity: 'warning',
       });
     }
 
@@ -204,7 +208,7 @@ export class HttpErrorFactory {
         type: HttpErrorType.CLIENT,
         message: error.message,
         recoverable: false,
-        severity: 'warning'
+        severity: 'warning',
       });
     }
 
@@ -212,7 +216,7 @@ export class HttpErrorFactory {
       type: HttpErrorType.UNKNOWN,
       message: error.message,
       recoverable: false,
-      severity: 'warning'
+      severity: 'warning',
     });
   }
-} 
+}

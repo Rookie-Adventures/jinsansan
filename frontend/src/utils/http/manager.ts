@@ -1,6 +1,12 @@
 import axios, { AxiosInstance } from 'axios';
 import { HttpErrorType } from './error/types';
-import type { CacheData, ErrorStats, HttpRequestConfig, PerformanceStats, RequestManager } from './types';
+import type {
+  CacheData,
+  ErrorStats,
+  HttpRequestConfig,
+  PerformanceStats,
+  RequestManager,
+} from './types';
 
 export class HttpRequestManager implements RequestManager {
   private static instance: HttpRequestManager;
@@ -31,7 +37,7 @@ export class HttpRequestManager implements RequestManager {
     this.maxConcurrentRequests = 5;
     this.currentRequests = new Set();
     this.requestQueue = [];
-    
+
     // 初始化错误统计
     this.errorStats = {} as ErrorStats;
     Object.values(HttpErrorType).forEach(type => {
@@ -43,7 +49,7 @@ export class HttpRequestManager implements RequestManager {
       totalRequests: 0,
       successfulRequests: 0,
       failedRequests: 0,
-      totalResponseTime: 0
+      totalResponseTime: 0,
     };
   }
 
@@ -82,7 +88,7 @@ export class HttpRequestManager implements RequestManager {
     this.cache.set(key, {
       data,
       timestamp: Date.now(),
-      ttl
+      ttl,
     });
   }
 
@@ -92,7 +98,11 @@ export class HttpRequestManager implements RequestManager {
   }
 
   // 添加待处理请求
-  public addPendingRequest(requestId: string, config: HttpRequestConfig, cancelFn?: () => void): void {
+  public addPendingRequest(
+    requestId: string,
+    config: HttpRequestConfig,
+    cancelFn?: () => void
+  ): void {
     this.pendingRequests.set(requestId, { config, cancelFn });
   }
 
@@ -126,7 +136,7 @@ export class HttpRequestManager implements RequestManager {
     if (this.currentRequests.has(requestId)) {
       return false;
     }
-    
+
     // 如果未达到最大并发数，直接获取槽位
     if (this.currentRequests.size < this.maxConcurrentRequests) {
       this.currentRequests.add(requestId);
@@ -140,13 +150,13 @@ export class HttpRequestManager implements RequestManager {
 
     // 如果达到最大并发数，等待固定时间后返回false
     await new Promise(resolve => setTimeout(resolve, 100));
-    
+
     // 再次检查是否有可用槽位
     if (this.currentRequests.size < this.maxConcurrentRequests) {
       this.currentRequests.add(requestId);
       return true;
     }
-    
+
     return false;
   }
 
@@ -169,7 +179,7 @@ export class HttpRequestManager implements RequestManager {
     if (!request) return;
 
     const { requestId, config, resolve, reject } = request;
-    
+
     if (await this.acquireRequestSlot(requestId, config)) {
       try {
         const response = await this.executeRequest(config, requestId, resolve, reject);
@@ -213,7 +223,7 @@ export class HttpRequestManager implements RequestManager {
     // 使用高精度时间戳
     const startTime = performance.now();
     this.requestTimes.set(requestId, startTime);
-    
+
     // 确保性能统计初始化
     if (!this.performanceStats) {
       this.resetPerformanceStats();
@@ -243,15 +253,16 @@ export class HttpRequestManager implements RequestManager {
 
   // 获取性能统计
   public getPerformanceStats(): PerformanceStats {
-    const { totalRequests, successfulRequests, failedRequests, totalResponseTime } = this.performanceStats;
-    
+    const { totalRequests, successfulRequests, failedRequests, totalResponseTime } =
+      this.performanceStats;
+
     return {
       averageResponseTime: totalRequests > 0 ? Math.round(totalResponseTime / totalRequests) : 0,
       successRate: totalRequests > 0 ? successfulRequests / totalRequests : 0,
       totalRequests,
       successfulRequests,
       failedRequests,
-      totalResponseTime: Math.round(totalResponseTime)
+      totalResponseTime: Math.round(totalResponseTime),
     };
   }
 
@@ -261,7 +272,7 @@ export class HttpRequestManager implements RequestManager {
       totalRequests: 0,
       successfulRequests: 0,
       failedRequests: 0,
-      totalResponseTime: 0
+      totalResponseTime: 0,
     };
     this.requestTimes.clear();
   }
@@ -273,7 +284,7 @@ export class HttpRequestManager implements RequestManager {
     reject: (reason?: unknown) => void
   ): Promise<void> {
     const requestId = this.generateCacheKey(config);
-    
+
     // 如果当前请求数量小于最大并发数，直接执行请求
     if (await this.acquireRequestSlot(requestId, config)) {
       try {
@@ -322,7 +333,7 @@ export class HttpRequestManager implements RequestManager {
         type: HttpErrorType.AUTH,
         status: 401,
         message,
-        recoverable: true
+        recoverable: true,
       };
     }
 
@@ -332,7 +343,7 @@ export class HttpRequestManager implements RequestManager {
         type: HttpErrorType.AUTH,
         status: 403,
         message,
-        recoverable: false
+        recoverable: false,
       };
     }
 
@@ -355,7 +366,7 @@ export class HttpRequestManager implements RequestManager {
         if (cachedData && config.cache?.enable !== false) {
           return Promise.reject({
             type: 'CACHED',
-            cachedData
+            cachedData,
           });
         }
       }
@@ -367,13 +378,14 @@ export class HttpRequestManager implements RequestManager {
 
       // 检查认证状态
       if (config.requiresAuth !== false) {
-        const token = process.env.NODE_ENV === 'test' ? 'test-token' : localStorage.getItem('auth_token');
+        const token =
+          process.env.NODE_ENV === 'test' ? 'test-token' : localStorage.getItem('auth_token');
         if (!token) {
           const error = {
             type: HttpErrorType.AUTH,
             status: 401,
             message: '未认证',
-            recoverable: true
+            recoverable: true,
           };
           return Promise.reject(error);
         }
@@ -386,7 +398,7 @@ export class HttpRequestManager implements RequestManager {
           type: HttpErrorType.CLIENT,
           status: 403,
           message: '不允许的请求方法',
-          recoverable: false
+          recoverable: false,
         };
         return Promise.reject(error);
       }
@@ -400,7 +412,10 @@ export class HttpRequestManager implements RequestManager {
   // 执行响应拦截器
   public async executeResponseInterceptor(response: any): Promise<any> {
     // 缓存GET请求的响应
-    if (response.config?.method?.toLowerCase() === 'get' && response.config.cache?.enable !== false) {
+    if (
+      response.config?.method?.toLowerCase() === 'get' &&
+      response.config.cache?.enable !== false
+    ) {
       const cacheKey = response.config.cache?.key || this.generateCacheKey(response.config);
       const ttl = response.config.cache?.ttl || 300000; // 默认5分钟
       this.setCacheData(cacheKey, response.data, ttl);
@@ -419,11 +434,11 @@ export class HttpRequestManager implements RequestManager {
     this.recordError({
       type: error.type || HttpErrorType.UNKNOWN,
       message: error.message || '未知错误',
-      status: error.response?.status || 500
+      status: error.response?.status || 500,
     });
 
     return Promise.reject(error);
   }
 }
 
-export const requestManager = HttpRequestManager.getInstance(); 
+export const requestManager = HttpRequestManager.getInstance();

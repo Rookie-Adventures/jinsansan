@@ -11,10 +11,12 @@ export function withDebounce(
   options: { leading?: boolean; trailing?: boolean } = {}
 ): RequestFunction {
   const debouncedFn = debounce(
-    (config: HttpRequestConfig, resolve: (value: unknown) => void, reject: (reason?: unknown) => void) => {
-      fn(config)
-        .then(resolve)
-        .catch(reject);
+    (
+      config: HttpRequestConfig,
+      resolve: (value: unknown) => void,
+      reject: (reason?: unknown) => void
+    ) => {
+      fn(config).then(resolve).catch(reject);
     },
     wait,
     options
@@ -34,10 +36,12 @@ export function withThrottle(
   options: { leading?: boolean; trailing?: boolean } = {}
 ): RequestFunction {
   const throttledFn = throttle(
-    (config: HttpRequestConfig, resolve: (value: unknown) => void, reject: (reason?: unknown) => void) => {
-      fn(config)
-        .then(resolve)
-        .catch(reject);
+    (
+      config: HttpRequestConfig,
+      resolve: (value: unknown) => void,
+      reject: (reason?: unknown) => void
+    ) => {
+      fn(config).then(resolve).catch(reject);
     },
     wait,
     options
@@ -83,4 +87,4 @@ export function withQueue(fn: RequestFunction): RequestFunction {
       requestManager.addToQueue(config, resolve, reject);
     });
   };
-} 
+}

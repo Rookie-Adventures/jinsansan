@@ -16,7 +16,7 @@ export class ErrorPreventionManager {
     this.addRule({
       check: () => navigator.onLine,
       errorType: HttpErrorType.NETWORK,
-      message: '当前处于离线状态，请检查网络连接'
+      message: '当前处于离线状态，请检查网络连接',
     });
 
     this.addRule({
@@ -25,7 +25,7 @@ export class ErrorPreventionManager {
         return !!token;
       },
       errorType: HttpErrorType.AUTH,
-      message: '未登录或登录已过期'
+      message: '未登录或登录已过期',
     });
   }
 
@@ -74,7 +74,8 @@ export class RequestValidator {
   private static validateRequestData(data: unknown): void {
     // 检查数据大小
     const dataSize = new Blob([JSON.stringify(data)]).size;
-    if (dataSize > 5 * 1024 * 1024) { // 5MB
+    if (dataSize > 5 * 1024 * 1024) {
+      // 5MB
       throw new Error('请求数据过大');
     }
 
@@ -121,7 +122,7 @@ export class CacheManager {
   set(key: string, data: unknown): void {
     this.cache.set(key, {
       data,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
   }
 
@@ -147,4 +148,4 @@ export class CacheManager {
 }
 
 export const errorPreventionManager = ErrorPreventionManager.getInstance();
-export const cacheManager = CacheManager.getInstance(); 
+export const cacheManager = CacheManager.getInstance();

@@ -62,8 +62,8 @@ class RouterAnalytics {
           level: 'error',
           context: {
             route: analytics.path,
-            timestamp: analytics.timestamp
-          }
+            timestamp: analytics.timestamp,
+          },
         }
       );
     }
@@ -83,4 +83,4 @@ export const useRouteAnalytics = (): void => {
   useEffect(() => {
     routerAnalytics.trackRoute(location.pathname, navigationType);
   }, [location, navigationType]);
-}; 
+};

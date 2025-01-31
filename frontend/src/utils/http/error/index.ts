@@ -32,7 +32,7 @@ class DefaultErrorHandler implements ErrorHandler {
         type: error.type,
         message: '错误恢复失败',
         severity: 'critical',
-        data: e
+        data: e,
       });
       throw error;
     }
@@ -44,4 +44,4 @@ export * from './prevention';
 export * from './recovery';
 export * from './types';
 
-export const defaultErrorHandler = DefaultErrorHandler.getInstance(); 
+export const defaultErrorHandler = DefaultErrorHandler.getInstance();

@@ -26,4 +26,4 @@ export function csrfResponseInterceptor(response: AxiosResponse): AxiosResponse 
     csrfTokenManager.generateToken();
   }
   return response;
-} 
+}

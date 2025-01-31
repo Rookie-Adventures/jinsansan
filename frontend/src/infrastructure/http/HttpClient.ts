@@ -65,10 +65,10 @@ const axiosInstance: AxiosInstance = axios.create(defaultConfig);
 
 // 请求拦截器
 axiosInstance.interceptors.request.use(
-  (config) => {
+  config => {
     // 记录请求开始时间
     config.metadata = { startTime: Date.now() };
-    
+
     // 记录请求日志
     logger.info('API Request', {
       url: config.url,
@@ -96,11 +96,7 @@ axiosInstance.interceptors.response.use(
     const duration = Date.now() - (config.metadata?.startTime || 0);
 
     // 记录性能指标
-    performanceMonitor.trackApiCall(
-      config.url || '',
-      duration,
-      true
-    );
+    performanceMonitor.trackApiCall(config.url || '', duration, true);
 
     // 记录响应日志
     logger.info('API Response', {
@@ -118,11 +114,7 @@ axiosInstance.interceptors.response.use(
 
     // 记录性能指标
     if (config?.url) {
-      performanceMonitor.trackApiCall(
-        config.url,
-        duration,
-        false
-      );
+      performanceMonitor.trackApiCall(config.url, duration, false);
     }
 
     // 记录错误日志
@@ -139,4 +131,4 @@ axiosInstance.interceptors.response.use(
 );
 
 // 导出 http 实例
-export const http = axiosInstance; 
+export const http = axiosInstance;

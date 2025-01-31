@@ -55,4 +55,4 @@ export class ProgressMonitor {
   }
 }
 
-export const createProgressMonitor = () => new ProgressMonitor(); 
+export const createProgressMonitor = () => new ProgressMonitor();

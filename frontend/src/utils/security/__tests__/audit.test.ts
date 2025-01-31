@@ -9,14 +9,14 @@ describe('AuditLogManager', () => {
   const mockFetch = vi.fn();
   const mockErrorLogger = vi.spyOn(errorLogger, 'log').mockImplementation(async () => {});
   const baseTime = new Date('2024-01-01T00:00:00Z').getTime();
-  
+
   // 保存原始的 localStorage
   const originalLocalStorage = global.localStorage;
-  
+
   beforeEach(() => {
     vi.useFakeTimers();
     vi.setSystemTime(baseTime);
-    
+
     // 重置 localStorage
     const store = new Map<string, string>();
     const localStorageMock = {
@@ -27,19 +27,19 @@ describe('AuditLogManager', () => {
       length: 0,
       key: vi.fn((index: number) => null),
     } as Storage;
-    
+
     global.localStorage = localStorageMock;
-    
+
     // 清理日志
     auditLogManager['logs'] = [];
-    
+
     // Mock fetch 成功响应
     global.fetch = mockFetch.mockResolvedValue({
       ok: true,
       status: 200,
       json: () => Promise.resolve({}),
     } as Response);
-    
+
     // 清理 errorLogger 的 mock
     mockErrorLogger.mockClear();
   });
@@ -57,7 +57,7 @@ describe('AuditLogManager', () => {
         level: AuditLogLevel.INFO,
         action: 'test-action',
         resource: 'test-resource',
-        details: { key: 'value' }
+        details: { key: 'value' },
       };
 
       await auditLogManager.log(
@@ -78,7 +78,7 @@ describe('AuditLogManager', () => {
         resource: testLog.resource,
         details: testLog.details,
         timestamp: baseTime,
-        status: 'success'
+        status: 'success',
       });
 
       // 验证API调用
@@ -87,7 +87,7 @@ describe('AuditLogManager', () => {
         'http://localhost:3000/api/audit-logs',
         expect.objectContaining({
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' }
+          headers: { 'Content-Type': 'application/json' },
         })
       );
     });
@@ -110,7 +110,7 @@ describe('AuditLogManager', () => {
 
       const logs = auditLogManager.getLogs(0, Date.now());
       expect(logs).toHaveLength(maxLogs);
-      
+
       // 验证保留的是最新的日志
       const timestamps = logs.map(log => log.timestamp);
       expect(Math.min(...timestamps)).toBeGreaterThan(baseTime + (totalLogs - maxLogs - 1) * 1000);
@@ -127,7 +127,7 @@ describe('AuditLogManager', () => {
           action: 'login',
           resource: 'user',
           details: {},
-          timestamp: baseTime
+          timestamp: baseTime,
         },
         {
           type: AuditLogType.SECURITY,
@@ -135,7 +135,7 @@ describe('AuditLogManager', () => {
           action: 'failed-login',
           resource: 'user',
           details: {},
-          timestamp: baseTime + 1000
+          timestamp: baseTime + 1000,
         },
         {
           type: AuditLogType.SYSTEM,
@@ -143,19 +143,13 @@ describe('AuditLogManager', () => {
           action: 'system-error',
           resource: 'server',
           details: {},
-          timestamp: baseTime + 2000
-        }
+          timestamp: baseTime + 2000,
+        },
       ];
 
       for (const log of testLogs) {
         vi.setSystemTime(log.timestamp);
-        await auditLogManager.log(
-          log.type,
-          log.level,
-          log.action,
-          log.resource,
-          log.details
-        );
+        await auditLogManager.log(log.type, log.level, log.action, log.resource, log.details);
       }
     });
 
@@ -164,7 +158,7 @@ describe('AuditLogManager', () => {
       expect(authLogs).toHaveLength(1);
       expect(authLogs[0]).toMatchObject({
         type: AuditLogType.AUTH,
-        action: 'login'
+        action: 'login',
       });
     });
 
@@ -173,19 +167,19 @@ describe('AuditLogManager', () => {
       expect(errorLogs).toHaveLength(1);
       expect(errorLogs[0]).toMatchObject({
         level: AuditLogLevel.ERROR,
-        action: 'system-error'
+        action: 'system-error',
       });
     });
 
     test('应该按时间范围筛选日志', () => {
-      const startTime = baseTime + 500;  // 第一条之后，第二条之前
-      const endTime = baseTime + 1500;   // 第二条之后，第三条之前
-      
+      const startTime = baseTime + 500; // 第一条之后，第二条之前
+      const endTime = baseTime + 1500; // 第二条之后，第三条之前
+
       const logs = auditLogManager.getLogs(startTime, endTime);
       expect(logs).toHaveLength(1);
       expect(logs[0]).toMatchObject({
         action: 'failed-login',
-        timestamp: baseTime + 1000
+        timestamp: baseTime + 1000,
       });
     });
   });
@@ -200,17 +194,19 @@ describe('AuditLogManager', () => {
         level: AuditLogLevel.ERROR,
         action: 'test-error',
         resource: 'test-resource',
-        details: {}
+        details: {},
       };
 
       // 验证错误抛出
-      await expect(auditLogManager.log(
-        testLog.type,
-        testLog.level,
-        testLog.action,
-        testLog.resource,
-        testLog.details
-      )).rejects.toThrow('Network error');
+      await expect(
+        auditLogManager.log(
+          testLog.type,
+          testLog.level,
+          testLog.action,
+          testLog.resource,
+          testLog.details
+        )
+      ).rejects.toThrow('Network error');
 
       // 等待一下以确保异步操作完成
       await vi.runAllTimersAsync();
@@ -224,7 +220,7 @@ describe('AuditLogManager', () => {
         type: testLog.type,
         level: testLog.level,
         status: 'failure',
-        errorMessage: 'Network error'
+        errorMessage: 'Network error',
       });
     });
 
@@ -251,8 +247,8 @@ describe('AuditLogManager', () => {
             type: AuditLogType.SECURITY,
             level: AuditLogLevel.CRITICAL,
             action: 'security-breach',
-            resource: 'system'
-          })
+            resource: 'system',
+          }),
         })
       );
     });
@@ -262,7 +258,7 @@ describe('AuditLogManager', () => {
       const mockSetItem = vi.fn().mockImplementationOnce(() => {
         throw new Error('Storage full');
       });
-      
+
       // 替换当前 localStorage 的 setItem 方法
       (global.localStorage as any).setItem = mockSetItem;
 
@@ -272,13 +268,15 @@ describe('AuditLogManager', () => {
       // 确保 errorLogger 被正确模拟
       mockErrorLogger.mockClear();
 
-      await expect(auditLogManager.log(
-        AuditLogType.SYSTEM,
-        AuditLogLevel.ERROR,
-        'test-error',
-        'test-resource',
-        {}
-      )).rejects.toThrow('Network error');
+      await expect(
+        auditLogManager.log(
+          AuditLogType.SYSTEM,
+          AuditLogLevel.ERROR,
+          'test-error',
+          'test-resource',
+          {}
+        )
+      ).rejects.toThrow('Network error');
 
       // 等待一下以确保异步操作完成
       await vi.runAllTimersAsync();
@@ -288,8 +286,8 @@ describe('AuditLogManager', () => {
         expect.objectContaining({
           level: 'error',
           context: expect.objectContaining({
-            log: expect.any(Object)
-          })
+            log: expect.any(Object),
+          }),
         })
       );
     });
@@ -300,4 +298,4 @@ describe('AuditLogManager', () => {
     const instance2 = auditLogManager;
     expect(instance1).toBe(instance2);
   });
-}); 
+});

@@ -46,4 +46,4 @@ describe('CSRFTokenManager', () => {
     const instance2 = csrfTokenManager;
     expect(instance1).toBe(instance2);
   });
-}); 
+});

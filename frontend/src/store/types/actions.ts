@@ -27,4 +27,4 @@ export interface ErrorAction extends BaseAction {
 // Action 类型守卫
 export const isErrorAction = (action: unknown): action is ErrorAction => {
   return typeof action === 'object' && action !== null && 'error' in action;
-}; 
+};

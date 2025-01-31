@@ -47,18 +47,25 @@ interface RequestExecuteConfig<T> {
   get: ReturnType<typeof useHttp>['get'];
 }
 
-const createFinalOptions = (defaultOptions?: RequestOptions, options?: RequestOptions): HttpRequestConfig => ({
+const createFinalOptions = (
+  defaultOptions?: RequestOptions,
+  options?: RequestOptions
+): HttpRequestConfig => ({
   ...defaultOptions,
   ...options,
-  cache: options?.cache ? {
-    enable: options.cache.enable,
-    ttl: options.cache.ttl,
-    key: options.cache.key
-  } : undefined,
-  queue: options?.queue ? {
-    enable: options.queue.enable,
-    priority: options.queue.priority
-  } : undefined
+  cache: options?.cache
+    ? {
+        enable: options.cache.enable,
+        ttl: options.cache.ttl,
+        key: options.cache.key,
+      }
+    : undefined,
+  queue: options?.queue
+    ? {
+        enable: options.queue.enable,
+        priority: options.queue.priority,
+      }
+    : undefined,
 });
 
 const useRequestState = <T>() => {
@@ -72,35 +79,38 @@ const useRequestState = <T>() => {
     data,
     setLoading,
     setError,
-    setData
+    setData,
   };
 };
 
-const useRequestHandlers = <T>(
-  state: RequestState<T>,
-  cache: ReturnType<typeof useCache>
-) => {
-  const handleCacheData = useCallback((cacheKey: string): T | null => {
-    const cachedData = cache.getCacheData<T>(cacheKey);
-    if (cachedData) {
-      state.setData(cachedData);
-      return cachedData;
-    }
-    return null;
-  }, [cache, state]);
+const useRequestHandlers = <T>(state: RequestState<T>, cache: ReturnType<typeof useCache>) => {
+  const handleCacheData = useCallback(
+    (cacheKey: string): T | null => {
+      const cachedData = cache.getCacheData<T>(cacheKey);
+      if (cachedData) {
+        state.setData(cachedData);
+        return cachedData;
+      }
+      return null;
+    },
+    [cache, state]
+  );
 
-  const handleResponseData = useCallback((responseData: ApiResponse<T>, cacheKey?: string, ttl?: number) => {
-    const newData = responseData.data;
-    state.setData(newData);
-    if (cacheKey && ttl) {
-      cache.setCacheData(cacheKey, newData, ttl);
-    }
-    return newData;
-  }, [cache, state]);
+  const handleResponseData = useCallback(
+    (responseData: ApiResponse<T>, cacheKey?: string, ttl?: number) => {
+      const newData = responseData.data;
+      state.setData(newData);
+      if (cacheKey && ttl) {
+        cache.setCacheData(cacheKey, newData, ttl);
+      }
+      return newData;
+    },
+    [cache, state]
+  );
 
   return {
     handleCacheData,
-    handleResponseData
+    handleResponseData,
   };
 };
 
@@ -109,40 +119,46 @@ const useRequestExecute = <T>({
   defaultOptions,
   state,
   handlers,
-  get
+  get,
 }: RequestExecuteConfig<T>) => {
-  return useCallback(async (options?: RequestOptions): Promise<T> => {
-    const finalOptions = createFinalOptions(defaultOptions, options);
-    state.setLoading(true);
-    state.setError(null);
+  return useCallback(
+    async (options?: RequestOptions): Promise<T> => {
+      const finalOptions = createFinalOptions(defaultOptions, options);
+      state.setLoading(true);
+      state.setError(null);
 
-    try {
-      if (finalOptions?.cache?.enable) {
-        const cacheKey = finalOptions.cache.key || url;
-        const cachedData = handlers.handleCacheData(cacheKey);
-        if (cachedData) {
-          state.setLoading(false);
-          return cachedData;
+      try {
+        if (finalOptions?.cache?.enable) {
+          const cacheKey = finalOptions.cache.key || url;
+          const cachedData = handlers.handleCacheData(cacheKey);
+          if (cachedData) {
+            state.setLoading(false);
+            return cachedData;
+          }
         }
-      }
 
-      const response = await get<ApiResponse<T>>(url, finalOptions);
-      return handlers.handleResponseData(
-        response,
-        finalOptions?.cache?.enable ? (finalOptions.cache.key || url) : undefined,
-        finalOptions?.cache?.ttl
-      );
-    } catch (err) {
-      const error = err as AxiosError;
-      state.setError(error);
-      throw error;
-    } finally {
-      state.setLoading(false);
-    }
-  }, [url, defaultOptions, state, handlers, get]);
+        const response = await get<ApiResponse<T>>(url, finalOptions);
+        return handlers.handleResponseData(
+          response,
+          finalOptions?.cache?.enable ? finalOptions.cache.key || url : undefined,
+          finalOptions?.cache?.ttl
+        );
+      } catch (err) {
+        const error = err as AxiosError;
+        state.setError(error);
+        throw error;
+      } finally {
+        state.setLoading(false);
+      }
+    },
+    [url, defaultOptions, state, handlers, get]
+  );
 };
 
-export const useRequest = <T>(url: string, defaultOptions?: RequestOptions): UseRequestResult<T> => {
+export const useRequest = <T>(
+  url: string,
+  defaultOptions?: RequestOptions
+): UseRequestResult<T> => {
   const state = useRequestState<T>();
   const { get } = useHttp();
   const cache = useCache();
@@ -152,13 +168,13 @@ export const useRequest = <T>(url: string, defaultOptions?: RequestOptions): Use
     defaultOptions,
     state,
     handlers,
-    get
+    get,
   });
 
   return {
     loading: state.loading,
     error: state.error,
     data: state.data,
-    execute
+    execute,
   };
-}; 
+};

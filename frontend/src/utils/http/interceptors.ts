@@ -27,7 +27,7 @@ export const setupInterceptors = (instance: AxiosInstance) => {
       updateLoading();
 
       // 添加上传进度监听
-      config.onUploadProgress = (event) => {
+      config.onUploadProgress = event => {
         if (event.total) {
           uploadProgress = (event.loaded / event.total) * 100;
           updateProgress();
@@ -35,7 +35,7 @@ export const setupInterceptors = (instance: AxiosInstance) => {
       };
 
       // 添加下载进度监听
-      config.onDownloadProgress = (event) => {
+      config.onDownloadProgress = event => {
         if (event.total) {
           downloadProgress = (event.loaded / event.total) * 100;
           updateProgress();
@@ -65,4 +65,4 @@ export const setupInterceptors = (instance: AxiosInstance) => {
   );
 
   return instance;
-}; 
+};

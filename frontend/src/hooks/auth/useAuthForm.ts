@@ -5,8 +5,8 @@ interface UseAuthFormOptions<T extends LoginFormData | RegisterFormData> {
   initialData: T;
 }
 
-export const useAuthForm = <T extends LoginFormData | RegisterFormData>({ 
-  initialData 
+export const useAuthForm = <T extends LoginFormData | RegisterFormData>({
+  initialData,
 }: UseAuthFormOptions<T>) => {
   const [formData, setFormData] = useState<T>(initialData);
   const [showPassword, setShowPassword] = useState(false);
@@ -25,4 +25,4 @@ export const useAuthForm = <T extends LoginFormData | RegisterFormData>({
     handleFormChange,
     togglePasswordVisibility,
   };
-}; 
+};

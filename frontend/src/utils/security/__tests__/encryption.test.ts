@@ -8,7 +8,7 @@ describe('EncryptionManager', () => {
     test('应该能正确加密和解密数据', () => {
       const encrypted = encryptionManager.encrypt(testData, testPassphrase);
       expect(encrypted).not.toBe(testData);
-      
+
       const decrypted = encryptionManager.decrypt(encrypted, testPassphrase);
       expect(decrypted).toBe(testData);
     });
@@ -66,11 +66,11 @@ describe('EncryptionManager', () => {
       const newConfig = {
         algorithm: 'AES' as const,
         keySize: 128,
-        iterations: 500
+        iterations: 500,
       };
-      
+
       encryptionManager.updateConfig(newConfig);
-      
+
       // 确保加密解密仍然正常工作
       const encrypted = encryptionManager.encrypt(testData, testPassphrase);
       const decrypted = encryptionManager.decrypt(encrypted, testPassphrase);
@@ -83,4 +83,4 @@ describe('EncryptionManager', () => {
     const instance2 = encryptionManager;
     expect(instance1).toBe(instance2);
   });
-}); 
+});

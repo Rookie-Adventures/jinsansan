@@ -8,21 +8,23 @@ import Navbar from '../components/common/layout/Navbar';
 
 const HomePage: React.FC = () => {
   return (
-    <Box sx={{ 
-      width: '100vw',
-      margin: '-8px',
-      padding: 0,
-      overflow: 'hidden',
-      position: 'relative',
-      left: '50%',
-      right: '50%',
-      marginLeft: '-50vw',
-      marginRight: '-50vw',
-    }}>
+    <Box
+      sx={{
+        width: '100vw',
+        margin: '-8px',
+        padding: 0,
+        overflow: 'hidden',
+        position: 'relative',
+        left: '50%',
+        right: '50%',
+        marginLeft: '-50vw',
+        marginRight: '-50vw',
+      }}
+    >
       <Navbar />
       {/* Hero Section */}
-      <Box 
-        sx={{ 
+      <Box
+        sx={{
           background: 'linear-gradient(135deg, #24243e 0%, #302b63 50%, #0f0c29 100%)',
           color: 'white',
           position: 'relative',
@@ -34,9 +36,10 @@ const HomePage: React.FC = () => {
             left: 0,
             right: 0,
             bottom: 0,
-            background: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0) 70%)',
+            background:
+              'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0) 70%)',
             pointerEvents: 'none',
-          }
+          },
         }}
       >
         <HeroSection />
@@ -48,13 +51,15 @@ const HomePage: React.FC = () => {
       </Box>
 
       {/* Pricing Section */}
-      <Box sx={{ 
-        background: 'linear-gradient(135deg, #f5f7fa 0%, #e8ecf3 100%)',
-      }}>
+      <Box
+        sx={{
+          background: 'linear-gradient(135deg, #f5f7fa 0%, #e8ecf3 100%)',
+        }}
+      >
         <PricingSection />
       </Box>
     </Box>
   );
 };
 
-export default HomePage; 
+export default HomePage;

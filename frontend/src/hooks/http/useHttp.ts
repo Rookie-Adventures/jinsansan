@@ -11,13 +11,19 @@ export const useHttp = () => {
     return http.get<T>(url, config);
   }, []);
 
-  const post = useCallback(async <T>(url: string, data?: unknown, config?: RequestConfigWithoutData) => {
-    return http.post<T>(url, data, config);
-  }, []);
+  const post = useCallback(
+    async <T>(url: string, data?: unknown, config?: RequestConfigWithoutData) => {
+      return http.post<T>(url, data, config);
+    },
+    []
+  );
 
-  const put = useCallback(async <T>(url: string, data?: unknown, config?: RequestConfigWithoutData) => {
-    return http.put<T>(url, data, config);
-  }, []);
+  const put = useCallback(
+    async <T>(url: string, data?: unknown, config?: RequestConfigWithoutData) => {
+      return http.put<T>(url, data, config);
+    },
+    []
+  );
 
   const del = useCallback(async <T>(url: string, config?: RequestConfig) => {
     return http.delete<T>(url, config);
@@ -27,6 +33,6 @@ export const useHttp = () => {
     get,
     post,
     put,
-    delete: del
+    delete: del,
   };
-}; 
+};

@@ -29,4 +29,4 @@ export const useCache = () => {
     generateCacheKey,
     clearCache,
   };
-}; 
+};

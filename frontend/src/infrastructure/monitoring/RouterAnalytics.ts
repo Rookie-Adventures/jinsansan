@@ -16,26 +16,29 @@ export class RouterAnalytics {
   private performanceMonitor: PerformanceMonitor;
   private routeStats: Record<string, number> = {};
   private routeDurations: Record<string, number[]> = {};
-  
+
   // 新增：路由切换动画相关的属性
   private transitionStartTime?: number;
   private transitionFrames: number[] = [];
   private activeTransition = false;
 
   // 新增：预加载相关的属性
-  private preloadRequests: Map<string, { 
-    startTime: number;
-    promise: Promise<void>;
-    fromCache: boolean;
-    resolve: () => void;
-  }> = new Map();
+  private preloadRequests: Map<
+    string,
+    {
+      startTime: number;
+      promise: Promise<void>;
+      fromCache: boolean;
+      resolve: () => void;
+    }
+  > = new Map();
   private activePreloads: Map<string, number> = new Map();
   private preloadStats = {
     totalRequests: 0,
     cacheHits: 0,
     successCount: 0,
     failureCount: 0,
-    deduplicationCount: 0
+    deduplicationCount: 0,
   };
 
   private constructor() {
@@ -69,7 +72,7 @@ export class RouterAnalytics {
       timestamp,
       navigationType,
       previousPath: this.lastPath,
-      duration
+      duration,
     };
 
     this.analytics.push(analytics);
@@ -107,9 +110,9 @@ export class RouterAnalytics {
       const response = await fetch('/api/analytics/route', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(analytics)
+        body: JSON.stringify(analytics),
       });
 
       if (!response.ok) {
@@ -133,7 +136,7 @@ export class RouterAnalytics {
       cacheHits: 0,
       successCount: 0,
       failureCount: 0,
-      deduplicationCount: 0
+      deduplicationCount: 0,
     };
     this.preloadRequests.clear();
     this.activePreloads.clear();
@@ -163,8 +166,9 @@ export class RouterAnalytics {
 
     // 计算帧率
     if (this.transitionFrames.length > 1) {
-      const totalTime = this.transitionFrames[this.transitionFrames.length - 1] - this.transitionFrames[0];
-      const fps = totalTime > 0 ? (this.transitionFrames.length - 1) * 1000 / totalTime : 60;
+      const totalTime =
+        this.transitionFrames[this.transitionFrames.length - 1] - this.transitionFrames[0];
+      const fps = totalTime > 0 ? ((this.transitionFrames.length - 1) * 1000) / totalTime : 60;
       this.performanceMonitor.trackCustomMetric('route_transition_fps', fps);
     }
 
@@ -184,13 +188,16 @@ export class RouterAnalytics {
     const existingRequest = this.preloadRequests.get(path);
     if (existingRequest) {
       this.preloadStats.deduplicationCount++;
-      this.performanceMonitor.trackCustomMetric('route_preload_deduplication_count', this.preloadStats.deduplicationCount);
+      this.performanceMonitor.trackCustomMetric(
+        'route_preload_deduplication_count',
+        this.preloadStats.deduplicationCount
+      );
       return existingRequest.promise;
     }
 
     const startTime = Date.now();
     let resolvePromise!: () => void;
-    const promise = new Promise<void>((resolve) => {
+    const promise = new Promise<void>(resolve => {
       resolvePromise = resolve;
     });
 
@@ -198,7 +205,7 @@ export class RouterAnalytics {
       startTime,
       promise,
       fromCache: false,
-      resolve: resolvePromise
+      resolve: resolvePromise,
     });
 
     this.activePreloads.set(path, (this.activePreloads.get(path) || 0) + 1);
@@ -208,7 +215,7 @@ export class RouterAnalytics {
   }
 
   public async trackPreloadEnd(
-    path: string, 
+    path: string,
     fromCache: boolean = false,
     resourceSizes?: { jsSize?: number; cssSize?: number; totalSize?: number }
   ): Promise<void> {
@@ -237,9 +244,10 @@ export class RouterAnalytics {
     }
 
     // 更新缓存命中率
-    const cacheHitRate = this.preloadStats.totalRequests > 0 
-      ? this.preloadStats.cacheHits / this.preloadStats.totalRequests 
-      : 0;
+    const cacheHitRate =
+      this.preloadStats.totalRequests > 0
+        ? this.preloadStats.cacheHits / this.preloadStats.totalRequests
+        : 0;
     this.performanceMonitor.trackCustomMetric('route_preload_cache_hit_rate', cacheHitRate);
 
     // 更新成功率
@@ -260,7 +268,7 @@ export class RouterAnalytics {
 
   public async trackPreloadError(path: string, error: Error): Promise<void> {
     this.preloadStats.failureCount++;
-    
+
     // 更新活动预加载计数
     const activeCount = this.activePreloads.get(path) || 0;
     if (activeCount > 0) {
@@ -282,4 +290,4 @@ export class RouterAnalytics {
   public getAnalytics(): RouteAnalytics[] {
     return [...this.analytics];
   }
-} 
+}

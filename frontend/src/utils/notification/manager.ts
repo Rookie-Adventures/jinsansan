@@ -47,4 +47,4 @@ export class NotificationManager {
   }
 }
 
-export const notificationManager = NotificationManager.getInstance(); 
+export const notificationManager = NotificationManager.getInstance();

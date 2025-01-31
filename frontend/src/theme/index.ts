@@ -65,7 +65,7 @@ export const theme = (isDarkMode: boolean) =>
     },
     components: {
       MuiCssBaseline: {
-        styleOverrides: (theme) => ({
+        styleOverrides: theme => ({
           body: {
             ...getBaseStyles(theme).body,
             backgroundColor: isDarkMode ? '#121212' : '#ffffff',
@@ -74,4 +74,4 @@ export const theme = (isDarkMode: boolean) =>
         }),
       },
     },
-  }); 
+  });

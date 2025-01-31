@@ -47,4 +47,4 @@ const AuthCard: React.FC<AuthCardProps> = ({ children, onToLogin, onToRegister }
   );
 };
 
-export default AuthCard; 
+export default AuthCard;

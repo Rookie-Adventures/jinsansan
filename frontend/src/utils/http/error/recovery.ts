@@ -12,7 +12,7 @@ const handleNavigation = (url: string) => {
   if (process.env.NODE_ENV === 'test') {
     return Promise.resolve();
   }
-  return new Promise<void>((resolve) => {
+  return new Promise<void>(resolve => {
     window.location.href = url;
     resolve();
   });
@@ -40,7 +40,7 @@ const handleStorage = {
     } catch {
       // 忽略存储错误
     }
-  }
+  },
 };
 
 const defaultStrategies: Record<HttpErrorType, RecoveryStrategy> = {
@@ -53,7 +53,7 @@ const defaultStrategies: Record<HttpErrorType, RecoveryStrategy> = {
       const delay = 1000 * (error.retryCount || 1);
       await new Promise(resolve => setTimeout(resolve, delay));
     },
-    maxAttempts: 3
+    maxAttempts: 3,
   },
   TIMEOUT: {
     shouldAttemptRecovery: (error: HttpError) => {
@@ -63,7 +63,7 @@ const defaultStrategies: Record<HttpErrorType, RecoveryStrategy> = {
       // 超时错误恢复策略：增加超时时间重试
       await new Promise(resolve => setTimeout(resolve, 2000));
     },
-    maxAttempts: 2
+    maxAttempts: 2,
   },
   AUTH: {
     shouldAttemptRecovery: (error: HttpError) => {
@@ -86,9 +86,9 @@ const defaultStrategies: Record<HttpErrorType, RecoveryStrategy> = {
         const response = await fetch('/api/auth/refresh', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ refreshToken })
+          body: JSON.stringify({ refreshToken }),
         });
 
         if (!response.ok) {
@@ -108,7 +108,7 @@ const defaultStrategies: Record<HttpErrorType, RecoveryStrategy> = {
         throw new Error('Token refresh failed');
       }
     },
-    maxAttempts: 1
+    maxAttempts: 1,
   },
   SERVER: {
     shouldAttemptRecovery: (error: HttpError) => true,
@@ -116,28 +116,28 @@ const defaultStrategies: Record<HttpErrorType, RecoveryStrategy> = {
       // 重试服务器请求
       await new Promise(resolve => setTimeout(resolve, 1000));
     },
-    maxAttempts: 2
+    maxAttempts: 2,
   },
   CLIENT: {
     shouldAttemptRecovery: (error: HttpError) => false,
     recover: async (error: HttpError) => {
       // 客户端错误通常不需要恢复
     },
-    maxAttempts: 0
+    maxAttempts: 0,
   },
   CANCEL: {
     shouldAttemptRecovery: (error: HttpError) => false,
     recover: async (error: HttpError) => {
       // 取消的请求不需要恢复
     },
-    maxAttempts: 0
+    maxAttempts: 0,
   },
   UNKNOWN: {
     shouldAttemptRecovery: (error: HttpError) => false,
     recover: async (error: HttpError) => {
       // 未知错误不尝试恢复
     },
-    maxAttempts: 0
+    maxAttempts: 0,
   },
   REACT_ERROR: {
     shouldAttemptRecovery: (error: HttpError) => false,
@@ -145,43 +145,43 @@ const defaultStrategies: Record<HttpErrorType, RecoveryStrategy> = {
       // React错误通常需要刷新页面
       window.location.reload();
     },
-    maxAttempts: 1
+    maxAttempts: 1,
   },
   VALIDATION: {
     shouldAttemptRecovery: (error: HttpError) => false,
     recover: async (error: HttpError) => {
       // 验证错误不需要恢复
     },
-    maxAttempts: 0
+    maxAttempts: 0,
   },
   BUSINESS: {
     shouldAttemptRecovery: (error: HttpError) => false,
     recover: async (error: HttpError) => {
       // 业务错误不需要恢复
     },
-    maxAttempts: 0
+    maxAttempts: 0,
   },
   INFO: {
     shouldAttemptRecovery: (error: HttpError) => false,
     recover: async (error: HttpError) => {
       // 信息类型不需要恢复
     },
-    maxAttempts: 0
+    maxAttempts: 0,
   },
   WARNING: {
     shouldAttemptRecovery: (error: HttpError) => false,
     recover: async (error: HttpError) => {
       // 警告类型不需要恢复
     },
-    maxAttempts: 0
+    maxAttempts: 0,
   },
   ERROR: {
     shouldAttemptRecovery: (error: HttpError) => false,
     recover: async (error: HttpError) => {
       // 错误类型不需要恢复
     },
-    maxAttempts: 0
-  }
+    maxAttempts: 0,
+  },
 };
 
 export class ErrorRecoveryManager {
@@ -211,13 +211,13 @@ export class ErrorRecoveryManager {
           return;
         }
         await strategy.recover(error);
-      }
+      },
     };
   }
 
   async attemptRecovery(error: HttpError): Promise<boolean> {
     const strategy = this.strategies[error.type];
-    
+
     if (!strategy || !strategy.shouldAttemptRecovery(error)) {
       return false;
     }
@@ -226,9 +226,11 @@ export class ErrorRecoveryManager {
       await strategy.recover(error);
       return true;
     } catch (err) {
-      if (error.type === HttpErrorType.AUTH && 
-          err instanceof Error && 
-          err.message === 'No refresh token available') {
+      if (
+        error.type === HttpErrorType.AUTH &&
+        err instanceof Error &&
+        err.message === 'No refresh token available'
+      ) {
         return false;
       }
       return false;
@@ -236,4 +238,4 @@ export class ErrorRecoveryManager {
   }
 }
 
-export const errorRecoveryManager = ErrorRecoveryManager.getInstance(); 
+export const errorRecoveryManager = ErrorRecoveryManager.getInstance();

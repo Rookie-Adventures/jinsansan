@@ -33,10 +33,7 @@ export class ErrorRetryMiddleware {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  async handle<T>(
-    operation: () => Promise<T>,
-    error: HttpError
-  ): Promise<T> {
+  async handle<T>(operation: () => Promise<T>, error: HttpError): Promise<T> {
     // 如果错误不可恢复，直接抛出
     if (!error.recoverable || !this.options.shouldRetry(error)) {
       error.recoverable = false;
@@ -50,7 +47,7 @@ export class ErrorRetryMiddleware {
     while (attempts < this.options.maxRetries) {
       try {
         attempts++;
-        
+
         // 在测试环境中不使用延迟
         if (process.env.NODE_ENV !== 'test') {
           // 使用指数退避策略，但不超过最大延迟时间
@@ -78,7 +75,7 @@ export class ErrorRetryMiddleware {
           throw new HttpError({
             type: HttpErrorType.UNKNOWN,
             message: e instanceof Error ? e.message : 'Unknown error',
-            recoverable: false
+            recoverable: false,
           });
         }
       }
@@ -88,4 +85,4 @@ export class ErrorRetryMiddleware {
     lastError.recoverable = false;
     throw lastError;
   }
-} 
+}

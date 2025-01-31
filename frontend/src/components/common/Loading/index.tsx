@@ -6,20 +6,12 @@ export interface LoadingProps {
   color?: 'primary' | 'secondary' | 'inherit';
 }
 
-const Loading: React.FC<LoadingProps> = ({ 
-  size = 40, 
-  color = 'primary' 
-}) => {
+const Loading: React.FC<LoadingProps> = ({ size = 40, color = 'primary' }) => {
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      minHeight="200px"
-    >
+    <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
       <CircularProgress size={size} color={color} />
     </Box>
   );
 };
 
-export default Loading; 
+export default Loading;

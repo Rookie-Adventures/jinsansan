@@ -11,7 +11,7 @@ export enum HttpErrorType {
   BUSINESS = 'BUSINESS',
   INFO = 'INFO',
   WARNING = 'WARNING',
-  ERROR = 'ERROR'
+  ERROR = 'ERROR',
 }
 
 export type ErrorSeverity = 'critical' | 'warning' | 'info' | 'error';
@@ -47,4 +47,4 @@ export interface HttpError extends Error {
   metadata?: ErrorMetadata;
   stack?: string;
   description?: string;
-} 
+}

@@ -1,4 +1,4 @@
-name: Build
+name: 代码质量分析
 
 on:
   push:
@@ -10,38 +10,49 @@ on:
 
 jobs:
   sonarcloud:
-    name: SonarCloud
+    name: SonarCloud 分析
     runs-on: windows-latest
     
     steps:
-      - uses: actions/checkout@v4
+      - name: 检出代码
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      
-      - name: Set up Node.js
+          fetch-depth: 0
+          
+      - name: 配置 Node.js 环境
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '22'
+          cache: 'npm'
           
-      - name: Install dependencies
+      - name: 安装项目依赖
+        working-directory: ./frontend
+        run: npm ci
+          
+      - name: 执行测试和覆盖率分析
+        working-directory: ./frontend
+        run: npm run test:coverage
+        
+      - name: 检查覆盖率报告
+        working-directory: ./frontend
         run: |
-          cd frontend
-          npm ci
+          if not exist coverage\lcov.info (
+            echo "错误：未找到覆盖率报告文件 coverage/lcov.info!"
+            exit 1
+          )
           
-      - name: Run tests with coverage
-        run: |
-          cd frontend
-          npm run test:coverage
-          
-      - name: Debug directory structure
-        run: |
-          dir /s frontend
-          
-      - name: SonarCloud Scan
+      - name: 执行 SonarCloud 分析
         uses: SonarSource/sonarcloud-github-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   # Generate a token on Sonarcloud.io
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.verbose=true 
+            -Dsonar.verbose=true
+            -Dsonar.projectKey=Rookie-Adventures_jinsansan
+            -Dsonar.organization=rookie-adventures
+            -Dsonar.sources=frontend/src
+            -Dsonar.tests=frontend/src/**/__tests__
+            -Dsonar.javascript.lcov.reportPaths=frontend/coverage/lcov.info
+            -Dsonar.typescript.tsconfigPath=frontend/tsconfig.json
+            -Dsonar.projectBaseDir=.

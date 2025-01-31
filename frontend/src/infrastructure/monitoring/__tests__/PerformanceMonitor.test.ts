@@ -30,26 +30,28 @@ describe('PerformanceMonitor', () => {
           domComplete: 2000,
           loadEventEnd: 2500,
           domInteractive: 1500,
-          domContentLoadedEventEnd: 1800
-        }
+          domContentLoadedEventEnd: 1800,
+        },
       };
 
       global.performance = mockPerformance as unknown as Performance;
-      
+
       monitor.observePageLoadMetrics();
-      
+
       const metrics = monitor.getMetrics();
-      expect(metrics).toContainEqual(expect.objectContaining({
-        type: 'page_load',
-        data: expect.objectContaining({
-          domComplete: 1000,  // 2000 - 1000
-          loadEventEnd: 1500, // 2500 - 1000
-          domInteractive: 500,// 1500 - 1000
-          domContentLoadedEventEnd: 800 // 1800 - 1000
+      expect(metrics).toContainEqual(
+        expect.objectContaining({
+          type: 'page_load',
+          data: expect.objectContaining({
+            domComplete: 1000, // 2000 - 1000
+            loadEventEnd: 1500, // 2500 - 1000
+            domInteractive: 500, // 1500 - 1000
+            domContentLoadedEventEnd: 800, // 1800 - 1000
+          }),
         })
-      }));
+      );
     });
   });
 
   // ... rest of the test cases ...
-}); 
+});

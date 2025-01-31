@@ -3,9 +3,11 @@
  */
 
 // 深度可选类型
-export type DeepPartial<T> = T extends object ? {
-  [P in keyof T]?: DeepPartial<T[P]>;
-} : T;
+export type DeepPartial<T> = T extends object
+  ? {
+      [P in keyof T]?: DeepPartial<T[P]>;
+    }
+  : T;
 
 // 可空类型
 export type Nullable<T> = T | null;
@@ -40,5 +42,8 @@ export type Required<T> = {
 };
 
 // 联合转交叉类型
-export type UnionToIntersection<U> = 
-  (U extends unknown ? (k: U) => void : never) extends ((k: infer I) => void) ? I : never; 
+export type UnionToIntersection<U> = (U extends unknown ? (k: U) => void : never) extends (
+  k: infer I
+) => void
+  ? I
+  : never;

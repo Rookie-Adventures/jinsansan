@@ -1,7 +1,7 @@
 /**
  * 权限类型定义
  */
-export type Permission = 
+export type Permission =
   | 'read:users'
   | 'write:users'
   | 'delete:users'
@@ -22,16 +22,26 @@ export type Role = 'admin' | 'manager' | 'user' | 'guest';
  */
 const rolePermissions: Record<Role, Permission[]> = {
   admin: [
-    'read:users', 'write:users', 'delete:users', 'manage:users',
-    'read:posts', 'write:posts', 'delete:posts', 'manage:posts',
-    'admin:access'
+    'read:users',
+    'write:users',
+    'delete:users',
+    'manage:users',
+    'read:posts',
+    'write:posts',
+    'delete:posts',
+    'manage:posts',
+    'admin:access',
   ],
   manager: [
-    'read:users', 'write:users',
-    'read:posts', 'write:posts', 'delete:posts', 'manage:posts'
+    'read:users',
+    'write:users',
+    'read:posts',
+    'write:posts',
+    'delete:posts',
+    'manage:posts',
   ],
   user: ['read:posts', 'write:posts'],
-  guest: ['read:posts']
+  guest: ['read:posts'],
 };
 
 /**
@@ -117,4 +127,4 @@ export class PermissionManager {
 }
 
 // 导出单例实例
-export const permissionManager = PermissionManager.getInstance(); 
+export const permissionManager = PermissionManager.getInstance();

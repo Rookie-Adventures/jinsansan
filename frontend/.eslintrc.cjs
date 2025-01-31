@@ -19,9 +19,8 @@ module.exports = {
     'react',
     'react-hooks',
     'import',
-    'unused-imports',
-    'sonarjs',
-    'prettier'
+    'prettier',
+    'unused-imports'
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -29,28 +28,41 @@ module.exports = {
     sourceType: 'module',
     ecmaFeatures: {
       jsx: true
-    },
-    project: './tsconfig.json'
+    }
   },
   rules: {
-    'no-unused-vars': 'error',
-    '@typescript-eslint/no-unused-vars': 'error',
-    'unused-imports/no-unused-imports': 'error',
-    'unused-imports/no-unused-vars': [
-      'error',
-      { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' }
-    ],
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['error', {
+      'vars': 'all',
+      'args': 'after-used',
+      'ignoreRestSiblings': true,
+      'argsIgnorePattern': '^_',
+      'varsIgnorePattern': '^_'
+    }],
     'import/no-unresolved': 'error',
     'import/named': 'error',
     'import/default': 'error',
     'import/namespace': 'error',
-    'import/no-unused-modules': 'error',
-    // SonarJS rules
-    'sonarjs/cognitive-complexity': 'error',
-    'sonarjs/no-identical-expressions': 'error',
-    'sonarjs/no-duplicate-string': 'error',
-    'sonarjs/prefer-immediate-return': 'error',
-    'sonarjs/no-redundant-jump': 'error'
+    'no-unreachable': 'error',
+    'no-unreachable-loop': 'error',
+    'no-unused-private-class-members': 'error',
+    'no-unused-expressions': 'error',
+    '@typescript-eslint/no-unused-expressions': ['error'],
+    'import/no-unused-modules': ['error', {
+      'unusedExports': true,
+      'missingExports': true,
+      'ignoreExports': ['**/index.ts', '**/index.tsx', '**/*.d.ts']
+    }],
+    'unused-imports/no-unused-imports': 'error',
+    'unused-imports/no-unused-vars': [
+      'warn',
+      {
+        'vars': 'all',
+        'varsIgnorePattern': '^_',
+        'args': 'after-used',
+        'argsIgnorePattern': '^_'
+      }
+    ]
   },
   settings: {
     react: {
@@ -62,14 +74,21 @@ module.exports = {
       }
     }
   },
+  overrides: [
+    {
+      files: ['*.ts', '*.tsx'],
+      excludedFiles: ['*.d.ts']
+    }
+  ],
   ignorePatterns: [
     'dist/',
     'node_modules/',
     'coverage/',
     'build/',
-    '*.test.{ts,tsx}',
-    '*.spec.{ts,tsx}',
-    '*.d.ts',
-    'public/'
+    'public/',
+    '**/*.d.ts',
+    '*.config.js',
+    '*.config.ts',
+    '.eslintrc.cjs'
   ]
 } 

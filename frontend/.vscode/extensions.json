@@ -1,0 +1,15 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "formulahendry.auto-rename-tag",
+    "streetsidesoftware.code-spell-checker",
+    "christian-kohler.path-intellisense",
+    "eamodio.gitlens",
+    "ms-vscode.vscode-typescript-next",
+    "dsznajder.es7-react-js-snippets",
+    "wayou.vscode-todo-highlight",
+    "gruntfuggly.todo-tree",
+    "sonarsource.sonarlint-vscode"
+  ]
+} 

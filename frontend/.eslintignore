@@ -1,0 +1,22 @@
+# 构建输出
+dist/
+build/
+coverage/
+
+# 依赖
+node_modules/
+
+# 配置文件
+*.config.js
+*.config.ts
+vite.config.ts
+
+# 类型声明
+**/*.d.ts
+src/types/
+src/vite-env.d.ts
+
+# 其他
+.eslintrc.cjs
+.prettierrc
+*.json 

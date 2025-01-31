@@ -1,4 +1,13 @@
-import { Alert, Snackbar, Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography } from '@mui/material';
+import {
+  Alert,
+  Snackbar,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Typography,
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
 interface NotificationState {
@@ -56,11 +65,11 @@ export const ErrorNotification: React.FC = () => {
   }, []);
 
   const handleCloseNotification = () => {
-    setNotification((prev) => ({ ...prev, open: false }));
+    setNotification(prev => ({ ...prev, open: false }));
   };
 
   const handleCloseErrorModal = () => {
-    setErrorModal((prev) => ({ ...prev, open: false }));
+    setErrorModal(prev => ({ ...prev, open: false }));
   };
 
   return (
@@ -109,8 +118,8 @@ export const ErrorNotification: React.FC = () => {
                     {errorModal.error instanceof Error
                       ? errorModal.error.message
                       : typeof errorModal.error === 'string'
-                      ? errorModal.error
-                      : JSON.stringify(errorModal.error, null, 2)}
+                        ? errorModal.error
+                        : JSON.stringify(errorModal.error, null, 2)}
                   </Typography>
                 );
               })()}
@@ -121,11 +130,7 @@ export const ErrorNotification: React.FC = () => {
           <Button onClick={handleCloseErrorModal} color="primary">
             关闭
           </Button>
-          <Button
-            onClick={() => window.location.reload()}
-            color="primary"
-            variant="contained"
-          >
+          <Button onClick={() => window.location.reload()} color="primary" variant="contained">
             刷新页面
           </Button>
         </DialogActions>
@@ -134,4 +139,4 @@ export const ErrorNotification: React.FC = () => {
   );
 };
 
-export default ErrorNotification; 
+export default ErrorNotification;

@@ -17,14 +17,8 @@ export const FormField = <T extends FieldValues>({
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <TextField
-          {...field}
-          {...props}
-          error={!!error}
-          helperText={error?.message}
-          fullWidth
-        />
+        <TextField {...field} {...props} error={!!error} helperText={error?.message} fullWidth />
       )}
     />
   );
-}; 
+};

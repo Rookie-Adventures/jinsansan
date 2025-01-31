@@ -14,11 +14,11 @@ describe('HTTP 拦截器测试', () => {
       const config: InternalAxiosRequestConfig = {
         method: 'GET',
         url: '/test',
-        headers: new AxiosHeaders()
+        headers: new AxiosHeaders(),
       };
 
       const spy = vi.spyOn(RequestValidator, 'validateRequest');
-      
+
       try {
         RequestValidator.validateRequest(config);
         expect(spy).toHaveBeenCalledWith(config);
@@ -31,7 +31,7 @@ describe('HTTP 拦截器测试', () => {
       const invalidConfig: InternalAxiosRequestConfig = {
         method: 'INVALID',
         url: '',
-        headers: new AxiosHeaders()
+        headers: new AxiosHeaders(),
       };
 
       expect(() => {
@@ -40,10 +40,10 @@ describe('HTTP 拦截器测试', () => {
     });
 
     test('应该添加请求 ID', async () => {
-      const config = { 
-        url: '/test', 
+      const config = {
+        url: '/test',
         method: 'GET',
-        headers: {} // 确保 headers 存在
+        headers: {}, // 确保 headers 存在
       };
       const result = await requestManager.executeRequestInterceptor(config);
       expect(result.headers?.['X-Request-ID']).toBeDefined();
@@ -67,15 +67,15 @@ describe('HTTP 拦截器测试', () => {
       const error = {
         response: {
           status: 401,
-          data: { message: 'Token expired' }
-        }
+          data: { message: 'Token expired' },
+        },
       };
 
       await expect(requestManager.executeErrorInterceptor(error)).rejects.toMatchObject({
         type: HttpErrorType.AUTH,
         status: 401,
         message: 'Token expired',
-        recoverable: true
+        recoverable: true,
       });
     });
 
@@ -83,15 +83,15 @@ describe('HTTP 拦截器测试', () => {
       const error = {
         response: {
           status: 403,
-          data: { message: 'Permission denied' }
-        }
+          data: { message: 'Permission denied' },
+        },
       };
 
       await expect(requestManager.executeErrorInterceptor(error)).rejects.toMatchObject({
         type: HttpErrorType.AUTH,
         status: 403,
         message: 'Permission denied',
-        recoverable: false
+        recoverable: false,
       });
     });
   });
@@ -111,7 +111,7 @@ describe('HTTP 拦截器测试', () => {
       // 使用 Promise.all 确保并发执行
       const [slot1, slot2] = await Promise.all([
         requestManager.acquireRequestSlot(requestId1, {}),
-        requestManager.acquireRequestSlot(requestId2, {})
+        requestManager.acquireRequestSlot(requestId2, {}),
       ]);
 
       // 尝试获取第三个槽位
@@ -128,20 +128,20 @@ describe('HTTP 拦截器测试', () => {
 
     test('应该在请求完成后释放槽位', async () => {
       const requestId = 'req1';
-      
+
       // 确保开始时没有占用槽位
       (requestManager as any).currentRequests.clear();
-      
+
       // 获取槽位
       const acquired = await requestManager.acquireRequestSlot(requestId, {});
       expect(acquired).toBe(true);
-      
+
       // 释放槽位
       requestManager.releaseRequestSlot(requestId);
-      
+
       // 等待一个事件循环，确保释放操作完成
       await new Promise(resolve => setTimeout(resolve, 0));
-      
+
       // 验证槽位被释放后可以获取新的请求
       const canAcquireNew = await requestManager.acquireRequestSlot('req2', {});
       expect(canAcquireNew).toBe(true);
@@ -159,27 +159,27 @@ describe('HTTP 拦截器测试', () => {
     test('应该记录请求时间', async () => {
       const requestId = 'test1';
       requestManager.recordRequestStart(requestId);
-      
+
       await new Promise(resolve => setTimeout(resolve, 100));
-      
+
       requestManager.recordRequestEnd(requestId);
       requestManager.recordRequestComplete(true);
-      
+
       const stats = requestManager.getPerformanceStats();
       expect(stats.averageResponseTime).toBeGreaterThan(0);
       expect(stats.totalRequests).toBe(1);
     });
 
     test('应该计算成功率', () => {
-      requestManager.recordRequestComplete(true);  // 成功
-      requestManager.recordRequestComplete(true);  // 成功
+      requestManager.recordRequestComplete(true); // 成功
+      requestManager.recordRequestComplete(true); // 成功
       requestManager.recordRequestComplete(false); // 失败
 
       const stats = requestManager.getPerformanceStats();
-      expect(stats.successRate).toBeCloseTo(2/3);
+      expect(stats.successRate).toBeCloseTo(2 / 3);
       expect(stats.totalRequests).toBe(3);
       expect(stats.successfulRequests).toBe(2);
       expect(stats.failedRequests).toBe(1);
     });
   });
-}); 
+});

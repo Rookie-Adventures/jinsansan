@@ -56,11 +56,19 @@ export const http = {
     // 实际实现将在后续添加
     return {} as T;
   },
-  post: async <T>(_url: string, _data?: unknown, _config?: Omit<HttpRequestConfig, 'url' | 'method' | 'data'>) => {
+  post: async <T>(
+    _url: string,
+    _data?: unknown,
+    _config?: Omit<HttpRequestConfig, 'url' | 'method' | 'data'>
+  ) => {
     // 实际实现将在后续添加
     return {} as T;
   },
-  put: async <T>(_url: string, _data?: unknown, _config?: Omit<HttpRequestConfig, 'url' | 'method' | 'data'>) => {
+  put: async <T>(
+    _url: string,
+    _data?: unknown,
+    _config?: Omit<HttpRequestConfig, 'url' | 'method' | 'data'>
+  ) => {
     // 实际实现将在后续添加
     return {} as T;
   },
@@ -70,4 +78,4 @@ export const http = {
   },
 };
 
-export * from './types'; 
+export * from './types';

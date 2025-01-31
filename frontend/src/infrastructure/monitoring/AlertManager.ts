@@ -71,9 +71,11 @@ export class AlertManager {
       this.metricTimestamps.set(ruleKey, recentTimestamps);
 
       // Check if we have enough consecutive readings within the duration window
-      if (recentTimestamps.length >= 5) { // At least 5 readings
+      if (recentTimestamps.length >= 5) {
+        // At least 5 readings
         const timeDiff = recentTimestamps[recentTimestamps.length - 1] - recentTimestamps[0];
-        if (timeDiff >= 240000 && timeDiff <= 360000) { // Between 4-6 minutes to allow for some timing variance
+        if (timeDiff >= 240000 && timeDiff <= 360000) {
+          // Between 4-6 minutes to allow for some timing variance
           // Create or update alert
           const alertId = `${rule.id}-${recentTimestamps[0]}`;
           if (!this.activeAlerts.has(alertId)) {
@@ -84,7 +86,7 @@ export class AlertManager {
               timestamp: timestamp,
               message: `${rule.metric} exceeded threshold: ${value} ${rule.condition.operator} ${rule.condition.value}`,
               startTime: recentTimestamps[0],
-              status: 'active'
+              status: 'active',
             };
             this.activeAlerts.set(alertId, alert);
             this.notifyAlert('trigger', rule, value, timestamp);
@@ -101,7 +103,7 @@ export class AlertManager {
           const resolvedAlert: Alert = {
             ...alert,
             status: 'resolved',
-            endTime: timestamp
+            endTime: timestamp,
           };
           this.alertHistory.push(resolvedAlert);
           this.activeAlerts.delete(alertId);
@@ -114,7 +116,7 @@ export class AlertManager {
 
   private checkThreshold(rule: AlertRule, value: number): boolean {
     const { operator, value: conditionValue } = rule.condition;
-    
+
     switch (operator) {
       case '>':
         return value > conditionValue;
@@ -156,19 +158,27 @@ export class AlertManager {
     this.notificationHandlers = this.notificationHandlers.filter(h => h !== handler);
   }
 
-  private notifyAlert(type: 'trigger' | 'resolve', rule: AlertRule, value: number, timestamp: number): void {
+  private notifyAlert(
+    type: 'trigger' | 'resolve',
+    rule: AlertRule,
+    value: number,
+    timestamp: number
+  ): void {
     const notification: AlertNotification = {
       type,
       rule,
       value,
-      timestamp
+      timestamp,
     };
     if (this.notificationHandlers.length > 0) {
       this.notificationHandlers.forEach(handler => {
         try {
           handler(notification);
         } catch (error) {
-          errorLogger.log(error instanceof Error ? error : new Error('Error in notification handler'), { level: 'error' });
+          errorLogger.log(
+            error instanceof Error ? error : new Error('Error in notification handler'),
+            { level: 'error' }
+          );
         }
       });
     }
@@ -190,4 +200,4 @@ export class AlertManager {
     this.metricTimestamps.clear();
     this.notificationHandlers = [];
   }
-} 
+}

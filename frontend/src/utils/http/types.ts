@@ -1,5 +1,10 @@
 import type { AxiosRequestConfig } from 'axios';
-import { HttpErrorType, type ErrorMetadata, type ErrorSeverity, type ErrorTrace } from './error/types';
+import {
+  HttpErrorType,
+  type ErrorMetadata,
+  type ErrorSeverity,
+  type ErrorTrace,
+} from './error/types';
 
 /**
  * HTTP请求配置扩展
@@ -167,4 +172,4 @@ export class HttpError extends Error {
     super(message);
     this.name = 'HttpError';
   }
-} 
+}

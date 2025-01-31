@@ -30,13 +30,13 @@ describe('HTTP Request Monitoring', () => {
 
       const metrics = performanceMonitor.getMetrics();
       const apiCallMetric = metrics.find(m => m.type === 'api_call') as ApiCallMetric;
-      
+
       expect(apiCallMetric).toBeDefined();
       expect(apiCallMetric.data).toEqual({
         url,
         duration,
-        success
+        success,
       });
     });
   });
-}); 
+});

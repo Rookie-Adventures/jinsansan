@@ -10,7 +10,7 @@ export enum AuditLogType {
   ACCESS = 'access',
   DATA = 'data',
   SECURITY = 'security',
-  SYSTEM = 'system'
+  SYSTEM = 'system',
 }
 
 /**
@@ -20,7 +20,7 @@ export enum AuditLogLevel {
   INFO = 'info',
   WARN = 'warn',
   ERROR = 'error',
-  CRITICAL = 'critical'
+  CRITICAL = 'critical',
 }
 
 /**
@@ -39,7 +39,7 @@ interface AuditLog {
   userAgent?: string;
   status: 'success' | 'failure';
   errorMessage?: string;
-  [key: string]: unknown;  // 添加索引签名
+  [key: string]: unknown; // 添加索引签名
 }
 
 /**
@@ -54,7 +54,7 @@ interface AlertData {
   details: Record<string, unknown>;
   status: string;
   errorMessage?: string;
-  [key: string]: unknown;  // 添加索引签名
+  [key: string]: unknown; // 添加索引签名
 }
 
 /**
@@ -64,10 +64,9 @@ export class AuditLogManager {
   private static instance: AuditLogManager;
   private logs: AuditLog[] = [];
   private readonly maxLogsInMemory = 1000;
-  private readonly encryptionKey = 'your-encryption-key';  // 实际应用中应该从安全的配置中获取
-  private readonly apiBaseUrl = process.env.NODE_ENV === 'test' 
-    ? 'http://localhost:3000'
-    : window.location.origin;  // 在实际环境中使用当前域名
+  private readonly encryptionKey = 'your-encryption-key'; // 实际应用中应该从安全的配置中获取
+  private readonly apiBaseUrl =
+    process.env.NODE_ENV === 'test' ? 'http://localhost:3000' : window.location.origin; // 在实际环境中使用当前域名
 
   private constructor() {}
 
@@ -102,7 +101,7 @@ export class AuditLogManager {
       ip: this.getClientIP(),
       userAgent: navigator.userAgent,
       status,
-      errorMessage
+      errorMessage,
     };
 
     // 先添加到内存中
@@ -116,7 +115,7 @@ export class AuditLogManager {
     try {
       // 加密敏感信息
       const encryptedLog = this.encryptSensitiveData(log);
-      
+
       // 发送到服务器
       await this.sendToServer(encryptedLog);
     } catch (error) {
@@ -124,12 +123,12 @@ export class AuditLogManager {
       const failedLog: AuditLog = {
         ...log,
         status: 'failure',
-        errorMessage: getErrorMessage(error)
+        errorMessage: getErrorMessage(error),
       };
-      
+
       // 存储失败的日志
       this.storeFailedLog(failedLog);
-      
+
       // 重新抛出错误
       throw error;
     }
@@ -141,7 +140,7 @@ export class AuditLogManager {
   private addLog(log: AuditLog): void {
     this.logs.push(log);
     if (this.logs.length > this.maxLogsInMemory) {
-      this.logs.shift();  // 移除最旧的日志
+      this.logs.shift(); // 移除最旧的日志
     }
   }
 
@@ -155,10 +154,7 @@ export class AuditLogManager {
     sensitiveFields.forEach(field => {
       if (encryptedLog[field]) {
         const valueToEncrypt = String(encryptedLog[field]);
-        encryptedLog[field] = encryptionManager.encrypt(
-          valueToEncrypt,
-          this.encryptionKey
-        );
+        encryptedLog[field] = encryptionManager.encrypt(valueToEncrypt, this.encryptionKey);
       }
     });
 
@@ -189,17 +185,14 @@ export class AuditLogManager {
   private storeFailedLog(log: AuditLog): void {
     try {
       const storedLogs = localStorage.getItem('failedAuditLogs');
-      const failedLogs = storedLogs ? JSON.parse(storedLogs) as AuditLog[] : [];
+      const failedLogs = storedLogs ? (JSON.parse(storedLogs) as AuditLog[]) : [];
       failedLogs.push(log);
       localStorage.setItem('failedAuditLogs', JSON.stringify(failedLogs));
     } catch (error) {
-      errorLogger.log(
-        error instanceof Error ? error : new Error('Failed to store failed log'),
-        {
-          level: 'error',
-          context: { log }
-        }
-      );
+      errorLogger.log(error instanceof Error ? error : new Error('Failed to store failed log'), {
+        level: 'error',
+        context: { log },
+      });
     }
   }
 
@@ -216,24 +209,18 @@ export class AuditLogManager {
         timestamp: new Date(log.timestamp).toISOString(),
         details: log.details,
         status: log.status,
-        errorMessage: log.errorMessage
+        errorMessage: log.errorMessage,
       };
 
-      errorLogger.log(
-        new Error(`Security Alert: ${log.action} on ${log.resource}`),
-        {
-          level: 'error',
-          context: alertData
-        }
-      );
+      errorLogger.log(new Error(`Security Alert: ${log.action} on ${log.resource}`), {
+        level: 'error',
+        context: alertData,
+      });
     } catch (error) {
-      errorLogger.log(
-        error instanceof Error ? error : new Error('Failed to trigger alert'),
-        {
-          level: 'error',
-          context: { log }
-        }
-      );
+      errorLogger.log(error instanceof Error ? error : new Error('Failed to trigger alert'), {
+        level: 'error',
+        context: { log },
+      });
     }
   }
 
@@ -257,25 +244,23 @@ export class AuditLogManager {
    * 获取指定时间范围内的日志
    */
   getLogs(startTime: number, endTime: number): AuditLog[] {
-    return this.logs.filter(
-      log => log.timestamp >= startTime && log.timestamp <= endTime
-    ).sort((a, b) => b.timestamp - a.timestamp);
+    return this.logs
+      .filter(log => log.timestamp >= startTime && log.timestamp <= endTime)
+      .sort((a, b) => b.timestamp - a.timestamp);
   }
 
   /**
    * 获取指定类型的日志
    */
   getLogsByType(type: AuditLogType): AuditLog[] {
-    return this.logs.filter(log => log.type === type)
-      .sort((a, b) => b.timestamp - a.timestamp);
+    return this.logs.filter(log => log.type === type).sort((a, b) => b.timestamp - a.timestamp);
   }
 
   /**
    * 获取指定级别的日志
    */
   getLogsByLevel(level: AuditLogLevel): AuditLog[] {
-    return this.logs.filter(log => log.level === level)
-      .sort((a, b) => b.timestamp - a.timestamp);
+    return this.logs.filter(log => log.level === level).sort((a, b) => b.timestamp - a.timestamp);
   }
 
   /**
@@ -292,11 +277,11 @@ export class AuditLogManager {
       context: {
         ...context,
         timestamp: Date.now(),
-        source: 'AuditLogger'
-      }
+        source: 'AuditLogger',
+      },
     });
   }
 }
 
 // 导出单例实例
-export const auditLogManager = AuditLogManager.getInstance(); 
+export const auditLogManager = AuditLogManager.getInstance();

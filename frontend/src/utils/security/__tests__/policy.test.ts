@@ -20,7 +20,7 @@ describe('SecurityPolicyManager', () => {
         'font-src',
         'object-src',
         'media-src',
-        'frame-src'
+        'frame-src',
       ];
 
       requiredDirectives.forEach(directive => {
@@ -32,7 +32,7 @@ describe('SecurityPolicyManager', () => {
   describe('安全头测试', () => {
     test('应该返回所有必要的安全头', () => {
       const headers = securityPolicyManager.getSecurityHeaders();
-      
+
       expect(headers).toHaveProperty('Content-Security-Policy');
       expect(headers).toHaveProperty('X-Frame-Options');
       expect(headers).toHaveProperty('X-Content-Type-Options');
@@ -43,7 +43,7 @@ describe('SecurityPolicyManager', () => {
 
     test('安全头应该有正确的值', () => {
       const headers = securityPolicyManager.getSecurityHeaders();
-      
+
       expect(headers['X-Frame-Options']).toBe('DENY');
       expect(headers['X-Content-Type-Options']).toBe('nosniff');
       expect(headers['X-XSS-Protection']).toBe('1; mode=block');
@@ -66,8 +66,8 @@ describe('SecurityPolicyManager', () => {
           xContentTypeOptions: 'nosniff',
           xXssProtection: '1; mode=block',
           referrerPolicy: 'strict-origin-when-cross-origin',
-          strictTransportSecurity: 'max-age=31536000; includeSubDomains'
-        }
+          strictTransportSecurity: 'max-age=31536000; includeSubDomains',
+        },
       };
 
       securityPolicyManager.updatePolicy(newPolicy);
@@ -83,8 +83,8 @@ describe('SecurityPolicyManager', () => {
           xContentTypeOptions: 'nosniff',
           xXssProtection: '1; mode=block',
           referrerPolicy: 'strict-origin-when-cross-origin',
-          strictTransportSecurity: 'max-age=31536000; includeSubDomains'
-        }
+          strictTransportSecurity: 'max-age=31536000; includeSubDomains',
+        },
       };
 
       securityPolicyManager.updatePolicy(newPolicy);
@@ -100,4 +100,4 @@ describe('SecurityPolicyManager', () => {
     const instance2 = securityPolicyManager;
     expect(instance1).toBe(instance2);
   });
-}); 
+});

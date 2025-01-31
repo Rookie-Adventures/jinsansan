@@ -10,7 +10,7 @@ describe('HttpRequestManager Tests', () => {
     const manager1 = HttpRequestManager.getInstance();
     Object.defineProperty(manager1, 'maxConcurrentRequests', {
       writable: true,
-      value: 3
+      value: 3,
     });
     manager = manager1;
     manager.clearPendingRequests();
@@ -25,7 +25,7 @@ describe('HttpRequestManager Tests', () => {
       const requestId = '123';
       const config = {
         method: 'GET',
-        url: '/test'
+        url: '/test',
       };
 
       manager.addPendingRequest(requestId, config);
@@ -39,7 +39,7 @@ describe('HttpRequestManager Tests', () => {
       const requestId = '123';
       const config = {
         method: 'GET',
-        url: '/test'
+        url: '/test',
       };
 
       const cancelFn = vi.fn();
@@ -65,7 +65,7 @@ describe('HttpRequestManager Tests', () => {
       // 使用 Promise.all 确保并发执行
       const [slot1, slot2] = await Promise.all([
         manager.acquireRequestSlot(requestId1, {}),
-        manager.acquireRequestSlot(requestId2, {})
+        manager.acquireRequestSlot(requestId2, {}),
       ]);
 
       // 尝试获取第三个槽位，应该被拒绝
@@ -83,14 +83,14 @@ describe('HttpRequestManager Tests', () => {
     test('应该在请求完成后释放槽位', async () => {
       const requestId1 = 'req1';
       const requestId2 = 'req2';
-      
+
       // 获取第一个槽位
       const slot1 = await manager.acquireRequestSlot(requestId1, {});
       expect(slot1).toBe(true);
-      
+
       // 释放第一个槽位
       manager.releaseRequestSlot(requestId1);
-      
+
       // 尝试获取新的槽位
       const slot2 = await manager.acquireRequestSlot(requestId2, {});
       expect(slot2).toBe(true);
@@ -105,7 +105,7 @@ describe('HttpRequestManager Tests', () => {
       const error = {
         type: HttpErrorType.NETWORK,
         message: 'Network error',
-        status: 0
+        status: 0,
       };
 
       manager.recordError(error);
@@ -118,7 +118,7 @@ describe('HttpRequestManager Tests', () => {
       const error = {
         type: HttpErrorType.NETWORK,
         message: 'Network error',
-        status: 0
+        status: 0,
       };
 
       manager.recordError(error);
@@ -136,35 +136,35 @@ describe('HttpRequestManager Tests', () => {
 
     test('应该记录请求时间', async () => {
       const requestId = '123';
-      
+
       manager.recordRequestStart(requestId);
-      
+
       // 使用真实的定时器来等待
       vi.useRealTimers();
       await new Promise(resolve => setTimeout(resolve, 150));
-      
+
       manager.recordRequestEnd(requestId);
       manager.recordRequestComplete(true);
-      
+
       const stats = manager.getPerformanceStats();
       expect(stats.averageResponseTime).toBeGreaterThanOrEqual(100);
       expect(stats.totalRequests).toBe(1);
       expect(stats.successfulRequests).toBe(1);
-      
+
       // 恢复使用假定时器
       vi.useFakeTimers();
     });
 
     test('应该计算成功率', () => {
-      manager.recordRequestComplete(true);  // 成功
-      manager.recordRequestComplete(true);  // 成功
+      manager.recordRequestComplete(true); // 成功
+      manager.recordRequestComplete(true); // 成功
       manager.recordRequestComplete(false); // 失败
 
       const stats = manager.getPerformanceStats();
-      expect(stats.successRate).toBeCloseTo(2/3);
+      expect(stats.successRate).toBeCloseTo(2 / 3);
       expect(stats.totalRequests).toBe(3);
       expect(stats.successfulRequests).toBe(2);
       expect(stats.failedRequests).toBe(1);
     });
   });
-}); 
+});

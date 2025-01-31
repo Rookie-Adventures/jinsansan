@@ -24,8 +24,8 @@ interface SecurityPolicy {
   };
   // 速率限制
   rateLimit: {
-    windowMs: number;  // 时间窗口（毫秒）
-    maxRequests: number;  // 最大请求数
+    windowMs: number; // 时间窗口（毫秒）
+    maxRequests: number; // 最大请求数
   };
 }
 
@@ -58,8 +58,8 @@ export class SecurityPolicyManager {
         strictTransportSecurity: 'max-age=31536000; includeSubDomains',
       },
       rateLimit: {
-        windowMs: 15 * 60 * 1000,  // 15分钟
-        maxRequests: 100,  // 每个IP最多100个请求
+        windowMs: 15 * 60 * 1000, // 15分钟
+        maxRequests: 100, // 每个IP最多100个请求
       },
     };
     this.rateLimitMap = new Map();
@@ -155,4 +155,4 @@ export class SecurityPolicyManager {
 }
 
 // 导出单例实例
-export const securityPolicyManager = SecurityPolicyManager.getInstance(); 
+export const securityPolicyManager = SecurityPolicyManager.getInstance();

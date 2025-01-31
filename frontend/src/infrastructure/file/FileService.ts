@@ -22,7 +22,10 @@ export interface FileService {
 }
 
 export class FileServiceImpl implements FileService {
-  async uploadCSV(file: File, options?: UploadOptions): Promise<{ success: boolean; message: string }> {
+  async uploadCSV(
+    file: File,
+    options?: UploadOptions
+  ): Promise<{ success: boolean; message: string }> {
     const formData = new FormData();
     formData.append('file', file);
 
@@ -33,9 +36,7 @@ export class FileServiceImpl implements FileService {
       },
       onUploadProgress: (progressEvent: AxiosProgressEvent) => {
         if (progressEvent.total) {
-          const progress = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
+          const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
           options?.onProgress?.(progress);
         }
       },
@@ -47,7 +48,7 @@ export class FileServiceImpl implements FileService {
       params,
       responseType: 'blob',
     });
-    
+
     const blob = new Blob([response.data], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -55,14 +56,14 @@ export class FileServiceImpl implements FileService {
     link.download = params.fileName;
     link.click();
     window.URL.revokeObjectURL(url);
-    
+
     return blob;
   }
 
   async parseCSV<T extends Record<string, unknown>>(content: string): Promise<T[]> {
     const rows = content.split('\n');
     const headers = rows[0].split(',');
-    
+
     return rows.slice(1).map(row => {
       const values = row.split(',');
       return headers.reduce((obj: Partial<T>, header, index) => {
@@ -75,15 +76,13 @@ export class FileServiceImpl implements FileService {
 
   async generateCSV<T extends Record<string, unknown>>(data: T[]): Promise<string> {
     if (!data.length) return '';
-    
+
     const headers = Object.keys(data[0]);
     const csvRows = [
       headers.join(','),
-      ...data.map(row => 
-        headers.map(header => row[header as keyof T]).join(',')
-      )
+      ...data.map(row => headers.map(header => row[header as keyof T]).join(',')),
     ];
-    
+
     return csvRows.join('\n');
   }
-} 
+}
