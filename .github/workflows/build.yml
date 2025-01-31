@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - dev
   pull_request:
     types: [opened, synchronize, reopened]
 
@@ -27,13 +28,20 @@ jobs:
           cd frontend
           npm ci
           
-      - name: Run tests
+      - name: Run tests with coverage
         run: |
           cd frontend
-          npm test
+          npm run test:coverage
+          
+      - name: Debug directory structure
+        run: |
+          dir /s frontend
           
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   # Generate a token on Sonarcloud.io 
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   # Generate a token on Sonarcloud.io
+        with:
+          args: >
+            -Dsonar.verbose=true 
