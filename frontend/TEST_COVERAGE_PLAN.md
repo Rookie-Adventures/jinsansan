@@ -105,6 +105,87 @@
 - 函数覆盖率：95%
 - 行覆盖率：90%
 
+### 进度总览
+
+#### 已完成阶段
+1. ✅ 第一阶段：核心功能与工具测试
+   - 完成度：100%
+   - 覆盖率：45%（达标）
+
+2. ✅ 第二阶段：认证与错误处理
+   - 完成度：100%
+   - 覆盖率：60%（达标）
+
+3. ⏳ 第三阶段：基础设施与通用组件
+   - 完成度：95%
+   - 当前覆盖率：57.31%（进行中）
+
+### 下一阶段优先任务（基于覆盖率报告）
+
+#### 最高优先级 (覆盖率 0%)
+1. 路由和认证
+   - [x] router/guards/AuthGuard.tsx
+   - [x] router/guards/GuestGuard.tsx
+   - [ ] router/index.tsx
+
+2. 表单和反馈组件
+   - [x] components/feedback/LoadingBar.tsx
+   - [x] components/feedback/Toast.tsx
+   - [ ] components/form/FormField.tsx
+   - [ ] hooks/form/useForm.ts
+
+3. 基础设施
+   - [ ] infrastructure/search/SearchService.ts
+   - [ ] utils/http/config.ts
+   - [ ] utils/http/decorators.ts
+   - [ ] utils/http/interceptors.ts
+
+#### 高优先级 (覆盖率 < 50%)
+1. 页面组件
+   - [ ] HomePage.tsx (0%)
+   - [ ] components/business/sections/ (0%)
+     - FeatureSection.tsx
+     - HeroSection.tsx
+     - PricingSection.tsx
+
+2. 工具类
+   - [ ] utils/auth/validation.ts (14.08%)
+   - [ ] utils/router/analytics.ts (0%)
+   - [ ] utils/router/error-handler.ts (0%)
+
+#### 中优先级 (覆盖率 50-80%)
+1. 监控模块
+   - [ ] infrastructure/monitoring/PerformanceMonitor.ts (59.32%)
+   - [ ] infrastructure/monitoring/RouterAnalytics.ts (48.77%)
+
+2. 日志模块
+   - [ ] infrastructure/logging/Logger.ts (64.28%)
+
+3. 错误处理
+   - [ ] components/ErrorNotification (0%)
+   - [ ] contexts/ErrorContext.tsx (0%)
+
+#### 低优先级 (覆盖率 > 80%)
+1. 性能优化
+   - [ ] MetricsDisplay.tsx (93.81%)
+   - [ ] AlertManagement.tsx (100%)
+
+2. 安全模块
+   - [ ] utils/security/encryption.ts (87.59%)
+   - [ ] utils/security/policy.ts (91.77%)
+
+### 目标
+- 短期目标：将所有 0% 覆盖率的关键模块提升至少到 60%
+- 中期目标：将整体覆盖率提升至 80%
+- 长期目标：保持所有核心模块覆盖率在 90% 以上
+
+### 注意事项
+1. ✅ 已完成路由和认证相关组件的测试
+2. 关注错误处理和用户反馈相关组件的测试
+3. 完善监控和日志模块的测试用例
+4. 持续维护已有高覆盖率模块的测试质量
+
+
 ## 下一步计划
 
 1. 完成通用组件测试
@@ -143,32 +224,43 @@
 
 3. Hooks 模块
    - useAuth hook 测试完成，覆盖率 100%
-     - 基础状态测试
-     - 登录功能测试（成功/失败）
-     - 注册功能测试（成功/失败）
-     - 登出功能测试（成功/失败）
-     - 获取当前用户测试
-     - 错误处理测试
-     - Redux 集成测试
-     - 导航逻辑测试
    - useAuthForm hook 测试完成，覆盖率 100%
-     - 基础功能测试
-     - 表单操作测试
-     - 类型安全测试
    - useCache hook 测试完成，覆盖率 100%
-     - 获取缓存数据测试
-     - 设置缓存数据测试
-     - 生成缓存键测试
-     - 清除缓存测试
-     - 缓存持久性测试
+   - useHttp hook 测试完成，覆盖率 100%
+   - useRequest hook 测试完成，覆盖率 100%
+
+4. 页面组件
+   - ErrorPage 组件测试完成，覆盖率 100%
+   - LoginPage 组件测试完成，覆盖率 100%
+   - RegisterPage 组件测试完成，覆盖率 100%
+   - AlertManagement 组件测试完成，覆盖率 100%
+     - 基础渲染测试
+       - 添加规则按钮渲染
+       - 规则列表渲染
+       - 操作按钮渲染
+     - 规则操作测试
+       - 添加规则功能
+       - 删除规则功能
+       - 编辑规则功能
+       - 启用/禁用规则功能
+     - 数据加载测试
+       - 初始加载
+       - 操作后重新加载
 
 ### 下一步优先任务
 1. ✅ 提高 Navbar 组件测试覆盖率（目标：80%以上）
 2. ✅ 完成 useAuth hook 测试
-3. 开始其他 hooks 模块的测试:
-   - [ ] useHttp hook
-   - [x] useCache hook
-   - [ ] useRequest hook
+3. ✅ 完成 hooks 模块的测试
+4. ✅ 完成 services/auth 模块的测试
+5. ✅ 完成页面组件测试:
+   - [x] ErrorPage.tsx
+   - [x] LoginPage.tsx
+   - [x] RegisterPage.tsx
+6. ✅ 开始 pages/monitoring 模块的测试:
+   - [x] AlertManagement.tsx
+7. 开始 pages/monitoring 模块的其他组件测试:
+   - [x] MetricsDisplay.tsx
+
 
 ### 第四阶段：核心功能与服务 (2周)
 目标：将整体覆盖率提升至 80%
@@ -177,146 +269,49 @@
 - [x] hooks/auth (当前: 100% -> 目标: 90%)
   - [x] useAuth.ts
   - [x] useAuthForm.ts
-- [ ] hooks/http (当前: 45.07% -> 目标: 90%)
+- [x] hooks/http (当前: 100% -> 目标: 90%)
   - [x] useCache.ts
-  - [ ] useHttp.ts
-- [ ] hooks/data (当前: 35.75% -> 目标: 90%)
-  - [ ] useRequest.ts
+  - [x] useHttp.ts
+- [x] hooks/data (当前: 100% -> 目标: 90%)
+  - [x] useRequest.ts
 
 #### 优先级 7：服务模块
-- [ ] services/auth 模块 (当前: 35.52% -> 目标: 90%)
-  - [ ] authService.ts
-  - [ ] tokenService.ts
+- [x] services/auth 模块 (当前: 100% -> 目标: 90%)
+  - [x] authService.ts
+    - 基础功能测试
+      - 登录/注册/登出
+      - 用户信息获取
+      - Token 管理
+    - 错误处理测试
+      - 请求失败处理
+      - Token 缺失处理
+  - [x] tokenService.ts
+    - Token 管理测试
+      - 存储/获取/删除
+      - Token 解析
+      - 过期检查
+    - 错误处理测试
+      - 无效 Token 处理
 
 ### 第五阶段：页面与反馈组件 (2周)
 目标：将整体覆盖率提升至 90%
 
 #### 优先级 8：页面组件
 - [ ] pages 模块 (当前: 0% -> 目标: 90%)
-  - [ ] ErrorPage.tsx
+  - [x] ErrorPage.tsx
   - [ ] HomePage.tsx
-  - [ ] pages/auth/
-    - [ ] LoginPage.tsx
-    - [ ] RegisterPage.tsx
+  - [x] pages/auth/
+    - [x] LoginPage.tsx
+    - [x] RegisterPage.tsx
   - [ ] pages/monitoring/
-    - [ ] AlertManagement.tsx
+    - [x] AlertManagement.tsx
+    - [x] MetricsDisplay.tsx
 
-#### 优先级 9：反馈组件
-- [ ] components/feedback 模块 (当前: 0% -> 目标: 90%)
-  - [ ] LoadingBar.tsx
-  - [ ] Toast.tsx
-  - [ ] TopProgressBar.tsx
-- [ ] components/form 模块 (当前: 0% -> 目标: 90%)
-  - [ ] FormField.tsx
 
-### 进度总览
 
-#### 已完成阶段
-1. ✅ 第一阶段：核心功能与工具测试
-   - 完成度：100%
-   - 覆盖率：45%（达标）
 
-2. ✅ 第二阶段：认证与错误处理
-   - 完成度：100%
-   - 覆盖率：60%（达标）
-
-3. ⏳ 第三阶段：基础设施与通用组件
-   - 完成度：95%
-   - 当前覆盖率：51.85%（进行中）
-   - 待完成：Navbar.tsx（当前：72.58%）
-
-#### 待开始阶段
-4. 📅 第四阶段：核心功能与服务
-   - 计划开始时间：2024-02-XX
-   - 预计用时：2周
-   - 主要任务：完成所有hooks和服务模块的测试
-
-5. 📅 第五阶段：页面与反馈组件
-   - 计划开始时间：2024-03-XX
-   - 预计用时：2周
-   - 主要任务：完成所有页面组件和反馈组件的测试
 
 ## 测试规范
 
 ### 测试文件组织
 ```
-src/
-  __tests__/                # 全局测试
-  components/
-    __tests__/             # 组件测试
-    common/
-      __tests__/          # 通用组件测试
-    layout/
-      __tests__/         # 布局组件测试
-  hooks/
-    __tests__/            # Hooks测试
-  store/
-    __tests__/           # Redux相关测试
-  utils/
-    __tests__/           # 工具函数测试
-```
-
-### 测试命名规范
-```
-# 组件测试
-ComponentName.test.tsx
-
-# Hook测试
-useHookName.test.tsx
-
-# 工具函数测试
-utilName.test.ts
-
-# 类测试
-ClassName.test.ts
-```
-
-### 测试结构规范
-```typescript
-describe('模块名', () => {
-  describe('功能/场景', () => {
-    it('应该达到的预期结果', () => {
-      // 测试代码
-    });
-  });
-});
-```
-
-### 测试分类
-1. 单元测试
-   - 组件渲染测试
-   - Hook 行为测试
-   - 工具函数测试
-   - 类方法测试
-
-2. 集成测试
-   - 组件交互测试
-   - 状态管理测试
-   - API 调用测试
-   - 路由导航测试
-
-3. 端到端测试
-   - 用户流程测试
-   - 关键功能测试
-   - 性能测试
-
-### 测试优先级
-1. 核心业务逻辑
-2. 用户交互功能
-3. 错误处理
-4. 边界条件
-5. 性能相关
-
-### 测试覆盖率要求
-- 语句覆盖率 (Statement Coverage): ≥ 80%
-- 分支覆盖率 (Branch Coverage): ≥ 80%
-- 函数覆盖率 (Function Coverage): ≥ 80%
-- 行覆盖率 (Line Coverage): ≥ 80%
-
-## 注意事项
-1. 优先补充已有较好覆盖率的模块，确保其稳定性
-2. 每个新增测试用例都要确保与现有用例独立
-3. 合理使用 mock 和 stub，特别是在测试HTTP请求时
-4. 每完成一个模块的测试就运行全套测试确保无回归
-5. 及时更新测试文档和注释
-6. 对于覆盖率为0%的模块，先编写基本的快照测试和渲染测试 

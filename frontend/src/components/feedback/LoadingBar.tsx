@@ -17,10 +17,12 @@ const StyledLinearProgress = styled(LinearProgress)(({ theme }) => ({
 
 export const LoadingBar = () => {
   const [progress, setProgress] = useState(0);
+  const [visible, setVisible] = useState(false);
   const isLoading = useAppSelector((state) => state.app.loading);
 
   useEffect(() => {
     if (isLoading) {
+      setVisible(true);
       const timer = setInterval(() => {
         setProgress((oldProgress) => {
           const diff = Math.random() * 10;
@@ -31,9 +33,10 @@ export const LoadingBar = () => {
       return () => {
         clearInterval(timer);
       };
-    } else {
+    } else if (visible) {
       setProgress(100);
       const timer = setTimeout(() => {
+        setVisible(false);
         setProgress(0);
       }, 300);
 
@@ -41,9 +44,9 @@ export const LoadingBar = () => {
         clearTimeout(timer);
       };
     }
-  }, [isLoading]);
+  }, [isLoading, visible]);
 
-  if (!isLoading && progress === 0) return null;
+  if (!visible) return null;
 
   return <StyledLinearProgress variant="determinate" value={progress} />;
 }; 
