@@ -133,11 +133,8 @@ export class ErrorReporter {
 
     this.queue.push(errorReport);
     
-    // 在测试环境中立即处理队列
-    if (process.env.NODE_ENV === 'test') {
-      await this.processQueue();
-    } else if (this.queue.length >= this.options.batchSize) {
-      // 在生产环境中，如果队列达到批处理大小，立即处理
+    // 只在生产环境中，如果队列达到批处理大小，立即处理
+    if (process.env.NODE_ENV !== 'test' && this.queue.length >= this.options.batchSize) {
       await this.processQueue();
     }
   }

@@ -108,38 +108,49 @@ describe('ErrorReporter', () => {
     });
 
     test('应该批量处理错误', async () => {
-      const error1 = new HttpError({
-        type: HttpErrorType.NETWORK,
-        message: '错误1'
+      // 重置实例以确保干净的测试环境
+      ErrorReporter.resetInstance();
+      
+      // 创建新实例并设置较大的 batchSize
+      reporter = ErrorReporter.getInstance({
+        endpoint: '/test-api/error-report',
+        sampleRate: 1.0,
+        batchSize: 3,
+        flushInterval: 0
       });
 
-      const error2 = new HttpError({
-        type: HttpErrorType.TIMEOUT,
-        message: '错误2'
-      });
+      // 重置 fetch mock
+      fetchMock.mockReset();
+      fetchMock.mockResolvedValue(new Response(null, { status: 200 }));
 
-      const error3 = new HttpError({
-        type: HttpErrorType.SERVER,
-        message: '错误3'
-      });
+      const errors = [
+        new HttpError({
+          type: HttpErrorType.NETWORK,
+          message: '错误1'
+        }),
+        new HttpError({
+          type: HttpErrorType.TIMEOUT,
+          message: '错误2'
+        }),
+        new HttpError({
+          type: HttpErrorType.SERVER,
+          message: '错误3'
+        })
+      ];
 
-      // 顺序报告错误，避免并发处理
-      await reporter.report(error1);
-      await reporter.report(error2);
-      await reporter.report(error3);
+      // 使用 Promise.all 同时报告所有错误
+      await Promise.all(errors.map(error => reporter.report(error)));
       
       // 手动刷新一次
       await reporter.flushNow();
 
-      expect(fetchMock).toHaveBeenCalledTimes(2);
+      expect(fetchMock).toHaveBeenCalledTimes(1);
       const firstBatch = JSON.parse(fetchMock.mock.calls[0][1].body);
-      const secondBatch = JSON.parse(fetchMock.mock.calls[1][1].body);
       
-      expect(firstBatch).toHaveLength(2);
-      expect(secondBatch).toHaveLength(1);
+      expect(firstBatch).toHaveLength(3);
       expect(firstBatch[0].error.message).toBe('错误1');
       expect(firstBatch[1].error.message).toBe('错误2');
-      expect(secondBatch[0].error.message).toBe('错误3');
+      expect(firstBatch[2].error.message).toBe('错误3');
     });
   });
 

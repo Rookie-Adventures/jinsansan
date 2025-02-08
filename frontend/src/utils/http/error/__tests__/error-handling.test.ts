@@ -128,6 +128,7 @@ describe('Error Handling Integration', () => {
       });
 
       await reporter.report(error);
+      await reporter.flushNow();
 
       expect(fetchMock).toHaveBeenCalledWith(
         '/api/error-report',

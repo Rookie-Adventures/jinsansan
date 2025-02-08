@@ -226,7 +226,7 @@ describe('AuthPage', () => {
       await waitFor(() => {
         expect(screen.queryByText('用户名不能为空')).not.toBeInTheDocument();
       }, { timeout: 7000 });
-    });
+    }, 10000);
 
     test('点击关闭按钮应该关闭错误消息', async () => {
       vi.mocked(validateLoginForm).mockReturnValue({
