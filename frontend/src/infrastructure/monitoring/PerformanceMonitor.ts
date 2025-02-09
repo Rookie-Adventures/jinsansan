@@ -28,15 +28,26 @@ export class PerformanceMonitor {
   }
 
   public recordMetric(name: string, value: number, tags: Record<string, any> = {}): void {
-    this.metrics.push({
-      type: 'custom',
-      timestamp: Date.now(),
-      data: {
-        name,
-        value,
-        tags
+    try {
+      if (!name) {
+        throw new Error('Invalid metric name');
       }
-    });
+      if (typeof value !== 'number' || isNaN(value)) {
+        throw new Error('Invalid metric value');
+      }
+
+      this.metrics.push({
+        type: 'custom',
+        timestamp: Date.now(),
+        data: {
+          name,
+          value,
+          tags
+        }
+      });
+    } catch (error) {
+      errorLogger.log(error instanceof Error ? error : new Error('Invalid metric data'));
+    }
   }
 
   public observePageLoadMetrics(): void {

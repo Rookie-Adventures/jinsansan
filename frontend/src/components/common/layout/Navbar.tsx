@@ -16,7 +16,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '@/hooks/auth';
-import { HttpError } from '@/utils/http/error/error';
+import { HttpError } from '@/utils/http/error/types';
 import { errorLogger } from '@/utils/http/error/logger';
 import { HttpErrorType } from '@/utils/http/error/types';
 import { ThemeToggle } from '../ThemeToggle';

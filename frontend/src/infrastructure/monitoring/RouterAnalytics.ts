@@ -204,6 +204,8 @@ export class RouterAnalytics {
     this.activePreloads.set(path, (this.activePreloads.get(path) || 0) + 1);
     this.preloadStats.totalRequests++;
 
+    // 立即解析 Promise，因为这只是跟踪开始
+    resolvePromise();
     return promise;
   }
 
@@ -253,8 +255,7 @@ export class RouterAnalytics {
       this.activePreloads.set(path, activeCount - 1);
     }
 
-    // 调用resolve函数来完成Promise
-    request.resolve();
+    // 清理请求记录
     this.preloadRequests.delete(path);
   }
 
@@ -272,6 +273,7 @@ export class RouterAnalytics {
     const successRate = total > 0 ? this.preloadStats.successCount / total : 0;
     this.performanceMonitor.trackCustomMetric('route_preload_success_rate', successRate);
 
+    // 清理请求记录
     this.preloadRequests.delete(path);
   }
 

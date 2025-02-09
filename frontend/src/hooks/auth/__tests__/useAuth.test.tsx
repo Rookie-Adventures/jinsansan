@@ -6,9 +6,8 @@ import { MemoryRouter } from 'react-router-dom';
 import { useAuth } from '../useAuth';
 import authReducer, { login, register, logout, clearAuth } from '@/store/slices/authSlice';
 import { HttpErrorFactory } from '@/utils/http/error/factory';
-import { HttpErrorType } from '@/utils/http/error/types';
+import { HttpError, HttpErrorType } from '@/utils/http/error/types';
 import { errorLogger } from '@/utils/errorLogger';
-import { HttpError } from '@/utils/http/error/error';
 import type { LoginFormData, RegisterFormData } from '@/types/auth';
 import type { LoginResponse } from '@/services/auth';
 
@@ -57,9 +56,8 @@ vi.mock('@/utils/http/error/factory', () => ({
       return new HttpError({
         type: HttpErrorType.AUTH,
         message: err.message || 'Unknown error',
-        recoverable: false,
-        retryCount: 0,
-        severity: 'error'
+        status: 401,
+        data: err
       });
     })
   }
@@ -210,9 +208,8 @@ describe('useAuth', () => {
       const mockError = new HttpError({
         type: HttpErrorType.AUTH,
         message: 'Login failed',
-        recoverable: false,
-        retryCount: 0,
-        severity: 'error'
+        status: 401,
+        data: { reason: 'Invalid credentials' }
       });
       
       vi.mocked(login).mockImplementation((data: LoginFormData): AsyncThunkAction<LoginResponse, LoginFormData, {}> => {
@@ -272,9 +269,8 @@ describe('useAuth', () => {
       const mockError = new HttpError({
         type: HttpErrorType.AUTH,
         message: 'Registration failed',
-        recoverable: false,
-        retryCount: 0,
-        severity: 'error'
+        status: 401,
+        data: { reason: 'Username taken' }
       });
       
       vi.mocked(register).mockImplementation((data: RegisterFormData): AsyncThunkAction<LoginResponse, RegisterFormData, {}> => {
@@ -383,9 +379,8 @@ describe('useAuth', () => {
       const mockError = new HttpError({
         type: HttpErrorType.AUTH,
         message: 'Failed to get user',
-        recoverable: false,
-        retryCount: 0,
-        severity: 'error'
+        status: 401,
+        data: { reason: 'Token expired' }
       });
       
       vi.mocked(HttpErrorFactory.create).mockReturnValue(mockError);

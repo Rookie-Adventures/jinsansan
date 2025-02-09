@@ -76,7 +76,7 @@ describe('HomePage', () => {
     const container = screen.getByTestId('mock-hero-section').parentElement;
     expect(container).toHaveStyle({
       background: 'linear-gradient(135deg, #24243e 0%, #302b63 50%, #0f0c29 100%)',
-      color: 'white',
+      color: 'rgb(255, 255, 255)',
       position: 'relative'
     });
   });

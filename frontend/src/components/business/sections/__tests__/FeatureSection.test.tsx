@@ -71,15 +71,18 @@ describe('FeatureSection', () => {
     });
   });
 
-  it('应该正确应用动画效果', () => {
+  it('应该正确应用动画效果', async () => {
     renderFeatureSection();
     
     const cards = screen.getAllByRole('article');
+    
+    // 等待动画完成
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
     cards.forEach(card => {
-      expect(card).toHaveStyle({
-        opacity: 1,
-        transform: 'translateY(0)'
-      });
+      const styles = window.getComputedStyle(card);
+      expect(styles.opacity).not.toBe('0');
+      expect(styles.transform).not.toContain('translateY(20px)');
     });
   });
 

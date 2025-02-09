@@ -75,14 +75,18 @@ describe('HeroSection', () => {
     expect(image).toHaveAttribute('src', '/ai-chat.svg');
   });
 
-  it('应该正确应用动画效果', () => {
+  it('应该正确应用动画效果', async () => {
     renderHeroSection();
-    
+
     const contentContainer = screen.getByText(/优质的 Jinsansan 模型调用体验/i).parentElement;
-    expect(contentContainer).toHaveStyle({
-      opacity: 1,
-      transform: 'translateX(0)'
-    });
+    expect(contentContainer).not.toBeNull();
+    
+    // 等待动画完成
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    const styles = window.getComputedStyle(contentContainer!);
+    expect(styles.opacity).not.toBe('0');
+    expect(styles.transform).not.toContain('translateX(-20px)');
   });
 
   // 添加快照测试

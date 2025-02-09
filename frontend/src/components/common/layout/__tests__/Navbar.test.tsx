@@ -51,21 +51,28 @@ vi.mock('@/utils/http/error/logger', () => ({
   }
 }));
 
-// Mock HttpError
-vi.mock('@/utils/http/error/error', () => ({
-  HttpError: class HttpError {
-    constructor({ type, message, data }: any) {
-      return { type, message, data };
+// Mock HttpError and HttpErrorType
+vi.mock('@/utils/http/error/types', async () => {
+  const HttpErrorType = {
+    AUTH: 'AUTH_ERROR',
+    NETWORK_ERROR: 'NETWORK_ERROR',
+    HTTP_ERROR: 'HTTP_ERROR',
+    REACT_ERROR: 'REACT_ERROR',
+    UNKNOWN_ERROR: 'UNKNOWN_ERROR'
+  };
+
+  class HttpError extends Error {
+    constructor(params: any) {
+      super(params.message);
+      Object.assign(this, params);
     }
   }
-}));
 
-// Mock HttpErrorType
-vi.mock('@/utils/http/error/types', () => ({
-  HttpErrorType: {
-    AUTH: 'AUTH_ERROR'
-  }
-}));
+  return {
+    HttpError,
+    HttpErrorType
+  };
+});
 
 describe('Navbar', () => {
   const createTestStore = () => {
@@ -239,7 +246,7 @@ describe('Navbar', () => {
       await vi.waitFor(() => {
         expect(mockLogout).toHaveBeenCalled();
         expect(mockNavigate).toHaveBeenCalledWith('/');
-        expect(mockErrorLog).toHaveBeenCalledWith(expect.objectContaining({
+        expect(errorLogger.log).toHaveBeenCalledWith(expect.objectContaining({
           type: 'AUTH_ERROR',
           message: '退出登录失败',
           data: mockError

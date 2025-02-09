@@ -29,7 +29,8 @@ const ErrorWrapper: React.FC = () => {
   );
 };
 
-export const router = createBrowserRouter([
+// 导出路由配置数组
+export const routes = [
   {
     path: '/login',
     element: (
@@ -86,4 +87,6 @@ export const router = createBrowserRouter([
       // 其他需要认证的路由配置将在这里添加
     ],
   },
-]); 
+];
+
+export const router = createBrowserRouter(routes); 

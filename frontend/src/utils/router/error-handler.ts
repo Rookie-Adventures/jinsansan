@@ -1,5 +1,4 @@
 import { errorLogger } from '@/utils/error/errorLogger';
-import { ErrorLogger } from '@/utils/http/error/logger';
 import type { HttpError } from '@/utils/http/error/types';
 import { HttpErrorType } from '@/utils/http/error/types';
 
@@ -10,10 +9,10 @@ interface RouterError extends Error {
 
 class RouterErrorHandler {
   private static instance: RouterErrorHandler;
-  private logger: ErrorLogger;
+  private logger: typeof errorLogger;
 
   private constructor() {
-    this.logger = ErrorLogger.getInstance();
+    this.logger = errorLogger;
   }
 
   static getInstance(): RouterErrorHandler {
@@ -27,16 +26,13 @@ class RouterErrorHandler {
     const routerError = this.normalizeError(error);
     
     // 记录错误
-    this.logger.log({
-      type: HttpErrorType.REACT_ERROR,
-      message: routerError.message,
-      stack: routerError.stack,
-      data: {
-        ...info,
-        status: routerError.status,
-        errorData: routerError.data
+    this.logger.log(routerError, {
+      level: 'error',
+      context: {
+        path: info?.path,
+        status: routerError.status
       }
-    } as HttpError);
+    });
 
     // 根据错误类型处理
     if (routerError.status === 404) {

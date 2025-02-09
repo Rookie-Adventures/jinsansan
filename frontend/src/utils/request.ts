@@ -8,8 +8,8 @@ import axiosRetry from 'axios-retry';
 
 import { store } from '@/store';
 import type { ApiResponse } from '@/types/api';
-import { HttpErrorFactory } from '@/utils/http/error/factory';
-import { HttpErrorType } from '@/utils/http/error/types';
+import { createHttpError } from '@/utils/http/error/factory';
+import { HttpError } from '@/utils/http/error/types';
 
 // 定义请求配置接口
 export interface RequestConfig extends InternalAxiosRequestConfig {
@@ -35,8 +35,8 @@ axiosRetry(request, {
     return retryCount * 500;
   },
   retryCondition: (error: AxiosError) => {
-    const httpError = HttpErrorFactory.create(error);
-    return httpError.type === HttpErrorType.NETWORK;
+    const httpError = createHttpError(error);
+    return httpError.code === 'NETWORK_ERROR';
   },
 });
 
@@ -61,22 +61,21 @@ request.interceptors.response.use(
     
     // 处理业务错误
     if (data.code !== 200) {
-      const error = HttpErrorFactory.create({
+      const error = createHttpError({
         message: data.message || '请求失败',
-        type: HttpErrorType.BUSINESS,
-        code: data.code,
+        code: data.code.toString(),
         data: data
-      });
+      } as any);
       return Promise.reject(error);
     }
     
     return response;
   },
   async (error: AxiosError) => {
-    const httpError = HttpErrorFactory.create(error);
+    const httpError = createHttpError(error);
 
     // 处理 401 错误
-    if (httpError.type === HttpErrorType.AUTH) {
+    if (httpError.status === 401) {
       localStorage.removeItem('token');
       window.location.href = '/login';
       return Promise.reject(new Error('登录已过期，请重新登录'));

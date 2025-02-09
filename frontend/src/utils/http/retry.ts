@@ -17,8 +17,27 @@ const defaultConfig: RetryConfig = {
       const axiosError = error as AxiosError;
       return !axiosError.response || axiosError.code === 'ECONNABORTED';
     }
-    return false;
+    return true;  // 默认重试所有非 Axios 错误
   },
+};
+
+const delay = (ms: number): Promise<void> => {
+  let timeoutId: NodeJS.Timeout;
+  
+  return new Promise<void>((resolve, reject) => {
+    try {
+      timeoutId = setTimeout(() => {
+        resolve();
+      }, ms);
+    } catch (error) {
+      clearTimeout(timeoutId);
+      reject(error);
+    }
+  }).finally(() => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+  });
 };
 
 export async function retry<T>(
@@ -26,35 +45,38 @@ export async function retry<T>(
   config?: Partial<RetryConfig>
 ): Promise<T> {
   const retryConfig = { ...defaultConfig, ...config };
-  let lastError: unknown;
-  let attempts = 0;
+  
+  if (!retryConfig.enable) {
+    return fn();
+  }
 
-  while (attempts < retryConfig.times) {
+  let lastError: unknown;
+  let attempt = 0;
+
+  while (attempt < retryConfig.times) {
     try {
       return await fn();
     } catch (error) {
       lastError = error;
-      attempts++;
       
-      // 检查是否应该重试
-      if (!retryConfig.enable || (retryConfig.shouldRetry && !retryConfig.shouldRetry(error))) {
+      const shouldRetry = !retryConfig.shouldRetry || retryConfig.shouldRetry(error);
+      const isLastAttempt = attempt === retryConfig.times - 1;
+
+      if (!shouldRetry || isLastAttempt) {
         throw error;
       }
 
-      // 如果已达到最大重试次数，抛出最后一个错误
-      if (attempts >= retryConfig.times) {
-        throw lastError;
-      }
-
-      // 通知重试回调
       if (retryConfig.onRetry) {
-        retryConfig.onRetry(error, attempts);
+        try {
+          retryConfig.onRetry(error, attempt + 1);
+        } catch (callbackError) {
+          console.error('Error in retry callback:', callbackError);
+        }
       }
 
-      // 等待后重试
-      await new Promise(resolve => 
-        setTimeout(resolve, retryConfig.delay * Math.pow(2, attempts - 1))
-      );
+      const waitTime = retryConfig.delay * Math.pow(2, attempt);
+      await delay(waitTime);
+      attempt++;
     }
   }
 
