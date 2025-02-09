@@ -73,7 +73,9 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-perfectionist": "^4.8.0",
     "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-promise": "^7.2.1",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-sonarjs": "^3.0.1",
@@ -87,6 +89,7 @@
     "ts-prune": "^0.10.3",
     "typescript": "^5.5.3",
     "vite": "^5.0.7",
+    "vite-plugin-checker": "^0.8.0",
     "vitest": "^1.6.1"
   },
   "msw": {

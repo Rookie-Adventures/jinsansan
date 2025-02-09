@@ -1,7 +1,6 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { createTheme, defaultTheme, darkTheme } from './index';
 import type { CustomTheme, CustomThemeOptions } from './types';
-import type { Theme } from '@mui/material/styles';
 
 describe('Theme', () => {
   describe('createTheme', () => {

@@ -1,6 +1,6 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { getContrastText, adjustColor, createTransitions, generatePalette } from './utils';
-import type { ColorPalette, ExtendedColorPalette } from './utils';
+import type { ExtendedColorPalette } from './utils';
 
 describe('Theme Utils', () => {
   describe('getContrastText', () => {

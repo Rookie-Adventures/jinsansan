@@ -1,6 +1,5 @@
-import { createTheme as createMuiTheme, Theme } from '@mui/material/styles';
-import type { PaletteMode, ThemeOptions } from '@mui/material';
-import { getContrastText, adjustColor } from './utils';
+import { createTheme as createMuiTheme } from '@mui/material/styles';
+import type { ThemeOptions } from '@mui/material/styles';
 
 export const defaultTheme: ThemeOptions = {
   palette: {
@@ -163,7 +162,7 @@ export const darkTheme: ThemeOptions = {
   }
 };
 
-export const createTheme = (isDark: boolean, customOptions: Partial<Theme> = {}): Theme => {
+export const createTheme = (isDark: boolean, customOptions: Partial<ThemeOptions> = {}): ThemeOptions => {
   const baseTheme = isDark ? darkTheme : defaultTheme;
   return createMuiTheme(baseTheme, customOptions);
 };

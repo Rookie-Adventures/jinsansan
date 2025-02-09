@@ -1,132 +1,108 @@
 /* eslint-disable no-console */
-import { Middleware } from 'redux';
-import type { AnyAction } from 'redux';
-import type { RootState } from '../types';
-
-interface LoggerOptions {
-  collapsed?: boolean;
-  timestamp?: boolean;
-  duration?: boolean;
-  actionSize?: boolean;
-  diff?: boolean;
-}
+import { Middleware, Action } from 'redux';
 
 const EXECUTION_TIME_THRESHOLD = 100; // ms
 const ACTION_SIZE_THRESHOLD = 1000; // bytes
 
-// 安全的日志记录函数
-const safeLog = (method: keyof Console, ...args: any[]): void => {
-  if (process.env.NODE_ENV === 'production') return;
-  try {
-    (console[method] as any)?.(...args);
-  } catch (error) {
-    // 忽略日志错误
-  }
-};
-
-// 检查性能
-const checkPerformance = (
-  executionTime: number,
-  actionSize: number,
-  actionType: string
-): void => {
-  if (executionTime > EXECUTION_TIME_THRESHOLD) {
-    safeLog(
-      'warn',
-      `Warning: Action execution time exceeded ${EXECUTION_TIME_THRESHOLD}ms`
-    );
-  }
-
-  if (actionSize > ACTION_SIZE_THRESHOLD) {
-    safeLog(
-      'warn',
-      'Warning: Large action detected'
-    );
-  }
-};
-
-// 序列化状态
-const serializeState = (state: any): any => {
-  try {
-    JSON.stringify(state);
-    return state;
-  } catch (error) {
-    safeLog('error', 'Error logging state:', error);
-    return '[Unserializable State]';
-  }
-};
-
-export const loggerMiddleware: Middleware<{}, RootState> = 
+export const loggerMiddleware: Middleware = 
   store => 
   next => 
-  async (action: unknown) => {
+  action => {
     if (process.env.NODE_ENV === 'production') {
       return next(action);
     }
 
     const startTime = performance.now();
     let result;
-    const typedAction = action as AnyAction;
-
+    
     try {
-      // 开始日志组
-      safeLog('group', 'Action:', typedAction.type);
-
-      // 记录前一个状态
+      // Check action size
       try {
-        const prevState = store.getState();
-        safeLog('log', 'Prev State:', serializeState(prevState));
+        const size = new TextEncoder().encode(JSON.stringify(action)).length;
+        if (size > ACTION_SIZE_THRESHOLD) {
+          console.warn('Warning: Large action detected');
+        }
       } catch (error) {
-        safeLog('error', 'Error getting state:', error);
+        console.error('Error checking action size:', error);
       }
 
-      // 记录 action
-      safeLog('log', 'Action:', typedAction);
-
-      // 执行 action
-      result = next(action);
-
-      // 处理异步 action
-      if (result instanceof Promise) {
-        result = await result;
-        // 记录解析后的异步 action
-        safeLog('log', 'Action:', {
-          ...typedAction,
-          payload: await typedAction.payload
-        });
-      }
-
-      // 记录下一个状态
       try {
+        console.group('Action:', (action as Action).type);
+      } catch {
+        // Ignore group errors
+      }
+      
+      let prevState;
+      try {
+        prevState = store.getState();
+        console.log('Prev State:', prevState);
+      } catch (error) {
+        console.error('Error getting state:', error);
+      }
+
+      console.log('Action:', action);
+      
+      try {
+        result = next(action);
+        
+        // 如果是 Promise，等待它完成
+        if (result instanceof Promise) {
+          return result.then(
+            (value) => {
+              try {
+                const nextState = store.getState();
+                console.log('Next State:', nextState);
+                console.groupEnd();
+                
+                const endTime = performance.now();
+                const duration = endTime - startTime;
+                
+                if (duration > EXECUTION_TIME_THRESHOLD) {
+                  console.warn(`Warning: Action execution time exceeded ${EXECUTION_TIME_THRESHOLD}ms`);
+                }
+                
+                console.info(`Action execution time: ${duration.toFixed(2)}ms`);
+                
+                return value;
+              } catch (error) {
+                console.error('Error logging state:', error);
+                return value;
+              }
+            },
+            (error) => {
+              console.error('Action Error:', error);
+              throw error;
+            }
+          );
+        }
+        
+        // 同步结果
         const nextState = store.getState();
-        safeLog('log', 'Next State:', serializeState(nextState));
+        console.log('Next State:', nextState);
+        
       } catch (error) {
-        safeLog('error', 'Error getting state:', error);
+        console.error('Action Error:', error);
+        throw error;
       }
-
-      // 性能监控
+      
+      try {
+        console.groupEnd();
+      } catch {
+        // Ignore group errors
+      }
+      
       const endTime = performance.now();
-      const executionTime = endTime - startTime;
-      const actionSize = new TextEncoder().encode(JSON.stringify(typedAction)).length;
-
-      checkPerformance(executionTime, actionSize, typedAction.type);
-
-      // 记录执行时间
-      safeLog(
-        'info',
-        `Action execution time: ${executionTime.toFixed(2)}ms`
-      );
-
-    } catch (error) {
-      if (error instanceof Error) {
-        safeLog('error', 'Action Error:', error);
-      } else {
-        safeLog('error', 'Action Error:', new Error(String(error)));
+      const duration = endTime - startTime;
+      
+      if (duration > EXECUTION_TIME_THRESHOLD) {
+        console.warn(`Warning: Action execution time exceeded ${EXECUTION_TIME_THRESHOLD}ms`);
       }
+      
+      console.info(`Action execution time: ${duration.toFixed(2)}ms`);
+      
+      return result;
+    } catch (error) {
+      console.error('Action Error:', error);
       throw error;
-    } finally {
-      safeLog('groupEnd');
     }
-
-    return result;
   }; 
