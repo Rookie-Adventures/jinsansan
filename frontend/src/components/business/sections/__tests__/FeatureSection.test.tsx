@@ -3,9 +3,9 @@ import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material/styles';
 import { useMediaQuery } from '@mui/material';
 import { vi } from 'vitest';
+import { createTheme } from '@/theme';
 
 import FeatureSection from '../FeatureSection';
-import { theme } from '@/theme';
 
 // Mock useMediaQuery
 vi.mock('@mui/material', async () => {
@@ -19,7 +19,7 @@ vi.mock('@mui/material', async () => {
 describe('FeatureSection', () => {
   const renderFeatureSection = () => {
     return render(
-      <ThemeProvider theme={theme(false)}>
+      <ThemeProvider theme={createTheme(false)}>
         <FeatureSection />
       </ThemeProvider>
     );

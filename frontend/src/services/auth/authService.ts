@@ -38,8 +38,11 @@ export class AuthService {
    * 用户登出
    */
   public async logout(): Promise<void> {
-    await this.http.post(`${this.baseUrl}/logout`, {});
-    tokenService.removeToken();
+    try {
+      await this.http.post('/api/auth/logout', {});
+    } finally {
+      tokenService.removeToken();
+    }
   }
 
   /**

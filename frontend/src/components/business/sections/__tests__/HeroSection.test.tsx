@@ -5,7 +5,7 @@ import { useMediaQuery } from '@mui/material';
 import { vi } from 'vitest';
 
 import HeroSection from '../HeroSection';
-import { theme } from '@/theme';
+import { createTheme } from '@/theme';
 
 // Mock useMediaQuery
 vi.mock('@mui/material', async () => {
@@ -19,7 +19,7 @@ vi.mock('@mui/material', async () => {
 describe('HeroSection', () => {
   const renderHeroSection = () => {
     return render(
-      <ThemeProvider theme={theme(false)}>
+      <ThemeProvider theme={createTheme(false)}>
         <HeroSection />
       </ThemeProvider>
     );

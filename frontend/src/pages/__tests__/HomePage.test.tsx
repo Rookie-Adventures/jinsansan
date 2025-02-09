@@ -7,7 +7,7 @@ import { vi } from 'vitest';
 import mediaQuery from 'css-mediaquery';
 
 import HomePage from '../HomePage';
-import { theme } from '@/theme';
+import { createTheme } from '@/theme';
 import { store } from '@/store';
 
 // Mock 子组件
@@ -46,7 +46,7 @@ describe('HomePage', () => {
     return render(
       <Provider store={store}>
         <BrowserRouter>
-          <ThemeProvider theme={theme(isDarkMode)}>
+          <ThemeProvider theme={createTheme(isDarkMode)}>
             <HomePage />
           </ThemeProvider>
         </BrowserRouter>

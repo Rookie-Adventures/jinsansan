@@ -7,7 +7,7 @@ import { ErrorNotification } from '@/components/ErrorNotification';
 import { router } from '@/router';
 import type { RootState } from '@/store';
 import { clearError } from '@/store/slices/error';
-import { theme } from '@/theme';
+import { createTheme } from '@/theme';
 
 export const App = () => {
   const error = useSelector((state: RootState) => state.error.current);
@@ -19,7 +19,7 @@ export const App = () => {
   };
 
   return (
-    <ThemeProvider theme={theme(isDarkMode)}>
+    <ThemeProvider theme={createTheme(isDarkMode)}>
       <CssBaseline />
       <ErrorBoundary>
         <RouterProvider router={router} />

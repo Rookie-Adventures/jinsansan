@@ -7,19 +7,16 @@ import { App } from './App';
 import Loading from './components/common/Loading';
 import { persistor, store } from './store';
 
-// 开发环境下启动 MSW
-async function startMockServiceWorker() {
+// 初始化应用
+async function initializeApp() {
+  // 只在开发环境启动 MSW
   if (process.env.NODE_ENV === 'development') {
     const { worker } = await import('./mocks/browser');
     await worker.start({
       onUnhandledRequest: 'bypass',
     });
   }
-  return Promise.resolve();
-}
 
-// 初始化应用
-startMockServiceWorker().then(() => {
   const rootElement = document.getElementById('root');
   
   if (!rootElement) {
@@ -35,4 +32,7 @@ startMockServiceWorker().then(() => {
       </Provider>
     </React.StrictMode>
   );
-});
+}
+
+// 启动应用
+initializeApp().catch(console.error);

@@ -6,7 +6,7 @@ import { vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 
 import PricingSection from '../PricingSection';
-import { theme } from '@/theme';
+import { createTheme } from '@/theme';
 
 // Mock useMediaQuery
 vi.mock('@mui/material', async () => {
@@ -33,7 +33,7 @@ describe('PricingSection', () => {
 
   const renderPricingSection = () => {
     return render(
-      <ThemeProvider theme={theme(false)}>
+      <ThemeProvider theme={createTheme(false)}>
         <PricingSection />
       </ThemeProvider>
     );

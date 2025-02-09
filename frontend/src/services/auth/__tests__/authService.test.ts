@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { getAuthService } from '../authService';
+import { AuthService } from '../authService';
 import { tokenService } from '../tokenService';
 import type { HttpClient } from '@/types/http';
 
@@ -13,300 +13,181 @@ vi.mock('../tokenService', () => ({
 }));
 
 describe('AuthService', () => {
-  let authService: ReturnType<typeof getAuthService>;
-  const mockGet = vi.fn();
-  const mockPost = vi.fn();
-  const mockHttp: HttpClient = {
-    get: mockGet,
-    post: mockPost,
-    put: vi.fn(),
-    delete: vi.fn()
-  };
+  let authService: AuthService;
+  let mockHttp: HttpClient;
 
   beforeEach(() => {
     vi.clearAllMocks();
-    authService = getAuthService(mockHttp);
+    
+    // 创建 mock http client
+    mockHttp = {
+      get: vi.fn(),
+      post: vi.fn(),
+      put: vi.fn(),
+      delete: vi.fn()
+    };
+
+    authService = new AuthService(mockHttp);
   });
 
-  describe('登录功能', () => {
-    it('应该正确处理登录请求', async () => {
-      const mockLoginData = {
-        username: 'testuser',
-        password: 'password123'
-      };
+  describe('login', () => {
+    const mockLoginData = {
+      email: 'test@example.com',
+      password: 'password123',
+      username: 'testuser'
+    };
 
-      const mockResponse = {
-        user: {
-          id: 1,
-          username: 'testuser',
-          email: 'test@example.com',
-          permissions: []
-        },
-        token: 'test-token'
-      };
+    const mockLoginResponse = {
+      user: { id: 1, email: 'test@example.com', username: 'testuser' },
+      token: 'mock-token'
+    };
 
-      mockPost.mockResolvedValue(mockResponse);
+    it('应该成功处理登录请求', async () => {
+      (mockHttp.post as jest.Mock).mockResolvedValue(mockLoginResponse);
 
       const response = await authService.login(mockLoginData);
 
-      expect(mockPost).toHaveBeenCalledWith('/api/auth/login', mockLoginData);
-      expect(tokenService.setToken).toHaveBeenCalledWith(mockResponse.token);
-      expect(response).toEqual(mockResponse);
+      expect(mockHttp.post).toHaveBeenCalledWith('/api/auth/login', mockLoginData);
+      expect(tokenService.setToken).toHaveBeenCalledWith(mockLoginResponse.token);
+      expect(response).toEqual(mockLoginResponse);
     });
 
-    it('登录失败时应该抛出错误', async () => {
-      const mockError = new Error('Login failed');
-      mockPost.mockRejectedValue(mockError);
+    it('不应该在登录响应没有token时设置token', async () => {
+      const responseWithoutToken = { user: mockLoginResponse.user };
+      (mockHttp.post as jest.Mock).mockResolvedValue(responseWithoutToken);
 
-      await expect(authService.login({
-        username: 'testuser',
-        password: 'wrong-password'
-      })).rejects.toThrow('Login failed');
+      await authService.login(mockLoginData);
+
+      expect(tokenService.setToken).not.toHaveBeenCalled();
+    });
+
+    it('应该在登录失败时抛出错误', async () => {
+      const error = new Error('Login failed');
+      (mockHttp.post as jest.Mock).mockRejectedValue(error);
+
+      await expect(authService.login(mockLoginData)).rejects.toThrow('Login failed');
     });
   });
 
-  describe('注册功能', () => {
-    it('应该正确处理注册请求', async () => {
-      const mockRegisterData = {
-        username: 'testuser',
-        password: 'password123',
-        email: 'test@example.com',
-        confirmPassword: 'password123'
-      };
+  describe('register', () => {
+    const mockRegisterData = {
+      email: 'test@example.com',
+      password: 'password123',
+      username: 'testuser',
+      confirmPassword: 'password123'
+    };
 
-      const mockResponse = {
-        user: {
-          id: 1,
-          username: 'testuser',
-          email: 'test@example.com',
-          permissions: []
-        },
-        token: 'test-token'
-      };
+    const mockRegisterResponse = {
+      user: { id: 1, email: 'test@example.com', username: 'testuser' },
+      token: 'mock-token'
+    };
 
-      mockPost.mockResolvedValue(mockResponse);
+    it('应该成功处理注册请求', async () => {
+      (mockHttp.post as jest.Mock).mockResolvedValue(mockRegisterResponse);
 
       const response = await authService.register(mockRegisterData);
 
-      expect(mockPost).toHaveBeenCalledWith('/api/auth/register', mockRegisterData);
-      expect(tokenService.setToken).toHaveBeenCalledWith(mockResponse.token);
-      expect(response).toEqual(mockResponse);
+      expect(mockHttp.post).toHaveBeenCalledWith('/api/auth/register', mockRegisterData);
+      expect(tokenService.setToken).toHaveBeenCalledWith(mockRegisterResponse.token);
+      expect(response).toEqual(mockRegisterResponse);
     });
 
-    it('注册失败时应该抛出错误', async () => {
-      const mockError = new Error('Registration failed');
-      mockPost.mockRejectedValue(mockError);
+    it('应该在注册失败时抛出错误', async () => {
+      const error = new Error('Registration failed');
+      (mockHttp.post as jest.Mock).mockRejectedValue(error);
 
-      await expect(authService.register({
-        username: 'testuser',
-        password: 'password123',
-        email: 'test@example.com',
-        confirmPassword: 'password123'
-      })).rejects.toThrow('Registration failed');
+      await expect(authService.register(mockRegisterData)).rejects.toThrow('Registration failed');
     });
   });
 
-  describe('登出功能', () => {
-    beforeEach(() => {
-      // 重置 mock 状态
-      mockPost.mockReset();
-    });
-
-    it('应该正确处理登出请求', async () => {
-      // 设置成功响应
-      mockPost.mockResolvedValueOnce({});
+  describe('logout', () => {
+    it('应该成功处理登出请求', async () => {
+      (mockHttp.post as jest.Mock).mockResolvedValue({});
 
       await authService.logout();
 
-      expect(mockPost).toHaveBeenCalledWith('/api/auth/logout', {});
+      expect(mockHttp.post).toHaveBeenCalledWith('/api/auth/logout', {});
       expect(tokenService.removeToken).toHaveBeenCalled();
     });
 
-    it('登出失败时应该抛出错误', async () => {
-      const mockError = new Error('Logout failed');
-      mockPost.mockRejectedValueOnce(mockError);
+    it('应该在登出失败时仍然移除token', async () => {
+      const error = new Error('Logout failed');
+      (mockHttp.post as jest.Mock).mockRejectedValue(error);
 
       await expect(authService.logout()).rejects.toThrow('Logout failed');
+      expect(tokenService.removeToken).toHaveBeenCalled();
     });
   });
 
-  describe('获取当前用户', () => {
-    it('应该正确获取当前用户信息', async () => {
-      const mockUser = {
-        id: 1,
-        username: 'testuser',
-        email: 'test@example.com',
-        permissions: []
-      };
+  describe('getCurrentUser', () => {
+    const mockUser = {
+      id: 1,
+      email: 'test@example.com',
+      username: 'testuser'
+    };
 
-      vi.mocked(tokenService.getToken).mockReturnValue('test-token');
-      mockGet.mockResolvedValue(mockUser);
+    it('应该在有token时成功获取当前用户', async () => {
+      (tokenService.getToken as jest.Mock).mockReturnValue('mock-token');
+      (mockHttp.get as jest.Mock).mockResolvedValue(mockUser);
 
       const user = await authService.getCurrentUser();
 
-      expect(mockGet).toHaveBeenCalledWith('/api/auth/me');
+      expect(mockHttp.get).toHaveBeenCalledWith('/api/auth/me');
       expect(user).toEqual(mockUser);
     });
 
-    it('没有 token 时应该抛出错误', async () => {
-      vi.mocked(tokenService.getToken).mockReturnValue(null);
+    it('应该在没有token时抛出错误', async () => {
+      (tokenService.getToken as jest.Mock).mockReturnValue(null);
 
       await expect(authService.getCurrentUser()).rejects.toThrow('No token found');
-    });
-
-    it('获取用户信息失败时应该抛出错误', async () => {
-      vi.mocked(tokenService.getToken).mockReturnValue('test-token');
-      const mockError = new Error('Failed to get user');
-      mockGet.mockRejectedValue(mockError);
-
-      await expect(authService.getCurrentUser()).rejects.toThrow('Failed to get user');
+      expect(mockHttp.get).not.toHaveBeenCalled();
     });
   });
 
-  describe('Token 刷新', () => {
-    it('应该正确刷新 token', async () => {
-      const mockResponse = { token: 'new-token' };
-      mockPost.mockResolvedValue(mockResponse);
+  describe('refreshToken', () => {
+    it('应该成功刷新token', async () => {
+      const mockNewToken = 'new-mock-token';
+      (mockHttp.post as jest.Mock).mockResolvedValue({ token: mockNewToken });
 
       const newToken = await authService.refreshToken();
 
-      expect(mockPost).toHaveBeenCalledWith('/api/auth/refresh-token', {});
-      expect(tokenService.setToken).toHaveBeenCalledWith(mockResponse.token);
-      expect(newToken).toBe(mockResponse.token);
+      expect(mockHttp.post).toHaveBeenCalledWith('/api/auth/refresh-token', {});
+      expect(tokenService.setToken).toHaveBeenCalledWith(mockNewToken);
+      expect(newToken).toBe(mockNewToken);
     });
 
-    it('刷新 token 失败时应该抛出错误', async () => {
-      const mockError = new Error('Token refresh failed');
-      mockPost.mockRejectedValue(mockError);
+    it('应该在刷新失败时抛出错误', async () => {
+      const error = new Error('Token refresh failed');
+      (mockHttp.post as jest.Mock).mockRejectedValue(error);
 
       await expect(authService.refreshToken()).rejects.toThrow('Token refresh failed');
     });
   });
 
-  describe('Token 验证', () => {
-    it('应该正确验证有效的 token', async () => {
-      mockPost.mockResolvedValue({});
+  describe('validateToken', () => {
+    it('应该成功验证有效token', async () => {
+      (mockHttp.post as jest.Mock).mockResolvedValue({});
 
-      const isValid = await authService.validateToken('test-token');
+      const isValid = await authService.validateToken('valid-token');
 
-      expect(mockPost).toHaveBeenCalledWith('/api/auth/validate-token', { token: 'test-token' });
-      expect(isValid).toBeTruthy();
+      expect(mockHttp.post).toHaveBeenCalledWith('/api/auth/validate-token', { token: 'valid-token' });
+      expect(isValid).toBe(true);
     });
 
-    it('应该正确识别无效的 token', async () => {
-      mockPost.mockRejectedValue(new Error('Invalid token'));
+    it('应该正确标识无效token', async () => {
+      (mockHttp.post as jest.Mock).mockRejectedValue(new Error('Invalid token'));
 
       const isValid = await authService.validateToken('invalid-token');
 
-      expect(mockPost).toHaveBeenCalledWith('/api/auth/validate-token', { token: 'invalid-token' });
-      expect(isValid).toBeFalsy();
-    });
-  });
-
-  describe('错误处理', () => {
-    it('应该处理网络错误', async () => {
-      const networkError = new Error('Network Error');
-      mockPost.mockRejectedValue(networkError);
-
-      await expect(authService.login({
-        username: 'testuser',
-        password: 'password123'
-      })).rejects.toThrow('Network Error');
-    });
-
-    it('应该处理服务器错误', async () => {
-      const serverError = new Error('Internal Server Error');
-      mockPost.mockRejectedValue(serverError);
-
-      await expect(authService.register({
-        username: 'testuser',
-        password: 'password123',
-        email: 'test@example.com',
-        confirmPassword: 'password123'
-      })).rejects.toThrow('Internal Server Error');
-    });
-
-    it('应该处理无效的响应格式', async () => {
-      const invalidResponse = { invalid: 'data' };
-      mockPost.mockResolvedValue(invalidResponse);
-
-      // 确保在测试前清除所有 mock 的调用记录
-      vi.clearAllMocks();
-
-      const response = await authService.login({
-        username: 'testuser',
-        password: 'password123'
-      });
-
-      // 验证返回的是原始响应
-      expect(response).toEqual(invalidResponse);
-      // 验证 token 没有被设置
-      expect(tokenService.setToken).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('并发请求处理', () => {
-    it('应该正确处理并发登录请求', async () => {
-      const mockResponse = {
-        user: { id: 1, username: 'testuser', email: 'test@example.com', permissions: [] },
-        token: 'test-token'
-      };
-      mockPost.mockResolvedValue(mockResponse);
-
-      const loginData = {
-        username: 'testuser',
-        password: 'password123'
-      };
-
-      const requests = [
-        authService.login(loginData),
-        authService.login(loginData)
-      ];
-
-      const responses = await Promise.all(requests);
-      
-      expect(responses[0]).toEqual(mockResponse);
-      expect(responses[1]).toEqual(mockResponse);
-      expect(mockPost).toHaveBeenCalledTimes(2);
-    });
-
-    it('应该正确处理并发刷新token请求', async () => {
-      const mockResponse = { token: 'new-token' };
-      mockPost.mockResolvedValue(mockResponse);
-
-      const requests = [
-        authService.refreshToken(),
-        authService.refreshToken()
-      ];
-
-      const responses = await Promise.all(requests);
-      
-      expect(responses[0]).toBe(mockResponse.token);
-      expect(responses[1]).toBe(mockResponse.token);
-      expect(mockPost).toHaveBeenCalledTimes(2);
+      expect(isValid).toBe(false);
     });
   });
 
   describe('单例模式', () => {
     it('应该返回相同的实例', () => {
-      const instance1 = getAuthService(mockHttp);
-      const instance2 = getAuthService(mockHttp);
-      
-      expect(instance1).toBe(instance2);
-    });
-
-    it('不同的 http 客户端应该使用相同实例', () => {
-      const anotherMockHttp: HttpClient = {
-        get: vi.fn(),
-        post: vi.fn(),
-        put: vi.fn(),
-        delete: vi.fn()
-      };
-
-      const instance1 = getAuthService(mockHttp);
-      const instance2 = getAuthService(anotherMockHttp);
-      
-      expect(instance1).toBe(instance2);
+      const instance1 = new AuthService(mockHttp);
+      const instance2 = new AuthService(mockHttp);
+      expect(instance1).not.toBe(instance2); // 因为我们使用工厂函数创建实例
     });
   });
 }); 

@@ -3,18 +3,18 @@
 exports[`FeatureSection > 应该匹配桌面端快照 1`] = `
 <div>
   <div
-    class="MuiContainer-root MuiContainer-maxWidthLg css-1oqqzyl-MuiContainer-root"
+    class="MuiContainer-root MuiContainer-maxWidthLg css-cnms5y-MuiContainer-root"
   >
     <div
-      class="MuiBox-root css-1yiu3w3"
+      class="MuiBox-root css-1hggc9u"
     >
       <h2
-        class="MuiTypography-root MuiTypography-h3 MuiTypography-alignCenter MuiTypography-gutterBottom css-ldayfj-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-h3 MuiTypography-alignCenter MuiTypography-gutterBottom css-k6sdrn-MuiTypography-root"
       >
         核心功能
       </h2>
       <h6
-        class="MuiTypography-root MuiTypography-h6 MuiTypography-alignCenter css-1umfaz1-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-h6 MuiTypography-alignCenter css-10jcxlz-MuiTypography-root"
       >
         我们提供全面的 AI 模型服务，让您的应用更智能
       </h6>
@@ -22,13 +22,13 @@ exports[`FeatureSection > 应该匹配桌面端快照 1`] = `
         class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3 css-8wqzlf-MuiGrid-root"
       >
         <div
-          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 MuiGrid-grid-md-3 css-5zdmm3-MuiGrid-root"
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 MuiGrid-grid-md-3 css-5jkmth-MuiGrid-root"
         >
           <div
             style="width: 100%; opacity: 0; transform: translateY(20px);"
           >
             <div
-              class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-1ldqzh5-MuiPaper-root-MuiCard-root"
+              class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-33s6de-MuiPaper-root-MuiCard-root"
               role="article"
             >
               <div
@@ -50,12 +50,12 @@ exports[`FeatureSection > 应该匹配桌面端快照 1`] = `
                 </svg>
               </div>
               <h3
-                class="MuiTypography-root MuiTypography-h5 MuiTypography-gutterBottom css-1mqf5it-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-h5 MuiTypography-gutterBottom css-1ndmryj-MuiTypography-root"
               >
                 流式响应
               </h3>
               <p
-                class="MuiTypography-root MuiTypography-body1 css-1veq3qq-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-body1 css-1leyb9s-MuiTypography-root"
               >
                 支持流式输出，实时响应，提供更自然的对话体验
               </p>
@@ -63,13 +63,13 @@ exports[`FeatureSection > 应该匹配桌面端快照 1`] = `
           </div>
         </div>
         <div
-          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 MuiGrid-grid-md-3 css-5zdmm3-MuiGrid-root"
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 MuiGrid-grid-md-3 css-5jkmth-MuiGrid-root"
         >
           <div
             style="width: 100%; opacity: 0; transform: translateY(20px);"
           >
             <div
-              class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-1ldqzh5-MuiPaper-root-MuiCard-root"
+              class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-33s6de-MuiPaper-root-MuiCard-root"
               role="article"
             >
               <div
@@ -91,12 +91,12 @@ exports[`FeatureSection > 应该匹配桌面端快照 1`] = `
                 </svg>
               </div>
               <h3
-                class="MuiTypography-root MuiTypography-h5 MuiTypography-gutterBottom css-1mqf5it-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-h5 MuiTypography-gutterBottom css-1ndmryj-MuiTypography-root"
               >
                 智能上下文
               </h3>
               <p
-                class="MuiTypography-root MuiTypography-body1 css-1veq3qq-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-body1 css-1leyb9s-MuiTypography-root"
               >
                 智能管理对话上下文，实现连贯的多轮对话
               </p>
@@ -104,13 +104,13 @@ exports[`FeatureSection > 应该匹配桌面端快照 1`] = `
           </div>
         </div>
         <div
-          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 MuiGrid-grid-md-3 css-5zdmm3-MuiGrid-root"
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 MuiGrid-grid-md-3 css-5jkmth-MuiGrid-root"
         >
           <div
             style="width: 100%; opacity: 0; transform: translateY(20px);"
           >
             <div
-              class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-1ldqzh5-MuiPaper-root-MuiCard-root"
+              class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-33s6de-MuiPaper-root-MuiCard-root"
               role="article"
             >
               <div
@@ -129,12 +129,12 @@ exports[`FeatureSection > 应该匹配桌面端快照 1`] = `
                 </svg>
               </div>
               <h3
-                class="MuiTypography-root MuiTypography-h5 MuiTypography-gutterBottom css-1mqf5it-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-h5 MuiTypography-gutterBottom css-1ndmryj-MuiTypography-root"
               >
                 多模型支持
               </h3>
               <p
-                class="MuiTypography-root MuiTypography-body1 css-1veq3qq-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-body1 css-1leyb9s-MuiTypography-root"
               >
                 支持多种主流模型，满足不同场景需求
               </p>
@@ -142,13 +142,13 @@ exports[`FeatureSection > 应该匹配桌面端快照 1`] = `
           </div>
         </div>
         <div
-          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 MuiGrid-grid-md-3 css-5zdmm3-MuiGrid-root"
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 MuiGrid-grid-md-3 css-5jkmth-MuiGrid-root"
         >
           <div
             style="width: 100%; opacity: 0; transform: translateY(20px);"
           >
             <div
-              class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-1ldqzh5-MuiPaper-root-MuiCard-root"
+              class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-33s6de-MuiPaper-root-MuiCard-root"
               role="article"
             >
               <div
@@ -167,12 +167,12 @@ exports[`FeatureSection > 应该匹配桌面端快照 1`] = `
                 </svg>
               </div>
               <h3
-                class="MuiTypography-root MuiTypography-h5 MuiTypography-gutterBottom css-1mqf5it-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-h5 MuiTypography-gutterBottom css-1ndmryj-MuiTypography-root"
               >
                 安全可控
               </h3>
               <p
-                class="MuiTypography-root MuiTypography-body1 css-1veq3qq-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-body1 css-1leyb9s-MuiTypography-root"
               >
                 数据安全有保障，支持自定义敏感词过滤
               </p>
@@ -188,18 +188,18 @@ exports[`FeatureSection > 应该匹配桌面端快照 1`] = `
 exports[`FeatureSection > 应该匹配移动端快照 1`] = `
 <div>
   <div
-    class="MuiContainer-root MuiContainer-maxWidthLg css-1oqqzyl-MuiContainer-root"
+    class="MuiContainer-root MuiContainer-maxWidthLg css-cnms5y-MuiContainer-root"
   >
     <div
-      class="MuiBox-root css-1yiu3w3"
+      class="MuiBox-root css-1hggc9u"
     >
       <h2
-        class="MuiTypography-root MuiTypography-h3 MuiTypography-alignCenter MuiTypography-gutterBottom css-ldayfj-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-h3 MuiTypography-alignCenter MuiTypography-gutterBottom css-k6sdrn-MuiTypography-root"
       >
         核心功能
       </h2>
       <h6
-        class="MuiTypography-root MuiTypography-h6 MuiTypography-alignCenter css-1umfaz1-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-h6 MuiTypography-alignCenter css-10jcxlz-MuiTypography-root"
       >
         我们提供全面的 AI 模型服务，让您的应用更智能
       </h6>
@@ -207,13 +207,13 @@ exports[`FeatureSection > 应该匹配移动端快照 1`] = `
         class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3 css-8wqzlf-MuiGrid-root"
       >
         <div
-          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 MuiGrid-grid-md-3 css-5zdmm3-MuiGrid-root"
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 MuiGrid-grid-md-3 css-5jkmth-MuiGrid-root"
         >
           <div
             style="width: 100%; opacity: 0; transform: translateY(20px);"
           >
             <div
-              class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-11yvga9-MuiPaper-root-MuiCard-root"
+              class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-hbny6g-MuiPaper-root-MuiCard-root"
               role="article"
             >
               <div
@@ -235,12 +235,12 @@ exports[`FeatureSection > 应该匹配移动端快照 1`] = `
                 </svg>
               </div>
               <h3
-                class="MuiTypography-root MuiTypography-h5 MuiTypography-gutterBottom css-1mqf5it-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-h5 MuiTypography-gutterBottom css-1ndmryj-MuiTypography-root"
               >
                 流式响应
               </h3>
               <p
-                class="MuiTypography-root MuiTypography-body1 css-1veq3qq-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-body1 css-1leyb9s-MuiTypography-root"
               >
                 支持流式输出，实时响应，提供更自然的对话体验
               </p>
@@ -248,13 +248,13 @@ exports[`FeatureSection > 应该匹配移动端快照 1`] = `
           </div>
         </div>
         <div
-          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 MuiGrid-grid-md-3 css-5zdmm3-MuiGrid-root"
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 MuiGrid-grid-md-3 css-5jkmth-MuiGrid-root"
         >
           <div
             style="width: 100%; opacity: 0; transform: translateY(20px);"
           >
             <div
-              class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-11yvga9-MuiPaper-root-MuiCard-root"
+              class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-hbny6g-MuiPaper-root-MuiCard-root"
               role="article"
             >
               <div
@@ -276,12 +276,12 @@ exports[`FeatureSection > 应该匹配移动端快照 1`] = `
                 </svg>
               </div>
               <h3
-                class="MuiTypography-root MuiTypography-h5 MuiTypography-gutterBottom css-1mqf5it-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-h5 MuiTypography-gutterBottom css-1ndmryj-MuiTypography-root"
               >
                 智能上下文
               </h3>
               <p
-                class="MuiTypography-root MuiTypography-body1 css-1veq3qq-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-body1 css-1leyb9s-MuiTypography-root"
               >
                 智能管理对话上下文，实现连贯的多轮对话
               </p>
@@ -289,13 +289,13 @@ exports[`FeatureSection > 应该匹配移动端快照 1`] = `
           </div>
         </div>
         <div
-          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 MuiGrid-grid-md-3 css-5zdmm3-MuiGrid-root"
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 MuiGrid-grid-md-3 css-5jkmth-MuiGrid-root"
         >
           <div
             style="width: 100%; opacity: 0; transform: translateY(20px);"
           >
             <div
-              class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-11yvga9-MuiPaper-root-MuiCard-root"
+              class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-hbny6g-MuiPaper-root-MuiCard-root"
               role="article"
             >
               <div
@@ -314,12 +314,12 @@ exports[`FeatureSection > 应该匹配移动端快照 1`] = `
                 </svg>
               </div>
               <h3
-                class="MuiTypography-root MuiTypography-h5 MuiTypography-gutterBottom css-1mqf5it-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-h5 MuiTypography-gutterBottom css-1ndmryj-MuiTypography-root"
               >
                 多模型支持
               </h3>
               <p
-                class="MuiTypography-root MuiTypography-body1 css-1veq3qq-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-body1 css-1leyb9s-MuiTypography-root"
               >
                 支持多种主流模型，满足不同场景需求
               </p>
@@ -327,13 +327,13 @@ exports[`FeatureSection > 应该匹配移动端快照 1`] = `
           </div>
         </div>
         <div
-          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 MuiGrid-grid-md-3 css-5zdmm3-MuiGrid-root"
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 MuiGrid-grid-md-3 css-5jkmth-MuiGrid-root"
         >
           <div
             style="width: 100%; opacity: 0; transform: translateY(20px);"
           >
             <div
-              class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-11yvga9-MuiPaper-root-MuiCard-root"
+              class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-hbny6g-MuiPaper-root-MuiCard-root"
               role="article"
             >
               <div
@@ -352,12 +352,12 @@ exports[`FeatureSection > 应该匹配移动端快照 1`] = `
                 </svg>
               </div>
               <h3
-                class="MuiTypography-root MuiTypography-h5 MuiTypography-gutterBottom css-1mqf5it-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-h5 MuiTypography-gutterBottom css-1ndmryj-MuiTypography-root"
               >
                 安全可控
               </h3>
               <p
-                class="MuiTypography-root MuiTypography-body1 css-1veq3qq-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-body1 css-1leyb9s-MuiTypography-root"
               >
                 数据安全有保障，支持自定义敏感词过滤
               </p>
