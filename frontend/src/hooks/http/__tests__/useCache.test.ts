@@ -80,18 +80,18 @@ describe('useCache', () => {
   describe('生成缓存键', () => {
     it('应该正确生成缓存键', () => {
       const mockConfig = {
-        url: '/api/test',
         method: 'GET',
+        url: '/test',
         params: { id: 1 }
       };
-      const mockCacheKey = 'generated-key';
+      const mockCacheKey = 'GET-/test-{"id":1}-undefined';
       vi.mocked(requestManager.generateCacheKey).mockReturnValue(mockCacheKey);
 
       const { result } = renderHook(() => useCache());
       const cacheKey = result.current.generateCacheKey(mockConfig);
 
-      expect(requestManager.generateCacheKey).toHaveBeenCalledWith(mockConfig);
       expect(cacheKey).toBe(mockCacheKey);
+      expect(requestManager.generateCacheKey).toHaveBeenCalledWith(mockConfig);
     });
   });
 

@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { HttpRequestManager } from '../manager';
+import { HttpRequestConfig } from '../types';
 
 describe('HttpRequestManager Cache Tests', () => {
   let manager: HttpRequestManager;
@@ -29,6 +30,25 @@ describe('HttpRequestManager Cache Tests', () => {
       const key2 = manager.generateCacheKey(config2);
 
       expect(key1).not.toBe(key2);
+    });
+
+    it('should generate different cache keys for different configs', () => {
+      const config1: HttpRequestConfig = {
+        method: 'GET',
+        url: '/test1',
+        params: { id: 1 }
+      };
+      const config2: HttpRequestConfig = {
+        method: 'POST',
+        url: '/test2',
+        data: { name: 'test' }
+      };
+
+      const key1 = manager.generateCacheKey(config1);
+      const key2 = manager.generateCacheKey(config2);
+
+      expect(key1).toBe('GET-/test1-{"id":1}-undefined');
+      expect(key2).toBe('POST-/test2-undefined-{"name":"test"}');
     });
   });
 

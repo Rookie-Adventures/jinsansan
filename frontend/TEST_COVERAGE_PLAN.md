@@ -118,7 +118,7 @@
 
 3. ⏳ 第三阶段：基础设施与通用组件
    - 完成度：95%
-   - 当前覆盖率：57.31%（进行中）
+   - 当前覆盖率：59.41%（进行中）
 
 ### 下一阶段优先任务（基于覆盖率报告）
 
@@ -127,18 +127,20 @@
    - [x] router/guards/AuthGuard.tsx
    - [x] router/guards/GuestGuard.tsx
    - [ ] router/index.tsx
+   - [ ] router/guards.tsx
 
 2. 表单和反馈组件
    - [x] components/feedback/LoadingBar.tsx
    - [x] components/feedback/Toast.tsx
-   - [ ] components/form/FormField.tsx
-   - [ ] hooks/form/useForm.ts
+   - [x] components/form/FormField.tsx
+   - [x] hooks/form/useForm.ts
 
 3. 基础设施
-   - [ ] infrastructure/search/SearchService.ts
-   - [ ] utils/http/config.ts
-   - [ ] utils/http/decorators.ts
-   - [ ] utils/http/interceptors.ts
+   - [x] infrastructure/search/SearchService.ts
+   - [x] utils/http/config.ts
+   - [x] utils/http/decorators.ts
+   - [x] utils/http/interceptors.ts
+
 
 #### 高优先级 (覆盖率 < 50%)
 1. 页面组件
@@ -150,41 +152,23 @@
 
 2. 工具类
    - [ ] utils/auth/validation.ts (14.08%)
-   - [ ] utils/router/analytics.ts (0%)
-   - [ ] utils/router/error-handler.ts (0%)
+   - [ ] utils/http/request-manager.ts (0%)
+   - [ ] utils/http/retry.ts (0%)
 
 #### 中优先级 (覆盖率 50-80%)
 1. 监控模块
    - [ ] infrastructure/monitoring/PerformanceMonitor.ts (59.32%)
    - [ ] infrastructure/monitoring/RouterAnalytics.ts (48.77%)
 
-2. 日志模块
-   - [ ] infrastructure/logging/Logger.ts (64.28%)
-
-3. 错误处理
-   - [ ] components/ErrorNotification (0%)
-   - [ ] contexts/ErrorContext.tsx (0%)
-
-#### 低优先级 (覆盖率 > 80%)
-1. 性能优化
-   - [ ] MetricsDisplay.tsx (93.81%)
-   - [ ] AlertManagement.tsx (100%)
-
-2. 安全模块
-   - [ ] utils/security/encryption.ts (87.59%)
-   - [ ] utils/security/policy.ts (91.77%)
-
-### 目标
-- 短期目标：将所有 0% 覆盖率的关键模块提升至少到 60%
-- 中期目标：将整体覆盖率提升至 80%
-- 长期目标：保持所有核心模块覆盖率在 90% 以上
+2. 存储模块
+   - [ ] store/middleware/error.ts (44%)
+   - [ ] store/middleware/performance.ts (65.21%)
 
 ### 注意事项
-1. ✅ 已完成路由和认证相关组件的测试
-2. 关注错误处理和用户反馈相关组件的测试
-3. 完善监控和日志模块的测试用例
-4. 持续维护已有高覆盖率模块的测试质量
-
+1. 优先处理覆盖率为0%的文件
+2. 重点关注核心业务逻辑的测试覆盖
+3. 对于复杂的工具类,需要确保分支覆盖率达到80%以上
+4. 页面组件测试应关注用户交互和异常处理场景
 
 ## 下一步计划
 
@@ -314,4 +298,42 @@
 ## 测试规范
 
 ### 测试文件组织
-```
+
+### 当前测试覆盖率状况 (更新于 2024-03-xx)
+
+整体覆盖率:
+- 语句覆盖率: 59.41%
+- 分支覆盖率: 82.16%
+- 函数覆盖率: 73.81%
+- 行覆盖率: 59.41%
+
+### 目标
+1. 短期目标 (2周内)
+   - 将所有0%覆盖率的路由和基础设施模块提升至少到60%
+   - 完成 HomePage 和业务组件的基础测试
+
+2. 中期目标 (1个月内)
+   - 整体覆盖率提升至70%
+   - 所有核心业务逻辑覆盖率达到80%
+   - 完善HTTP工具类的测试覆盖
+
+3. 长期目标 (3个月内)
+   - 整体覆盖率维持在80%以上
+   - 核心模块覆盖率达到90%以上
+   - 建立完整的端到端测试体系
+
+## 下一步计划
+1. 路由测试完善
+   - 实现 router/index.tsx 的基础路由测试
+   - 添加路由守卫的集成测试
+   - 测试路由参数和查询字符串处理
+
+2. 基础设施增强
+   - 完善 SearchService 的单元测试
+   - 实现 HTTP 拦截器的测试用例
+   - 添加装饰器的单元测试
+
+3. 页面组件测试
+   - 为 HomePage 添加快照测试
+   - 实现业务组件的交互测试
+   - 添加异常场景的处理测试

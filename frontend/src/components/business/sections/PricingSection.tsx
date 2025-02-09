@@ -109,6 +109,8 @@ const PricingSection: React.FC = () => {
                   style={{ height: '100%' }}
                 >
                   <Card
+                    role="article"
+                    aria-label={`${tier.title}价格方案`}
                     elevation={tier.title === '专业版' ? 8 : 0}
                     sx={{
                       height: '100%',

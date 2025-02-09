@@ -1,12 +1,44 @@
-import { AxiosHeaders, type InternalAxiosRequestConfig } from 'axios';
+import { AxiosHeaders, AxiosInstance, AxiosProgressEvent, AxiosResponse, InternalAxiosRequestConfig, AxiosError } from 'axios';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { RequestValidator } from '../error/prevention';
 import { HttpErrorType } from '../error/types';
 import { requestManager } from '../manager';
+import { setupInterceptors } from '../interceptors';
+import { useGlobalProgress } from '@/hooks/feedback/useGlobalProgress';
+
+// Mock useGlobalProgress
+vi.mock('@/hooks/feedback/useGlobalProgress', () => ({
+  useGlobalProgress: {
+    getState: vi.fn(() => ({
+      setProgress: vi.fn(),
+      setLoading: vi.fn()
+    }))
+  }
+}));
 
 describe('HTTP 拦截器测试', () => {
+  let instance: AxiosInstance;
+
   beforeEach(() => {
     vi.restoreAllMocks();
+
+    // 重置所有 mock
+    vi.clearAllMocks();
+
+    // 创建模拟的 Axios 实例
+    instance = {
+      interceptors: {
+        request: {
+          use: vi.fn()
+        },
+        response: {
+          use: vi.fn()
+        }
+      }
+    } as unknown as AxiosInstance;
+
+    // 设置拦截器
+    setupInterceptors(instance);
   });
 
   describe('请求验证', () => {
@@ -180,6 +212,129 @@ describe('HTTP 拦截器测试', () => {
       expect(stats.totalRequests).toBe(3);
       expect(stats.successfulRequests).toBe(2);
       expect(stats.failedRequests).toBe(1);
+    });
+  });
+
+  describe('请求拦截器', () => {
+    it('应该在请求开始时增加请求计数并更新加载状态', () => {
+      const config: InternalAxiosRequestConfig = {
+        url: '/test',
+        method: 'get',
+        headers: new AxiosHeaders()
+      };
+
+      const setLoading = vi.fn();
+      (useGlobalProgress.getState as any).mockReturnValue({ setLoading, setProgress: vi.fn() });
+
+      // 获取请求拦截器
+      const requestInterceptor = (instance.interceptors.request.use as ReturnType<typeof vi.fn>).mock.calls[0][0];
+      requestInterceptor(config);
+
+      expect(setLoading).toHaveBeenCalledWith(true);
+    });
+
+    it('应该设置上传进度监听器', () => {
+      const config: InternalAxiosRequestConfig = {
+        url: '/test',
+        method: 'post',
+        headers: new AxiosHeaders()
+      };
+
+      const setProgress = vi.fn();
+      (useGlobalProgress.getState as any).mockReturnValue({ setProgress, setLoading: vi.fn() });
+
+      // 获取请求拦截器
+      const requestInterceptor = (instance.interceptors.request.use as ReturnType<typeof vi.fn>).mock.calls[0][0];
+      const interceptedConfig = requestInterceptor(config);
+
+      expect(interceptedConfig.onUploadProgress).toBeDefined();
+
+      // 模拟上传进度事件
+      const progressEvent: AxiosProgressEvent = {
+        loaded: 50,
+        total: 100,
+        bytes: 50,
+        lengthComputable: true,
+        estimated: 100,
+        rate: 1,
+        download: false,
+        upload: true
+      };
+      interceptedConfig.onUploadProgress?.(progressEvent);
+
+      expect(setProgress).toHaveBeenCalledWith(25); // (50/100 + 0) / 2 = 25
+    });
+
+    it('应该设置下载进度监听器', () => {
+      const config: InternalAxiosRequestConfig = {
+        url: '/test',
+        method: 'get',
+        headers: new AxiosHeaders()
+      };
+
+      const setProgress = vi.fn();
+      (useGlobalProgress.getState as any).mockReturnValue({ setProgress, setLoading: vi.fn() });
+
+      // 获取请求拦截器
+      const requestInterceptor = (instance.interceptors.request.use as ReturnType<typeof vi.fn>).mock.calls[0][0];
+      const interceptedConfig = requestInterceptor(config);
+
+      expect(interceptedConfig.onDownloadProgress).toBeDefined();
+
+      // 模拟下载进度事件
+      const progressEvent: AxiosProgressEvent = {
+        loaded: 75,
+        total: 100,
+        bytes: 75,
+        lengthComputable: true,
+        estimated: 100,
+        rate: 1,
+        download: true,
+        upload: false
+      };
+      interceptedConfig.onDownloadProgress?.(progressEvent);
+
+      expect(setProgress).toHaveBeenCalledWith(37.5); // (0 + 75/100) / 2 = 37.5
+    });
+  });
+
+  describe('响应拦截器', () => {
+    it('应该在响应完成时减少请求计数并更新加载状态', () => {
+      const response: AxiosResponse = {
+        data: {},
+        status: 200,
+        statusText: 'OK',
+        headers: {},
+        config: {
+          headers: new AxiosHeaders()
+        } as InternalAxiosRequestConfig
+      };
+
+      const setLoading = vi.fn();
+      (useGlobalProgress.getState as any).mockReturnValue({ setLoading, setProgress: vi.fn() });
+
+      // 获取响应拦截器
+      const responseInterceptor = (instance.interceptors.response.use as ReturnType<typeof vi.fn>).mock.calls[0][0];
+      responseInterceptor(response);
+
+      expect(setLoading).toHaveBeenCalledWith(false);
+    });
+
+    it('应该在响应错误时减少请求计数并更新加载状态', async () => {
+      const error = new Error('Network Error');
+
+      const setLoading = vi.fn();
+      const setProgress = vi.fn();
+      (useGlobalProgress.getState as any).mockReturnValue({ setLoading, setProgress });
+
+      // 获取错误拦截器
+      const responseErrorInterceptor = (instance.interceptors.response.use as ReturnType<typeof vi.fn>).mock.calls[0][1];
+      try {
+        await responseErrorInterceptor(error);
+      } catch (e) {
+        expect(setLoading).toHaveBeenCalledWith(false);
+        expect(setProgress).toHaveBeenCalledWith(null);
+      }
     });
   });
 }); 

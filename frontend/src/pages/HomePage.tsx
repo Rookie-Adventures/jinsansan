@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import React from 'react';
 
-import FeatureSection from '../components/business/sections/FeatureSection';
+// import FeatureSection from '../components/business/sections/FeatureSection';
 import HeroSection from '../components/business/sections/HeroSection';
 import PricingSection from '../components/business/sections/PricingSection';
 import Navbar from '../components/common/layout/Navbar';
@@ -43,9 +43,9 @@ const HomePage: React.FC = () => {
       </Box>
 
       {/* Feature Section */}
-      <Box>
+      {/* <Box>
         <FeatureSection />
-      </Box>
+      </Box> */}
 
       {/* Pricing Section */}
       <Box sx={{ 
