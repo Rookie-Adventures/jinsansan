@@ -13,7 +13,11 @@ export class TokenService {
    * @param token JWT token
    */
   public setToken(token: string): void {
-    localStorage.setItem(this.TOKEN_KEY, token);
+    try {
+      localStorage.setItem(this.TOKEN_KEY, token);
+    } catch (error) {
+      throw error;
+    }
   }
 
   /**
@@ -34,18 +38,19 @@ export class TokenService {
    * 解析 token
    * @param token JWT token
    */
-  public parseToken(token: string): { exp: number; [key: string]: any } {
+  public parseToken(token: string): any {
+    if (!token || typeof token !== 'string') {
+      throw new Error('Invalid token format');
+    }
+
+    const parts = token.split('.');
+    if (parts.length !== 3) {
+      throw new Error('Invalid token format');
+    }
+
     try {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(
-        atob(base64)
-          .split('')
-          .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-          .join('')
-      );
-      return JSON.parse(jsonPayload);
-    } catch (error) {
+      return JSON.parse(atob(parts[1]));
+    } catch {
       throw new Error('Invalid token format');
     }
   }
@@ -54,11 +59,13 @@ export class TokenService {
    * 检查 token 是否过期
    * @param token JWT token
    */
-  public isTokenExpired(token: string): boolean {
+  public isTokenExpired(token: string | null): boolean {
+    if (!token) return true;
+    
     try {
       const decoded = this.parseToken(token);
       return decoded.exp * 1000 < Date.now();
-    } catch (error) {
+    } catch {
       return true;
     }
   }

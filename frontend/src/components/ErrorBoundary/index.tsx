@@ -1,7 +1,7 @@
 import { Button, Container, Typography, Box } from '@mui/material';
 import React from 'react';
 
-import { ErrorLogger } from '@/utils/http/error/logger';
+import { errorLogger } from '@/utils/http/error/logger';
 import { HttpErrorType } from '@/utils/http/error/types';
 import type { HttpError } from '@/utils/http/error/types';
 
@@ -45,12 +45,9 @@ const ErrorFallback: React.FC<{ error: Error | null; onReset: () => void }> = ({
 );
 
 export class ErrorBoundary extends React.Component<Props, State> {
-  private logger: ErrorLogger;
-
   constructor(props: Props) {
     super(props);
     this.state = { hasError: false, error: null };
-    this.logger = ErrorLogger.getInstance();
   }
 
   static getDerivedStateFromError(error: Error): State {
@@ -59,7 +56,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
     // 记录错误日志
-    this.logger.log({
+    errorLogger.log({
       type: HttpErrorType.REACT_ERROR,
       message: error.message,
       stack: error.stack,
@@ -71,8 +68,9 @@ export class ErrorBoundary extends React.Component<Props, State> {
   }
 
   private handleReset = (): void => {
-    this.setState({ hasError: false, error: null });
-    this.props.onReset?.();
+    this.setState({ hasError: false, error: null }, () => {
+      this.props.onReset?.();
+    });
   };
 
   render(): React.ReactNode {

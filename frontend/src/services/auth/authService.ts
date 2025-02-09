@@ -18,7 +18,9 @@ export class AuthService {
    */
   public async login(data: LoginFormData): Promise<LoginResponse> {
     const response = await this.http.post<LoginResponse>(`${this.baseUrl}/login`, data);
-    tokenService.setToken(response.token);
+    if (response?.token) {
+      tokenService.setToken(response.token);
+    }
     return response;
   }
 

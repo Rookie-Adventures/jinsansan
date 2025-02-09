@@ -8,7 +8,7 @@ import axiosRetry from 'axios-retry';
 
 import { store } from '@/store';
 import type { ApiResponse } from '@/types/api';
-import { createHttpError } from '@/utils/http/error/factory';
+import { HttpErrorFactory } from '@/utils/http/error/factory';
 import { HttpError } from '@/utils/http/error/types';
 
 // 定义请求配置接口
@@ -35,7 +35,7 @@ axiosRetry(request, {
     return retryCount * 500;
   },
   retryCondition: (error: AxiosError) => {
-    const httpError = createHttpError(error);
+    const httpError = HttpErrorFactory.create(error);
     return httpError.code === 'NETWORK_ERROR';
   },
 });
@@ -61,7 +61,7 @@ request.interceptors.response.use(
     
     // 处理业务错误
     if (data.code !== 200) {
-      const error = createHttpError({
+      const error = HttpErrorFactory.create({
         message: data.message || '请求失败',
         code: data.code.toString(),
         data: data
@@ -72,7 +72,7 @@ request.interceptors.response.use(
     return response;
   },
   async (error: AxiosError) => {
-    const httpError = createHttpError(error);
+    const httpError = HttpErrorFactory.create(error);
 
     // 处理 401 错误
     if (httpError.status === 401) {

@@ -4,10 +4,10 @@ import { useLocation, useNavigationType } from 'react-router-dom';
 
 // 获取基础 URL
 const getBaseUrl = () => {
-  if (process.env.NODE_ENV === 'test') {
+  if (import.meta.env.MODE === 'test') {
     return 'http://localhost:3000';
   }
-  return process.env.VITE_API_URL || '';
+  return import.meta.env.VITE_API_URL || '';
 };
 
 interface RouteAnalytics {
@@ -19,7 +19,7 @@ interface RouteAnalytics {
 }
 
 class RouterAnalytics {
-  private static instance: RouterAnalytics;
+  private static instance: RouterAnalytics | null = null;
   private analytics: RouteAnalytics[] = [];
   private lastPath: string | null = null;
   private lastTimestamp: number | null = null;
@@ -27,9 +27,14 @@ class RouterAnalytics {
 
   private constructor() {
     this.baseUrl = getBaseUrl();
+    // 在开发环境下，不初始化分析服务
+    if (import.meta.env.DEV) {
+      console.log('Analytics service is disabled in development mode');
+      return;
+    }
   }
 
-  static getInstance(): RouterAnalytics {
+  public static getInstance(): RouterAnalytics {
     if (!RouterAnalytics.instance) {
       RouterAnalytics.instance = new RouterAnalytics();
     }
@@ -94,6 +99,15 @@ class RouterAnalytics {
     this.analytics = [];
     this.lastPath = null;
     this.lastTimestamp = null;
+  }
+
+  public trackPageView(path: string): void {
+    // 在开发环境下，只打印日志
+    if (import.meta.env.DEV) {
+      console.log('Page view tracked:', path);
+      return;
+    }
+    // 实际的页面追踪代码...
   }
 }
 
