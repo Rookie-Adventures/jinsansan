@@ -1,5 +1,5 @@
 import { Theme } from '@mui/material';
-import { alpha, darken, lighten } from '@mui/material/styles';
+import { darken, lighten } from '@mui/material/styles';
 
 /**
  * 主题切换动画持续时间（毫秒）
@@ -86,6 +86,7 @@ export interface ColorPalette {
   light: string;
   dark: string;
   contrastText: string;
+  alpha?: (opacity: number) => string;
 }
 
 export interface ExtendedColorPalette extends ColorPalette {
@@ -97,11 +98,17 @@ export const generatePalette = (primaryColor: string, withSecondary: boolean = f
     throw new Error('Invalid color format');
   }
 
+  const createAlphaFn = (color: string) => (opacity: number) => {
+    const rgb = hexToRgb(color);
+    return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${Math.max(0, Math.min(1, opacity))})`;
+  };
+
   const palette: ColorPalette = {
     main: primaryColor,
     light: lighten(primaryColor, 0.2),
     dark: darken(primaryColor, 0.2),
-    contrastText: getContrastText(primaryColor)
+    contrastText: getContrastText(primaryColor),
+    alpha: createAlphaFn(primaryColor)
   };
 
   if (withSecondary) {
@@ -112,7 +119,8 @@ export const generatePalette = (primaryColor: string, withSecondary: boolean = f
         main: secondaryColor,
         light: lighten(secondaryColor, 0.2),
         dark: darken(secondaryColor, 0.2),
-        contrastText: getContrastText(secondaryColor)
+        contrastText: getContrastText(secondaryColor),
+        alpha: createAlphaFn(secondaryColor)
       }
     };
   }
@@ -123,7 +131,7 @@ export const generatePalette = (primaryColor: string, withSecondary: boolean = f
 // 辅助函数
 const hexToRgb = (hex: string) => {
   const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
+  hex = hex.replace(shorthandRegex, (_, r, g, b) => r + r + g + g + b + b);
 
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result ? {

@@ -4,7 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { RouterProvider, createMemoryRouter, Navigate } from 'react-router-dom';
 import { Provider, useSelector } from 'react-redux';
-import { Store, UnknownAction } from '@reduxjs/toolkit';
+import { Store } from '@reduxjs/toolkit';
 
 // Mock components
 const LoginPage = () => <div data-testid="login-page">Login Page</div>;

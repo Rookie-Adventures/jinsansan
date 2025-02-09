@@ -1,6 +1,5 @@
 import type { Theme as MuiTheme, ThemeOptions } from '@mui/material/styles';
 import type { TypographyStyle } from '@mui/material/styles/createTypography';
-import type { SxProps, SystemStyleObject } from '@mui/system';
 import type { CSSObject } from '@mui/styled-engine';
 import type { Theme as SystemTheme } from '@mui/system/createTheme';
 
@@ -31,12 +30,7 @@ export interface CustomThemeOptions extends Omit<ThemeOptions, 'typography'> {
 }
 
 // 扩展完整主题类型
-export interface CustomTheme extends BaseTheme {
-  unstable_sx: {
-    (props: SxProps<SystemTheme>): CSSObject;
-    (props: SystemStyleObject<SystemTheme>): CSSObject;
-    (props: ((theme: SystemTheme) => SystemStyleObject<SystemTheme>)): CSSObject;
-  };
+export type CustomTheme = BaseTheme & {
   components?: {
     MuiButton?: {
       styleOverrides?: {
@@ -55,7 +49,7 @@ export interface CustomTheme extends BaseTheme {
     };
     [key: string]: any;
   };
-}
+};
 
 // 使用 MUI System 的主题类型
 export type Theme = SystemTheme; 

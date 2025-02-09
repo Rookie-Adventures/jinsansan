@@ -1,9 +1,8 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import { ThemeProvider, createTheme } from '@mui/material';
-import { AlertColor } from '@mui/material';
+import { ThemeProvider, createTheme, AlertColor } from '@mui/material';
 
 import { Toast } from '../Toast';
 import appReducer from '@/store/slices/appSlice';

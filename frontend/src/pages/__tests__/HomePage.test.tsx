@@ -1,7 +1,6 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
-import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { vi } from 'vitest';
 import mediaQuery from 'css-mediaquery';
@@ -45,11 +44,11 @@ describe('HomePage', () => {
   const renderHomePage = (isDarkMode = false) => {
     return render(
       <Provider store={store}>
-        <BrowserRouter>
+        <MemoryRouter>
           <ThemeProvider theme={createTheme(isDarkMode)}>
             <HomePage />
           </ThemeProvider>
-        </BrowserRouter>
+        </MemoryRouter>
       </Provider>
     );
   };

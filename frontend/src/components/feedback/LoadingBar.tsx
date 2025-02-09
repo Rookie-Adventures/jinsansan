@@ -21,29 +21,33 @@ export const LoadingBar = () => {
   const isLoading = useAppSelector((state) => state.app.loading);
 
   useEffect(() => {
+    let timer: number | undefined;
+
     if (isLoading) {
       setVisible(true);
-      const timer = setInterval(() => {
+      timer = window.setInterval(() => {
         setProgress((oldProgress) => {
           const diff = Math.random() * 10;
           return Math.min(oldProgress + diff, 90);
         });
       }, 500);
-
-      return () => {
-        clearInterval(timer);
-      };
     } else if (visible) {
       setProgress(100);
-      const timer = setTimeout(() => {
+      timer = window.setTimeout(() => {
         setVisible(false);
         setProgress(0);
       }, 300);
-
-      return () => {
-        clearTimeout(timer);
-      };
     }
+
+    return () => {
+      if (timer !== undefined) {
+        if (isLoading) {
+          window.clearInterval(timer);
+        } else {
+          window.clearTimeout(timer);
+        }
+      }
+    };
   }, [isLoading, visible]);
 
   if (!visible) return null;

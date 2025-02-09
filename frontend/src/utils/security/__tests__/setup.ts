@@ -8,7 +8,7 @@ const localStorageMock = {
   removeItem: vi.fn((key: string) => store.delete(key)),
   clear: vi.fn(() => store.clear()),
   length: 0,
-  key: vi.fn((index: number) => null),
+  key: vi.fn((_: number) => null),
 } as Storage;
 
 global.localStorage = localStorageMock;
@@ -32,8 +32,6 @@ const mockResponse: Response = {
   formData: () => Promise.resolve(new FormData()),
   text: () => Promise.resolve(''),
 } as Response;
-
-type FetchImpl = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
 
 const fetchMock = vi.fn().mockImplementation(() => Promise.resolve(mockResponse));
 

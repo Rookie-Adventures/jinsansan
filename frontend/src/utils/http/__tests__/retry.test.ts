@@ -44,7 +44,7 @@ describe('retry', () => {
 
     const promise = retry(fn, { times: 3, delay: 1000 });
     await vi.runAllTimersAsync();
-    await expect(promise).rejects.toThrow('fail3');
+    await expect(promise).rejects.toBe(error3);
     expect(fn).toHaveBeenCalledTimes(3);
   });
 

@@ -1,14 +1,14 @@
 import { renderHook, act } from '@testing-library/react';
 import { vi } from 'vitest';
 import { Provider } from 'react-redux';
-import { configureStore, createAsyncThunk, AsyncThunkAction, PayloadAction } from '@reduxjs/toolkit';
+import { configureStore, createAsyncThunk } from '@reduxjs/toolkit';
 import { MemoryRouter } from 'react-router-dom';
 import { useAuth } from '../useAuth';
-import authReducer, { login, register, logout, clearAuth } from '@/store/slices/authSlice';
+import authReducer, { login, register, logout } from '@/store/slices/authSlice';
 import { HttpErrorFactory } from '@/utils/http/error/factory';
 import { HttpError, HttpErrorType } from '@/utils/http/error/types';
 import { errorLogger } from '@/utils/errorLogger';
-import type { LoginFormData, RegisterFormData } from '@/types/auth';
+import type { RegisterFormData } from '@/types/auth';
 import type { LoginResponse } from '@/services/auth';
 
 // Mock redux store
@@ -17,6 +17,11 @@ const createTestStore = (initialState = {}) => {
     reducer: {
       auth: authReducer
     },
+    middleware: (getDefaultMiddleware) => 
+      getDefaultMiddleware({
+        serializableCheck: false,
+        thunk: true
+      }),
     preloadedState: {
       auth: {
         user: null,
@@ -32,7 +37,7 @@ const createTestStore = (initialState = {}) => {
 // Mock navigation
 const mockNavigate = vi.fn();
 vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual('react-router-dom');
+  const actual = await vi.importActual<typeof import('react-router-dom')>('react-router-dom');
   return {
     ...actual,
     useNavigate: () => mockNavigate
@@ -49,13 +54,13 @@ vi.mock('@/utils/errorLogger', () => ({
 // Mock HTTP error factory
 vi.mock('@/utils/http/error/factory', () => ({
   HttpErrorFactory: {
-    create: vi.fn().mockImplementation((err: any) => {
+    create: vi.fn().mockImplementation((err: unknown) => {
       if (err instanceof HttpError) {
         return err;
       }
       return new HttpError({
         type: HttpErrorType.AUTH,
-        message: err.message || 'Unknown error',
+        message: err instanceof Error ? err.message : 'Unknown error',
         status: 401,
         data: err
       });
@@ -78,72 +83,65 @@ Object.defineProperty(window, 'localStorage', {
 });
 
 // Mock Redux actions
-vi.mock('@/store/slices/authSlice', async () => {
-  const actual = await vi.importActual('@/store/slices/authSlice');
-  return {
-    ...actual,
-    login: vi.fn().mockImplementation((data: LoginFormData): AsyncThunkAction<LoginResponse, LoginFormData, {}> => {
-      return {
-        abort: vi.fn(),
-        arg: data,
-        requestId: 'test-id',
-        signal: new AbortController().signal,
-        unwrap: () => Promise.resolve({
-          user: { id: 1, username: 'testuser', email: 'test@example.com', permissions: [] },
-          token: 'test-token'
-        }),
-        match: vi.fn(),
-        meta: {
-          arg: data,
-          requestId: 'test-id',
-          requestStatus: 'pending'
+vi.mock('@/store/slices/authSlice', () => ({
+  __esModule: true,
+  default: (state = {}) => state,
+  login: vi.fn().mockImplementation((_) => {
+    return {
+      type: 'auth/login/fulfilled',
+      payload: {
+        user: {
+          id: 1,
+          username: 'testuser',
+          email: 'test@example.com',
+          permissions: []
         },
-        payload: undefined,
-        type: 'auth/login'
-      } as any;
-    }),
-    register: vi.fn().mockImplementation((data: RegisterFormData): AsyncThunkAction<LoginResponse, RegisterFormData, {}> => {
-      return {
-        abort: vi.fn(),
-        arg: data,
-        requestId: 'test-id',
-        signal: new AbortController().signal,
-        unwrap: () => Promise.resolve({
-          user: { id: 1, username: 'testuser', email: 'test@example.com', permissions: [] },
-          token: 'test-token'
-        }),
-        match: vi.fn(),
-        meta: {
-          arg: data,
-          requestId: 'test-id',
-          requestStatus: 'pending'
+        token: 'test-token'
+      },
+      unwrap: () => Promise.resolve({
+        user: {
+          id: 1,
+          username: 'testuser',
+          email: 'test@example.com',
+          permissions: []
         },
-        payload: undefined,
-        type: 'auth/register'
-      } as any;
-    }),
-    logout: vi.fn().mockImplementation((): AsyncThunkAction<void, void, {}> => {
-      return {
-        abort: vi.fn(),
-        arg: undefined,
-        requestId: 'test-id',
-        signal: new AbortController().signal,
-        unwrap: () => Promise.resolve(),
-        match: vi.fn(),
-        meta: {
-          arg: undefined,
-          requestId: 'test-id',
-          requestStatus: 'pending'
+        token: 'test-token'
+      })
+    };
+  }),
+  register: vi.fn().mockImplementation((_) => {
+    return {
+      type: 'auth/register/fulfilled',
+      payload: {
+        user: {
+          id: 1,
+          username: 'testuser',
+          email: 'test@example.com',
+          permissions: []
         },
-        payload: undefined,
-        type: 'auth/logout'
-      } as any;
-    }),
-    clearAuth: vi.fn().mockReturnValue({
-      type: 'auth/clearAuth'
-    })
-  };
-});
+        token: 'test-token'
+      },
+      unwrap: () => Promise.resolve({
+        user: {
+          id: 1,
+          username: 'testuser',
+          email: 'test@example.com',
+          permissions: []
+        },
+        token: 'test-token'
+      })
+    };
+  }),
+  logout: vi.fn().mockImplementation(() => {
+    return {
+      type: 'auth/logout/fulfilled',
+      unwrap: () => Promise.resolve()
+    };
+  }),
+  clearAuth: vi.fn().mockReturnValue({
+    type: 'auth/clearAuth'
+  })
+}));
 
 describe('useAuth', () => {
   const wrapper = ({ children }: { children: React.ReactNode }) => {
@@ -212,21 +210,10 @@ describe('useAuth', () => {
         data: { reason: 'Invalid credentials' }
       });
       
-      vi.mocked(login).mockImplementation((data: LoginFormData): AsyncThunkAction<LoginResponse, LoginFormData, {}> => {
+      vi.mocked(login).mockImplementation(() => {
         return {
-          abort: vi.fn(),
-          arg: data,
-          requestId: 'test-id',
-          signal: new AbortController().signal,
-          unwrap: () => Promise.reject(mockError),
-          match: vi.fn(),
-          meta: {
-            arg: data,
-            requestId: 'test-id',
-            requestStatus: 'rejected'
-          },
-          payload: undefined,
-          type: 'auth/login'
+          type: 'auth/login',
+          unwrap: () => Promise.reject(mockError)
         } as any;
       });
 
@@ -239,7 +226,7 @@ describe('useAuth', () => {
             password: 'wrong-password'
           });
         } catch (error) {
-          // 预期的错误
+          expect(error).toBe(mockError);
         }
       });
 
@@ -273,23 +260,14 @@ describe('useAuth', () => {
         data: { reason: 'Username taken' }
       });
       
-      vi.mocked(register).mockImplementation((data: RegisterFormData): AsyncThunkAction<LoginResponse, RegisterFormData, {}> => {
-        return {
-          abort: vi.fn(),
-          arg: data,
-          requestId: 'test-id',
-          signal: new AbortController().signal,
-          unwrap: () => Promise.reject(mockError),
-          match: vi.fn(),
-          meta: {
-            arg: data,
-            requestId: 'test-id',
-            requestStatus: 'rejected'
-          },
-          payload: undefined,
-          type: 'auth/register'
-        } as any;
-      });
+      const mockRegisterAction = createAsyncThunk(
+        'auth/register',
+        async (_data: RegisterFormData): Promise<LoginResponse> => {
+          throw mockError;
+        }
+      );
+      
+      vi.mocked(register).mockImplementation(mockRegisterAction);
 
       const { result } = renderHook(() => useAuth(), { wrapper });
       
@@ -324,23 +302,15 @@ describe('useAuth', () => {
 
     it('登出失败时应该记录错误并仍然清除认证状态', async () => {
       const mockError = new Error('退出登录失败');
-      vi.mocked(logout).mockImplementation((): AsyncThunkAction<void, void, {}> => {
-        return {
-          abort: vi.fn(),
-          arg: undefined,
-          requestId: 'test-id',
-          signal: new AbortController().signal,
-          unwrap: () => Promise.reject(mockError),
-          match: vi.fn(),
-          meta: {
-            arg: undefined,
-            requestId: 'test-id',
-            requestStatus: 'rejected'
-          },
-          payload: undefined,
-          type: 'auth/logout'
-        } as any;
-      });
+      
+      const mockLogoutAction = createAsyncThunk(
+        'auth/logout',
+        async (): Promise<void> => {
+          throw mockError;
+        }
+      );
+      
+      vi.mocked(logout).mockImplementation(mockLogoutAction);
 
       const { result } = renderHook(() => useAuth(), { wrapper });
       

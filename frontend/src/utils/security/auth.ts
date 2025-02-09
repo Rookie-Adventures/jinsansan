@@ -138,8 +138,12 @@ export class AuthManager {
    * 检查会话是否活跃
    */
   isSessionActive(): boolean {
-    if (!this.lastActivityTime) return false;
-    return Date.now() - this.lastActivityTime < this.SESSION_TIMEOUT;
+    if (!this.lastActivityTime || !this.sessionStartTime) return false;
+    const now = Date.now();
+    const sessionDuration = now - this.sessionStartTime;
+    const inactiveTime = now - this.lastActivityTime;
+    // 检查总会话时间不超过8小时且最后活动时间在30分钟内
+    return sessionDuration < 8 * 60 * 60 * 1000 && inactiveTime < this.SESSION_TIMEOUT;
   }
 
   /**
@@ -204,6 +208,19 @@ export class AuthManager {
   }
 
   /**
+   * 处理认证错误
+   */
+  private handleAuthError(error: unknown): void {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    this.logAuthEvent({
+      action: 'login_error',
+      status: 'failure',
+      timestamp: Date.now(),
+      details: { error: errorMessage }
+    });
+  }
+
+  /**
    * 登录
    */
   async login(username: string, password: string): Promise<void> {
@@ -221,18 +238,12 @@ export class AuthManager {
           details: { username }
         });
       } else {
-        throw new Error('invalid_credentials');
+        const error = new Error('invalid_credentials');
+        this.handleAuthError(error);
+        throw error;
       }
     } catch (error) {
-      this.logAuthEvent({
-        action: 'login',
-        status: 'failure',
-        timestamp: Date.now(),
-        details: {
-          username,
-          reason: error instanceof Error ? error.message : 'unknown_error'
-        }
-      });
+      this.handleAuthError(error);
       throw error;
     }
   }
@@ -261,14 +272,9 @@ export class AuthManager {
     localStorage.removeItem('last_activity');
   }
 
-  private handleAuthError(error: unknown): void {
-    errorLogger.log(error instanceof Error ? error : new Error('Authentication error'), {
-      level: 'error',
-      context: {
-        timestamp: Date.now(),
-        source: 'AuthManager'
-      }
-    });
+  public getSessionDuration(): number {
+    if (!this.sessionStartTime) return 0;
+    return Date.now() - this.sessionStartTime;
   }
 }
 

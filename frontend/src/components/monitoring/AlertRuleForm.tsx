@@ -18,9 +18,13 @@ import React from 'react';
 import { sanitizeInput } from '../../utils/security';
 
 // 创建带有测试ID的自定义组件
-const StyledFormHelperText = styled(FormHelperText)<{ 'data-testid'?: string }>(
-  ({ theme }) => ({})
-);
+const StyledFormHelperText = styled(FormHelperText, {
+  shouldForwardProp: (prop) => prop !== 'data-testid'
+})<{ 'data-testid'?: string }>(({ theme }) => ({
+  // 样式定义
+  marginTop: theme.spacing(1),
+  minHeight: '1.5em'
+}));
 
 type AlertRuleFormData = Required<Omit<AlertRule, 'id'>>;
 
@@ -190,12 +194,12 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
           'data-testid': 'threshold-input'
         }}
       />
-      <FormHelperText
+      <StyledFormHelperText
         error
         data-testid="threshold-error-text"
       >
         {errors.threshold || '\u200B'}
-      </FormHelperText>
+      </StyledFormHelperText>
     </FormControl>
   );
 
@@ -217,12 +221,12 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({
           'aria-label': '规则名称'
         }}
       />
-      <FormHelperText
+      <StyledFormHelperText
         error
         data-testid="name-error-text"
       >
         {errors.name || '\u200B'}
-      </FormHelperText>
+      </StyledFormHelperText>
     </FormControl>
   );
 

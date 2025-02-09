@@ -1,8 +1,3 @@
-import { renderHook } from '@testing-library/react';
-import { vi } from 'vitest';
-import { useHttp } from '../useHttp';
-import { http } from '@/utils/http';
-
 // Mock http client
 vi.mock('@/utils/http', () => ({
   http: {
@@ -12,6 +7,12 @@ vi.mock('@/utils/http', () => ({
     delete: vi.fn()
   }
 }));
+
+import { renderHook } from '@testing-library/react';
+import { vi } from 'vitest';
+import type { HttpRequestConfig } from '@/utils/http/types';
+import { useHttp } from '../useHttp';
+import { http } from '@/utils/http';
 
 describe('useHttp', () => {
   beforeEach(() => {
@@ -31,7 +32,7 @@ describe('useHttp', () => {
     });
 
     it('应该正确处理 GET 请求的配置参数', async () => {
-      const mockConfig = {
+      const mockConfig: HttpRequestConfig = {
         params: { id: 1 },
         headers: { 'X-Test': 'test' }
       };
@@ -69,7 +70,7 @@ describe('useHttp', () => {
 
     it('应该正确处理 POST 请求的配置参数', async () => {
       const mockData = { name: 'test' };
-      const mockConfig = {
+      const mockConfig: HttpRequestConfig = {
         headers: { 'X-Test': 'test' }
       };
       const mockResponse = { data: { id: 1, name: 'test' } };
@@ -106,7 +107,7 @@ describe('useHttp', () => {
 
     it('应该正确处理 PUT 请求的配置参数', async () => {
       const mockData = { name: 'test' };
-      const mockConfig = {
+      const mockConfig: HttpRequestConfig = {
         headers: { 'X-Test': 'test' }
       };
       const mockResponse = { data: { id: 1, name: 'test' } };
@@ -141,7 +142,7 @@ describe('useHttp', () => {
     });
 
     it('应该正确处理 DELETE 请求的配置参数', async () => {
-      const mockConfig = {
+      const mockConfig: HttpRequestConfig = {
         headers: { 'X-Test': 'test' }
       };
       const mockResponse = { data: { success: true } };

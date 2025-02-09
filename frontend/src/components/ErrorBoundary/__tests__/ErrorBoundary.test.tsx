@@ -1,16 +1,18 @@
-import React from 'react';
-import { render, screen, fireEvent, act } from '@testing-library/react';
-import { vi } from 'vitest';
-import ErrorBoundary from '../index';
-import { errorLogger } from '@/utils/http/error/logger';
-import { HttpErrorType } from '@/utils/http/error/types';
-
 // Mock errorLogger
 vi.mock('@/utils/http/error/logger', () => ({
   errorLogger: {
     log: vi.fn()
   }
 }));
+
+import { render, screen, fireEvent, act } from '@testing-library/react';
+import { vi } from 'vitest';
+import ErrorBoundary from '../index';
+import { HttpErrorType } from '@/utils/http/error/types';
+import { errorLogger } from '@/utils/http/error/logger';
+
+// 修改 mockErrorLogger 定义
+const mockErrorLogger = errorLogger as { log: (...args: any[]) => void };
 
 describe('ErrorBoundary', () => {
   const ErrorChild = () => {
@@ -55,7 +57,7 @@ describe('ErrorBoundary', () => {
         <ErrorChild />
       </ErrorBoundary>
     );
-    expect(errorLogger.log).toHaveBeenCalledWith(
+    expect(mockErrorLogger.log).toHaveBeenCalledWith(
       expect.objectContaining({
         type: HttpErrorType.REACT_ERROR,
         message: 'Test error'
@@ -110,7 +112,7 @@ describe('ErrorBoundary', () => {
         <ErrorChild />
       </ErrorBoundary>
     );
-    expect(errorLogger.log).toHaveBeenCalledWith(
+    expect(mockErrorLogger.log).toHaveBeenCalledWith(
       expect.objectContaining({
         data: expect.objectContaining({
           componentStack: expect.any(String)

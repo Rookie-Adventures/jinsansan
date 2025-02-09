@@ -5,19 +5,30 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 interface FileUploaderProps {
   onUploadComplete?: (file: File) => void;
   onError?: (error: Error) => void;
+  maxFileSize?: number; // 最大文件大小（字节）
 }
 
 export const FileUploader: React.FC<FileUploaderProps> = ({
   onUploadComplete,
-  onError
+  onError,
+  maxFileSize = 5 * 1024 * 1024 // 默认 5MB
 }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setSelectedFile(file);
-      onUploadComplete?.(file);
+      if (maxFileSize && file.size > maxFileSize) {
+        onError?.(new Error(`文件大小超过限制 (${maxFileSize / 1024 / 1024}MB)`));
+        return;
+      }
+
+      try {
+        setSelectedFile(file);
+        onUploadComplete?.(file);
+      } catch (error) {
+        onError?.(error instanceof Error ? error : new Error('文件上传失败'));
+      }
     }
   };
 

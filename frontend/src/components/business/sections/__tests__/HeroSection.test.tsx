@@ -1,5 +1,4 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material/styles';
 import { useMediaQuery } from '@mui/material';
 import { vi } from 'vitest';
@@ -9,9 +8,9 @@ import { createTheme } from '@/theme';
 
 // Mock useMediaQuery
 vi.mock('@mui/material', async () => {
-  const actual = await vi.importActual('@mui/material');
+  const actual = await vi.importActual<typeof import('@mui/material')>('@mui/material');
   return {
-    ...actual as any,
+    ...actual,
     useMediaQuery: vi.fn()
   };
 });

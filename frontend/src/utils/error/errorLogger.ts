@@ -58,10 +58,10 @@ class DevLogOutput implements LogOutput {
  * 生产环境日志输出（静默）
  */
 class ProductionLogOutput implements LogOutput {
-  debug(): void {}
-  info(): void {}
-  warn(): void {}
-  error(): void {}
+  debug(_message: string, ..._args: unknown[]): void {}
+  info(_message: string, ..._args: unknown[]): void {}
+  warn(_message: string, ..._args: unknown[]): void {}
+  error(_message: string, ..._args: unknown[]): void {}
 }
 
 /**

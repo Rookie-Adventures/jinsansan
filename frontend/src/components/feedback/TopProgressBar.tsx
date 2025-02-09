@@ -23,12 +23,19 @@ export const TopProgressBar = ({ loading = false, progress }: TopProgressBarProp
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    let timer: number | undefined;
+
     if (loading) {
       setVisible(true);
     } else {
-      const timer = setTimeout(() => setVisible(false), 200);
-      return () => clearTimeout(timer);
+      timer = window.setTimeout(() => setVisible(false), 200);
     }
+
+    return () => {
+      if (timer !== undefined) {
+        window.clearTimeout(timer);
+      }
+    };
   }, [loading]);
 
   if (!visible) return null;

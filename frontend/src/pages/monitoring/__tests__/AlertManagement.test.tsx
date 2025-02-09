@@ -1,6 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
-import { v4 as uuidv4 } from 'uuid';
 import { AlertManagement } from '../AlertManagement';
 import { AlertManager } from '@/infrastructure/monitoring/AlertManager';
 import type { AlertRule } from '@/infrastructure/monitoring/types';

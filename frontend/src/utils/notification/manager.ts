@@ -1,11 +1,4 @@
-import { ErrorSeverity } from '../http/error/types';
-
-export interface NotificationOptions {
-  type: 'success' | 'error' | 'warning' | 'info';
-  message: string;
-  description?: string;
-  duration?: number;
-}
+import { NotificationOptions, NotificationSeverity } from './types';
 
 export class NotificationManager {
   private static instance: NotificationManager;
@@ -32,14 +25,14 @@ export class NotificationManager {
     }
   }
 
-  public getNotificationType(severity: ErrorSeverity): NotificationOptions['type'] {
+  public getNotificationType(severity: NotificationSeverity): NotificationOptions['type'] {
     switch (severity) {
-      case 'critical':
-      case 'error':
+      case NotificationSeverity.CRITICAL:
+      case NotificationSeverity.ERROR:
         return 'error';
-      case 'warning':
+      case NotificationSeverity.WARNING:
         return 'warning';
-      case 'info':
+      case NotificationSeverity.INFO:
         return 'info';
       default:
         return 'info';

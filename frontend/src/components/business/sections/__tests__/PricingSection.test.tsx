@@ -1,5 +1,4 @@
-import React from 'react';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor, act } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material/styles';
 import { useMediaQuery } from '@mui/material';
 import { vi } from 'vitest';
@@ -10,9 +9,9 @@ import { createTheme } from '@/theme';
 
 // Mock useMediaQuery
 vi.mock('@mui/material', async () => {
-  const actual = await vi.importActual('@mui/material');
+  const actual = await vi.importActual<typeof import('@mui/material')>('@mui/material');
   return {
-    ...actual as any,
+    ...actual,
     useMediaQuery: vi.fn()
   };
 });
@@ -20,7 +19,7 @@ vi.mock('@mui/material', async () => {
 // Mock framer-motion to avoid animation issues in tests
 vi.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, ...props }: any) => (
+    div: ({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
       <div data-testid="motion-div" {...props}>
         {children}
       </div>
@@ -61,20 +60,22 @@ describe('PricingSection', () => {
     ];
 
     for (const plan of plans) {
-      expect(screen.getByText(plan.title)).toBeInTheDocument();
-      expect(screen.getByText(plan.price)).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText(plan.title)).toBeInTheDocument();
+        expect(screen.getByText(plan.price)).toBeInTheDocument();
+      });
     }
   });
 
-  it('应该正确显示最受欢迎标签', () => {
+  it('应该正确显示最受欢迎标签', async () => {
     renderPricingSection();
-    const popularBadge = screen.getByText('最受欢迎');
+    const popularBadge = await screen.findByText('最受欢迎');
     expect(popularBadge).toBeInTheDocument();
     const headerRoot = popularBadge.closest('.MuiCardHeader-root');
     expect(headerRoot).toHaveClass('css-r4xzz0-MuiCardHeader-root');
   });
 
-  it('应该正确显示每个方案的功能列表', () => {
+  it('应该正确显示每个方案的功能列表', async () => {
     renderPricingSection();
     
     // 免费版功能
@@ -101,37 +102,40 @@ describe('PricingSection', () => {
       '7×24小时技术支持'
     ];
 
-    [...freePlanFeatures, ...proPlanFeatures, ...enterprisePlanFeatures]
-      .forEach(feature => {
+    for (const feature of [...freePlanFeatures, ...proPlanFeatures, ...enterprisePlanFeatures]) {
+      await waitFor(() => {
         const featureElement = screen.getByText(feature);
         expect(featureElement).toBeInTheDocument();
         // 检查每个功能项是否有对应的图标
         const iconParent = featureElement.parentElement;
         expect(iconParent?.querySelector('[data-testid="CheckIcon"]')).toBeInTheDocument();
       });
+    }
   });
 
   describe('响应式布局测试', () => {
-    it('应该在移动端正确响应', () => {
+    it('应该在移动端正确响应', async () => {
       // 模拟移动端视图
       vi.mocked(useMediaQuery).mockReturnValue(true);
       renderPricingSection();
       
       // 检查容器边距
-      const container = screen.getByRole('main', { name: /价格方案/i });
+      const container = await screen.findByRole('main', { name: /价格方案/i });
       expect(container).toHaveStyle({
         padding: expect.any(String)
       });
     });
 
-    it('应该在桌面端正确显示', () => {
+    it('应该在桌面端正确显示', async () => {
       vi.mocked(useMediaQuery).mockReturnValue(false);
       renderPricingSection();
       
       // 检查价格文字大小
-      const priceElements = screen.getAllByRole('heading', { level: 2 });
-      priceElements.forEach(element => {
-        expect(element).toHaveClass('MuiTypography-h3');
+      await waitFor(() => {
+        const priceElements = screen.getAllByRole('heading', { level: 2 });
+        priceElements.forEach(element => {
+          expect(element).toHaveClass('MuiTypography-h3');
+        });
       });
     });
   });
@@ -140,31 +144,39 @@ describe('PricingSection', () => {
     it('应该正确处理按钮悬停效果', async () => {
       renderPricingSection();
       
-      const buttons = screen.getAllByRole('button');
+      const buttons = await screen.findAllByRole('button');
       for (const button of buttons) {
-        await user.hover(button);
+        await act(async () => {
+          await user.hover(button);
+        });
         expect(button).toHaveClass('MuiButton-root');
-        await user.unhover(button);
+        await act(async () => {
+          await user.unhover(button);
+        });
       }
     });
 
     it('应该正确处理卡片悬停效果', async () => {
       renderPricingSection();
       
-      const cards = screen.getAllByRole('article');
+      const cards = await screen.findAllByRole('article');
       for (const card of cards) {
-        await user.hover(card);
+        await act(async () => {
+          await user.hover(card);
+        });
         expect(card).toHaveClass('MuiCard-root');
-        await user.unhover(card);
+        await act(async () => {
+          await user.unhover(card);
+        });
       }
     });
   });
 
   describe('可访问性测试', () => {
-    it('应该为所有价格方案提供正确的 ARIA 标签', () => {
+    it('应该为所有价格方案提供正确的 ARIA 标签', async () => {
       renderPricingSection();
       
-      const cards = screen.getAllByRole('article');
+      const cards = await screen.findAllByRole('article');
       expect(cards[0]).toHaveAttribute('aria-label', '免费版价格方案');
       expect(cards[1]).toHaveAttribute('aria-label', '专业版价格方案');
       expect(cards[2]).toHaveAttribute('aria-label', '企业版价格方案');
@@ -173,30 +185,34 @@ describe('PricingSection', () => {
     it('应该确保所有按钮都可以通过键盘访问', async () => {
       renderPricingSection();
       
-      const buttons = screen.getAllByRole('button');
+      const buttons = await screen.findAllByRole('button');
       for (const button of buttons) {
         expect(button).toHaveAttribute('tabindex', '0');
-        button.focus();
+        await act(async () => {
+          button.focus();
+        });
         expect(button).toHaveFocus();
       }
     });
 
-    it('应该确保所有功能列表项都有正确的语义标记', () => {
+    it('应该确保所有功能列表项都有正确的语义标记', async () => {
       renderPricingSection();
       
-      const features = screen.getAllByTestId('CheckIcon');
-      features.forEach(feature => {
-        expect(feature).toBeVisible();
-        expect(feature).toHaveAttribute('aria-hidden', 'true');
+      await waitFor(() => {
+        const features = screen.getAllByTestId('CheckIcon');
+        features.forEach(feature => {
+          expect(feature).toBeVisible();
+          expect(feature).toHaveAttribute('aria-hidden', 'true');
+        });
       });
     });
   });
 
   describe('动画测试', () => {
-    it('应该为每个价格卡片添加正确的动画属性', () => {
+    it('应该为每个价格卡片添加正确的动画属性', async () => {
       renderPricingSection();
       
-      const motionDivs = screen.getAllByTestId('motion-div');
+      const motionDivs = await screen.findAllByTestId('motion-div');
       motionDivs.forEach((div) => {
         expect(div).toHaveAttribute('initial');
         expect(div).toHaveAttribute('animate');

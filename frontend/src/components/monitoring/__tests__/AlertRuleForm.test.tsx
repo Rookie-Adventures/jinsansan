@@ -1,3 +1,5 @@
+/** @jest-environment jsdom */
+
 import type { AlertRule } from '@/infrastructure/monitoring/types';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
@@ -80,56 +82,39 @@ describe('AlertRuleForm', () => {
 
   // 表单验证测试
   describe('表单验证', () => {
-    it('validates threshold values', async () => {
-      const { getByTestId, findByTestId } = render(
+    it('validates required fields', async () => {
+      const { getByRole, findByText } = render(
         <AlertRuleForm 
-          onSubmit={vi.fn()} 
-          onCancel={vi.fn()} 
+          onSubmit={mockOnSubmit} 
+          onCancel={() => {}} 
         />
       );
-
-      const thresholdInput = getByTestId('threshold-input');
       
-      await act(async () => {
-        fireEvent.change(thresholdInput, { target: { value: '-1' } });
-      });
+      // 触发表单提交
+      fireEvent.submit(getByRole('form'));
 
-      // 使用 findByTestId 等待错误消息出现
-      const errorElement = await findByTestId('threshold-error-text');
-      
-      // 等待状态更新完成
-      await waitFor(() => {
-        expect(errorElement.textContent?.trim()).toBe('阈值不能为负数');
-      });
+      // 等待错误消息出现
+      const nameError = await findByText('规则名称不能为空');
+      expect(nameError).toBeInTheDocument();
     });
 
-    test('validates required fields', async () => {
-      const { getByRole, findByTestId } = render(
+    it('validates threshold values', async () => {
+      const { getByRole, getByLabelText, findByText } = render(
         <AlertRuleForm 
-          onSubmit={vi.fn()} 
-          onCancel={vi.fn()} 
+          onSubmit={mockOnSubmit} 
+          onCancel={() => {}} 
         />
       );
       
-      // 确保规则名称字段为空
-      const nameInput = screen.getByLabelText('规则名称');
-      await act(async () => {
-        await user.clear(nameInput);
-      });
+      // 输入无效的阈值
+      fireEvent.change(getByLabelText('阈值'), { target: { value: '-1' } });
+      
+      // 触发表单提交
+      fireEvent.submit(getByRole('form'));
 
-      // 提交空表单
-      const submitButton = getByRole('button', { name: '保存' });
-      await act(async () => {
-        await user.click(submitButton);
-      });
-
-      // 等待错误消息出现并验证
-      await waitFor(async () => {
-        const errorElement = await findByTestId('name-error-text');
-        console.log('Name error text:', errorElement.textContent);
-        expect(errorElement).toBeInTheDocument();
-        expect(errorElement.textContent?.trim()).toBe('规则名称不能为空');
-      });
+      // 修改期望：查找包含正确的错误提示文本
+      const thresholdError = await findByText('阈值不能为负数');
+      expect(thresholdError).toBeInTheDocument();
     });
 
     test('validates email format', async () => {

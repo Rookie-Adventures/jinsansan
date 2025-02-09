@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import { vi } from 'vitest';
+import { describe, expect, test } from 'vitest';
 import { csrfTokenManager } from '../csrf';
 
 describe('CSRFTokenManager', () => {

@@ -76,11 +76,35 @@ describe('EncryptionManager', () => {
       const decrypted = encryptionManager.decrypt(encrypted, testPassphrase);
       expect(decrypted).toBe(testData);
     });
+
+    test('不应该能修改冻结的配置对象', () => {
+      expect(() => {
+        // 尝试直接修改冻结的配置对象
+        Object.defineProperty(encryptionManager['_config'], 'algorithm', { value: 'DES' });
+      }).toThrow(/Cannot redefine property/);
+    });
   });
 
-  test('应该维护单例实例', () => {
-    const instance1 = encryptionManager;
-    const instance2 = encryptionManager;
-    expect(instance1).toBe(instance2);
+  describe('单例模式', () => {
+    it('应该维护单例实例', () => {
+      const instance1 = encryptionManager;
+      const instance2 = encryptionManager;
+      
+      // 验证是同一个实例
+      expect(instance1).toBe(instance2);
+      
+      // 验证方法不可配置（不可修改）
+      const prototype = Object.getPrototypeOf(instance1);
+      const descriptors = Object.getOwnPropertyDescriptors(prototype);
+      
+      expect(descriptors.updateConfig.configurable).toBe(false);
+      expect(descriptors.encrypt.configurable).toBe(false);
+      expect(descriptors.decrypt.configurable).toBe(false);
+      
+      // 验证实例属性不可修改
+      expect(() => {
+        (instance1 as any).config = {};
+      }).toThrow();
+    });
   });
 }); 

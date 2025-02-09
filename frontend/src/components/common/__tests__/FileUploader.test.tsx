@@ -1,12 +1,16 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { FileUploader } from '../FileUploader';
-import { vi } from 'vitest';
+import { vi, describe, it, expect } from 'vitest';
+
+// 测试配置
+const TEST_FILE_CONTENT = 'test content';
+const TEST_FILE_NAME = 'test.csv';
+const TEST_FILE_TYPE = 'text/csv';
 
 // Mock FileService
 vi.mock('../../../infrastructure/file/FileService', () => ({
   FileServiceImpl: vi.fn().mockImplementation(() => ({
-    uploadCSV: vi.fn()
+    uploadCSV: vi.fn().mockResolvedValue(undefined)
   }))
 }));
 
@@ -36,7 +40,7 @@ describe('FileUploader', () => {
       const onUploadComplete = vi.fn();
       render(<FileUploader onUploadComplete={onUploadComplete} />);
       
-      const file = new File(['test content'], 'test.csv', { type: 'text/csv' });
+      const file = new File([TEST_FILE_CONTENT], TEST_FILE_NAME, { type: TEST_FILE_TYPE });
       const fileInput = screen.getByTestId('file-input');
       
       fireEvent.change(fileInput, { target: { files: [file] } });

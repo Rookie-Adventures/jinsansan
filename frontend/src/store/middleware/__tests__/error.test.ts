@@ -1,9 +1,12 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { errorMiddleware } from '../error';
 import Logger from '@/utils/logger';
-import { showToast } from '../../slices/appSlice';
 
-vi.mock('@/utils/logger');
+vi.mock('@/utils/logger', () => ({
+  default: {
+    error: vi.fn()
+  }
+}));
 vi.mock('../../slices/appSlice', () => ({
   showToast: vi.fn((payload) => ({ type: 'app/showToast', payload }))
 }));

@@ -2,11 +2,20 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, expect, test, vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import AuthPage from '../AuthPage';
-import { LoginFormData, RegisterFormData } from '@/types/auth';
+import type { LoginFormData, RegisterFormData } from '@/types/auth';
 import { useAuth, useAuthForm } from '@/hooks/auth';
 import { validateLoginForm, validateRegisterForm } from '@/utils/auth/validation';
 import LoginForm from '../LoginForm';
 import RegisterForm from '../RegisterForm';
+
+// 测试配置
+const TEST_TIMEOUT = 7000;
+
+// 测试类型定义
+interface AuthFormData extends Partial<LoginFormData & RegisterFormData> {
+  username: string;
+  password: string;
+}
 
 // Mock hooks
 vi.mock('@/hooks/auth', () => ({
@@ -22,7 +31,7 @@ vi.mock('@/hooks/auth', () => ({
     getCurrentUser: vi.fn()
   })),
   useAuthForm: vi.fn(() => ({
-    formData: { username: '', password: '' },
+    formData: { username: '', password: '' } as AuthFormData,
     showPassword: false,
     handleFormChange: vi.fn(),
     togglePasswordVisibility: vi.fn()
@@ -43,7 +52,7 @@ vi.mock('@/utils/auth/validation', () => ({
 }));
 
 describe('AuthPage', () => {
-  const renderAuthPage = (type: 'login' | 'register', initialData = { username: '', password: '' }) => {
+  const renderAuthPage = (type: 'login' | 'register', initialData: AuthFormData = { username: '', password: '' }) => {
     return render(
       <MemoryRouter>
         <AuthPage type={type} initialData={initialData}>
@@ -72,24 +81,26 @@ describe('AuthPage', () => {
         getCurrentUser: vi.fn()
       });
 
+      const testFormData: AuthFormData = { 
+        username: 'testuser', 
+        password: 'password123' 
+      };
+
       vi.mocked(useAuthForm).mockReturnValue({
-        formData: { username: 'testuser', password: 'password123' },
+        formData: testFormData,
         showPassword: false,
         handleFormChange: vi.fn(),
         togglePasswordVisibility: vi.fn()
       });
 
-      renderAuthPage('login');
+      renderAuthPage('login', testFormData);
       
       const form = screen.getByTestId('auth-form');
       fireEvent.submit(form);
 
       await waitFor(() => {
-        expect(mockLogin).toHaveBeenCalledWith({ 
-          username: 'testuser', 
-          password: 'password123' 
-        });
-      });
+        expect(mockLogin).toHaveBeenCalledWith(testFormData);
+      }, { timeout: TEST_TIMEOUT });
       expect(screen.queryByRole('alert')).not.toBeInTheDocument();
     });
 
@@ -107,21 +118,26 @@ describe('AuthPage', () => {
         getCurrentUser: vi.fn()
       });
 
+      const testFormData: AuthFormData = { 
+        username: 'testuser', 
+        password: 'wrongpass' 
+      };
+
       vi.mocked(useAuthForm).mockReturnValue({
-        formData: { username: 'testuser', password: 'wrongpass' },
+        formData: testFormData,
         showPassword: false,
         handleFormChange: vi.fn(),
         togglePasswordVisibility: vi.fn()
       });
 
-      renderAuthPage('login');
+      renderAuthPage('login', testFormData);
       
       const form = screen.getByTestId('auth-form');
       fireEvent.submit(form);
 
       await waitFor(() => {
         expect(screen.getByText('用户名或密码错误')).toBeInTheDocument();
-      });
+      }, { timeout: TEST_TIMEOUT });
     });
   });
 
@@ -140,31 +156,34 @@ describe('AuthPage', () => {
         getCurrentUser: vi.fn()
       });
 
+      const testFormData: AuthFormData = { 
+        username: 'newuser', 
+        password: 'password123',
+        email: 'test@example.com',
+        confirmPassword: 'password123'
+      };
+
+      vi.mocked(validateRegisterForm).mockReturnValue({
+        isValid: true,
+        errorMessage: undefined
+      });
+
       vi.mocked(useAuthForm).mockReturnValue({
-        formData: { 
-          username: 'newuser', 
-          password: 'password123',
-          email: 'test@example.com',
-          confirmPassword: 'password123'
-        },
+        formData: testFormData,
         showPassword: false,
         handleFormChange: vi.fn(),
         togglePasswordVisibility: vi.fn()
       });
 
-      renderAuthPage('register');
+      renderAuthPage('register', testFormData);
       
       const form = screen.getByTestId('auth-form');
       fireEvent.submit(form);
 
       await waitFor(() => {
-        expect(mockRegister).toHaveBeenCalledWith({
-          username: 'newuser',
-          password: 'password123',
-          email: 'test@example.com',
-          confirmPassword: 'password123'
-        });
-      });
+        expect(validateRegisterForm).toHaveBeenCalledWith(testFormData);
+        expect(mockRegister).toHaveBeenCalledWith(testFormData);
+      }, { timeout: TEST_TIMEOUT });
       expect(screen.queryByRole('alert')).not.toBeInTheDocument();
     });
 
@@ -182,26 +201,65 @@ describe('AuthPage', () => {
         getCurrentUser: vi.fn()
       });
 
+      const testFormData: AuthFormData = {
+        username: 'existinguser',
+        password: 'password123',
+        email: 'test@example.com',
+        confirmPassword: 'password123'
+      };
+
+      vi.mocked(validateRegisterForm).mockReturnValue({
+        isValid: true,
+        errorMessage: undefined
+      });
+
       vi.mocked(useAuthForm).mockReturnValue({
-        formData: {
-          username: 'existinguser',
-          password: 'password123',
-          email: 'test@example.com',
-          confirmPassword: 'password123'
-        },
+        formData: testFormData,
         showPassword: false,
         handleFormChange: vi.fn(),
         togglePasswordVisibility: vi.fn()
       });
 
-      renderAuthPage('register');
+      renderAuthPage('register', testFormData);
       
       const form = screen.getByTestId('auth-form');
       fireEvent.submit(form);
 
       await waitFor(() => {
+        expect(validateRegisterForm).toHaveBeenCalledWith(testFormData);
         expect(screen.getByText('用户名已存在')).toBeInTheDocument();
+      }, { timeout: TEST_TIMEOUT });
+    });
+
+    test('注册表单验证失败时应显示验证错误', async () => {
+      const testFormData: AuthFormData = {
+        username: 'test',
+        password: '123',  // 密码太短
+        email: 'invalid-email',  // 无效的邮箱
+        confirmPassword: '123'
+      };
+
+      vi.mocked(validateRegisterForm).mockReturnValue({
+        isValid: false,
+        errorMessage: '密码至少需要6个字符'
       });
+
+      vi.mocked(useAuthForm).mockReturnValue({
+        formData: testFormData,
+        showPassword: false,
+        handleFormChange: vi.fn(),
+        togglePasswordVisibility: vi.fn()
+      });
+
+      renderAuthPage('register', testFormData);
+      
+      const form = screen.getByTestId('auth-form');
+      fireEvent.submit(form);
+
+      await waitFor(() => {
+        expect(validateRegisterForm).toHaveBeenCalledWith(testFormData);
+        expect(screen.getByText('密码至少需要6个字符')).toBeInTheDocument();
+      }, { timeout: TEST_TIMEOUT });
     });
   });
 
@@ -212,20 +270,25 @@ describe('AuthPage', () => {
         errorMessage: '用户名不能为空'
       });
 
-      renderAuthPage('login');
+      const testFormData: AuthFormData = {
+        username: '',
+        password: ''
+      };
+
+      renderAuthPage('login', testFormData);
       
       const form = screen.getByTestId('auth-form');
       fireEvent.submit(form);
 
       await waitFor(() => {
         expect(screen.getByText('用户名不能为空')).toBeInTheDocument();
-      });
+      }, { timeout: TEST_TIMEOUT });
 
       await new Promise((resolve) => setTimeout(resolve, 6000));
       
       await waitFor(() => {
         expect(screen.queryByText('用户名不能为空')).not.toBeInTheDocument();
-      }, { timeout: 7000 });
+      }, { timeout: TEST_TIMEOUT });
     }, 10000);
 
     test('点击关闭按钮应该关闭错误消息', async () => {
@@ -234,21 +297,26 @@ describe('AuthPage', () => {
         errorMessage: '用户名不能为空'
       });
 
-      renderAuthPage('login');
+      const testFormData: AuthFormData = {
+        username: '',
+        password: ''
+      };
+
+      renderAuthPage('login', testFormData);
       
       const form = screen.getByTestId('auth-form');
       fireEvent.submit(form);
 
       await waitFor(() => {
         expect(screen.getByText('用户名不能为空')).toBeInTheDocument();
-      });
+      }, { timeout: TEST_TIMEOUT });
 
       const closeButton = screen.getByLabelText('Close');
       fireEvent.click(closeButton);
 
       await waitFor(() => {
         expect(screen.queryByText('用户名不能为空')).not.toBeInTheDocument();
-      });
+      }, { timeout: TEST_TIMEOUT });
     });
   });
 }); 

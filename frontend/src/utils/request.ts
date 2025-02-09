@@ -9,7 +9,6 @@ import axiosRetry from 'axios-retry';
 import { store } from '@/store';
 import type { ApiResponse } from '@/types/api';
 import { HttpErrorFactory } from '@/utils/http/error/factory';
-import { HttpError } from '@/utils/http/error/types';
 
 // 定义请求配置接口
 export interface RequestConfig extends InternalAxiosRequestConfig {

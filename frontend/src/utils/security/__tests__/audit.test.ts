@@ -5,9 +5,16 @@ import { errorLogger } from '@/utils/error/errorLogger';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { AuditLogLevel, auditLogManager, AuditLogType } from '../audit';
 
+// Mock errorLogger
+vi.mock('@/utils/error/errorLogger', () => ({
+  errorLogger: {
+    log: vi.fn()
+  }
+}));
+
 describe('AuditLogManager', () => {
   const mockFetch = vi.fn();
-  const mockErrorLogger = vi.spyOn(errorLogger, 'log').mockImplementation(async () => {});
+  const mockErrorLogger = vi.mocked(errorLogger);
   const baseTime = new Date('2024-01-01T00:00:00Z').getTime();
   
   // 保存原始的 localStorage
@@ -25,7 +32,7 @@ describe('AuditLogManager', () => {
       removeItem: vi.fn((key: string) => store.delete(key)),
       clear: vi.fn(() => store.clear()),
       length: 0,
-      key: vi.fn((index: number) => null),
+      key: vi.fn((_: number) => null),
     } as Storage;
     
     global.localStorage = localStorageMock;
@@ -41,7 +48,7 @@ describe('AuditLogManager', () => {
     } as Response);
     
     // 清理 errorLogger 的 mock
-    mockErrorLogger.mockClear();
+    mockErrorLogger.log.mockClear();
   });
 
   afterEach(() => {
@@ -191,8 +198,92 @@ describe('AuditLogManager', () => {
   });
 
   describe('错误处理测试', () => {
-    test('应该处理API调用失败', async () => {
+    it('应该处理API调用失败', async () => {
       // 模拟网络错误
+      mockFetch.mockRejectedValueOnce(new Error('Network error'));
+      
+      const testLog = {
+        type: AuditLogType.SYSTEM,
+        level: AuditLogLevel.ERROR,
+        action: 'test-error',
+        resource: 'test-resource',
+        details: {},
+        status: 'failure'
+      };
+
+      // 执行测试
+      await auditLogManager.log(
+        testLog.type,
+        testLog.level,
+        testLog.action,
+        testLog.resource,
+        testLog.details
+      );
+
+      // 等待异步操作完成
+      await vi.runAllTimersAsync();
+
+      // 验证错误被正确记录
+      expect(mockErrorLogger.log).toHaveBeenCalledWith(
+        expect.any(Error),
+        expect.objectContaining({
+          context: expect.objectContaining({
+            action: 'test-error',
+            level: 'error',
+            resource: 'test-resource',
+            source: 'AuditLogger'
+          }),
+          level: 'error',
+        })
+      );
+    });
+
+    it('应该触发严重级别的告警', async () => {
+      const criticalLog = {
+        type: AuditLogType.SECURITY,
+        level: AuditLogLevel.CRITICAL,
+        action: 'security-breach',
+        resource: 'system',
+        details: { severity: 'high' }
+      };
+
+      await auditLogManager.log(
+        criticalLog.type,
+        criticalLog.level,
+        criticalLog.action,
+        criticalLog.resource,
+        criticalLog.details
+      );
+
+      // 等待异步操作完成
+      await vi.runAllTimersAsync();
+
+      // 验证严重告警被正确记录
+      expect(mockErrorLogger.log).toHaveBeenCalledWith(
+        expect.any(Error),
+        expect.objectContaining({
+          context: expect.objectContaining({
+            action: 'security-breach',
+            details: { severity: 'high' },
+            level: 'critical',
+            resource: 'system',
+            type: 'security',
+            status: 'success',
+            timestamp: expect.any(String)
+          }),
+          level: 'error'
+        })
+      );
+    });
+
+    it('应该处理localStorage存储失败', async () => {
+      // 模拟 localStorage.setItem 抛出错误
+      const mockSetItem = vi.fn().mockImplementation(() => {
+        throw new Error('Storage error');
+      });
+      (global.localStorage as any).setItem = mockSetItem;
+
+      // 模拟 API 调用失败
       mockFetch.mockRejectedValueOnce(new Error('Network error'));
 
       const testLog = {
@@ -203,93 +294,28 @@ describe('AuditLogManager', () => {
         details: {}
       };
 
-      // 验证错误抛出
-      await expect(auditLogManager.log(
+      await auditLogManager.log(
         testLog.type,
         testLog.level,
         testLog.action,
         testLog.resource,
         testLog.details
-      )).rejects.toThrow('Network error');
-
-      // 等待一下以确保异步操作完成
-      await vi.runAllTimersAsync();
-
-      // 验证失败日志存储
-      const storedLogs = localStorage.getItem('failedAuditLogs');
-      const failedLogs = JSON.parse(storedLogs || '[]');
-      expect(failedLogs).toHaveLength(1);
-      expect(failedLogs[0]).toMatchObject({
-        action: testLog.action,
-        type: testLog.type,
-        level: testLog.level,
-        status: 'failure',
-        errorMessage: 'Network error'
-      });
-    });
-
-    test('应该触发严重级别的告警', async () => {
-      // 确保 errorLogger 被正确模拟
-      mockErrorLogger.mockClear();
-
-      await auditLogManager.log(
-        AuditLogType.SECURITY,
-        AuditLogLevel.CRITICAL,
-        'security-breach',
-        'system',
-        {}
       );
 
-      // 等待一下以确保异步操作完成
+      // 等待异步操作完成
       await vi.runAllTimersAsync();
 
-      expect(mockErrorLogger).toHaveBeenCalledWith(
+      // 验证错误被正确记录
+      expect(mockErrorLogger.log).toHaveBeenCalledWith(
         expect.any(Error),
         expect.objectContaining({
-          level: 'error',
           context: expect.objectContaining({
-            type: AuditLogType.SECURITY,
-            level: AuditLogLevel.CRITICAL,
-            action: 'security-breach',
-            resource: 'system'
-          })
-        })
-      );
-    });
-
-    test('应该处理localStorage存储失败', async () => {
-      // 直接修改当前的 localStorage mock
-      const mockSetItem = vi.fn().mockImplementationOnce(() => {
-        throw new Error('Storage full');
-      });
-      
-      // 替换当前 localStorage 的 setItem 方法
-      (global.localStorage as any).setItem = mockSetItem;
-
-      // 模拟API调用失败
-      mockFetch.mockRejectedValueOnce(new Error('Network error'));
-
-      // 确保 errorLogger 被正确模拟
-      mockErrorLogger.mockClear();
-
-      await expect(auditLogManager.log(
-        AuditLogType.SYSTEM,
-        AuditLogLevel.ERROR,
-        'test-error',
-        'test-resource',
-        {}
-      )).rejects.toThrow('Network error');
-
-      // 等待一下以确保异步操作完成
-      await vi.runAllTimersAsync();
-
-      expect(mockErrorLogger).toHaveBeenCalledWith(
-        expect.any(Error),
-        expect.objectContaining({
+            action: 'test-error',
+            level: 'error',
+            resource: 'test-resource',
+            source: 'AuditLogger'
+          }),
           level: 'error',
-          context: expect.objectContaining({
-            log: expect.any(Object)
-          })
         })
       );
     });

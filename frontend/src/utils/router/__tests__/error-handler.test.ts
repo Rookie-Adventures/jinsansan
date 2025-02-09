@@ -1,6 +1,7 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { routerErrorHandler } from '../error-handler';
 import { errorLogger } from '@/utils/error/errorLogger';
+import { ErrorLevel } from '@/types/error';
 
 // Mock errorLogger
 vi.mock('@/utils/error/errorLogger', () => ({
@@ -22,26 +23,27 @@ describe('RouterErrorHandler', () => {
       routerErrorHandler.handleError(error, { path: '/not-found' });
 
       expect(errorLogger.log).toHaveBeenCalledTimes(2);
-      expect(errorLogger.log).toHaveBeenNthCalledWith(1, 
+      // 验证第一次调用 - 记录原始错误
+      expect(errorLogger.log).toHaveBeenNthCalledWith(1,
         error,
         expect.objectContaining({
-          level: 'error',
-          context: {
+          level: ErrorLevel.ERROR,
+          context: expect.objectContaining({
             path: '/not-found',
             status: 404
-          }
+          })
         })
       );
+      // 验证第二次调用 - 记录格式化的 404 错误
       expect(errorLogger.log).toHaveBeenNthCalledWith(2,
         expect.objectContaining({
-          message: 'Route not found: Page not found'
+          message: expect.stringContaining('Route not found')
         }),
         expect.objectContaining({
-          level: 'error',
-          context: {
-            status: 404,
-            errorData: undefined
-          }
+          level: ErrorLevel.ERROR,
+          context: expect.objectContaining({
+            status: 404
+          })
         })
       );
     });
@@ -52,38 +54,64 @@ describe('RouterErrorHandler', () => {
 
       routerErrorHandler.handleError(error);
 
-      expect(errorLogger.log).toHaveBeenCalledTimes(2);
+      expect(errorLogger.log).toHaveBeenCalledTimes(3);
+      // 验证第一次调用 - 记录原始错误
+      expect(errorLogger.log).toHaveBeenNthCalledWith(1,
+        error,
+        expect.objectContaining({
+          level: ErrorLevel.ERROR,
+          context: expect.objectContaining({
+            status: 403
+          })
+        })
+      );
+      // 验证第二次调用 - 记录格式化的 403 错误
       expect(errorLogger.log).toHaveBeenNthCalledWith(2,
         expect.objectContaining({
-          message: 'Access forbidden: Access denied'
+          message: expect.stringContaining('Access forbidden')
         }),
         expect.objectContaining({
-          level: 'error',
-          context: {
+          level: ErrorLevel.ERROR,
+          context: expect.objectContaining({
             status: 403,
             errorData: { reason: 'unauthorized' }
-          }
+          })
+        })
+      );
+      // 验证第三次调用 - 记录警告
+      expect(errorLogger.log).toHaveBeenNthCalledWith(3,
+        expect.any(Error),
+        expect.objectContaining({
+          level: ErrorLevel.WARN
         })
       );
     });
 
     it('应该处理未知错误', () => {
       const error = new Error('Unknown error');
-      Object.assign(error, { status: 500 });
 
       routerErrorHandler.handleError(error);
 
       expect(errorLogger.log).toHaveBeenCalledTimes(2);
+      // 验证第一次调用 - 记录原始错误
+      expect(errorLogger.log).toHaveBeenNthCalledWith(1,
+        error,
+        expect.objectContaining({
+          level: ErrorLevel.ERROR,
+          context: expect.objectContaining({
+            status: 500
+          })
+        })
+      );
+      // 验证第二次调用 - 记录严重错误
       expect(errorLogger.log).toHaveBeenNthCalledWith(2,
+        error,
         expect.objectContaining({
-          message: 'Unknown router error: Unknown error'
-        }),
-        expect.objectContaining({
-          level: 'error',
-          context: {
-            status: 500,
-            errorData: undefined
-          }
+          level: ErrorLevel.CRITICAL,
+          context: expect.objectContaining({
+            isCritical: true,
+            timestamp: expect.any(Number)
+          })
         })
       );
     });
@@ -94,15 +122,25 @@ describe('RouterErrorHandler', () => {
       routerErrorHandler.handleError(error);
 
       expect(errorLogger.log).toHaveBeenCalledTimes(2);
+      // 验证第一次调用 - 记录原始错误
       expect(errorLogger.log).toHaveBeenNthCalledWith(1,
+        expect.any(Error),
         expect.objectContaining({
-          message: 'String error message'
-        }),
+          level: ErrorLevel.ERROR,
+          context: expect.objectContaining({
+            status: 500
+          })
+        })
+      );
+      // 验证第二次调用 - 记录严重错误
+      expect(errorLogger.log).toHaveBeenNthCalledWith(2,
+        expect.any(Error),
         expect.objectContaining({
-          level: 'error',
-          context: {
-            status: undefined
-          }
+          level: ErrorLevel.CRITICAL,
+          context: expect.objectContaining({
+            isCritical: true,
+            timestamp: expect.any(Number)
+          })
         })
       );
     });
@@ -110,7 +148,6 @@ describe('RouterErrorHandler', () => {
     it('应该处理带有额外数据的错误', () => {
       const error = new Error('Complex error');
       Object.assign(error, {
-        status: 500,
         data: {
           code: 'INTERNAL_ERROR',
           details: 'Something went wrong'
@@ -120,19 +157,25 @@ describe('RouterErrorHandler', () => {
       routerErrorHandler.handleError(error);
 
       expect(errorLogger.log).toHaveBeenCalledTimes(2);
+      // 验证第一次调用 - 记录原始错误
+      expect(errorLogger.log).toHaveBeenNthCalledWith(1,
+        error,
+        expect.objectContaining({
+          level: ErrorLevel.ERROR,
+          context: expect.objectContaining({
+            status: 500
+          })
+        })
+      );
+      // 验证第二次调用 - 记录严重错误
       expect(errorLogger.log).toHaveBeenNthCalledWith(2,
+        error,
         expect.objectContaining({
-          message: 'Unknown router error: Complex error'
-        }),
-        expect.objectContaining({
-          level: 'error',
-          context: {
-            status: 500,
-            errorData: {
-              code: 'INTERNAL_ERROR',
-              details: 'Something went wrong'
-            }
-          }
+          level: ErrorLevel.CRITICAL,
+          context: expect.objectContaining({
+            isCritical: true,
+            timestamp: expect.any(Number)
+          })
         })
       );
     });

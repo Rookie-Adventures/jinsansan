@@ -18,9 +18,10 @@ export function getErrorMessage(error: unknown): string {
  * 将错误转换为日志数据
  */
 export function toLogData(error: unknown): LogData {
+  const err = toError(error);
   return {
-    error: getErrorMessage(error),
-    stack: error instanceof Error ? error.stack : undefined,
+    error: err.message,
+    stack: err.stack,
     timestamp: Date.now()
   };
 } 

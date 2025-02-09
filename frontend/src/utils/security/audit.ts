@@ -1,5 +1,4 @@
 import { errorLogger } from '@/utils/error/errorLogger';
-import { getErrorMessage } from '../error/errorUtils';
 import { encryptionManager } from './encryption';
 
 /**
@@ -90,48 +89,39 @@ export class AuditLogManager {
     status: 'success' | 'failure' = 'success',
     errorMessage?: string
   ): Promise<void> {
-    const log: AuditLog = {
-      id: encryptionManager.generateRandomString(16),
-      timestamp: Date.now(),
-      type,
-      level,
-      userId: this.getCurrentUserId(),
-      action,
-      resource,
-      details,
-      ip: this.getClientIP(),
-      userAgent: navigator.userAgent,
-      status,
-      errorMessage
-    };
-
-    // 先添加到内存中
-    this.addLog(log);
-
-    // 对于严重级别的日志，先触发告警
-    if (log.level === AuditLogLevel.CRITICAL) {
-      this.triggerAlert(log);
-    }
-
     try {
-      // 加密敏感信息
-      const encryptedLog = this.encryptSensitiveData(log);
-      
-      // 发送到服务器
-      await this.sendToServer(encryptedLog);
-    } catch (error) {
-      // 更新日志状态
-      const failedLog: AuditLog = {
-        ...log,
-        status: 'failure',
-        errorMessage: getErrorMessage(error)
+      const log: AuditLog = {
+        id: crypto.randomUUID(),
+        timestamp: Date.now(),
+        type,
+        level,
+        userId: this.getCurrentUserId(),
+        action,
+        resource,
+        details,
+        ip: this.getClientIP(),
+        userAgent: navigator.userAgent,
+        status,
+        errorMessage
       };
-      
-      // 存储失败的日志
-      this.storeFailedLog(failedLog);
-      
-      // 重新抛出错误
-      throw error;
+
+      // 添加日志到内存
+      this.addLog(log);
+
+      // 发送到服务器
+      await this.sendToServer(log);
+
+      // 检查是否需要触发告警
+      if (level === AuditLogLevel.ERROR || level === AuditLogLevel.CRITICAL) {
+        this.triggerAlert(log);
+      }
+    } catch (error) {
+      await this.handleError(error instanceof Error ? error : new Error('Failed to process audit log'), {
+        type,
+        level,
+        action,
+        resource
+      });
     }
   }
 
@@ -154,9 +144,8 @@ export class AuditLogManager {
 
     sensitiveFields.forEach(field => {
       if (encryptedLog[field]) {
-        const valueToEncrypt = String(encryptedLog[field]);
         encryptedLog[field] = encryptionManager.encrypt(
-          valueToEncrypt,
+          String(encryptedLog[field]),
           this.encryptionKey
         );
       }
@@ -169,17 +158,23 @@ export class AuditLogManager {
    * 发送日志到服务器
    */
   private async sendToServer(log: AuditLog): Promise<void> {
-    const url = `${this.apiBaseUrl}/api/audit-logs`;
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(log),
-    });
+    try {
+      const url = `${this.apiBaseUrl}/api/audit-logs`;
+      const encryptedLog = this.encryptSensitiveData(log);
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(encryptedLog),
+      });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+    } catch (error) {
+      this.storeFailedLog(log);
+      throw error;
     }
   }
 

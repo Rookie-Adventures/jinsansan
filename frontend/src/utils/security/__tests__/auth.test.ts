@@ -1,6 +1,5 @@
-import { vi } from 'vitest';
+import { describe, expect, vi, test } from 'vitest';
 import { authManager } from '../auth';
-import { encryptionManager } from '../encryption';
 
 describe('AuthManager', () => {
   beforeEach(() => {
@@ -157,11 +156,11 @@ describe('AuthManager', () => {
       await authManager.login('test', 'wrong-password').catch(() => {});
       expect(logSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          action: 'login',
-          status: 'failure',
+          action: 'login_error',
           details: expect.objectContaining({
-            reason: 'invalid_credentials'
-          })
+            error: 'invalid_credentials'
+          }),
+          status: 'failure'
         })
       );
     });

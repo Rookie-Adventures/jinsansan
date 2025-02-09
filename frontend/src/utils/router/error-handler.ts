@@ -1,6 +1,4 @@
 import { errorLogger } from '@/utils/error/errorLogger';
-import type { HttpError } from '@/utils/http/error/types';
-import { HttpErrorType } from '@/utils/http/error/types';
 
 interface RouterError extends Error {
   status?: number;
@@ -24,21 +22,25 @@ class RouterErrorHandler {
 
   handleError(error: unknown, info?: { path?: string }): void {
     const routerError = this.normalizeError(error);
+    const errorStatus = routerError.status || 500;  // 默认为500
     
     // 记录错误
     this.logger.log(routerError, {
       level: 'error',
       context: {
         path: info?.path,
-        status: routerError.status
+        status: errorStatus
       }
     });
 
     // 根据错误类型处理
-    if (routerError.status === 404) {
+    if (errorStatus === 404) {
       this.handle404Error(routerError);
-    } else if (routerError.status === 403) {
+    } else if (errorStatus === 403) {
       this.handle403Error(routerError);
+      this.handleWarning(`Access forbidden for path: ${info?.path}`);
+    } else if (errorStatus >= 500) {
+      this.handleCritical(routerError);
     } else {
       this.handleUnknownError(routerError);
     }

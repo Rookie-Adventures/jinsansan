@@ -1,4 +1,3 @@
-import { errorLogger } from '../../utils/errorLogger';
 import { LogData, LogLevel } from './types';
 
 export class Logger {

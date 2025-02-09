@@ -1,6 +1,6 @@
 import { PerformanceMonitor } from './PerformanceMonitor';
 
-export interface RouteAnalytics {
+export interface IRouteAnalytics {
   path: string;
   timestamp: number;
   navigationType: 'push' | 'pop' | 'replace' | 'initial';
@@ -10,7 +10,7 @@ export interface RouteAnalytics {
 
 export class RouterAnalytics {
   private static instance: RouterAnalytics;
-  private analytics: RouteAnalytics[] = [];
+  private analytics: IRouteAnalytics[] = [];
   private lastPath?: string;
   private lastTimestamp?: number;
   private performanceMonitor: PerformanceMonitor;
@@ -49,7 +49,7 @@ export class RouterAnalytics {
     return RouterAnalytics.instance;
   }
 
-  public trackRoute(path: string, navigationType: RouteAnalytics['navigationType']): void {
+  public trackRoute(path: string, navigationType: IRouteAnalytics['navigationType']): void {
     const timestamp = Date.now();
     const duration = this.lastTimestamp ? timestamp - this.lastTimestamp : undefined;
 
@@ -64,7 +64,7 @@ export class RouterAnalytics {
       this.routeDurations[this.lastPath].push(duration);
     }
 
-    const analytics: RouteAnalytics = {
+    const analytics: IRouteAnalytics = {
       path,
       timestamp,
       navigationType,
@@ -82,8 +82,11 @@ export class RouterAnalytics {
 
     // 记录首次加载时间
     if (navigationType === 'initial') {
-      const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
-      this.performanceMonitor.trackCustomMetric('initial_route_load', loadTime);
+      const navigationEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+      if (navigationEntry) {
+        const loadTime = navigationEntry.loadEventEnd - navigationEntry.startTime;
+        this.performanceMonitor.trackCustomMetric('initial_route_load', loadTime);
+      }
     }
 
     this.lastPath = path;
@@ -102,7 +105,7 @@ export class RouterAnalytics {
     return sum / durations.length;
   }
 
-  private async reportAnalytics(analytics: RouteAnalytics): Promise<void> {
+  private async reportAnalytics(analytics: IRouteAnalytics): Promise<void> {
     try {
       const response = await fetch('/api/analytics/route', {
         method: 'POST',
@@ -144,6 +147,9 @@ export class RouterAnalytics {
     this.transitionStartTime = Date.now();
     this.transitionFrames = [];
     this.activeTransition = true;
+
+    // 记录路由转换的起点和终点
+    console.debug(`Route transition: ${fromPath} -> ${toPath}`);
 
     // 开始记录帧率
     const recordFrame = () => {
@@ -262,6 +268,13 @@ export class RouterAnalytics {
   public async trackPreloadError(path: string, error: Error): Promise<void> {
     this.preloadStats.failureCount++;
     
+    // 记录预加载错误
+    this.performanceMonitor.trackCustomMetric('route_preload_error', 1);
+    this.performanceMonitor.trackCustomMetric('route_preload_error_count', this.preloadStats.failureCount);
+
+    // 记录错误详情
+    console.error(`Route preload error for path ${path}:`, error.message);
+    
     // 更新活动预加载计数
     const activeCount = this.activePreloads.get(path) || 0;
     if (activeCount > 0) {
@@ -281,7 +294,7 @@ export class RouterAnalytics {
     return this.activePreloads.get(path) || 0;
   }
 
-  public getAnalytics(): RouteAnalytics[] {
+  public getAnalytics(): IRouteAnalytics[] {
     return [...this.analytics];
   }
 } 

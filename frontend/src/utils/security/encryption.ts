@@ -15,13 +15,36 @@ interface EncryptionConfig {
  */
 export class EncryptionManager {
   private static instance: EncryptionManager;
-  private config: EncryptionConfig = {
-    algorithm: 'AES',
-    keySize: 256,
-    iterations: 1000
-  };
+  private _config: EncryptionConfig;
 
-  private constructor() {}
+  private constructor() {
+    // 初始化配置
+    this._config = Object.freeze({
+      algorithm: 'AES',
+      keySize: 256,
+      iterations: 1000
+    });
+
+    // 设置只读的公开配置
+    Object.defineProperty(this, 'config', {
+      get: () => this._config,
+      configurable: false,
+      enumerable: true
+    });
+    
+    // 使方法不可配置
+    const prototype = Object.getPrototypeOf(this);
+    const descriptors = Object.getOwnPropertyDescriptors(prototype);
+    
+    Object.defineProperties(prototype, {
+      updateConfig: { ...descriptors.updateConfig, configurable: false },
+      encrypt: { ...descriptors.encrypt, configurable: false },
+      decrypt: { ...descriptors.decrypt, configurable: false },
+      hash: { ...descriptors.hash, configurable: false },
+      generateRandomString: { ...descriptors.generateRandomString, configurable: false },
+      verifyHash: { ...descriptors.verifyHash, configurable: false }
+    });
+  }
 
   static getInstance(): EncryptionManager {
     if (!EncryptionManager.instance) {
@@ -35,8 +58,8 @@ export class EncryptionManager {
    */
   private generateKey(salt: string, passphrase: string): string {
     return CryptoJS.PBKDF2(passphrase, salt, {
-      keySize: this.config.keySize / 32,
-      iterations: this.config.iterations
+      keySize: this._config.keySize / 32,
+      iterations: this._config.iterations
     }).toString();
   }
 
@@ -50,7 +73,7 @@ export class EncryptionManager {
       const encrypted = CryptoJS.AES.encrypt(data, key);
       return salt + encrypted.toString();
     } catch (error) {
-      this.handleEncryptionError(error, 'encrypt');
+      this.handleCryptoError(error, 'encrypt');
       throw new Error('加密失败');
     }
   }
@@ -70,7 +93,7 @@ export class EncryptionManager {
       }
       return result;
     } catch (error) {
-      this.handleDecryptionError(error, 'decrypt');
+      this.handleCryptoError(error, 'decrypt');
       throw new Error('解密失败：' + (error instanceof Error ? error.message : '未知错误'));
     }
   }
@@ -100,27 +123,20 @@ export class EncryptionManager {
   /**
    * 更新加密配置
    */
-  updateConfig(config: Partial<EncryptionConfig>): void {
-    this.config = { ...this.config, ...config };
+  updateConfig(newConfig: Partial<EncryptionConfig>): void {
+    // 更新私有配置
+    this._config = Object.freeze({
+      ...this._config,
+      ...newConfig
+    });
   }
 
-  private handleEncryptionError(error: unknown, operation: string): void {
+  /**
+   * 处理加密/解密错误
+   */
+  private handleCryptoError(error: unknown, operation: string): void {
     errorLogger.log(
-      error instanceof Error ? error : new Error(`Encryption error in ${operation}`),
-      {
-        level: 'error',
-        context: {
-          operation,
-          timestamp: Date.now(),
-          source: 'EncryptionManager'
-        }
-      }
-    );
-  }
-
-  private handleDecryptionError(error: unknown, operation: string): void {
-    errorLogger.log(
-      error instanceof Error ? error : new Error(`Decryption error in ${operation}`),
+      error instanceof Error ? error : new Error(`Crypto error in ${operation}`),
       {
         level: 'error',
         context: {

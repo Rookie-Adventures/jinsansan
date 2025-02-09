@@ -153,8 +153,36 @@ export class PerformanceMonitor {
 
   // 获取指定时间范围内的性能数据
   public getMetricsInTimeRange(startTime: number, endTime: number): PerformanceMetrics {
-    // 实现获取指定时间范围内的性能数据的逻辑
-    return this.metrics; // 这里需要根据实际需求过滤数据
+    // 过滤指定时间范围内的数据
+    const filteredResponseTimes = this.metrics.responseTimes.filter((_, index) => {
+      const timestamp = Date.now() - (this.metrics.responseTimes.length - index) * this.reportingInterval;
+      return timestamp >= startTime && timestamp <= endTime;
+    });
+
+    const filteredMetrics: PerformanceMetrics = {
+      requestTimes: new Map(),
+      responseTimes: filteredResponseTimes,
+      errorRates: new Map(),
+      resourceUsage: new Map(),
+      customMetrics: new Map()
+    };
+
+    // 过滤错误率数据
+    this.metrics.errorRates.forEach((value, key) => {
+      filteredMetrics.errorRates.set(key, value);
+    });
+
+    // 过滤资源使用数据
+    this.metrics.resourceUsage.forEach((value, key) => {
+      filteredMetrics.resourceUsage.set(key, value);
+    });
+
+    // 过滤自定义指标数据
+    this.metrics.customMetrics.forEach((value, key) => {
+      filteredMetrics.customMetrics.set(key, value);
+    });
+
+    return filteredMetrics;
   }
 
   // 分析性能趋势
