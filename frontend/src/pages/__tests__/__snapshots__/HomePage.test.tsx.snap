@@ -1,0 +1,124 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`HomePage > 应该匹配快照 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-7tuhkw"
+  >
+    <div
+      data-testid="mock-navbar"
+    >
+      Navbar
+    </div>
+    <div
+      class="MuiBox-root css-se6w4j"
+    >
+      <div
+        data-testid="mock-hero-section"
+      >
+        HeroSection
+      </div>
+    </div>
+    <div
+      class="MuiBox-root css-0"
+    >
+      <div
+        data-testid="mock-feature-section"
+      >
+        FeatureSection
+      </div>
+    </div>
+    <div
+      class="MuiBox-root css-1qim88"
+    >
+      <div
+        data-testid="mock-pricing-section"
+      >
+        PricingSection
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`HomePage > 应该在暗色主题下匹配快照 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-7tuhkw"
+  >
+    <div
+      data-testid="mock-navbar"
+    >
+      Navbar
+    </div>
+    <div
+      class="MuiBox-root css-se6w4j"
+    >
+      <div
+        data-testid="mock-hero-section"
+      >
+        HeroSection
+      </div>
+    </div>
+    <div
+      class="MuiBox-root css-0"
+    >
+      <div
+        data-testid="mock-feature-section"
+      >
+        FeatureSection
+      </div>
+    </div>
+    <div
+      class="MuiBox-root css-1qim88"
+    >
+      <div
+        data-testid="mock-pricing-section"
+      >
+        PricingSection
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`HomePage > 应该在移动端视图下匹配快照 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-7tuhkw"
+  >
+    <div
+      data-testid="mock-navbar"
+    >
+      Navbar
+    </div>
+    <div
+      class="MuiBox-root css-se6w4j"
+    >
+      <div
+        data-testid="mock-hero-section"
+      >
+        HeroSection
+      </div>
+    </div>
+    <div
+      class="MuiBox-root css-0"
+    >
+      <div
+        data-testid="mock-feature-section"
+      >
+        FeatureSection
+      </div>
+    </div>
+    <div
+      class="MuiBox-root css-1qim88"
+    >
+      <div
+        data-testid="mock-pricing-section"
+      >
+        PricingSection
+      </div>
+    </div>
+  </div>
+</div>
+`;

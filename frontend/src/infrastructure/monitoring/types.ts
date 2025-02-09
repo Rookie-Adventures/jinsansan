@@ -82,6 +82,8 @@ export interface CustomMetrics {
   name: string;
   /** 指标值 */
   value: number;
+  /** 标签 */
+  tags?: Record<string, any>;
 }
 
 /**

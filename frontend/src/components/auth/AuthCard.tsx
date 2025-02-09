@@ -26,6 +26,7 @@ const AuthCard: React.FC<AuthCardProps> = ({ children, onToLogin, onToRegister }
                 variant="body2"
                 onClick={onToLogin}
                 sx={{ cursor: 'pointer' }}
+                role="button"
               >
                 已有账号？点击登录
               </Link>
@@ -36,6 +37,7 @@ const AuthCard: React.FC<AuthCardProps> = ({ children, onToLogin, onToRegister }
                 variant="body2"
                 onClick={onToRegister}
                 sx={{ cursor: 'pointer' }}
+                role="button"
               >
                 没有账号？立即注册
               </Link>

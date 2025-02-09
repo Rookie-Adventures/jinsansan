@@ -1,50 +1,46 @@
+import { AxiosError } from 'axios';
+
 export enum HttpErrorType {
-  NETWORK = 'NETWORK',
-  TIMEOUT = 'TIMEOUT',
-  AUTH = 'AUTH',
-  SERVER = 'SERVER',
-  CLIENT = 'CLIENT',
-  CANCEL = 'CANCEL',
-  UNKNOWN = 'UNKNOWN',
+  NETWORK_ERROR = 'NETWORK_ERROR',
+  HTTP_ERROR = 'HTTP_ERROR',
   REACT_ERROR = 'REACT_ERROR',
-  VALIDATION = 'VALIDATION',
-  BUSINESS = 'BUSINESS',
-  INFO = 'INFO',
-  WARNING = 'WARNING',
-  ERROR = 'ERROR'
+  UNKNOWN_ERROR = 'UNKNOWN_ERROR',
+  AUTH = 'AUTH_ERROR'
 }
 
-export type ErrorSeverity = 'critical' | 'warning' | 'info' | 'error';
-
-export interface ErrorTrace {
-  id: string;
-  timestamp: number;
-  path: string;
-  componentStack?: string;
-  breadcrumbs: Array<{
-    action: string;
-    timestamp: number;
-    data?: unknown;
-  }>;
-}
-
-export interface ErrorMetadata {
-  userId?: string;
-  requestId?: string;
-  timestamp?: string;
-  [key: string]: unknown;
-}
-
-export interface HttpError extends Error {
-  type: HttpErrorType;
+export class HttpError extends Error {
+  code: string;
   status?: number;
-  code?: string | number;
-  data?: unknown;
-  trace?: ErrorTrace;
-  recoverable?: boolean;
-  retryCount?: number;
-  severity?: ErrorSeverity;
-  metadata?: ErrorMetadata;
-  stack?: string;
-  description?: string;
+  data?: any;
+  isAxiosError?: boolean;
+  type: HttpErrorType;
+
+  constructor(params: {
+    type: HttpErrorType;
+    message: string;
+    code?: string;
+    status?: number;
+    data?: any;
+    isAxiosError?: boolean;
+  }) {
+    super(params.message);
+    this.name = 'HttpError';
+    this.type = params.type;
+    this.code = params.code || params.type;
+    this.status = params.status;
+    this.data = params.data;
+    this.isAxiosError = params.isAxiosError;
+  }
+}
+
+export interface ErrorResponse {
+  code: string;
+  message: string;
+  data?: any;
+}
+
+export type ErrorFactory = (error: AxiosError | Error) => HttpError;
+
+export interface ErrorHandler {
+  handle: (error: HttpError) => void;
 } 

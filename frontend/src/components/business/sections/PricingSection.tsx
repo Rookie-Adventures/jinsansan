@@ -56,14 +56,18 @@ const PricingSection: React.FC = () => {
 
   return (
     <Container maxWidth="lg">
-      <Box sx={{ 
-        py: { xs: 4, md: 6 },
-        px: { xs: 2, sm: 3 },
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
-      }}>
+      <Box 
+        sx={{ 
+          py: { xs: 4, md: 6 },
+          px: { xs: 2, sm: 3 },
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
+        }}
+        role="main"
+        aria-label="价格方案"
+      >
         <Typography
           component="h2"
           variant="h3"
@@ -109,6 +113,8 @@ const PricingSection: React.FC = () => {
                   style={{ height: '100%' }}
                 >
                   <Card
+                    role="article"
+                    aria-label={`${tier.title}价格方案`}
                     elevation={tier.title === '专业版' ? 8 : 0}
                     sx={{
                       height: '100%',

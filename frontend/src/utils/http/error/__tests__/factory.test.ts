@@ -1,98 +1,100 @@
+import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { AxiosError } from 'axios';
 import { HttpErrorFactory } from '../factory';
-import { HttpErrorType } from '../types';
+import { HttpError, HttpErrorType } from '../types';
 
 describe('HttpErrorFactory', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   describe('create', () => {
-    test('should create network error', () => {
-      const networkError = new Error('Network Error');
-      const httpError = HttpErrorFactory.create(networkError);
-      
-      expect(httpError.type).toBe(HttpErrorType.NETWORK);
-      expect(httpError.message).toBe('Network Error');
-      expect(httpError.recoverable).toBe(true);
+    it('应该直接返回 HttpError 实例', () => {
+      const httpError = new HttpError({
+        type: HttpErrorType.HTTP_ERROR,
+        message: 'Test error'
+      });
+      const result = HttpErrorFactory.create(httpError);
+      expect(result).toBe(httpError);
     });
 
-    test('should create timeout error', () => {
-      const timeoutError = new Error('timeout of 5000ms exceeded');
-      const httpError = HttpErrorFactory.create(timeoutError);
-      
-      expect(httpError.type).toBe(HttpErrorType.TIMEOUT);
-      expect(httpError.message).toBe('请求超时，请稍后重试');
-      expect(httpError.recoverable).toBe(true);
-    });
-
-    test('should create auth error from 401 status', () => {
-      const authError = {
-        response: { status: 401, data: { message: 'Unauthorized' } }
-      };
-      const httpError = HttpErrorFactory.create(authError);
-      
-      expect(httpError.type).toBe(HttpErrorType.AUTH);
-      expect(httpError.status).toBe(401);
-      expect(httpError.recoverable).toBe(true);
-    });
-
-    test('should create server error from 500 status', () => {
-      const serverError = {
-        response: { status: 500, data: { message: 'Internal Server Error' } }
-      };
-      const httpError = HttpErrorFactory.create(serverError);
-      
-      expect(httpError.type).toBe(HttpErrorType.SERVER);
-      expect(httpError.status).toBe(500);
-      expect(httpError.recoverable).toBe(true);
-    });
-
-    test('should create validation error from 422 status', () => {
-      const validationError = {
+    it('应该处理 AxiosError', () => {
+      const axiosError = Object.assign(new Error('Network Error'), {
+        isAxiosError: true,
+        code: 'ECONNABORTED',
         response: {
-          status: 422,
+          status: 500,
+          data: { message: 'Server Error' }
+        }
+      });
+      
+      const result = HttpErrorFactory.create(axiosError as AxiosError);
+      
+      expect(result).toBeInstanceOf(HttpError);
+      expect(result.type).toBe(HttpErrorType.HTTP_ERROR);
+      expect(result.message).toBe('Network Error');
+      expect(result.code).toBe('ECONNABORTED');
+      expect(result.status).toBe(500);
+      expect(result.data).toEqual({ message: 'Server Error' });
+      expect(result.isAxiosError).toBe(true);
+    });
+
+    it('应该处理没有响应的 AxiosError', () => {
+      const axiosError = Object.assign(new Error('Network Error'), {
+        isAxiosError: true,
+        code: 'ECONNABORTED',
+        response: undefined
+      });
+      
+      const result = HttpErrorFactory.create(axiosError as AxiosError);
+      
+      expect(result).toBeInstanceOf(HttpError);
+      expect(result.type).toBe(HttpErrorType.HTTP_ERROR);
+      expect(result.message).toBe('Network Error');
+      expect(result.code).toBe('ECONNABORTED');
+      expect(result.status).toBeUndefined();
+      expect(result.data).toBeUndefined();
+      expect(result.isAxiosError).toBe(true);
+    });
+
+    it('应该处理普通 Error', () => {
+      const error = new Error('Unknown error');
+      const result = HttpErrorFactory.create(error);
+      
+      expect(result).toBeInstanceOf(HttpError);
+      expect(result.type).toBe(HttpErrorType.UNKNOWN_ERROR);
+      expect(result.message).toBe('Unknown error');
+      expect(result.code).toBe('UNKNOWN_ERROR');
+    });
+
+    it('应该处理自定义错误数据', () => {
+      const axiosError = Object.assign(new Error('Validation Error'), {
+        isAxiosError: true,
+        code: 'ERR_BAD_REQUEST',
+        response: {
+          status: 400,
           data: {
-            message: 'Validation failed',
-            errors: [{ field: 'email', message: 'Invalid email' }]
+            code: 'VALIDATION_ERROR',
+            fields: {
+              username: 'Required'
+            }
           }
         }
-      };
-      const httpError = HttpErrorFactory.create(validationError);
+      });
       
-      expect(httpError.type).toBe(HttpErrorType.VALIDATION);
-      expect(httpError.status).toBe(422);
-      expect(httpError.data).toEqual([{ field: 'email', message: 'Invalid email' }]);
-      expect(httpError.recoverable).toBe(false);
-    });
-
-    test('should create cancel error', () => {
-      const cancelError = { __CANCEL__: true, message: 'Request cancelled' };
-      const httpError = HttpErrorFactory.create(cancelError);
+      const result = HttpErrorFactory.create(axiosError as AxiosError);
       
-      expect(httpError.type).toBe(HttpErrorType.CANCEL);
-      expect(httpError.message).toBe('Request cancelled');
-      expect(httpError.recoverable).toBe(false);
-    });
-
-    test('should create unknown error for unhandled cases', () => {
-      const unknownError = new Error('Something went wrong');
-      const httpError = HttpErrorFactory.create(unknownError);
-      
-      expect(httpError.type).toBe(HttpErrorType.UNKNOWN);
-      expect(httpError.message).toBe('Something went wrong');
-      expect(httpError.recoverable).toBe(false);
-    });
-
-    test('should preserve error stack trace', () => {
-      const originalError = new Error('Original error');
-      const httpError = HttpErrorFactory.create(originalError);
-      
-      expect(httpError.stack).toBeDefined();
-      expect(httpError.stack).toContain('Original error');
-    });
-
-    test('should handle null or undefined error', () => {
-      const httpError = HttpErrorFactory.create(null);
-      
-      expect(httpError.type).toBe(HttpErrorType.UNKNOWN);
-      expect(httpError.message).toBe('An unknown error occurred');
-      expect(httpError.recoverable).toBe(false);
+      expect(result).toBeInstanceOf(HttpError);
+      expect(result.type).toBe(HttpErrorType.HTTP_ERROR);
+      expect(result.message).toBe('Validation Error');
+      expect(result.code).toBe('ERR_BAD_REQUEST');
+      expect(result.status).toBe(400);
+      expect(result.data).toEqual({
+        code: 'VALIDATION_ERROR',
+        fields: {
+          username: 'Required'
+        }
+      });
     });
   });
 }); 

@@ -37,13 +37,21 @@ interface LogOutput {
  */
 class DevLogOutput implements LogOutput {
   // eslint-disable-next-line no-console
-  debug = console.debug.bind(console);
+  debug(message: string, ...args: unknown[]): void {
+    console.debug(message, ...args);
+  }
   // eslint-disable-next-line no-console
-  info = console.info.bind(console);
+  info(message: string, ...args: unknown[]): void {
+    console.info(message, ...args);
+  }
   // eslint-disable-next-line no-console
-  warn = console.warn.bind(console);
+  warn(message: string, ...args: unknown[]): void {
+    console.warn(message, ...args);
+  }
   // eslint-disable-next-line no-console
-  error = console.error.bind(console);
+  error(message: string, ...args: unknown[]): void {
+    console.error(message, ...args);
+  }
 }
 
 /**
@@ -69,7 +77,7 @@ class ErrorLogger {
     this.apiBaseUrl = process.env.NODE_ENV === 'test' 
       ? 'http://localhost:3000'
       : window.location.origin;
-    this.isDevelopment = process.env.NODE_ENV === 'development';
+    this.isDevelopment = process.env.NODE_ENV !== 'production';
     this.logOutput = this.isDevelopment 
       ? new DevLogOutput()
       : new ProductionLogOutput();
@@ -94,7 +102,8 @@ class ErrorLogger {
       context: options.context || {},
     };
 
-    if (this.isDevelopment) {
+    // 只在开发环境下输出到控制台
+    if (process.env.NODE_ENV === 'development') {
       this.devLog(logData);
     }
 
@@ -112,17 +121,17 @@ class ErrorLogger {
     const { level, message, context } = logData;
     switch (level) {
       case 'debug':
-        this.logOutput.debug(message, context);
+        this.logOutput.debug(message, { level, ...context });
         break;
       case 'info':
-        this.logOutput.info(message, context);
+        this.logOutput.info(message, { level, ...context });
         break;
       case 'warn':
-        this.logOutput.warn(message, context);
+        this.logOutput.warn(message, { level, ...context });
         break;
       case 'error':
       case 'critical':
-        this.logOutput.error(message, context);
+        this.logOutput.error(message, { level, ...context });
         break;
     }
   }

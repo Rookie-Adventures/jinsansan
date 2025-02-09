@@ -9,7 +9,7 @@ import axiosRetry from 'axios-retry';
 import { store } from '@/store';
 import type { ApiResponse } from '@/types/api';
 import { HttpErrorFactory } from '@/utils/http/error/factory';
-import { HttpErrorType } from '@/utils/http/error/types';
+import { HttpError } from '@/utils/http/error/types';
 
 // 定义请求配置接口
 export interface RequestConfig extends InternalAxiosRequestConfig {
@@ -36,7 +36,7 @@ axiosRetry(request, {
   },
   retryCondition: (error: AxiosError) => {
     const httpError = HttpErrorFactory.create(error);
-    return httpError.type === HttpErrorType.NETWORK;
+    return httpError.code === 'NETWORK_ERROR';
   },
 });
 
@@ -63,10 +63,9 @@ request.interceptors.response.use(
     if (data.code !== 200) {
       const error = HttpErrorFactory.create({
         message: data.message || '请求失败',
-        type: HttpErrorType.BUSINESS,
-        code: data.code,
+        code: data.code.toString(),
         data: data
-      });
+      } as any);
       return Promise.reject(error);
     }
     
@@ -76,7 +75,7 @@ request.interceptors.response.use(
     const httpError = HttpErrorFactory.create(error);
 
     // 处理 401 错误
-    if (httpError.type === HttpErrorType.AUTH) {
+    if (httpError.status === 401) {
       localStorage.removeItem('token');
       window.location.href = '/login';
       return Promise.reject(new Error('登录已过期，请重新登录'));

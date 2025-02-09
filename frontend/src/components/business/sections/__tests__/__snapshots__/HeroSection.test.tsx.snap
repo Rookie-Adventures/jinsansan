@@ -1,0 +1,249 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`HeroSection > 应该匹配桌面端快照 1`] = `
+<div>
+  <div
+    class="MuiContainer-root MuiContainer-maxWidthLg css-1oqqzyl-MuiContainer-root"
+  >
+    <div
+      class="MuiBox-root css-11b9611"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-4 css-xtlx1y-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6 css-1fyyp8j-MuiGrid-root"
+        >
+          <div
+            class="MuiBox-root css-0"
+            style="opacity: 0; transform: translateX(-50px);"
+          >
+            <h1
+              class="MuiTypography-root MuiTypography-h2 MuiTypography-gutterBottom css-197vo3u-MuiTypography-root"
+            >
+              优质的 Jinsansan 模型调用体验
+            </h1>
+            <p
+              class="MuiTypography-root MuiTypography-h5 MuiTypography-paragraph css-i01w30-MuiTypography-root"
+            >
+              为中国用户提供稳定、快速的 AI 模型服务，支持流式响应，智能上下文管理
+            </p>
+            <div
+              class="MuiBox-root css-9ct5jt"
+            >
+              <div
+                class="MuiBox-root css-axw7ok"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                  data-testid="SpeedIcon"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="m20.38 8.57-1.23 1.85a8 8 0 0 1-.22 7.58H5.07A8 8 0 0 1 15.58 6.85l1.85-1.23A10 10 0 0 0 3.35 19a2 2 0 0 0 1.72 1h13.85a2 2 0 0 0 1.74-1 10 10 0 0 0-.27-10.44zm-9.79 6.84a2 2 0 0 0 2.83 0l5.66-8.49-8.49 5.66a2 2 0 0 0 0 2.83"
+                  />
+                </svg>
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-10utshc-MuiTypography-root"
+                >
+                  快速响应
+                </p>
+              </div>
+              <div
+                class="MuiBox-root css-axw7ok"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                  data-testid="CloudDoneIcon"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96M10 17l-3.5-3.5 1.41-1.41L10 14.17 15.18 9l1.41 1.41z"
+                  />
+                </svg>
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-10utshc-MuiTypography-root"
+                >
+                  稳定可靠
+                </p>
+              </div>
+              <div
+                class="MuiBox-root css-axw7ok"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                  data-testid="AutoAwesomeIcon"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="m19 9 1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25zm-7.5.5L9 4 6.5 9.5 1 12l5.5 2.5L9 20l2.5-5.5L17 12zM19 15l-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25z"
+                  />
+                </svg>
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-10utshc-MuiTypography-root"
+                >
+                  智能管理
+                </p>
+              </div>
+            </div>
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary MuiButton-sizeLarge MuiButton-containedSizeLarge MuiButton-colorSecondary MuiButton-root MuiButton-contained MuiButton-containedSecondary MuiButton-sizeLarge MuiButton-containedSizeLarge MuiButton-colorSecondary css-3vsl00-MuiButtonBase-root-MuiButton-root"
+              tabindex="0"
+              type="button"
+            >
+              立即体验
+              <span
+                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+              />
+            </button>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6 css-1fyyp8j-MuiGrid-root"
+        >
+          <div
+            class="MuiBox-root css-16r1tk9"
+            style="opacity: 0; transform: translateX(50px);"
+          >
+            <img
+              alt="AI Chat Illustration"
+              class="MuiBox-root css-ex67qq"
+              src="/ai-chat.svg"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`HeroSection > 应该匹配移动端快照 1`] = `
+<div>
+  <div
+    class="MuiContainer-root MuiContainer-maxWidthLg css-1oqqzyl-MuiContainer-root"
+  >
+    <div
+      class="MuiBox-root css-11b9611"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-4 css-xtlx1y-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6 css-1fyyp8j-MuiGrid-root"
+        >
+          <div
+            class="MuiBox-root css-0"
+            style="opacity: 0; transform: translateX(-50px);"
+          >
+            <h1
+              class="MuiTypography-root MuiTypography-h3 MuiTypography-gutterBottom css-4yr12r-MuiTypography-root"
+            >
+              优质的 Jinsansan 模型调用体验
+            </h1>
+            <p
+              class="MuiTypography-root MuiTypography-h5 MuiTypography-paragraph css-i01w30-MuiTypography-root"
+            >
+              为中国用户提供稳定、快速的 AI 模型服务，支持流式响应，智能上下文管理
+            </p>
+            <div
+              class="MuiBox-root css-9ct5jt"
+            >
+              <div
+                class="MuiBox-root css-axw7ok"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                  data-testid="SpeedIcon"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="m20.38 8.57-1.23 1.85a8 8 0 0 1-.22 7.58H5.07A8 8 0 0 1 15.58 6.85l1.85-1.23A10 10 0 0 0 3.35 19a2 2 0 0 0 1.72 1h13.85a2 2 0 0 0 1.74-1 10 10 0 0 0-.27-10.44zm-9.79 6.84a2 2 0 0 0 2.83 0l5.66-8.49-8.49 5.66a2 2 0 0 0 0 2.83"
+                  />
+                </svg>
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-10utshc-MuiTypography-root"
+                >
+                  快速响应
+                </p>
+              </div>
+              <div
+                class="MuiBox-root css-axw7ok"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                  data-testid="CloudDoneIcon"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96M10 17l-3.5-3.5 1.41-1.41L10 14.17 15.18 9l1.41 1.41z"
+                  />
+                </svg>
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-10utshc-MuiTypography-root"
+                >
+                  稳定可靠
+                </p>
+              </div>
+              <div
+                class="MuiBox-root css-axw7ok"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                  data-testid="AutoAwesomeIcon"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="m19 9 1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25zm-7.5.5L9 4 6.5 9.5 1 12l5.5 2.5L9 20l2.5-5.5L17 12zM19 15l-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25z"
+                  />
+                </svg>
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-10utshc-MuiTypography-root"
+                >
+                  智能管理
+                </p>
+              </div>
+            </div>
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary MuiButton-sizeLarge MuiButton-containedSizeLarge MuiButton-colorSecondary MuiButton-root MuiButton-contained MuiButton-containedSecondary MuiButton-sizeLarge MuiButton-containedSizeLarge MuiButton-colorSecondary css-3vsl00-MuiButtonBase-root-MuiButton-root"
+              tabindex="0"
+              type="button"
+            >
+              立即体验
+              <span
+                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+              />
+            </button>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6 css-1fyyp8j-MuiGrid-root"
+        >
+          <div
+            class="MuiBox-root css-16r1tk9"
+            style="opacity: 0; transform: translateX(50px);"
+          >
+            <img
+              alt="AI Chat Illustration"
+              class="MuiBox-root css-ex67qq"
+              src="/ai-chat.svg"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

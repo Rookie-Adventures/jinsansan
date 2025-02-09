@@ -1,77 +1,70 @@
 import React from 'react';
-import { Grid, Card, CardContent, Typography, Box, useTheme, Container } from '@mui/material';
-import { 
-  Speed, 
-  Security, 
-  CloudSync,
-  Psychology,
-  Token,
-  Autorenew,
-  DataObject,
-  Settings
-} from '@mui/icons-material';
+import {
+  Box,
+  Container,
+  Grid,
+  Typography,
+  Card,
+  useTheme,
+  useMediaQuery,
+} from '@mui/material';
 import { motion } from 'framer-motion';
+import { 
+  AutoMode as StreamIcon,
+  Psychology as ContextIcon,
+  Apps as ModelsIcon,
+  Security as SecurityIcon
+} from '@mui/icons-material';
 
 const features = [
   {
-    icon: <Speed />,
-    title: '流式响应体验',
-    description: '支持流式输出，实现即时响应，提供流畅的对话体验',
+    title: '流式响应',
+    description: '支持流式输出，实时响应，提供更自然的对话体验',
+    icon: StreamIcon,
+    delay: 0,
   },
   {
-    icon: <CloudSync />,
-    title: '智能代理访问',
-    description: '自动判断用户地区，智能使用代理，确保服务稳定可用',
-  },
-  {
-    icon: <Psychology />,
     title: '智能上下文',
-    description: '先进的上下文管理，支持多轮对话，提供连贯的交互体验',
+    description: '智能管理对话上下文，实现连贯的多轮对话',
+    icon: ContextIcon,
+    delay: 0.1,
   },
   {
-    icon: <Token />,
-    title: 'Token 优化',
-    description: '智能的 Token 使用优化，平衡体验与成本',
+    title: '多模型支持',
+    description: '支持多种主流模型，满足不同场景需求',
+    icon: ModelsIcon,
+    delay: 0.2,
   },
   {
-    icon: <Security />,
-    title: '安全可靠',
-    description: '完善的安全机制，保护用户数据和API密钥安全',
-  },
-  {
-    icon: <Autorenew />,
-    title: '自动重试',
-    description: '智能错误处理，自动重试机制，确保服务稳定性',
-  },
-  {
-    icon: <DataObject />,
-    title: '统一API',
-    description: '提供统一的API接口，支持多种模型调用',
-  },
-  {
-    icon: <Settings />,
-    title: '高度定制',
-    description: '支持个性化配置，满足不同场景需求',
+    title: '安全可控',
+    description: '数据安全有保障，支持自定义敏感词过滤',
+    icon: SecurityIcon,
+    delay: 0.3,
   },
 ];
 
 const FeatureSection: React.FC = () => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <Container maxWidth="lg">
-      <Box sx={{ 
-        py: { xs: 4, md: 6 },
-        px: { xs: 2, sm: 3 },
-        background: 'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(245,247,250,0.5) 100%)',
-        width: '100%'
-      }}>
+      <Box
+        sx={{
+          py: { xs: 4, md: 8 },
+          px: { xs: 2, sm: 3 },
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
         <Typography
-          variant="h3"
           component="h2"
+          variant="h3"
           align="center"
           gutterBottom
-          sx={{ 
+          sx={{
             mb: 2,
             fontSize: { xs: '2rem', md: '3rem' },
             fontWeight: 'bold',
@@ -80,84 +73,88 @@ const FeatureSection: React.FC = () => {
             WebkitTextFillColor: 'transparent',
           }}
         >
-          核心特性
+          核心功能
         </Typography>
         <Typography
           variant="h6"
-          component="p"
           align="center"
           color="text.secondary"
-          sx={{ mb: { xs: 3, md: 4 } }}
+          sx={{ mb: { xs: 4, md: 6 }, maxWidth: '800px' }}
         >
-          为您提供最优质的 Jinsansan 模型调用服务
+          我们提供全面的 AI 模型服务，让您的应用更智能
         </Typography>
-        <Grid container spacing={2}>
+
+        <Grid container spacing={3} justifyContent="center">
           {features.map((feature, index) => (
-            <Grid item xs={12} sm={6} md={3} key={index}>
+            <Grid
+              item
+              key={feature.title}
+              xs={12}
+              sm={6}
+              md={3}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                style={{ height: '100%' }}
+                transition={{ duration: 0.5, delay: feature.delay }}
+                style={{ width: '100%' }}
               >
                 <Card
+                  role="article"
                   elevation={0}
                   sx={{
                     height: '100%',
+                    p: 3,
                     display: 'flex',
                     flexDirection: 'column',
-                    transition: 'all 0.3s ease-in-out',
+                    alignItems: 'center',
+                    textAlign: 'center',
                     background: 'rgba(255, 255, 255, 0.8)',
                     backdropFilter: 'blur(10px)',
                     border: '1px solid rgba(255, 255, 255, 0.3)',
-                    borderRadius: 1,
+                    borderRadius: 2,
+                    transition: 'transform 0.3s ease-in-out',
+                    margin: isMobile ? '0 auto' : 'inherit',
+                    maxWidth: isMobile ? '350px' : 'none',
                     '&:hover': {
                       transform: 'translateY(-8px)',
-                      boxShadow: theme.shadows[8],
-                      background: 'rgba(255, 255, 255, 0.95)',
+                      boxShadow: theme.shadows[4],
                     },
                   }}
                 >
-                  <CardContent sx={{ p: 3 }}>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        mb: 2,
-                        color: 'primary.main',
-                        '& > svg': { 
-                          fontSize: { xs: 32, md: 40 },
-                          filter: 'drop-shadow(0px 2px 4px rgba(0,0,0,0.1))',
-                        },
-                      }}
-                    >
-                      {feature.icon}
-                    </Box>
-                    <Typography
-                      gutterBottom
-                      variant="h6"
-                      component="h3"
-                      align="center"
-                      sx={{ 
-                        fontWeight: 'bold',
-                        fontSize: { xs: '1rem', md: '1.15rem' },
-                        mb: 1,
-                      }}
-                    >
-                      {feature.title}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      align="center"
-                      sx={{
-                        fontSize: { xs: '0.875rem', md: '0.9rem' },
-                        lineHeight: 1.5,
-                      }}
-                    >
-                      {feature.description}
-                    </Typography>
-                  </CardContent>
+                  <Box
+                    sx={{
+                      mb: 2,
+                      p: 1.5,
+                      borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #24243e 0%, #302b63 100%)',
+                      color: 'white',
+                    }}
+                  >
+                    <feature.icon
+                      data-testid={`feature-icon-${index}`}
+                      sx={{ fontSize: 40 }}
+                    />
+                  </Box>
+                  <Typography
+                    variant="h5"
+                    component="h3"
+                    gutterBottom
+                    sx={{ fontWeight: 'bold', mb: 1 }}
+                  >
+                    {feature.title}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    color="text.secondary"
+                    sx={{ flexGrow: 1 }}
+                  >
+                    {feature.description}
+                  </Typography>
                 </Card>
               </motion.div>
             </Grid>

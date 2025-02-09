@@ -4,12 +4,50 @@ import { PerformanceMetric } from './types';
 export class PerformanceMonitor {
   private static instance: PerformanceMonitor;
   private metrics: PerformanceMetric[] = [];
+  private timers: Map<string, number> = new Map();
 
   public static getInstance(): PerformanceMonitor {
     if (!PerformanceMonitor.instance) {
       PerformanceMonitor.instance = new PerformanceMonitor();
     }
     return PerformanceMonitor.instance;
+  }
+
+  public startTimer(id: string): void {
+    this.timers.set(id, performance.now());
+  }
+
+  public stopTimer(id: string): number {
+    const startTime = this.timers.get(id);
+    if (startTime === undefined) {
+      throw new Error(`No timer found with id: ${id}`);
+    }
+    const duration = performance.now() - startTime;
+    this.timers.delete(id);
+    return duration;
+  }
+
+  public recordMetric(name: string, value: number, tags: Record<string, any> = {}): void {
+    try {
+      if (!name) {
+        throw new Error('Invalid metric name');
+      }
+      if (typeof value !== 'number' || isNaN(value)) {
+        throw new Error('Invalid metric value');
+      }
+
+      this.metrics.push({
+        type: 'custom',
+        timestamp: Date.now(),
+        data: {
+          name,
+          value,
+          tags
+        }
+      });
+    } catch (error) {
+      errorLogger.log(error instanceof Error ? error : new Error('Invalid metric data'));
+    }
   }
 
   public observePageLoadMetrics(): void {

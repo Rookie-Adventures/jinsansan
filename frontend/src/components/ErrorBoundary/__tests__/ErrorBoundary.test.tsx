@@ -1,139 +1,117 @@
-import { HttpErrorType } from '@/utils/http/error/types';
-import { render, screen } from '@testing-library/react';
+import React from 'react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import { vi } from 'vitest';
-import { ErrorBoundary } from '../index';
+import ErrorBoundary from '../index';
+import { errorLogger } from '@/utils/http/error/logger';
+import { HttpErrorType } from '@/utils/http/error/types';
 
-const mockLog = vi.fn();
-const mockLogger = {
-  log: mockLog
-};
-
-// 模拟 ErrorLogger
+// Mock errorLogger
 vi.mock('@/utils/http/error/logger', () => ({
-  ErrorLogger: {
-    getInstance: () => mockLogger
+  errorLogger: {
+    log: vi.fn()
   }
 }));
 
 describe('ErrorBoundary', () => {
-  const ThrowError = () => {
+  const ErrorChild = () => {
     throw new Error('Test error');
   };
 
-  // 定义 console.error 的类型
-  type ConsoleError = (message?: any, ...args: any[]) => void;
-  let consoleErrorSpy: import('vitest').SpyInstance<[message?: any, ...args: any[]], void>;
-
   beforeEach(() => {
-    consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    vi.clearAllMocks();
   });
 
-  afterEach(() => {
-    consoleErrorSpy.mockRestore();
-  });
-
-  test('should render children when no error occurs', () => {
-    const { container } = render(
+  it('should render children when no error occurs', () => {
+    const { getByText } = render(
       <ErrorBoundary>
-        <div>Test Content</div>
+        <div>Test content</div>
       </ErrorBoundary>
     );
-    
-    expect(container).toHaveTextContent('Test Content');
+    expect(getByText('Test content')).toBeInTheDocument();
   });
 
-  test('should render fallback UI when error occurs', () => {
-    const { container } = render(
-      <ErrorBoundary fallback={<div>Error occurred</div>}>
-        <ThrowError />
+  it('should render fallback UI when error occurs', () => {
+    const { getByText } = render(
+      <ErrorBoundary>
+        <ErrorChild />
       </ErrorBoundary>
     );
-    
-    expect(container).toHaveTextContent('Error occurred');
+    expect(getByText('出错了')).toBeInTheDocument();
+    expect(getByText('Test error')).toBeInTheDocument();
   });
 
-  test('should render default fallback when no custom fallback provided', () => {
+  it('should render default fallback when no custom fallback provided', () => {
+    const { getByText } = render(
+      <ErrorBoundary>
+        <ErrorChild />
+      </ErrorBoundary>
+    );
+    expect(getByText('重试')).toBeInTheDocument();
+  });
+
+  it('should log error when error occurs', () => {
     render(
       <ErrorBoundary>
-        <ThrowError />
+        <ErrorChild />
       </ErrorBoundary>
     );
-    
-    expect(screen.getByText('出错了')).toBeInTheDocument();
-    expect(screen.getByText('Test error')).toBeInTheDocument();
-  });
-
-  test('should log error when error occurs', () => {
-    render(
-      <ErrorBoundary>
-        <ThrowError />
-      </ErrorBoundary>
+    expect(errorLogger.log).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: HttpErrorType.REACT_ERROR,
+        message: 'Test error'
+      })
     );
-    
-    expect(mockLog).toHaveBeenCalledWith(expect.objectContaining({
-      type: HttpErrorType.REACT_ERROR,
-      message: 'Test error'
-    }));
   });
 
-  test('should call onReset when retry button clicked', () => {
+  it('should call onReset when retry button clicked', () => {
     const onReset = vi.fn();
-    
-    render(
+    const { getByText } = render(
       <ErrorBoundary onReset={onReset}>
-        <ThrowError />
+        <ErrorChild />
       </ErrorBoundary>
     );
-    
-    const retryButton = screen.getByText('重试');
-    retryButton.click();
-    
+    fireEvent.click(getByText('重试'));
     expect(onReset).toHaveBeenCalled();
   });
 
-  test('should reset error state when onReset called', () => {
-    let shouldThrow = true;
-    const ConditionalError = () => {
-      if (shouldThrow) {
+  it('should reset error state when onReset called', async () => {
+    let shouldError = true;
+    const TestComponent = () => {
+      if (shouldError) {
         throw new Error('Test error');
       }
-      return <div>Normal content</div>;
+      return <div>Recovered</div>;
     };
 
-    const { rerender } = render(
+    const { getByText } = render(
       <ErrorBoundary>
-        <ConditionalError />
-      </ErrorBoundary>
-    );
-
-    expect(screen.getByText('出错了')).toBeInTheDocument();
-
-    shouldThrow = false;
-    const retryButton = screen.getByText('重试');
-    retryButton.click();
-    rerender(
-      <ErrorBoundary>
-        <ConditionalError />
-      </ErrorBoundary>
-    );
-
-    expect(screen.queryByText('出错了')).not.toBeInTheDocument();
-    expect(screen.getByText('Normal content')).toBeInTheDocument();
-  });
-
-  test('should include component stack in error log', () => {
-    render(
-      <ErrorBoundary>
-        <div>
-          <ThrowError />
-        </div>
+        <TestComponent />
       </ErrorBoundary>
     );
     
-    expect(mockLog).toHaveBeenCalledWith(
+    expect(getByText('出错了')).toBeInTheDocument();
+    
+    // 修改状态，使组件不再抛出错误
+    shouldError = false;
+    
+    // 点击重试按钮
+    await act(async () => {
+      fireEvent.click(getByText('重试'));
+    });
+
+    // 验证组件已恢复
+    expect(screen.getByText('Recovered')).toBeInTheDocument();
+    expect(screen.queryByText('出错了')).not.toBeInTheDocument();
+  });
+
+  it('should include component stack in error log', () => {
+    render(
+      <ErrorBoundary>
+        <ErrorChild />
+      </ErrorBoundary>
+    );
+    expect(errorLogger.log).toHaveBeenCalledWith(
       expect.objectContaining({
-        type: HttpErrorType.REACT_ERROR,
-        message: 'Test error',
         data: expect.objectContaining({
           componentStack: expect.any(String)
         })
@@ -141,28 +119,47 @@ describe('ErrorBoundary', () => {
     );
   });
 
-  test('should handle multiple errors', () => {
-    const ThrowMultipleErrors = () => {
-      throw new Error('Multiple errors');
+  it('should handle multiple errors', async () => {
+    const TestComponent = ({ shouldError }: { shouldError: boolean }) => {
+      if (shouldError) {
+        throw new Error('Test error');
+      }
+      return <div>Recovered</div>;
     };
 
     const { rerender } = render(
       <ErrorBoundary>
-        <ThrowError />
+        <TestComponent shouldError={true} />
       </ErrorBoundary>
     );
 
+    // 验证初始错误状态
+    expect(screen.getByText('出错了')).toBeInTheDocument();
     expect(screen.getByText('Test error')).toBeInTheDocument();
 
-    const retryButton = screen.getByText('重试');
-    retryButton.click();
-
+    // 准备新的组件状态
     rerender(
       <ErrorBoundary>
-        <ThrowMultipleErrors />
+        <TestComponent shouldError={false} />
       </ErrorBoundary>
     );
 
-    expect(screen.getByText('Multiple errors')).toBeInTheDocument();
+    // 点击重试按钮触发恢复
+    fireEvent.click(screen.getByText('重试'));
+
+    // 验证恢复后的状态
+    expect(screen.getByText('Recovered')).toBeInTheDocument();
+    expect(screen.queryByText('出错了')).not.toBeInTheDocument();
+
+    // 再次触发错误
+    rerender(
+      <ErrorBoundary>
+        <TestComponent shouldError={true} />
+      </ErrorBoundary>
+    );
+
+    // 验证再次出现错误
+    expect(screen.getByText('出错了')).toBeInTheDocument();
+    expect(screen.getByText('Test error')).toBeInTheDocument();
   });
 }); 

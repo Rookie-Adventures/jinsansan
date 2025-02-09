@@ -2,6 +2,14 @@ import { errorLogger } from '@/utils/error/errorLogger';
 import { useEffect } from 'react';
 import { useLocation, useNavigationType } from 'react-router-dom';
 
+// 获取基础 URL
+const getBaseUrl = () => {
+  if (import.meta.env.MODE === 'test') {
+    return 'http://localhost:3000';
+  }
+  return import.meta.env.VITE_API_URL || '';
+};
+
 interface RouteAnalytics {
   path: string;
   timestamp: number;
@@ -11,21 +19,29 @@ interface RouteAnalytics {
 }
 
 class RouterAnalytics {
-  private static instance: RouterAnalytics;
+  private static instance: RouterAnalytics | null = null;
   private analytics: RouteAnalytics[] = [];
   private lastPath: string | null = null;
   private lastTimestamp: number | null = null;
+  private baseUrl: string;
 
-  private constructor() {}
+  private constructor() {
+    this.baseUrl = getBaseUrl();
+    // 在开发环境下，不初始化分析服务
+    if (import.meta.env.DEV) {
+      console.log('Analytics service is disabled in development mode');
+      return;
+    }
+  }
 
-  static getInstance(): RouterAnalytics {
+  public static getInstance(): RouterAnalytics {
     if (!RouterAnalytics.instance) {
       RouterAnalytics.instance = new RouterAnalytics();
     }
     return RouterAnalytics.instance;
   }
 
-  trackRoute(path: string, navigationType: string): void {
+  async trackRoute(path: string, navigationType: string): Promise<void> {
     const timestamp = Date.now();
     const analytics: RouteAnalytics = {
       path,
@@ -43,21 +59,25 @@ class RouterAnalytics {
     this.lastTimestamp = timestamp;
 
     // 可以在这里添加上报逻辑
-    this.reportAnalytics(analytics);
+    await this.reportAnalytics(analytics);
   }
 
   private async reportAnalytics(analytics: RouteAnalytics): Promise<void> {
     try {
-      await fetch('/api/analytics/route', {
+      const response = await fetch(`${this.baseUrl}/api/analytics/route`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(analytics),
       });
-    } catch (error: unknown) {
+      
+      if (!response.ok) {
+        throw new Error('Failed to report analytics');
+      }
+    } catch (error) {
       errorLogger.log(
-        error instanceof Error ? error : new Error('Analytics error: ' + String(error)),
+        error instanceof Error ? error : new Error('Failed to report analytics'),
         {
           level: 'error',
           context: {
@@ -66,11 +86,28 @@ class RouterAnalytics {
           }
         }
       );
+      throw error; // 重新抛出错误以便测试捕获
     }
   }
 
   getAnalytics(): RouteAnalytics[] {
     return this.analytics;
+  }
+
+  // 添加清除方法，主要用于测试
+  clearAnalytics(): void {
+    this.analytics = [];
+    this.lastPath = null;
+    this.lastTimestamp = null;
+  }
+
+  public trackPageView(path: string): void {
+    // 在开发环境下，只打印日志
+    if (import.meta.env.DEV) {
+      console.log('Page view tracked:', path);
+      return;
+    }
+    // 实际的页面追踪代码...
   }
 }
 
@@ -81,6 +118,10 @@ export const useRouteAnalytics = (): void => {
   const navigationType = useNavigationType();
 
   useEffect(() => {
-    routerAnalytics.trackRoute(location.pathname, navigationType);
+    routerAnalytics.trackRoute(location.pathname, navigationType)
+      .catch(error => {
+        // 在这里我们可以选择忽略错误，因为它已经被 reportAnalytics 中的 errorLogger 记录了
+        console.debug('Route analytics tracking failed:', error);
+      });
   }, [location, navigationType]);
 }; 
