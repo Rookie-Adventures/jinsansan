@@ -40,30 +40,39 @@ const migrate = async (state: any, version: number) => {
     // 处理旧版本状态
     return {
       ...state,
-      auth: state.auth ? {
-        token: state.auth.token,
-        user: state.auth.user ? {
-          id: state.auth.user.id,
-          username: state.auth.user.username
-        } : null
-      } : null
+      auth: state.auth
+        ? {
+            token: state.auth.token,
+            user: state.auth.user
+              ? {
+                  id: state.auth.user.id,
+                  username: state.auth.user.username,
+                }
+              : null,
+          }
+        : null,
     };
   }
   return state;
 };
 
 // 状态合并函数
-const stateReconciler = (inboundState: any, _originalState: any, reducedState: any, _config: any) => {
+const stateReconciler = (
+  inboundState: any,
+  _originalState: any,
+  reducedState: any,
+  _config: any
+) => {
   return {
     ...reducedState,
-    ...inboundState
+    ...inboundState,
   };
 };
 
 // 创建基础配置
 export function createPersistConfig<T>(key: string): PersistConfig<T> {
   const debug = process.env.NODE_ENV !== 'production';
-  
+
   return {
     key,
     storage,
@@ -77,4 +86,4 @@ export function createPersistConfig<T>(key: string): PersistConfig<T> {
 }
 
 // 导出默认的 persistConfig
-export const persistConfig = createPersistConfig<RootState>('root'); 
+export const persistConfig = createPersistConfig<RootState>('root');

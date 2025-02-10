@@ -9,14 +9,14 @@ export const validateLoginForm = (formData: LoginFormData): ValidationResult => 
   if (!formData.username.trim()) {
     return {
       isValid: false,
-      errorMessage: '请输入用户名'
+      errorMessage: '请输入用户名',
     };
   }
-  
+
   if (!formData.password) {
     return {
       isValid: false,
-      errorMessage: '请输入密码'
+      errorMessage: '请输入密码',
     };
   }
 
@@ -27,35 +27,35 @@ export const validateRegisterForm = (formData: RegisterFormData): ValidationResu
   if (!formData.username.trim()) {
     return {
       isValid: false,
-      errorMessage: '请输入用户名'
+      errorMessage: '请输入用户名',
     };
   }
-  
+
   if (!formData.email.trim()) {
     return {
       isValid: false,
-      errorMessage: '请输入邮箱'
+      errorMessage: '请输入邮箱',
     };
   }
-  
+
   if (!formData.password) {
     return {
       isValid: false,
-      errorMessage: '请输入密码'
+      errorMessage: '请输入密码',
     };
   }
-  
+
   if (!formData.confirmPassword) {
     return {
       isValid: false,
-      errorMessage: '请确认密码'
+      errorMessage: '请确认密码',
     };
   }
 
   if (formData.password !== formData.confirmPassword) {
     return {
       isValid: false,
-      errorMessage: '两次输入的密码不一致'
+      errorMessage: '两次输入的密码不一致',
     };
   }
 
@@ -63,9 +63,9 @@ export const validateRegisterForm = (formData: RegisterFormData): ValidationResu
   if (!emailRegex.test(formData.email)) {
     return {
       isValid: false,
-      errorMessage: '请输入有效的邮箱地址'
+      errorMessage: '请输入有效的邮箱地址',
     };
   }
 
   return { isValid: true };
-}; 
+};

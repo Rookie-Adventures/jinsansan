@@ -1,16 +1,16 @@
 import { AccountCircle, Menu as MenuIcon } from '@mui/icons-material';
 import {
-    AppBar,
-    Box,
-    Button,
-    Container,
-    IconButton,
-    Menu,
-    MenuItem,
-    Toolbar,
-    Typography,
-    useMediaQuery,
-    useTheme,
+  AppBar,
+  Box,
+  Button,
+  Container,
+  IconButton,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -41,45 +41,47 @@ const NavigationMenu: React.FC = () => {
       navigate('/');
       await logout();
     } catch (error) {
-      errorLogger.log(new HttpError({
-        type: HttpErrorType.AUTH,
-        message: '退出登录失败',
-        data: error
-      }));
+      errorLogger.log(
+        new HttpError({
+          type: HttpErrorType.AUTH,
+          message: '退出登录失败',
+          data: error,
+        })
+      );
     }
   };
 
   return (
     <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-      <Button 
-        color="inherit" 
+      <Button
+        color="inherit"
         onClick={() => navigate('/')}
         sx={{ color: theme.palette.text.primary }}
       >
         首页
       </Button>
-      <Button 
-        color="inherit" 
+      <Button
+        color="inherit"
         onClick={() => navigate('/docs')}
         sx={{ color: theme.palette.text.primary }}
       >
         文档
       </Button>
-      <Button 
-        color="inherit" 
+      <Button
+        color="inherit"
         onClick={() => navigate('/api')}
         sx={{ color: theme.palette.text.primary }}
       >
         API
       </Button>
-      <Button 
-        color="inherit" 
+      <Button
+        color="inherit"
         onClick={() => navigate('/pricing')}
         sx={{ color: theme.palette.text.primary }}
       >
         价格
       </Button>
-      
+
       {isAuthenticated ? (
         <>
           <IconButton
@@ -107,18 +109,16 @@ const NavigationMenu: React.FC = () => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>
-              {user?.username || '用户'}
-            </MenuItem>
+            <MenuItem onClick={handleClose}>{user?.username || '用户'}</MenuItem>
             <MenuItem onClick={handleLogout}>退出登录</MenuItem>
           </Menu>
         </>
       ) : (
-        <Button 
-          variant="contained" 
+        <Button
+          variant="contained"
           color="primary"
           onClick={() => navigate('/login')}
-          sx={{ 
+          sx={{
             borderRadius: 1,
             textTransform: 'none',
             px: 3,
@@ -153,23 +153,26 @@ const Navbar: React.FC = () => {
       navigate('/');
       await logout();
     } catch (error) {
-      errorLogger.log(new HttpError({
-        type: HttpErrorType.AUTH,
-        message: '退出登录失败',
-        data: error
-      }));
+      errorLogger.log(
+        new HttpError({
+          type: HttpErrorType.AUTH,
+          message: '退出登录失败',
+          data: error,
+        })
+      );
     }
   };
 
   return (
-    <AppBar 
-      position="fixed" 
+    <AppBar
+      position="fixed"
       elevation={0}
-      sx={{ 
+      sx={{
         background: 'rgba(255, 255, 255, 0.01)',
         backdropFilter: 'blur(10px)',
         borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-        boxShadow: (theme) => `0 4px 30px ${theme.palette.mode === 'dark' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(0, 0, 0, 0.05)'}`,
+        boxShadow: theme =>
+          `0 4px 30px ${theme.palette.mode === 'dark' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(0, 0, 0, 0.05)'}`,
       }}
     >
       <Container maxWidth={false}>
@@ -188,7 +191,7 @@ const Navbar: React.FC = () => {
           >
             Jinsansan
           </Typography>
-          
+
           {isMobile ? (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <ThemeToggle />
@@ -219,19 +222,12 @@ const Navbar: React.FC = () => {
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                   >
-                    <MenuItem onClick={handleClose}>
-                      {user?.username || '用户'}
-                    </MenuItem>
+                    <MenuItem onClick={handleClose}>{user?.username || '用户'}</MenuItem>
                     <MenuItem onClick={handleLogout}>退出登录</MenuItem>
                   </Menu>
                 </>
               ) : (
-                <IconButton
-                  size="large"
-                  edge="end"
-                  color="inherit"
-                  aria-label="menu"
-                >
+                <IconButton size="large" edge="end" color="inherit" aria-label="menu">
                   <MenuIcon />
                 </IconButton>
               )}
@@ -245,4 +241,4 @@ const Navbar: React.FC = () => {
   );
 };
 
-export default Navbar; 
+export default Navbar;

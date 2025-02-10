@@ -1,7 +1,11 @@
 import debounce from 'lodash/debounce';
 import React, { useCallback, useState } from 'react';
 import { Logger } from '../../infrastructure/logging/Logger';
-import { SearchParams, SearchService, SearchServiceImpl } from '../../infrastructure/search/SearchService';
+import {
+  SearchParams,
+  SearchService,
+  SearchServiceImpl,
+} from '../../infrastructure/search/SearchService';
 import { toError, toLogData } from '../../utils/error/errorUtils';
 
 interface SearchBarProps<T> {
@@ -15,7 +19,7 @@ export function SearchBar<T>({
   onSearchResult,
   onError,
   placeholder = '搜索...',
-  debounceTime = 300
+  debounceTime = 300,
 }: SearchBarProps<T>) {
   const [keyword, setKeyword] = useState('');
   const searchService: SearchService = new SearchServiceImpl();
@@ -29,7 +33,7 @@ export function SearchBar<T>({
         const params: SearchParams = {
           keyword: searchKeyword,
           page: 1,
-          pageSize: 10
+          pageSize: 10,
         };
 
         const searchResult = await searchService.search<T>(params);
@@ -50,12 +54,7 @@ export function SearchBar<T>({
 
   return (
     <div>
-      <input
-        type="text"
-        value={keyword}
-        onChange={handleInputChange}
-        placeholder={placeholder}
-      />
+      <input type="text" value={keyword} onChange={handleInputChange} placeholder={placeholder} />
     </div>
   );
-} 
+}

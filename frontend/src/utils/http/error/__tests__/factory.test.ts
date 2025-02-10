@@ -12,7 +12,7 @@ describe('HttpErrorFactory', () => {
     it('应该直接返回 HttpError 实例', () => {
       const httpError = new HttpError({
         type: HttpErrorType.HTTP_ERROR,
-        message: 'Test error'
+        message: 'Test error',
       });
       const result = HttpErrorFactory.create(httpError);
       expect(result).toBe(httpError);
@@ -24,12 +24,12 @@ describe('HttpErrorFactory', () => {
         code: 'ECONNABORTED',
         response: {
           status: 500,
-          data: { message: 'Server Error' }
-        }
+          data: { message: 'Server Error' },
+        },
       });
-      
+
       const result = HttpErrorFactory.create(axiosError as AxiosError);
-      
+
       expect(result).toBeInstanceOf(HttpError);
       expect(result.type).toBe(HttpErrorType.HTTP_ERROR);
       expect(result.message).toBe('Network Error');
@@ -43,11 +43,11 @@ describe('HttpErrorFactory', () => {
       const axiosError = Object.assign(new Error('Network Error'), {
         isAxiosError: true,
         code: 'ECONNABORTED',
-        response: undefined
+        response: undefined,
       });
-      
+
       const result = HttpErrorFactory.create(axiosError as AxiosError);
-      
+
       expect(result).toBeInstanceOf(HttpError);
       expect(result.type).toBe(HttpErrorType.HTTP_ERROR);
       expect(result.message).toBe('Network Error');
@@ -60,7 +60,7 @@ describe('HttpErrorFactory', () => {
     it('应该处理普通 Error', () => {
       const error = new Error('Unknown error');
       const result = HttpErrorFactory.create(error);
-      
+
       expect(result).toBeInstanceOf(HttpError);
       expect(result.type).toBe(HttpErrorType.UNKNOWN_ERROR);
       expect(result.message).toBe('Unknown error');
@@ -76,14 +76,14 @@ describe('HttpErrorFactory', () => {
           data: {
             code: 'VALIDATION_ERROR',
             fields: {
-              username: 'Required'
-            }
-          }
-        }
+              username: 'Required',
+            },
+          },
+        },
       });
-      
+
       const result = HttpErrorFactory.create(axiosError as AxiosError);
-      
+
       expect(result).toBeInstanceOf(HttpError);
       expect(result.type).toBe(HttpErrorType.HTTP_ERROR);
       expect(result.message).toBe('Validation Error');
@@ -92,9 +92,9 @@ describe('HttpErrorFactory', () => {
       expect(result.data).toEqual({
         code: 'VALIDATION_ERROR',
         fields: {
-          username: 'Required'
-        }
+          username: 'Required',
+        },
       });
     });
   });
-}); 
+});

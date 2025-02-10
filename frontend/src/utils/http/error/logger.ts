@@ -10,8 +10,8 @@ export const errorLogger = {
         message: error.message,
         status: error.status,
         data: error.data,
-        stack: error.stack
-      }
+        stack: error.stack,
+      },
     });
-  }
-}; 
+  },
+};

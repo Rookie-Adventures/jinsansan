@@ -7,8 +7,8 @@ import { errorRecoveryManager } from '@/utils/http/error/recovery';
 // Mock errorRecoveryManager
 vi.mock('@/utils/http/error/recovery', () => ({
   errorRecoveryManager: {
-    attemptRecovery: vi.fn()
-  }
+    attemptRecovery: vi.fn(),
+  },
 }));
 
 describe('ErrorNotification', () => {
@@ -20,7 +20,7 @@ describe('ErrorNotification', () => {
     const originalLocation = window.location;
     Object.defineProperty(window, 'location', {
       configurable: true,
-      value: { ...originalLocation, reload: vi.fn(), href: originalLocation.href }
+      value: { ...originalLocation, reload: vi.fn(), href: originalLocation.href },
     });
   });
 
@@ -30,16 +30,14 @@ describe('ErrorNotification', () => {
 
   describe('基础渲染', () => {
     it('当没有错误时不应该渲染任何内容', () => {
-      const { container } = render(
-        <ErrorNotification error={null} onClose={mockOnClose} />
-      );
+      const { container } = render(<ErrorNotification error={null} onClose={mockOnClose} />);
       expect(container).toBeEmptyDOMElement();
     });
 
     it('应该正确渲染网络错误', () => {
       const error = new HttpError({
         type: HttpErrorType.NETWORK_ERROR,
-        message: '网络连接失败'
+        message: '网络连接失败',
       });
 
       render(<ErrorNotification error={error} onClose={mockOnClose} />);
@@ -52,7 +50,7 @@ describe('ErrorNotification', () => {
     it('应该正确渲染认证错误', () => {
       const error = new HttpError({
         type: HttpErrorType.AUTH,
-        message: '登录已过期'
+        message: '登录已过期',
       });
 
       render(<ErrorNotification error={error} onClose={mockOnClose} />);
@@ -65,7 +63,7 @@ describe('ErrorNotification', () => {
     it('应该使用默认描述当没有错误消息时', () => {
       const error = new HttpError({
         type: HttpErrorType.HTTP_ERROR,
-        message: ''
+        message: '',
       });
 
       render(<ErrorNotification error={error} onClose={mockOnClose} />);
@@ -81,7 +79,7 @@ describe('ErrorNotification', () => {
 
       const error = new HttpError({
         type: HttpErrorType.NETWORK_ERROR,
-        message: '网络错误'
+        message: '网络错误',
       });
 
       render(<ErrorNotification error={error} onClose={mockOnClose} />);
@@ -103,7 +101,7 @@ describe('ErrorNotification', () => {
 
       const error = new HttpError({
         type: HttpErrorType.NETWORK_ERROR,
-        message: '网络错误'
+        message: '网络错误',
       });
 
       render(<ErrorNotification error={error} onClose={mockOnClose} />);
@@ -122,7 +120,7 @@ describe('ErrorNotification', () => {
     it('应该正确处理刷新页面操作', () => {
       const error = new HttpError({
         type: HttpErrorType.REACT_ERROR,
-        message: '渲染错误'
+        message: '渲染错误',
       });
 
       render(<ErrorNotification error={error} onClose={mockOnClose} />);
@@ -134,7 +132,7 @@ describe('ErrorNotification', () => {
     it('应该正确处理重新登录操作', () => {
       const error = new HttpError({
         type: HttpErrorType.AUTH,
-        message: '登录已过期'
+        message: '登录已过期',
       });
 
       render(<ErrorNotification error={error} onClose={mockOnClose} />);
@@ -148,11 +146,11 @@ describe('ErrorNotification', () => {
     it('错误提示不应该自动关闭', () => {
       const error = new HttpError({
         type: HttpErrorType.HTTP_ERROR,
-        message: '严重错误'
+        message: '严重错误',
       });
 
       render(<ErrorNotification error={error} onClose={mockOnClose} />);
-      
+
       const alert = screen.getByRole('alert');
       expect(alert.parentElement).toHaveAttribute('data-auto-hide-duration', 'false');
     });
@@ -160,11 +158,11 @@ describe('ErrorNotification', () => {
     it('警告信息应该自动关闭', () => {
       const error = new HttpError({
         type: HttpErrorType.UNKNOWN_ERROR,
-        message: '警告信息'
+        message: '警告信息',
       });
 
       render(<ErrorNotification error={error} onClose={mockOnClose} />);
-      
+
       const alert = screen.getByRole('alert');
       expect(alert.parentElement).toHaveAttribute('data-auto-hide-duration', '6000');
     });
@@ -174,7 +172,7 @@ describe('ErrorNotification', () => {
     it('应该能通过关闭按钮关闭通知', () => {
       const error = new HttpError({
         type: HttpErrorType.UNKNOWN_ERROR,
-        message: '提示信息'
+        message: '提示信息',
       });
 
       render(<ErrorNotification error={error} onClose={mockOnClose} />);
@@ -183,4 +181,4 @@ describe('ErrorNotification', () => {
       expect(mockOnClose).toHaveBeenCalled();
     });
   });
-}); 
+});

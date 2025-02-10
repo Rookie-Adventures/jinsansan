@@ -2,11 +2,11 @@ import { render, screen, act } from '@testing-library/react';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { MetricsDisplay } from './MetricsDisplay';
 import { PerformanceMonitor } from '@/infrastructure/monitoring/PerformanceMonitor';
-import type { 
+import type {
   PerformanceMetric,
   PageLoadMetrics,
   CustomMetrics,
-  ApiCallMetrics 
+  ApiCallMetrics,
 } from '@/infrastructure/monitoring/types';
 
 // Mock PerformanceMonitor
@@ -21,8 +21,8 @@ describe('MetricsDisplay', () => {
         domComplete: 1200,
         loadEventEnd: 1500,
         domInteractive: 800,
-        domContentLoadedEventEnd: 1000
-      } as PageLoadMetrics
+        domContentLoadedEventEnd: 1000,
+      } as PageLoadMetrics,
     },
     {
       type: 'custom',
@@ -30,8 +30,8 @@ describe('MetricsDisplay', () => {
       data: {
         name: 'Memory Usage',
         value: 75,
-        tags: { unit: 'MB' }
-      } as CustomMetrics
+        tags: { unit: 'MB' },
+      } as CustomMetrics,
     },
     {
       type: 'api_call',
@@ -39,9 +39,9 @@ describe('MetricsDisplay', () => {
       data: {
         url: '/api/data',
         duration: 1500,
-        success: true
-      } as ApiCallMetrics
-    }
+        success: true,
+      } as ApiCallMetrics,
+    },
   ];
 
   const mockGetMetrics = vi.fn(() => mockMetrics);
@@ -49,7 +49,7 @@ describe('MetricsDisplay', () => {
   beforeEach(() => {
     vi.useFakeTimers();
     mockGetMetrics.mockClear();
-    
+
     vi.mocked(PerformanceMonitor.getInstance).mockReturnValue({
       metrics: [],
       timers: new Map(),
@@ -64,7 +64,7 @@ describe('MetricsDisplay', () => {
       trackApiCall: vi.fn(),
       getMetrics: mockGetMetrics,
       flush: vi.fn(),
-      clearMetrics: vi.fn()
+      clearMetrics: vi.fn(),
     } as unknown as PerformanceMonitor);
   });
 
@@ -80,7 +80,7 @@ describe('MetricsDisplay', () => {
 
   it('displays metrics with correct values', () => {
     render(<MetricsDisplay />);
-    
+
     // Check page load metric
     expect(screen.getByText('Page Load Time')).toBeInTheDocument();
     expect(screen.getByText('1200ms')).toBeInTheDocument();
@@ -96,7 +96,7 @@ describe('MetricsDisplay', () => {
 
   it('updates metrics every 5 seconds', async () => {
     render(<MetricsDisplay />);
-    
+
     // Initial render
     expect(mockGetMetrics).toHaveBeenCalledTimes(1);
     expect(screen.getByText('1200ms')).toBeInTheDocument();
@@ -107,8 +107,8 @@ describe('MetricsDisplay', () => {
       ...mockMetrics[0],
       data: {
         ...(mockMetrics[0].data as PageLoadMetrics),
-        domComplete: 800
-      }
+        domComplete: 800,
+      },
     };
     mockGetMetrics.mockReturnValueOnce(updatedMetrics);
 
@@ -124,7 +124,7 @@ describe('MetricsDisplay', () => {
 
   it('displays correct color based on metric values', () => {
     render(<MetricsDisplay />);
-    
+
     // API call duration > 1000ms should be red
     const apiMetric = screen.getByText('1500ms');
     expect(apiMetric).toHaveStyle({ color: '#f44336' });
@@ -133,4 +133,4 @@ describe('MetricsDisplay', () => {
     const memoryMetric = screen.getByText('75');
     expect(memoryMetric).toHaveStyle({ color: '#4caf50' });
   });
-}); 
+});

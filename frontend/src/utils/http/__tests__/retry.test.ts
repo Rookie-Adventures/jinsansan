@@ -20,7 +20,8 @@ describe('retry', () => {
   });
 
   it('应该在失败时重试指定次数', async () => {
-    const fn = vi.fn()
+    const fn = vi
+      .fn()
       .mockRejectedValueOnce(new Error('fail'))
       .mockRejectedValueOnce(new Error('fail'))
       .mockResolvedValue('success');
@@ -36,8 +37,9 @@ describe('retry', () => {
     const error1 = new Error('fail1');
     const error2 = new Error('fail2');
     const error3 = new Error('fail3');
-    
-    const fn = vi.fn()
+
+    const fn = vi
+      .fn()
       .mockRejectedValueOnce(error1)
       .mockRejectedValueOnce(error2)
       .mockRejectedValue(error3);
@@ -49,24 +51,25 @@ describe('retry', () => {
   });
 
   it('应该使用指数退避延迟', async () => {
-    const fn = vi.fn()
+    const fn = vi
+      .fn()
       .mockRejectedValueOnce(new Error('fail'))
       .mockRejectedValueOnce(new Error('fail'))
       .mockResolvedValue('success');
 
     const promise = retry(fn, { times: 3, delay: 1000 });
-    
+
     // 第一次调用
     expect(fn).toHaveBeenCalledTimes(1);
-    
+
     // 第一次重试 (1000ms)
     await vi.advanceTimersByTimeAsync(1000);
     expect(fn).toHaveBeenCalledTimes(2);
-    
+
     // 第二次重试 (2000ms)
     await vi.advanceTimersByTimeAsync(2000);
     expect(fn).toHaveBeenCalledTimes(3);
-    
+
     const result = await promise;
     expect(result).toBe('success');
   });
@@ -82,7 +85,7 @@ describe('retry', () => {
     const error = new Error('fail');
     const fn = vi.fn().mockRejectedValue(error);
     const shouldRetry = vi.fn().mockReturnValue(false);
-    
+
     await expect(retry(fn, { shouldRetry })).rejects.toThrow(error);
     expect(fn).toHaveBeenCalledTimes(1);
     expect(shouldRetry).toHaveBeenCalledWith(error);
@@ -95,22 +98,20 @@ describe('retry', () => {
     const shouldRetry = vi.fn().mockImplementation(() => {
       throw shouldRetryError;
     });
-    
+
     await expect(retry(fn, { shouldRetry })).rejects.toThrow(shouldRetryError);
     expect(fn).toHaveBeenCalledTimes(1);
   });
 
   it('应该调用 onRetry 回调并传递正确的参数', async () => {
     const error = new Error('fail');
-    const fn = vi.fn()
-      .mockRejectedValueOnce(error)
-      .mockResolvedValue('success');
+    const fn = vi.fn().mockRejectedValueOnce(error).mockResolvedValue('success');
     const onRetry = vi.fn();
 
     const promise = retry(fn, { onRetry, delay: 1000 });
     await vi.runAllTimersAsync();
     const result = await promise;
-    
+
     expect(result).toBe('success');
     expect(onRetry).toHaveBeenCalledTimes(1);
     expect(onRetry).toHaveBeenCalledWith(error, 1);
@@ -118,9 +119,7 @@ describe('retry', () => {
 
   it('应该在 onRetry 回调抛出异常时继续重试', async () => {
     const error = new Error('fail');
-    const fn = vi.fn()
-      .mockRejectedValueOnce(error)
-      .mockResolvedValue('success');
+    const fn = vi.fn().mockRejectedValueOnce(error).mockResolvedValue('success');
     const onRetry = vi.fn().mockImplementation(() => {
       throw new Error('onRetry error');
     });
@@ -128,7 +127,7 @@ describe('retry', () => {
     const promise = retry(fn, { onRetry, delay: 1000 });
     await vi.runAllTimersAsync();
     const result = await promise;
-    
+
     expect(result).toBe('success');
     expect(onRetry).toHaveBeenCalledTimes(1);
   });
@@ -136,14 +135,12 @@ describe('retry', () => {
   describe('createRetry', () => {
     it('应该创建一个预配置的重试函数', async () => {
       const retryWithConfig = createRetry({ times: 2, delay: 500 });
-      const fn = vi.fn()
-        .mockRejectedValueOnce(new Error('fail'))
-        .mockResolvedValue('success');
+      const fn = vi.fn().mockRejectedValueOnce(new Error('fail')).mockResolvedValue('success');
 
       const promise = retryWithConfig(fn);
       await vi.runAllTimersAsync();
       const result = await promise;
-      
+
       expect(result).toBe('success');
       expect(fn).toHaveBeenCalledTimes(2);
     });
@@ -152,8 +149,7 @@ describe('retry', () => {
       const retryWithConfig = createRetry({ times: 2, delay: 500, shouldRetry: () => false });
       const fn = vi.fn().mockRejectedValue(new Error('fail'));
 
-      await expect(retryWithConfig(fn))
-        .rejects.toThrow('fail');
+      await expect(retryWithConfig(fn)).rejects.toThrow('fail');
       expect(fn).toHaveBeenCalledTimes(1);
     });
   });
@@ -164,14 +160,12 @@ describe('retry', () => {
       networkError.isAxiosError = true;
       networkError.code = 'ECONNABORTED';
 
-      const fn = vi.fn()
-        .mockRejectedValueOnce(networkError)
-        .mockResolvedValue('success');
+      const fn = vi.fn().mockRejectedValueOnce(networkError).mockResolvedValue('success');
 
       const promise = retry(fn);
       await vi.runAllTimersAsync();
       const result = await promise;
-      
+
       expect(result).toBe('success');
       expect(fn).toHaveBeenCalledTimes(2);
     });
@@ -191,16 +185,14 @@ describe('retry', () => {
       noResponseError.isAxiosError = true;
       noResponseError.response = undefined;
 
-      const fn = vi.fn()
-        .mockRejectedValueOnce(noResponseError)
-        .mockResolvedValue('success');
+      const fn = vi.fn().mockRejectedValueOnce(noResponseError).mockResolvedValue('success');
 
       const promise = retry(fn);
       await vi.runAllTimersAsync();
       const result = await promise;
-      
+
       expect(result).toBe('success');
       expect(fn).toHaveBeenCalledTimes(2);
     });
   });
-}); 
+});

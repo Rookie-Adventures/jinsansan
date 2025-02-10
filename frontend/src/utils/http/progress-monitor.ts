@@ -16,4 +16,4 @@ export interface ProgressMonitor {
   onProgress: ProgressCallback;
   onComplete?: () => void;
   onError?: (error: Error) => void;
-} 
+}

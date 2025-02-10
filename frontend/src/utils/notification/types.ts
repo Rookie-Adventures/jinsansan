@@ -4,7 +4,7 @@ export enum NotificationSeverity {
   INFO = 'info',
   WARNING = 'warning',
   ERROR = 'error',
-  CRITICAL = 'critical'
+  CRITICAL = 'critical',
 }
 
 export interface NotificationOptions {
@@ -12,4 +12,4 @@ export interface NotificationOptions {
   message: string;
   description?: string;
   duration?: number;
-} 
+}

@@ -15,13 +15,10 @@ const LoginPage: React.FC = () => {
   }, [isAuthenticated, navigate]);
 
   return (
-    <AuthPage
-      type="login"
-      initialData={{ username: '', password: '' }}
-    >
+    <AuthPage type="login" initialData={{ username: '', password: '' }}>
       <LoginForm />
     </AuthPage>
   );
 };
 
-export default LoginPage; 
+export default LoginPage;

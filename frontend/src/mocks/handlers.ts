@@ -1,4 +1,4 @@
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw';
 
 // 模拟用户数据库
 const mockUsers = [
@@ -7,16 +7,16 @@ const mockUsers = [
     password: 'test',
     id: 1,
     role: 'admin',
-    permissions: ['read', 'write', 'admin']
+    permissions: ['read', 'write', 'admin'],
   },
   {
     username: 'admin',
     password: 'admin123',
     id: 2,
     role: 'admin',
-    permissions: ['read', 'write', 'admin']
-  }
-] as const
+    permissions: ['read', 'write', 'admin'],
+  },
+] as const;
 
 export const handlers = [
   // 分析数据接口模拟
@@ -27,40 +27,38 @@ export const handlers = [
       data: {
         totalVisits: 1000,
         uniqueUsers: 500,
-        avgDuration: '5m 30s'
-      }
-    })
+        avgDuration: '5m 30s',
+      },
+    });
   }),
 
   // 路由分析数据上报接口
   http.post('/api/analytics/route', async ({ request }) => {
-    const body = await request.json()
+    const body = await request.json();
     return HttpResponse.json({
       code: 200,
       message: 'success',
-      data: body
-    })
+      data: body,
+    });
   }),
 
   // 登录接口模拟
   http.post('/auth/login', async ({ request }) => {
-    const body = await request.json() as { username: string; password: string }
-    
+    const body = (await request.json()) as { username: string; password: string };
+
     // 查找匹配的用户
-    const user = mockUsers.find(
-      u => u.username === body.username && u.password === body.password
-    )
+    const user = mockUsers.find(u => u.username === body.username && u.password === body.password);
 
     if (user) {
-      const { password, ...userWithoutPassword } = user
+      const { password, ...userWithoutPassword } = user;
       return HttpResponse.json({
         code: 200,
         message: 'success',
         data: {
           token: `mock-jwt-token-${user.id}`,
-          user: userWithoutPassword
-        }
-      })
+          user: userWithoutPassword,
+        },
+      });
     }
 
     // 登录失败响应
@@ -68,9 +66,9 @@ export const handlers = [
       {
         code: 401,
         message: '用户名或密码错误',
-        data: null
+        data: null,
       },
       { status: 401 }
-    )
+    );
   }),
-] 
+];

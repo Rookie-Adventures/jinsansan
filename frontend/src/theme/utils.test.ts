@@ -31,7 +31,7 @@ describe('Theme Utils', () => {
     it('应该正确调整颜色亮度', () => {
       const lighterColor = adjustColor('#000000', 0.1);
       const darkerColor = adjustColor('#ffffff', -0.1);
-      
+
       expect(lighterColor).toMatch(/^#[0-9a-f]{6}$/i);
       expect(darkerColor).toMatch(/^#[0-9a-f]{6}$/i);
     });
@@ -42,8 +42,12 @@ describe('Theme Utils', () => {
     });
 
     it('应该验证调整量范围', () => {
-      expect(() => adjustColor('#000000', 1.1)).toThrow('Adjustment amount must be between -1 and 1');
-      expect(() => adjustColor('#000000', -1.1)).toThrow('Adjustment amount must be between -1 and 1');
+      expect(() => adjustColor('#000000', 1.1)).toThrow(
+        'Adjustment amount must be between -1 and 1'
+      );
+      expect(() => adjustColor('#000000', -1.1)).toThrow(
+        'Adjustment amount must be between -1 and 1'
+      );
     });
 
     it('应该保持有效的颜色格式', () => {
@@ -88,7 +92,7 @@ describe('Theme Utils', () => {
   describe('generatePalette', () => {
     it('应该从主色生成完整的调色板', () => {
       const palette = generatePalette('#1976d2');
-      
+
       expect(palette.light).toBeDefined();
       expect(palette.main).toBe('#1976d2');
       expect(palette.dark).toBeDefined();
@@ -97,7 +101,7 @@ describe('Theme Utils', () => {
 
     it('应该生成辅助色', () => {
       const palette = generatePalette('#1976d2', true) as ExtendedColorPalette;
-      
+
       expect(palette.secondary).toBeDefined();
       expect(palette.secondary.main).toBeDefined();
       expect(palette.secondary.light).toBeDefined();
@@ -116,4 +120,4 @@ describe('Theme Utils', () => {
       expect(lightPalette.contrastText).toBe('#000000');
     });
   });
-}); 
+});

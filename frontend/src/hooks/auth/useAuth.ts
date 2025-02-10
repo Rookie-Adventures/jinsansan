@@ -12,7 +12,7 @@ import { HttpError, HttpErrorType } from '@/utils/http/error/types';
 export const useAuth = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { user, token, loading, error } = useAppSelector((state) => state.auth);
+  const { user, token, loading, error } = useAppSelector(state => state.auth);
 
   const handleAuthError = useCallback((err: unknown): HttpError => {
     if (err instanceof Error || (err as AxiosError).isAxiosError) {
@@ -21,31 +21,37 @@ export const useAuth = () => {
     return HttpErrorFactory.create(new Error('Unknown error occurred'));
   }, []);
 
-  const handleLogin = useCallback(async (data: LoginFormData) => {
-    try {
-      await dispatch(login(data)).unwrap();
-      navigate('/');
-    } catch (err) {
-      const httpError = handleAuthError(err);
-      if (httpError.type === HttpErrorType.AUTH) {
-        navigate('/login');
+  const handleLogin = useCallback(
+    async (data: LoginFormData) => {
+      try {
+        await dispatch(login(data)).unwrap();
+        navigate('/');
+      } catch (err) {
+        const httpError = handleAuthError(err);
+        if (httpError.type === HttpErrorType.AUTH) {
+          navigate('/login');
+        }
+        throw httpError;
       }
-      throw httpError;
-    }
-  }, [dispatch, navigate, handleAuthError]);
+    },
+    [dispatch, navigate, handleAuthError]
+  );
 
-  const handleRegister = useCallback(async (data: RegisterFormData) => {
-    try {
-      await dispatch(register(data)).unwrap();
-      navigate('/');
-    } catch (err) {
-      const httpError = handleAuthError(err);
-      if (httpError.type === HttpErrorType.AUTH) {
-        navigate('/register');
+  const handleRegister = useCallback(
+    async (data: RegisterFormData) => {
+      try {
+        await dispatch(register(data)).unwrap();
+        navigate('/');
+      } catch (err) {
+        const httpError = handleAuthError(err);
+        if (httpError.type === HttpErrorType.AUTH) {
+          navigate('/register');
+        }
+        throw httpError;
       }
-      throw httpError;
-    }
-  }, [dispatch, navigate, handleAuthError]);
+    },
+    [dispatch, navigate, handleAuthError]
+  );
 
   const handleLogout = useCallback(async () => {
     try {
@@ -86,4 +92,4 @@ export const useAuth = () => {
     logout: handleLogout,
     getCurrentUser: fetchCurrentUser,
   };
-}; 
+};

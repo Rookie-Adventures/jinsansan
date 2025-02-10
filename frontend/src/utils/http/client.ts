@@ -9,7 +9,7 @@ class HttpClient implements RequestMethod {
       ...config,
       url,
       method: 'GET',
-      headers: (config?.headers || {}) as AxiosRequestHeaders
+      headers: (config?.headers || {}) as AxiosRequestHeaders,
     });
     return response.data;
   }
@@ -20,7 +20,7 @@ class HttpClient implements RequestMethod {
       url,
       method: 'POST',
       data,
-      headers: (config?.headers || {}) as AxiosRequestHeaders
+      headers: (config?.headers || {}) as AxiosRequestHeaders,
     });
     return response.data;
   }
@@ -31,7 +31,7 @@ class HttpClient implements RequestMethod {
       url,
       method: 'PUT',
       data,
-      headers: (config?.headers || {}) as AxiosRequestHeaders
+      headers: (config?.headers || {}) as AxiosRequestHeaders,
     });
     return response.data;
   }
@@ -41,10 +41,10 @@ class HttpClient implements RequestMethod {
       ...config,
       url,
       method: 'DELETE',
-      headers: (config?.headers || {}) as AxiosRequestHeaders
+      headers: (config?.headers || {}) as AxiosRequestHeaders,
     });
     return response.data;
   }
 }
 
-export const http = new HttpClient(); 
+export const http = new HttpClient();

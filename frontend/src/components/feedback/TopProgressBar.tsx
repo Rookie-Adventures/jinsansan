@@ -11,7 +11,7 @@ const StyledProgressBar = styled(LinearProgress)(({ theme }) => ({
   height: 2,
   '& .MuiLinearProgress-bar': {
     backgroundColor: theme.palette.primary.main,
-  }
+  },
 }));
 
 interface TopProgressBarProps {
@@ -42,10 +42,7 @@ export const TopProgressBar = ({ loading = false, progress }: TopProgressBarProp
 
   return (
     <Box sx={{ width: '100%' }}>
-      <StyledProgressBar
-        variant={progress ? 'determinate' : 'indeterminate'}
-        value={progress}
-      />
+      <StyledProgressBar variant={progress ? 'determinate' : 'indeterminate'} value={progress} />
     </Box>
   );
-}; 
+};

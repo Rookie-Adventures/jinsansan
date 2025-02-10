@@ -14,4 +14,4 @@ const Loading: React.FC = () => (
   </Box>
 );
 
-export default Loading; 
+export default Loading;

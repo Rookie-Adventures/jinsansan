@@ -9,8 +9,8 @@ import type { User } from '@/types/auth';
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
   return {
-    ...actual as any,
-    useNavigate: vi.fn()
+    ...(actual as any),
+    useNavigate: vi.fn(),
   };
 });
 
@@ -24,14 +24,14 @@ vi.mock('@/hooks/auth', () => ({
     user: null,
     token: null,
     error: null,
-    isAuthenticated: false
+    isAuthenticated: false,
   })),
   useAuthForm: vi.fn(() => ({
     formData: { username: '', password: '', email: '', confirmPassword: '' },
     showPassword: false,
     handleFormChange: vi.fn(),
-    togglePasswordVisibility: vi.fn()
-  }))
+    togglePasswordVisibility: vi.fn(),
+  })),
 }));
 
 describe('RegisterPage', () => {
@@ -52,18 +52,18 @@ describe('RegisterPage', () => {
 
   it('应该正确渲染注册页面', () => {
     renderRegisterPage();
-    
+
     // 验证页面标题和描述
     expect(screen.getByRole('heading', { name: '注册' })).toBeInTheDocument();
     expect(screen.getByText('创建您的账号')).toBeInTheDocument();
-    
+
     // 验证表单元素
     expect(screen.getByLabelText('用户名')).toBeInTheDocument();
     expect(screen.getByLabelText('邮箱')).toBeInTheDocument();
     expect(screen.getByLabelText('密码')).toBeInTheDocument();
     expect(screen.getByLabelText('确认密码')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '注册' })).toBeInTheDocument();
-    
+
     // 验证导航链接
     expect(screen.getByText('已有账号？点击登录')).toBeInTheDocument();
   });
@@ -78,11 +78,11 @@ describe('RegisterPage', () => {
       user: null,
       token: null,
       error: null,
-      isAuthenticated: false
+      isAuthenticated: false,
     });
 
     renderRegisterPage();
-    
+
     expect(screen.getByLabelText('用户名')).toBeDisabled();
     expect(screen.getByLabelText('邮箱')).toBeDisabled();
     expect(screen.getByLabelText('密码')).toBeDisabled();
@@ -95,7 +95,7 @@ describe('RegisterPage', () => {
       id: 1,
       username: 'test',
       email: 'test@example.com',
-      permissions: []
+      permissions: [],
     };
 
     vi.mocked(useAuth).mockReturnValue({
@@ -107,12 +107,12 @@ describe('RegisterPage', () => {
       user: mockUser,
       token: 'token',
       error: null,
-      isAuthenticated: true
+      isAuthenticated: true,
     });
 
     renderRegisterPage();
-    
+
     // 验证重定向逻辑
     expect(mockNavigate).toHaveBeenCalledWith('/');
   });
-}); 
+});

@@ -4,11 +4,11 @@ import Logger from '@/utils/logger';
 
 vi.mock('@/utils/logger', () => ({
   default: {
-    error: vi.fn()
-  }
+    error: vi.fn(),
+  },
 }));
 vi.mock('../../slices/appSlice', () => ({
-  showToast: vi.fn((payload) => ({ type: 'app/showToast', payload }))
+  showToast: vi.fn(payload => ({ type: 'app/showToast', payload })),
 }));
 
 describe('errorMiddleware', () => {
@@ -18,7 +18,7 @@ describe('errorMiddleware', () => {
 
   beforeEach(() => {
     store = {
-      dispatch: vi.fn()
+      dispatch: vi.fn(),
     };
     next = vi.fn();
     invoke = errorMiddleware(store)(next);
@@ -28,7 +28,7 @@ describe('errorMiddleware', () => {
   it('应该处理错误 action', () => {
     const errorAction = {
       type: 'test/rejected',
-      error: { message: '测试错误' }
+      error: { message: '测试错误' },
     };
 
     invoke(errorAction);
@@ -37,8 +37,8 @@ describe('errorMiddleware', () => {
       expect.objectContaining({
         payload: {
           message: '测试错误',
-          severity: 'error'
-        }
+          severity: 'error',
+        },
       })
     );
     expect(next).toHaveBeenCalledWith(errorAction);
@@ -47,7 +47,7 @@ describe('errorMiddleware', () => {
   it('应该处理没有错误消息的错误 action', () => {
     const errorAction = {
       type: 'test/rejected',
-      error: {}
+      error: {},
     };
 
     invoke(errorAction);
@@ -56,8 +56,8 @@ describe('errorMiddleware', () => {
       expect.objectContaining({
         payload: {
           message: '操作失败，请稍后重试',
-          severity: 'error'
-        }
+          severity: 'error',
+        },
       })
     );
   });
@@ -65,7 +65,7 @@ describe('errorMiddleware', () => {
   it('应该处理非错误 action', () => {
     const normalAction = {
       type: 'test/success',
-      payload: 'data'
+      payload: 'data',
     };
 
     invoke(normalAction);
@@ -77,7 +77,7 @@ describe('errorMiddleware', () => {
   it('应该处理中间件内部错误', () => {
     const action = {
       type: 'test/action',
-      payload: null
+      payload: null,
     };
     next.mockImplementation(() => {
       throw new Error('内部错误');
@@ -88,16 +88,16 @@ describe('errorMiddleware', () => {
     expect(Logger.error).toHaveBeenCalledWith(
       'Action Error:',
       expect.objectContaining({
-        context: 'errorMiddleware'
+        context: 'errorMiddleware',
       })
     );
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         payload: {
           message: '系统错误，请稍后重试',
-          severity: 'error'
-        }
+          severity: 'error',
+        },
       })
     );
   });
-}); 
+});

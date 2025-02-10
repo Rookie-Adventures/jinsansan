@@ -17,13 +17,13 @@ const defaultConfig: RetryConfig = {
       const axiosError = error as AxiosError;
       return !axiosError.response || axiosError.code === 'ECONNABORTED';
     }
-    return true;  // 默认重试所有非 Axios 错误
+    return true; // 默认重试所有非 Axios 错误
   },
 };
 
 const delay = (ms: number): Promise<void> => {
   let timeoutId: NodeJS.Timeout;
-  
+
   return new Promise<void>((resolve, reject) => {
     try {
       timeoutId = setTimeout(() => {
@@ -40,12 +40,9 @@ const delay = (ms: number): Promise<void> => {
   });
 };
 
-export async function retry<T>(
-  fn: () => Promise<T>,
-  config?: Partial<RetryConfig>
-): Promise<T> {
+export async function retry<T>(fn: () => Promise<T>, config?: Partial<RetryConfig>): Promise<T> {
   const retryConfig = { ...defaultConfig, ...config };
-  
+
   if (!retryConfig.enable) {
     return fn();
   }
@@ -58,7 +55,7 @@ export async function retry<T>(
       return await fn();
     } catch (error) {
       lastError = error;
-      
+
       const shouldRetry = !retryConfig.shouldRetry || retryConfig.shouldRetry(error);
       const isLastAttempt = attempt === retryConfig.times - 1;
 
@@ -85,4 +82,4 @@ export async function retry<T>(
 
 export const createRetry = (config?: Partial<RetryConfig>) => {
   return <T>(fn: () => Promise<T>) => retry(fn, config);
-}; 
+};

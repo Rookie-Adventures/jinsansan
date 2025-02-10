@@ -69,25 +69,27 @@ describe('HttpClient', () => {
 
   describe('构造函数', () => {
     it('应该使用默认配置创建实例', () => {
-      expect(axios.create).toHaveBeenCalledWith(expect.objectContaining({
-        baseURL: '/api',
-        timeout: 10000,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        cache: {
-          enable: true,
-          ttl: 300000,
-        },
-        retry: {
-          times: 3,
-          delay: 1000,
-        },
-        queue: {
-          enable: true,
-          concurrency: 3,
-        },
-      }));
+      expect(axios.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          baseURL: '/api',
+          timeout: 10000,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          cache: {
+            enable: true,
+            ttl: 300000,
+          },
+          retry: {
+            times: 3,
+            delay: 1000,
+          },
+          queue: {
+            enable: true,
+            concurrency: 3,
+          },
+        })
+      );
     });
 
     it('应该使用自定义配置覆盖默认配置', () => {
@@ -98,10 +100,12 @@ describe('HttpClient', () => {
 
       new HttpClient(mockLogger, mockPerformanceMonitor, customConfig);
 
-      expect(axios.create).toHaveBeenCalledWith(expect.objectContaining({
-        baseURL: '/custom-api',
-        timeout: 5000,
-      }));
+      expect(axios.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          baseURL: '/custom-api',
+          timeout: 5000,
+        })
+      );
     });
   });
 
@@ -123,7 +127,7 @@ describe('HttpClient', () => {
     describe('GET 方法', () => {
       it('应该正确发送 GET 请求', async () => {
         const result = await httpClient.get(url, config);
-        
+
         expect(mockAxiosInstance.get).toHaveBeenCalledWith(url, config);
         expect(result).toEqual(mockResponse.data);
       });
@@ -139,7 +143,7 @@ describe('HttpClient', () => {
     describe('POST 方法', () => {
       it('应该正确发送 POST 请求', async () => {
         const result = await httpClient.post(url, data, config);
-        
+
         expect(mockAxiosInstance.post).toHaveBeenCalledWith(url, data, config);
         expect(result).toEqual(mockResponse.data);
       });
@@ -148,7 +152,7 @@ describe('HttpClient', () => {
     describe('PUT 方法', () => {
       it('应该正确发送 PUT 请求', async () => {
         const result = await httpClient.put(url, data, config);
-        
+
         expect(mockAxiosInstance.put).toHaveBeenCalledWith(url, data, config);
         expect(result).toEqual(mockResponse.data);
       });
@@ -157,7 +161,7 @@ describe('HttpClient', () => {
     describe('DELETE 方法', () => {
       it('应该正确发送 DELETE 请求', async () => {
         const result = await httpClient.delete(url, config);
-        
+
         expect(mockAxiosInstance.delete).toHaveBeenCalledWith(url, config);
         expect(result).toEqual(mockResponse.data);
       });
@@ -166,7 +170,7 @@ describe('HttpClient', () => {
     describe('PATCH 方法', () => {
       it('应该正确发送 PATCH 请求', async () => {
         const result = await httpClient.patch(url, data, config);
-        
+
         expect(mockAxiosInstance.patch).toHaveBeenCalledWith(url, data, config);
         expect(result).toEqual(mockResponse.data);
       });
@@ -301,4 +305,4 @@ describe('HttpClient', () => {
       });
     });
   });
-}); 
+});

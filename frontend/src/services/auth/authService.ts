@@ -86,4 +86,4 @@ export const getAuthService = (http: HttpClient): AuthService => {
     authServiceInstance = new AuthService(http);
   }
   return authServiceInstance;
-}; 
+};

@@ -10,8 +10,8 @@ vi.mock('redux-persist/lib/storage', () => ({
   default: {
     getItem: vi.fn(),
     setItem: vi.fn(),
-    removeItem: vi.fn()
-  }
+    removeItem: vi.fn(),
+  },
 }));
 
 const createMockRootState = (data: Partial<RootState> = {}): RootState => ({
@@ -21,14 +21,14 @@ const createMockRootState = (data: Partial<RootState> = {}): RootState => ({
     toast: {
       open: false,
       message: '',
-      severity: 'info'
-    }
+      severity: 'info',
+    },
   },
   auth: {
     token: null,
     user: null,
     loading: false,
-    error: null
+    error: null,
   },
   ...data,
 });
@@ -59,18 +59,18 @@ describe('persistConfig', () => {
         user: { id: 1, name: 'test' },
         isAuthenticated: true,
         loading: true,
-        error: new Error('test')
+        error: new Error('test'),
       };
 
       const transforms = persistConfig.transforms as Transform<RootState, any>[];
       expect(transforms).toBeDefined();
-      
+
       // 测试 in 转换
       const mockState = createMockRootState();
       const inboundState = transforms[0].in(authState as any, 'auth', mockState);
       expect(inboundState).toEqual({
         token: 'test-token',
-        user: { id: 1, username: undefined }
+        user: { id: 1, username: undefined },
       });
 
       // 测试 out 转换
@@ -82,7 +82,7 @@ describe('persistConfig', () => {
       const themeState = {
         mode: 'dark',
         customizations: { primaryColor: '#000000' },
-        fontSize: 16
+        fontSize: 16,
       };
 
       const transforms = persistConfig.transforms as Transform<RootState, any>[];
@@ -93,7 +93,7 @@ describe('persistConfig', () => {
       const inboundState = transforms[1].in(themeState as any, 'theme', mockState);
       expect(inboundState).toEqual({
         mode: 'dark',
-        customizations: { primaryColor: '#000000' }
+        customizations: { primaryColor: '#000000' },
       });
       expect(inboundState.fontSize).toBeUndefined();
 
@@ -104,7 +104,7 @@ describe('persistConfig', () => {
 
     it('应该忽略不在whitelist中的状态', () => {
       const otherState = {
-        data: 'test'
+        data: 'test',
       };
 
       const transforms = persistConfig.transforms as Transform<RootState, any>[];
@@ -129,9 +129,9 @@ describe('persistConfig', () => {
           token: 'old-token',
           user: {
             id: 1,
-            username: 'test'
-          }
-        }
+            username: 'test',
+          },
+        },
       } as PersistedState;
 
       expect(persistConfig.migrate).toBeDefined();
@@ -144,9 +144,9 @@ describe('persistConfig', () => {
             token: 'old-token',
             user: expect.objectContaining({
               id: 1,
-              username: 'test'
-            })
-          }
+              username: 'test',
+            }),
+          },
         });
       }
     });
@@ -154,14 +154,17 @@ describe('persistConfig', () => {
     it('应该处理无效的旧状态', async () => {
       expect(persistConfig.migrate).toBeDefined();
       if (persistConfig.migrate) {
-        const migratedState = await persistConfig.migrate({
-          _persist: { version: 0, rehydrated: true }
-        } as PersistedState, 0);
-        
+        const migratedState = await persistConfig.migrate(
+          {
+            _persist: { version: 0, rehydrated: true },
+          } as PersistedState,
+          0
+        );
+
         // 验证基本结构而不是空对象
         expect(migratedState).toMatchObject({
           _persist: { version: 0, rehydrated: true },
-          auth: null
+          auth: null,
         });
       }
     });
@@ -176,9 +179,9 @@ describe('persistConfig', () => {
             id: 2,
             username: 'test',
             email: 'test@example.com',
-            permissions: []
-          }
-        }
+            permissions: [],
+          },
+        },
       };
 
       const originalState = {
@@ -188,8 +191,8 @@ describe('persistConfig', () => {
           toast: {
             open: false,
             message: '',
-            severity: 'info'
-          }
+            severity: 'info',
+          },
         },
         auth: {
           token: 'old-token',
@@ -197,31 +200,29 @@ describe('persistConfig', () => {
             id: 1,
             username: 'old-test',
             email: 'old@example.com',
-            permissions: []
-          }
-        }
+            permissions: [],
+          },
+        },
       };
 
-      const reconciledState = autoMergeLevel2(
-        inboundState,
-        originalState,
-        originalState,
-        { storage, key: 'root' }
-      );
+      const reconciledState = autoMergeLevel2(inboundState, originalState, originalState, {
+        storage,
+        key: 'root',
+      });
 
       // 验证合并后的状态
       expect(reconciledState).toMatchObject({
-        app: originalState.app,  // 保留原始的 app 状态
+        app: originalState.app, // 保留原始的 app 状态
         auth: {
           token: 'new-token',
           user: {
             id: 2,
             username: 'test',
             email: 'test@example.com',
-            permissions: []
-          }
-        }
+            permissions: [],
+          },
+        },
       });
     });
   });
-}); 
+});

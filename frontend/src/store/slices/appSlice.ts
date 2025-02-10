@@ -27,7 +27,7 @@ const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    toggleDarkMode: (state) => {
+    toggleDarkMode: state => {
       state.darkMode = !state.darkMode;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
@@ -39,11 +39,11 @@ const appSlice = createSlice({
         open: true,
       };
     },
-    hideToast: (state) => {
+    hideToast: state => {
       state.toast.open = false;
     },
   },
 });
 
 export const { toggleDarkMode, setLoading, showToast, hideToast } = appSlice.actions;
-export default appSlice.reducer; 
+export default appSlice.reducer;

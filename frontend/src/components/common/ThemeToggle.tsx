@@ -7,7 +7,7 @@ import { toggleDarkMode } from '@/store/slices/appSlice';
 
 export const ThemeToggle = () => {
   const dispatch = useAppDispatch();
-  const isDarkMode = useAppSelector((state) => state.app.darkMode);
+  const isDarkMode = useAppSelector(state => state.app.darkMode);
 
   return (
     <Tooltip title={isDarkMode ? '切换到亮色模式' : '切换到暗色模式'}>
@@ -16,4 +16,4 @@ export const ThemeToggle = () => {
       </IconButton>
     </Tooltip>
   );
-}; 
+};

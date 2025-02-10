@@ -8,13 +8,13 @@ import { useAuth } from '@/hooks/auth';
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
   return {
-    ...actual as any,
-    useNavigate: vi.fn()
+    ...(actual as any),
+    useNavigate: vi.fn(),
   };
 });
 
 vi.mock('@/hooks/auth', () => ({
-  useAuth: vi.fn()
+  useAuth: vi.fn(),
 }));
 
 describe('GuestGuard', () => {
@@ -29,7 +29,7 @@ describe('GuestGuard', () => {
   describe('访客状态处理', () => {
     it('未认证用户应该看到访客内容', () => {
       vi.mocked(useAuth).mockReturnValue({
-        isAuthenticated: false
+        isAuthenticated: false,
       } as any);
 
       render(
@@ -46,7 +46,7 @@ describe('GuestGuard', () => {
 
     it('已认证用户应该重定向到首页', async () => {
       vi.mocked(useAuth).mockReturnValue({
-        isAuthenticated: true
+        isAuthenticated: true,
       } as any);
 
       render(
@@ -68,7 +68,7 @@ describe('GuestGuard', () => {
     it('认证状态变化时应该触发重定向', async () => {
       // 初始未认证状态
       vi.mocked(useAuth).mockReturnValue({
-        isAuthenticated: false
+        isAuthenticated: false,
       } as any);
 
       const { rerender } = render(
@@ -87,7 +87,7 @@ describe('GuestGuard', () => {
 
       // 切换到已认证状态
       vi.mocked(useAuth).mockReturnValue({
-        isAuthenticated: true
+        isAuthenticated: true,
       } as any);
 
       // 重新渲染
@@ -106,4 +106,4 @@ describe('GuestGuard', () => {
       expect(screen.queryByText('Guest Content')).not.toBeInTheDocument();
     });
   });
-}); 
+});

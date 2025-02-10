@@ -10,4 +10,4 @@ export { http } from './client';
 export { default as request } from '../request';
 
 // 导出 requestManager
-export * from './requestManager'; 
+export * from './requestManager';

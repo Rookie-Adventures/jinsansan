@@ -81,7 +81,7 @@ describe('FileManager', () => {
 
       // Mock FileReader for this specific test
       const mockFileReader = {
-        readAsText: vi.fn().mockImplementation(function(this: any) {
+        readAsText: vi.fn().mockImplementation(function (this: any) {
           setTimeout(() => {
             this.result = mockResult;
             this.onload?.();
@@ -92,7 +92,9 @@ describe('FileManager', () => {
         result: '',
       };
 
-      vi.spyOn(window, 'FileReader').mockImplementation(() => mockFileReader as unknown as FileReader);
+      vi.spyOn(window, 'FileReader').mockImplementation(
+        () => mockFileReader as unknown as FileReader
+      );
 
       const result = await fileManager.readFileContent(file);
       expect(result).toBe(mockResult);
@@ -104,16 +106,16 @@ describe('FileManager', () => {
       (global.URL.createObjectURL as jest.Mock).mockReturnValue(mockUrl);
 
       const url = fileManager.createPreviewUrl(file);
-      
+
       expect(url).toBe(mockUrl);
       expect(global.URL.createObjectURL).toHaveBeenCalledWith(file);
     });
 
     it('应该释放文件预览URL', () => {
       const mockUrl = 'blob:test-url';
-      
+
       fileManager.revokePreviewUrl(mockUrl);
-      
+
       expect(global.URL.revokeObjectURL).toHaveBeenCalledWith(mockUrl);
     });
   });
@@ -125,7 +127,7 @@ describe('FileManager', () => {
 
       // Mock FileReader for this specific test
       const mockFileReader = {
-        readAsDataURL: vi.fn().mockImplementation(function(this: any) {
+        readAsDataURL: vi.fn().mockImplementation(function (this: any) {
           setTimeout(() => {
             this.result = mockBase64;
             this.onload?.();
@@ -136,7 +138,9 @@ describe('FileManager', () => {
         result: '',
       };
 
-      vi.spyOn(window, 'FileReader').mockImplementation(() => mockFileReader as unknown as FileReader);
+      vi.spyOn(window, 'FileReader').mockImplementation(
+        () => mockFileReader as unknown as FileReader
+      );
 
       const result = await fileManager.convertToBase64(file);
       expect(result).toBe(mockBase64);
@@ -145,7 +149,7 @@ describe('FileManager', () => {
     it('应该将Base64转换为Blob', () => {
       const base64 = 'data:text/plain;base64,dGVzdA=='; // "test" in base64
       const blob = fileManager.convertBase64ToBlob(base64);
-      
+
       expect(blob instanceof Blob).toBe(true);
       expect(blob.type).toBe('text/plain');
     });
@@ -158,7 +162,7 @@ describe('FileManager', () => {
 
       // Mock FileReader for this specific test
       const mockFileReader = {
-        readAsText: vi.fn().mockImplementation(function(this: any) {
+        readAsText: vi.fn().mockImplementation(function (this: any) {
           setTimeout(() => {
             this.error = mockError;
             this.onerror?.();
@@ -169,7 +173,9 @@ describe('FileManager', () => {
         error: mockError,
       };
 
-      vi.spyOn(window, 'FileReader').mockImplementation(() => mockFileReader as unknown as FileReader);
+      vi.spyOn(window, 'FileReader').mockImplementation(
+        () => mockFileReader as unknown as FileReader
+      );
 
       await expect(fileManager.readFileContent(file)).rejects.toMatchObject({
         code: 'FILE_READ_ERROR',
@@ -181,7 +187,7 @@ describe('FileManager', () => {
 
     it('应该处理无效的Base64数据', () => {
       const invalidBase64 = 'invalid-base64-data';
-      
+
       expect(() => fileManager.convertBase64ToBlob(invalidBase64)).toThrow();
       expect(mockLogger.error).toHaveBeenCalledWith('Base64转换Blob失败', expect.any(Object));
     });
@@ -243,9 +249,9 @@ describe('FileManager', () => {
         .mockReturnValueOnce(mockUrls[1]);
 
       const urls = fileManager.createPreviewUrls(files);
-      
+
       expect(urls).toEqual(mockUrls);
       expect(global.URL.createObjectURL).toHaveBeenCalledTimes(2);
     });
   });
-}); 
+});

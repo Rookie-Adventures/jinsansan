@@ -20,7 +20,7 @@ export const AlertManagement: React.FC = () => {
   const handleAddRule = (rule: Omit<AlertRule, 'id'>) => {
     const newRule: AlertRule = {
       ...rule,
-      id: uuidv4()
+      id: uuidv4(),
     };
     alertManager.addRule(newRule);
     loadRules();
@@ -50,21 +50,23 @@ export const AlertManagement: React.FC = () => {
       <Button
         variant="contained"
         color="primary"
-        onClick={() => handleAddRule({
-          name: '新规则',
-          type: 'threshold',
-          metric: '',
-          condition: { operator: '>', value: 0 },
-          severity: 'warning',
-          enabled: true,
-          notification: {}
-        })}
+        onClick={() =>
+          handleAddRule({
+            name: '新规则',
+            type: 'threshold',
+            metric: '',
+            condition: { operator: '>', value: 0 },
+            severity: 'warning',
+            enabled: true,
+            notification: {},
+          })
+        }
       >
         添加规则
       </Button>
 
       <List>
-        {rules.map((rule) => (
+        {rules.map(rule => (
           <ListItem
             key={rule.id}
             secondaryAction={
@@ -72,7 +74,7 @@ export const AlertManagement: React.FC = () => {
                 <Switch
                   edge="end"
                   checked={rule.enabled}
-                  onChange={(e) => handleEnableRule(rule.id, e.target.checked)}
+                  onChange={e => handleEnableRule(rule.id, e.target.checked)}
                 />
                 <IconButton edge="end" onClick={() => handleUpdateRule(rule)}>
                   <EditIcon />
@@ -92,4 +94,4 @@ export const AlertManagement: React.FC = () => {
       </List>
     </div>
   );
-}; 
+};

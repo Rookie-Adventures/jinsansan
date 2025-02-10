@@ -26,7 +26,7 @@ class RequestManager {
   public setCacheData<T>(key: string, data: T, ttl: number = 5 * 60 * 1000): void {
     this.cache.set(key, {
       data,
-      expiry: Date.now() + ttl
+      expiry: Date.now() + ttl,
     });
   }
 
@@ -35,4 +35,4 @@ class RequestManager {
   }
 }
 
-export const requestManager = RequestManager.getInstance(); 
+export const requestManager = RequestManager.getInstance();

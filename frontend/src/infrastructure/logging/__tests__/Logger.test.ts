@@ -39,9 +39,9 @@ describe('Logger', () => {
     it('应该正确记录 info 日志', () => {
       const message = 'Test info message';
       const data = { key: 'value' };
-      
+
       logger.info(message, data);
-      
+
       expect(consoleSpy.info).toHaveBeenCalledWith(
         expect.stringContaining('[INFO]'),
         message,
@@ -54,11 +54,11 @@ describe('Logger', () => {
       const errorData: LogData = {
         error: new Error('Test error'),
         stack: new Error('Test error').stack,
-        code: 'ERR_TEST'
+        code: 'ERR_TEST',
       };
-      
+
       logger.error(message, errorData);
-      
+
       expect(consoleSpy.error).toHaveBeenCalledWith(
         expect.stringContaining('[ERROR]'),
         message,
@@ -69,9 +69,9 @@ describe('Logger', () => {
     it('应该正确记录 warn 日志', () => {
       const message = 'Test warning message';
       const data = { key: 'value' };
-      
+
       logger.warn(message, data);
-      
+
       expect(consoleSpy.warn).toHaveBeenCalledWith(
         expect.stringContaining('[WARN]'),
         message,
@@ -82,9 +82,9 @@ describe('Logger', () => {
     it('应该正确记录 debug 日志', () => {
       const message = 'Test debug message';
       const data = { key: 'value' };
-      
+
       logger.debug(message, data);
-      
+
       expect(consoleSpy.log).toHaveBeenCalledWith(
         expect.stringContaining('[DEBUG]'),
         message,
@@ -96,9 +96,9 @@ describe('Logger', () => {
   describe('格式化', () => {
     it('应该包含时间戳', () => {
       const message = 'Test message';
-      
+
       logger.info(message);
-      
+
       expect(consoleSpy.info).toHaveBeenCalledWith(
         expect.stringMatching(/\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] \[INFO\]/),
         message,
@@ -115,9 +115,9 @@ describe('Logger', () => {
           undefined: undefined,
         },
       };
-      
+
       logger.info(message, complexData);
-      
+
       expect(consoleSpy.info).toHaveBeenCalledWith(
         expect.stringContaining('[INFO]'),
         message,
@@ -129,9 +129,9 @@ describe('Logger', () => {
       const message = 'Test message';
       const circularObj: LogData = { key: 'value' };
       (circularObj as any).self = circularObj;
-      
+
       logger.info(message, circularObj);
-      
+
       expect(consoleSpy.info).toHaveBeenCalledWith(
         expect.stringContaining('[INFO]'),
         message,
@@ -143,7 +143,7 @@ describe('Logger', () => {
   describe('错误处理', () => {
     it('应该处理 undefined 消息', () => {
       logger.info(undefined as any);
-      
+
       expect(consoleSpy.info).toHaveBeenCalledWith(
         expect.stringContaining('[INFO]'),
         'undefined',
@@ -153,7 +153,7 @@ describe('Logger', () => {
 
     it('应该处理 null 消息', () => {
       logger.info(null as any);
-      
+
       expect(consoleSpy.info).toHaveBeenCalledWith(
         expect.stringContaining('[INFO]'),
         'null',
@@ -163,9 +163,9 @@ describe('Logger', () => {
 
     it('应该处理非字符串消息', () => {
       const message = { toString: () => 'object message' };
-      
+
       logger.info(message as any);
-      
+
       expect(consoleSpy.info).toHaveBeenCalledWith(
         expect.stringContaining('[INFO]'),
         'object message',
@@ -173,4 +173,4 @@ describe('Logger', () => {
       );
     });
   });
-}); 
+});

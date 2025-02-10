@@ -6,8 +6,8 @@ import { ErrorLevel } from '@/types/error';
 // Mock errorLogger
 vi.mock('@/utils/error/errorLogger', () => ({
   errorLogger: {
-    log: vi.fn()
-  }
+    log: vi.fn(),
+  },
 }));
 
 describe('RouterErrorHandler', () => {
@@ -24,26 +24,28 @@ describe('RouterErrorHandler', () => {
 
       expect(errorLogger.log).toHaveBeenCalledTimes(2);
       // 验证第一次调用 - 记录原始错误
-      expect(errorLogger.log).toHaveBeenNthCalledWith(1,
+      expect(errorLogger.log).toHaveBeenNthCalledWith(
+        1,
         error,
         expect.objectContaining({
           level: ErrorLevel.ERROR,
           context: expect.objectContaining({
             path: '/not-found',
-            status: 404
-          })
+            status: 404,
+          }),
         })
       );
       // 验证第二次调用 - 记录格式化的 404 错误
-      expect(errorLogger.log).toHaveBeenNthCalledWith(2,
+      expect(errorLogger.log).toHaveBeenNthCalledWith(
+        2,
         expect.objectContaining({
-          message: expect.stringContaining('Route not found')
+          message: expect.stringContaining('Route not found'),
         }),
         expect.objectContaining({
           level: ErrorLevel.ERROR,
           context: expect.objectContaining({
-            status: 404
-          })
+            status: 404,
+          }),
         })
       );
     });
@@ -56,33 +58,36 @@ describe('RouterErrorHandler', () => {
 
       expect(errorLogger.log).toHaveBeenCalledTimes(3);
       // 验证第一次调用 - 记录原始错误
-      expect(errorLogger.log).toHaveBeenNthCalledWith(1,
+      expect(errorLogger.log).toHaveBeenNthCalledWith(
+        1,
         error,
         expect.objectContaining({
           level: ErrorLevel.ERROR,
           context: expect.objectContaining({
-            status: 403
-          })
+            status: 403,
+          }),
         })
       );
       // 验证第二次调用 - 记录格式化的 403 错误
-      expect(errorLogger.log).toHaveBeenNthCalledWith(2,
+      expect(errorLogger.log).toHaveBeenNthCalledWith(
+        2,
         expect.objectContaining({
-          message: expect.stringContaining('Access forbidden')
+          message: expect.stringContaining('Access forbidden'),
         }),
         expect.objectContaining({
           level: ErrorLevel.ERROR,
           context: expect.objectContaining({
             status: 403,
-            errorData: { reason: 'unauthorized' }
-          })
+            errorData: { reason: 'unauthorized' },
+          }),
         })
       );
       // 验证第三次调用 - 记录警告
-      expect(errorLogger.log).toHaveBeenNthCalledWith(3,
+      expect(errorLogger.log).toHaveBeenNthCalledWith(
+        3,
         expect.any(Error),
         expect.objectContaining({
-          level: ErrorLevel.WARN
+          level: ErrorLevel.WARN,
         })
       );
     });
@@ -94,24 +99,26 @@ describe('RouterErrorHandler', () => {
 
       expect(errorLogger.log).toHaveBeenCalledTimes(2);
       // 验证第一次调用 - 记录原始错误
-      expect(errorLogger.log).toHaveBeenNthCalledWith(1,
+      expect(errorLogger.log).toHaveBeenNthCalledWith(
+        1,
         error,
         expect.objectContaining({
           level: ErrorLevel.ERROR,
           context: expect.objectContaining({
-            status: 500
-          })
+            status: 500,
+          }),
         })
       );
       // 验证第二次调用 - 记录严重错误
-      expect(errorLogger.log).toHaveBeenNthCalledWith(2,
+      expect(errorLogger.log).toHaveBeenNthCalledWith(
+        2,
         error,
         expect.objectContaining({
           level: ErrorLevel.CRITICAL,
           context: expect.objectContaining({
             isCritical: true,
-            timestamp: expect.any(Number)
-          })
+            timestamp: expect.any(Number),
+          }),
         })
       );
     });
@@ -123,24 +130,26 @@ describe('RouterErrorHandler', () => {
 
       expect(errorLogger.log).toHaveBeenCalledTimes(2);
       // 验证第一次调用 - 记录原始错误
-      expect(errorLogger.log).toHaveBeenNthCalledWith(1,
+      expect(errorLogger.log).toHaveBeenNthCalledWith(
+        1,
         expect.any(Error),
         expect.objectContaining({
           level: ErrorLevel.ERROR,
           context: expect.objectContaining({
-            status: 500
-          })
+            status: 500,
+          }),
         })
       );
       // 验证第二次调用 - 记录严重错误
-      expect(errorLogger.log).toHaveBeenNthCalledWith(2,
+      expect(errorLogger.log).toHaveBeenNthCalledWith(
+        2,
         expect.any(Error),
         expect.objectContaining({
           level: ErrorLevel.CRITICAL,
           context: expect.objectContaining({
             isCritical: true,
-            timestamp: expect.any(Number)
-          })
+            timestamp: expect.any(Number),
+          }),
         })
       );
     });
@@ -150,32 +159,34 @@ describe('RouterErrorHandler', () => {
       Object.assign(error, {
         data: {
           code: 'INTERNAL_ERROR',
-          details: 'Something went wrong'
-        }
+          details: 'Something went wrong',
+        },
       });
 
       routerErrorHandler.handleError(error);
 
       expect(errorLogger.log).toHaveBeenCalledTimes(2);
       // 验证第一次调用 - 记录原始错误
-      expect(errorLogger.log).toHaveBeenNthCalledWith(1,
+      expect(errorLogger.log).toHaveBeenNthCalledWith(
+        1,
         error,
         expect.objectContaining({
           level: ErrorLevel.ERROR,
           context: expect.objectContaining({
-            status: 500
-          })
+            status: 500,
+          }),
         })
       );
       // 验证第二次调用 - 记录严重错误
-      expect(errorLogger.log).toHaveBeenNthCalledWith(2,
+      expect(errorLogger.log).toHaveBeenNthCalledWith(
+        2,
         error,
         expect.objectContaining({
           level: ErrorLevel.CRITICAL,
           context: expect.objectContaining({
             isCritical: true,
-            timestamp: expect.any(Number)
-          })
+            timestamp: expect.any(Number),
+          }),
         })
       );
     });
@@ -184,12 +195,13 @@ describe('RouterErrorHandler', () => {
       routerErrorHandler.handleError(null);
 
       expect(errorLogger.log).toHaveBeenCalledTimes(2);
-      expect(errorLogger.log).toHaveBeenNthCalledWith(1,
+      expect(errorLogger.log).toHaveBeenNthCalledWith(
+        1,
         expect.objectContaining({
-          message: 'null'
+          message: 'null',
         }),
         expect.objectContaining({
-          level: 'error'
+          level: 'error',
         })
       );
     });
@@ -202,4 +214,4 @@ describe('RouterErrorHandler', () => {
       expect(instance1).toBe(instance2);
     });
   });
-}); 
+});

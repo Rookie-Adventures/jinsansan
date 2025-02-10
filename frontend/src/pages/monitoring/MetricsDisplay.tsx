@@ -15,7 +15,7 @@ export const MetricsDisplay: React.FC = () => {
   useEffect(() => {
     // 初始加载
     updateMetrics();
-    
+
     // 设置定时器
     const intervalId = setInterval(updateMetrics, 5000);
 
@@ -78,10 +78,7 @@ export const MetricsDisplay: React.FC = () => {
                 <Typography color="textSecondary" gutterBottom>
                   {getMetricName(metric.type, metric.data)}
                 </Typography>
-                <Typography 
-                  variant="h5" 
-                  sx={{ color: getMetricColor(metric.data) }}
-                >
+                <Typography variant="h5" sx={{ color: getMetricColor(metric.data) }}>
                   {getMetricValue(metric.data)}
                 </Typography>
                 <Typography color="textSecondary" sx={{ fontSize: 12 }}>
@@ -94,4 +91,4 @@ export const MetricsDisplay: React.FC = () => {
       </Grid>
     </Box>
   );
-}; 
+};

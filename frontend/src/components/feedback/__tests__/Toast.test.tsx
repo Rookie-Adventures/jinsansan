@@ -27,17 +27,12 @@ const createTestStore = (preloadedState = {}) => {
   });
 };
 
-const renderWithProviders = (
-  ui: React.ReactElement,
-  { preloadedState = {} } = {}
-) => {
+const renderWithProviders = (ui: React.ReactElement, { preloadedState = {} } = {}) => {
   const store = createTestStore(preloadedState);
   return {
     ...render(
       <Provider store={store}>
-        <ThemeProvider theme={createTheme({ palette: { mode: 'light' } })}>
-          {ui}
-        </ThemeProvider>
+        <ThemeProvider theme={createTheme({ palette: { mode: 'light' } })}>{ui}</ThemeProvider>
       </Provider>
     ),
     store,
@@ -92,11 +87,11 @@ describe('Toast', () => {
         },
       },
     });
-    
+
     const closeButton = screen.getByRole('button', { name: /close/i });
     fireEvent.click(closeButton);
-    
+
     const state = store.getState();
     expect(state.app.toast.open).toBe(false);
   });
-}); 
+});

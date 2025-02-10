@@ -15,14 +15,14 @@ export const HttpErrorFactory = {
         code: axiosError.code || 'UNKNOWN_ERROR',
         status: axiosError.response?.status,
         data: axiosError.response?.data,
-        isAxiosError: true
+        isAxiosError: true,
       });
     }
 
     return new HttpError({
       type: HttpErrorType.UNKNOWN_ERROR,
       message: error.message,
-      code: 'UNKNOWN_ERROR'
+      code: 'UNKNOWN_ERROR',
     });
-  }
-}; 
+  },
+};

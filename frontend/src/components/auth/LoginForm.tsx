@@ -17,10 +17,10 @@ const defaultProps: Required<LoginFormProps> = {
   disabled: false,
   onSubmit: () => {},
   onFormChange: () => {},
-  onTogglePassword: () => {}
+  onTogglePassword: () => {},
 };
 
-const LoginForm: React.FC<LoginFormProps> = (props) => {
+const LoginForm: React.FC<LoginFormProps> = props => {
   const finalProps = { ...defaultProps, ...props };
   return (
     <AuthForm
@@ -35,4 +35,4 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
   );
 };
 
-export default LoginForm; 
+export default LoginForm;

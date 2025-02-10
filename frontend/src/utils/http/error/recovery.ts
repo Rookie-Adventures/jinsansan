@@ -45,7 +45,7 @@ export class ErrorRecoveryManager {
     this.logger.warn(`Network recovery attempt: ${error.message}`, {
       status: error.status,
       code: error.code,
-      url: error.config?.url
+      url: error.config?.url,
     });
 
     // 处理特定的网络错误
@@ -64,7 +64,7 @@ export class ErrorRecoveryManager {
     // 记录认证错误详情
     this.logger.warn(`Auth recovery attempt: ${error.message}`, {
       status: error.status,
-      code: error.code
+      code: error.code,
     });
 
     // 处理特定的认证错误
@@ -100,7 +100,7 @@ export class ErrorRecoveryManager {
       this.logger.warn('Token expired, attempting refresh', {
         message: error.message,
         code: error.code,
-        status: error.status
+        status: error.status,
       });
       // 这里可以添加刷新token的逻辑
       return true;
@@ -111,13 +111,13 @@ export class ErrorRecoveryManager {
 
   private async handleInvalidToken(error: ExtendedHttpError): Promise<boolean> {
     // 无效Token处理逻辑
-    this.logger.error('Invalid token detected', { 
+    this.logger.error('Invalid token detected', {
       message: error.message,
       code: error.code,
-      status: error.status 
+      status: error.status,
     });
     return false;
   }
 }
 
-export const errorRecoveryManager = ErrorRecoveryManager.getInstance(); 
+export const errorRecoveryManager = ErrorRecoveryManager.getInstance();

@@ -71,21 +71,18 @@ class RouterAnalytics {
         },
         body: JSON.stringify(analytics),
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to report analytics');
       }
     } catch (error) {
-      errorLogger.log(
-        error instanceof Error ? error : new Error('Failed to report analytics'),
-        {
-          level: 'error',
-          context: {
-            route: analytics.path,
-            timestamp: analytics.timestamp
-          }
-        }
-      );
+      errorLogger.log(error instanceof Error ? error : new Error('Failed to report analytics'), {
+        level: 'error',
+        context: {
+          route: analytics.path,
+          timestamp: analytics.timestamp,
+        },
+      });
       throw error; // 重新抛出错误以便测试捕获
     }
   }
@@ -118,10 +115,9 @@ export const useRouteAnalytics = (): void => {
   const navigationType = useNavigationType();
 
   useEffect(() => {
-    routerAnalytics.trackRoute(location.pathname, navigationType)
-      .catch(error => {
-        // 在这里我们可以选择忽略错误，因为它已经被 reportAnalytics 中的 errorLogger 记录了
-        console.debug('Route analytics tracking failed:', error);
-      });
+    routerAnalytics.trackRoute(location.pathname, navigationType).catch(error => {
+      // 在这里我们可以选择忽略错误，因为它已经被 reportAnalytics 中的 errorLogger 记录了
+      console.debug('Route analytics tracking failed:', error);
+    });
   }, [location, navigationType]);
-}; 
+};

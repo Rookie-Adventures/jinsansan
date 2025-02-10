@@ -3,7 +3,7 @@ export enum ErrorLevel {
   INFO = 'info',
   WARN = 'warn',
   ERROR = 'error',
-  CRITICAL = 'critical'
+  CRITICAL = 'critical',
 }
 
 export interface ErrorContext {
@@ -17,4 +17,4 @@ export interface ErrorContext {
 export interface ErrorLogData {
   level: ErrorLevel;
   context: ErrorContext;
-} 
+}

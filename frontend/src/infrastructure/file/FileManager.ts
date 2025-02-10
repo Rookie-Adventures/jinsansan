@@ -82,11 +82,11 @@ export class FileManager {
   public readFileContent(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      
+
       reader.onload = () => {
         resolve(reader.result as string);
       };
-      
+
       reader.onerror = () => {
         const error: FileError = {
           code: 'FILE_READ_ERROR',
@@ -99,7 +99,7 @@ export class FileManager {
         });
         reject(error);
       };
-      
+
       reader.readAsText(file);
     });
   }
@@ -165,11 +165,11 @@ export class FileManager {
   public convertToBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      
+
       reader.onload = () => {
         resolve(reader.result as string);
       };
-      
+
       reader.onerror = () => {
         const error: FileError = {
           code: 'BASE64_CONVERSION_ERROR',
@@ -182,7 +182,7 @@ export class FileManager {
         });
         reject(error);
       };
-      
+
       reader.readAsDataURL(file);
     });
   }
@@ -217,4 +217,4 @@ export class FileManager {
       throw fileError;
     }
   }
-} 
+}

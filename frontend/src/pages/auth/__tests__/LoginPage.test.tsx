@@ -9,8 +9,8 @@ import type { User } from '@/types/auth';
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
   return {
-    ...actual as any,
-    useNavigate: vi.fn()
+    ...(actual as any),
+    useNavigate: vi.fn(),
   };
 });
 
@@ -24,14 +24,14 @@ vi.mock('@/hooks/auth', () => ({
     user: null,
     token: null,
     error: null,
-    isAuthenticated: false
+    isAuthenticated: false,
   })),
   useAuthForm: vi.fn(() => ({
     formData: { username: '', password: '' },
     showPassword: false,
     handleFormChange: vi.fn(),
-    togglePasswordVisibility: vi.fn()
-  }))
+    togglePasswordVisibility: vi.fn(),
+  })),
 }));
 
 describe('LoginPage', () => {
@@ -52,16 +52,16 @@ describe('LoginPage', () => {
 
   it('应该正确渲染登录页面', () => {
     renderLoginPage();
-    
+
     // 验证页面标题和描述
     expect(screen.getByRole('heading', { name: '登录' })).toBeInTheDocument();
     expect(screen.getByText('欢迎回来！请登录您的账号')).toBeInTheDocument();
-    
+
     // 验证表单元素
     expect(screen.getByLabelText('用户名')).toBeInTheDocument();
     expect(screen.getByLabelText('密码')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '登录' })).toBeInTheDocument();
-    
+
     // 验证导航链接
     expect(screen.getByText('没有账号？立即注册')).toBeInTheDocument();
   });
@@ -76,11 +76,11 @@ describe('LoginPage', () => {
       user: null,
       token: null,
       error: null,
-      isAuthenticated: false
+      isAuthenticated: false,
     });
 
     renderLoginPage();
-    
+
     expect(screen.getByLabelText('用户名')).toBeDisabled();
     expect(screen.getByLabelText('密码')).toBeDisabled();
     expect(screen.getByRole('button', { name: '登录' })).toBeDisabled();
@@ -91,7 +91,7 @@ describe('LoginPage', () => {
       id: 1,
       username: 'test',
       email: 'test@example.com',
-      permissions: []
+      permissions: [],
     };
 
     vi.mocked(useAuth).mockReturnValue({
@@ -103,12 +103,12 @@ describe('LoginPage', () => {
       user: mockUser,
       token: 'token',
       error: null,
-      isAuthenticated: true
+      isAuthenticated: true,
     });
 
     renderLoginPage();
-    
+
     // 验证重定向逻辑
     expect(mockNavigate).toHaveBeenCalledWith('/');
   });
-}); 
+});

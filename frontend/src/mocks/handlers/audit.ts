@@ -1,6 +1,6 @@
-import { http, HttpResponse } from 'msw'
-import type { ApiResponse } from '@/types/api'
-import { AuditLogType, AuditLogLevel } from '@/utils/security/audit'
+import { http, HttpResponse } from 'msw';
+import type { ApiResponse } from '@/types/api';
+import { AuditLogType, AuditLogLevel } from '@/utils/security/audit';
 
 interface AuditLog {
   id: string;
@@ -20,17 +20,17 @@ interface AuditLog {
 export const auditHandlers = [
   // 创建审计日志
   http.post<never, AuditLog>('/api/audit-logs', async ({ request }) => {
-    const log = await request.json()
-    
+    const log = await request.json();
+
     return HttpResponse.json(
       {
         code: 200,
         message: '审计日志创建成功',
         data: log,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       } as ApiResponse<AuditLog>,
       { status: 200 }
-    )
+    );
   }),
 
   // 查询审计日志
@@ -40,9 +40,9 @@ export const auditHandlers = [
         code: 200,
         message: '获取审计日志成功',
         data: [],
-        timestamp: Date.now()
+        timestamp: Date.now(),
       } as ApiResponse<AuditLog[]>,
       { status: 200 }
-    )
-  })
-] 
+    );
+  }),
+];

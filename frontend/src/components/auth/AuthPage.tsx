@@ -31,7 +31,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ type, children, initialData }) => {
   const navigate = useNavigate();
   const { login, register, loading } = useAuth();
   const { formData, showPassword, handleFormChange, togglePasswordVisibility } = useAuthForm({
-    initialData
+    initialData,
   });
 
   const [showError, setShowError] = React.useState(false);
@@ -42,16 +42,17 @@ const AuthPage: React.FC<AuthPageProps> = ({ type, children, initialData }) => {
     setShowError(false);
 
     // 表单验证
-    const validationResult = type === 'login'
-      ? validateLoginForm(formData as LoginFormData)
-      : validateRegisterForm(formData as RegisterFormData);
+    const validationResult =
+      type === 'login'
+        ? validateLoginForm(formData as LoginFormData)
+        : validateRegisterForm(formData as RegisterFormData);
 
     if (!validationResult.isValid) {
       setErrorMessage(validationResult.errorMessage!);
       setShowError(true);
       return;
     }
-    
+
     try {
       if (type === 'login') {
         await login(formData as LoginFormData);
@@ -60,14 +61,16 @@ const AuthPage: React.FC<AuthPageProps> = ({ type, children, initialData }) => {
       }
       // 成功后的导航由 useAuth 中处理
     } catch (error) {
-      Logger.error(error, { 
-        context: type === 'login' ? 'LoginPage' : 'RegisterPage', 
-        data: { 
+      Logger.error(error, {
+        context: type === 'login' ? 'LoginPage' : 'RegisterPage',
+        data: {
           username: formData.username,
-          ...(type === 'register' && { email: (formData as RegisterFormData).email })
-        } 
+          ...(type === 'register' && { email: (formData as RegisterFormData).email }),
+        },
       });
-      setErrorMessage(error instanceof Error ? error.message : `${type === 'login' ? '登录' : '注册'}失败，请重试`);
+      setErrorMessage(
+        error instanceof Error ? error.message : `${type === 'login' ? '登录' : '注册'}失败，请重试`
+      );
       setShowError(true);
     }
   };
@@ -82,12 +85,12 @@ const AuthPage: React.FC<AuthPageProps> = ({ type, children, initialData }) => {
     onSubmit: handleSubmit,
     onFormChange: handleFormChange,
     onTogglePassword: togglePasswordVisibility,
-    disabled: loading
+    disabled: loading,
   } as AuthFormComponentProps);
 
   return (
     <>
-      <AuthCard 
+      <AuthCard
         onToLogin={type === 'register' ? () => navigate('/login') : undefined}
         onToRegister={type === 'login' ? () => navigate('/register') : undefined}
       >
@@ -125,4 +128,4 @@ const AuthPage: React.FC<AuthPageProps> = ({ type, children, initialData }) => {
   );
 };
 
-export default AuthPage; 
+export default AuthPage;

@@ -1,12 +1,5 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import {
-    Box,
-    Button,
-    IconButton,
-    InputAdornment,
-    TextField,
-    Typography,
-} from '@mui/material';
+import { Box, Button, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
 import React from 'react';
 
 import { LoginFormData, RegisterFormData } from '@/types/auth';
@@ -51,12 +44,12 @@ const PasswordField: React.FC<{
     margin="normal"
     value={value}
     disabled={disabled}
-    onChange={(e) => onChange(e.target.value)}
+    onChange={e => onChange(e.target.value)}
     InputProps={{
       endAdornment: (
         <InputAdornment position="end">
-          <IconButton 
-            onClick={onTogglePassword} 
+          <IconButton
+            onClick={onTogglePassword}
             edge="end"
             disabled={disabled}
             data-testid="password-visibility-toggle"
@@ -79,13 +72,9 @@ const AuthForm: React.FC<AuthFormProps> = ({
   onFormChange,
   onTogglePassword,
 }) => (
-  <Box 
-    component="form" 
-    onSubmit={onSubmit}
-    data-testid="auth-form"
-  >
+  <Box component="form" onSubmit={onSubmit} data-testid="auth-form">
     <FormHeader type={type} />
-    
+
     <TextField
       fullWidth
       label="用户名"
@@ -93,7 +82,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
       margin="normal"
       value={formData.username}
       disabled={disabled}
-      onChange={(e) => onFormChange({ username: e.target.value })}
+      onChange={e => onFormChange({ username: e.target.value })}
     />
 
     {type === 'register' && (
@@ -105,7 +94,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
         margin="normal"
         value={(formData as RegisterFormData).email}
         disabled={disabled}
-        onChange={(e) => onFormChange({ email: e.target.value })}
+        onChange={e => onFormChange({ email: e.target.value })}
       />
     )}
 
@@ -114,7 +103,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
       value={formData.password}
       showPassword={showPassword}
       disabled={disabled}
-      onChange={(value) => onFormChange({ password: value })}
+      onChange={value => onFormChange({ password: value })}
       onTogglePassword={onTogglePassword}
     />
 
@@ -124,7 +113,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
         value={(formData as RegisterFormData).confirmPassword || ''}
         showPassword={showPassword}
         disabled={disabled}
-        onChange={(value) => onFormChange({ confirmPassword: value })}
+        onChange={value => onFormChange({ confirmPassword: value })}
         onTogglePassword={onTogglePassword}
       />
     )}
@@ -142,4 +131,4 @@ const AuthForm: React.FC<AuthFormProps> = ({
   </Box>
 );
 
-export default AuthForm; 
+export default AuthForm;

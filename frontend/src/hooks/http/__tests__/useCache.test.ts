@@ -11,9 +11,9 @@ vi.mock('@/utils/http', () => ({
     generateCacheKey: vi.fn(),
     cache: {
       delete: vi.fn(),
-      clear: vi.fn()
-    }
-  }
+      clear: vi.fn(),
+    },
+  },
 }));
 
 describe('useCache', () => {
@@ -69,11 +69,7 @@ describe('useCache', () => {
         result.current.setCacheData('test-key', mockData, customTTL);
       });
 
-      expect(requestManager.setCacheData).toHaveBeenCalledWith(
-        'test-key',
-        mockData,
-        customTTL
-      );
+      expect(requestManager.setCacheData).toHaveBeenCalledWith('test-key', mockData, customTTL);
     });
   });
 
@@ -82,7 +78,7 @@ describe('useCache', () => {
       const mockConfig = {
         method: 'GET',
         url: '/test',
-        params: { id: 1 }
+        params: { id: 1 },
       };
       const mockCacheKey = 'GET-/test-{"id":1}-undefined';
       vi.mocked(requestManager.generateCacheKey).mockReturnValue(mockCacheKey);
@@ -125,7 +121,7 @@ describe('useCache', () => {
       vi.mocked(requestManager.getCacheData).mockReturnValue(mockData);
 
       const { result, rerender } = renderHook(() => useCache());
-      
+
       // 首次获取缓存
       const data1 = result.current.getCacheData('test-key');
       expect(data1).toEqual(mockData);
@@ -141,4 +137,4 @@ describe('useCache', () => {
       expect(requestManager.getCacheData).toHaveBeenCalledTimes(2);
     });
   });
-}); 
+});

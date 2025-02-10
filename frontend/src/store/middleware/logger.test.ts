@@ -11,12 +11,12 @@ describe('loggerMiddleware', () => {
   beforeEach(() => {
     // Mock store
     store = {
-      getState: vi.fn().mockReturnValue({ test: 'state' })
+      getState: vi.fn().mockReturnValue({ test: 'state' }),
     };
-    
+
     // Mock next
     next = vi.fn(action => action);
-    
+
     // Create middleware instance
     invoke = loggerMiddleware(store)(next);
 
@@ -64,10 +64,13 @@ describe('loggerMiddleware', () => {
       await invoke(asyncAction);
 
       expect(console.log).toHaveBeenCalledWith('Prev State:', { test: 'state' });
-      expect(console.log).toHaveBeenCalledWith('Action:', expect.objectContaining({
-        type: 'ASYNC_ACTION',
-        payload: expect.any(Promise)
-      }));
+      expect(console.log).toHaveBeenCalledWith(
+        'Action:',
+        expect.objectContaining({
+          type: 'ASYNC_ACTION',
+          payload: expect.any(Promise),
+        })
+      );
       expect(console.log).toHaveBeenCalledWith('Next State:', { test: 'state' });
     });
 
@@ -84,13 +87,13 @@ describe('loggerMiddleware', () => {
       store.getState.mockReturnValue({
         nested: {
           deep: {
-            value: 'test'
-          }
+            value: 'test',
+          },
         },
         array: [1, 2, 3],
         date: new Date(),
         regex: /test/,
-        func: () => {}
+        func: () => {},
       });
 
       const action = { type: 'TEST_ACTION' };
@@ -133,7 +136,9 @@ describe('loggerMiddleware', () => {
     it('应该处理序列化错误', () => {
       // 强制 JSON.stringify 抛出错误
       const originalStringify = JSON.stringify;
-      vi.spyOn(JSON, 'stringify').mockImplementation(() => { throw new Error('Test JSON error'); });
+      vi.spyOn(JSON, 'stringify').mockImplementation(() => {
+        throw new Error('Test JSON error');
+      });
 
       store.getState.mockReturnValue({ test: 'state' });
       const action = { type: 'TEST_ACTION' };
@@ -160,7 +165,10 @@ describe('loggerMiddleware', () => {
           invoke(action);
         } catch (error) {
           // 如果错误信息包含 'console.log is not a function'，则捕获并忽略
-          if (error instanceof TypeError && error.message.includes('console.log is not a function')) {
+          if (
+            error instanceof TypeError &&
+            error.message.includes('console.log is not a function')
+          ) {
             // swallow error
           } else {
             throw error;
@@ -171,8 +179,11 @@ describe('loggerMiddleware', () => {
 
     it('应该处理getState抛出错误的情况', () => {
       // 使 store.getState 第一次抛错，第二次返回正常状态
-      store.getState.mockImplementationOnce(() => { throw new Error('getState error'); })
-                      .mockImplementationOnce(() => ({ test: 'state' }));
+      store.getState
+        .mockImplementationOnce(() => {
+          throw new Error('getState error');
+        })
+        .mockImplementationOnce(() => ({ test: 'state' }));
 
       const action = { type: 'TEST_ACTION' };
       expect(() => invoke(action)).not.toThrow();
@@ -205,22 +216,18 @@ describe('loggerMiddleware', () => {
 
       await invoke(action);
 
-      expect(console.warn).toHaveBeenCalledWith(
-        'Warning: Action execution time exceeded 100ms'
-      );
+      expect(console.warn).toHaveBeenCalledWith('Warning: Action execution time exceeded 100ms');
     });
 
     it('应该记录action的大小', () => {
       const largeAction = {
         type: 'LARGE_ACTION',
-        payload: new Array(2000).fill('data') // 确保超过阈值
+        payload: new Array(2000).fill('data'), // 确保超过阈值
       };
 
       invoke(largeAction);
 
-      expect(console.warn).toHaveBeenCalledWith(
-        'Warning: Large action detected'
-      );
+      expect(console.warn).toHaveBeenCalledWith('Warning: Large action detected');
     });
   });
-}); 
+});

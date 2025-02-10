@@ -8,7 +8,7 @@ describe('EncryptionManager', () => {
     test('应该能正确加密和解密数据', () => {
       const encrypted = encryptionManager.encrypt(testData, testPassphrase);
       expect(encrypted).not.toBe(testData);
-      
+
       const decrypted = encryptionManager.decrypt(encrypted, testPassphrase);
       expect(decrypted).toBe(testData);
     });
@@ -66,11 +66,11 @@ describe('EncryptionManager', () => {
       const newConfig = {
         algorithm: 'AES' as const,
         keySize: 128,
-        iterations: 500
+        iterations: 500,
       };
-      
+
       encryptionManager.updateConfig(newConfig);
-      
+
       // 确保加密解密仍然正常工作
       const encrypted = encryptionManager.encrypt(testData, testPassphrase);
       const decrypted = encryptionManager.decrypt(encrypted, testPassphrase);
@@ -89,22 +89,22 @@ describe('EncryptionManager', () => {
     it('应该维护单例实例', () => {
       const instance1 = encryptionManager;
       const instance2 = encryptionManager;
-      
+
       // 验证是同一个实例
       expect(instance1).toBe(instance2);
-      
+
       // 验证方法不可配置（不可修改）
       const prototype = Object.getPrototypeOf(instance1);
       const descriptors = Object.getOwnPropertyDescriptors(prototype);
-      
+
       expect(descriptors.updateConfig.configurable).toBe(false);
       expect(descriptors.encrypt.configurable).toBe(false);
       expect(descriptors.decrypt.configurable).toBe(false);
-      
+
       // 验证实例属性不可修改
       expect(() => {
         (instance1 as any).config = {};
       }).toThrow();
     });
   });
-}); 
+});

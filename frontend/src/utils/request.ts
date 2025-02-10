@@ -1,9 +1,4 @@
-import axios, {
-    AxiosError,
-    AxiosInstance,
-    AxiosResponse,
-    InternalAxiosRequestConfig
-} from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import axiosRetry from 'axios-retry';
 
 import { store } from '@/store';
@@ -57,17 +52,17 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   (response: AxiosResponse) => {
     const { data } = response;
-    
+
     // 处理业务错误
     if (data.code !== 200) {
       const error = HttpErrorFactory.create({
         message: data.message || '请求失败',
         code: data.code.toString(),
-        data: data
+        data: data,
       } as any);
       return Promise.reject(error);
     }
-    
+
     return response;
   },
   async (error: AxiosError) => {
@@ -100,4 +95,4 @@ const wrappedRequest: RequestMethod = async <T>(config: RequestConfig) => {
   return response.data as ApiResponse<T>;
 };
 
-export default wrappedRequest; 
+export default wrappedRequest;

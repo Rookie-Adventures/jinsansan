@@ -8,8 +8,8 @@ vi.mock('../tokenService', () => ({
   tokenService: {
     setToken: vi.fn(),
     removeToken: vi.fn(),
-    getToken: vi.fn()
-  }
+    getToken: vi.fn(),
+  },
 }));
 
 describe('AuthService', () => {
@@ -18,13 +18,13 @@ describe('AuthService', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    
+
     // 创建 mock http client
     mockHttp = {
       get: vi.fn(),
       post: vi.fn(),
       put: vi.fn(),
-      delete: vi.fn()
+      delete: vi.fn(),
     };
 
     authService = new AuthService(mockHttp);
@@ -34,12 +34,12 @@ describe('AuthService', () => {
     const mockLoginData = {
       email: 'test@example.com',
       password: 'password123',
-      username: 'testuser'
+      username: 'testuser',
     };
 
     const mockLoginResponse = {
       user: { id: 1, email: 'test@example.com', username: 'testuser' },
-      token: 'mock-token'
+      token: 'mock-token',
     };
 
     it('应该成功处理登录请求', async () => {
@@ -74,12 +74,12 @@ describe('AuthService', () => {
       email: 'test@example.com',
       password: 'password123',
       username: 'testuser',
-      confirmPassword: 'password123'
+      confirmPassword: 'password123',
     };
 
     const mockRegisterResponse = {
       user: { id: 1, email: 'test@example.com', username: 'testuser' },
-      token: 'mock-token'
+      token: 'mock-token',
     };
 
     it('应该成功处理注册请求', async () => {
@@ -123,7 +123,7 @@ describe('AuthService', () => {
     const mockUser = {
       id: 1,
       email: 'test@example.com',
-      username: 'testuser'
+      username: 'testuser',
     };
 
     it('应该在有token时成功获取当前用户', async () => {
@@ -170,7 +170,9 @@ describe('AuthService', () => {
 
       const isValid = await authService.validateToken('valid-token');
 
-      expect(mockHttp.post).toHaveBeenCalledWith('/api/auth/validate-token', { token: 'valid-token' });
+      expect(mockHttp.post).toHaveBeenCalledWith('/api/auth/validate-token', {
+        token: 'valid-token',
+      });
       expect(isValid).toBe(true);
     });
 
@@ -190,4 +192,4 @@ describe('AuthService', () => {
       expect(instance1).not.toBe(instance2); // 因为我们使用工厂函数创建实例
     });
   });
-}); 
+});

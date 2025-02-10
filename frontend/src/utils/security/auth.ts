@@ -50,7 +50,7 @@ export class AuthManager {
           error instanceof Error ? error : new Error('Failed to initialize from storage'),
           {
             level: 'error',
-            context: { source: 'AuthManager' }
+            context: { source: 'AuthManager' },
           }
         );
         this.clearAuth();
@@ -158,16 +158,13 @@ export class AuthManager {
    * 记录认证事件
    */
   logAuthEvent(event: AuthEvent): void {
-    errorLogger.log(
-      new Error(`Auth Event: ${event.action}`),
-      {
-        level: event.status === 'success' ? 'info' : 'error',
-        context: {
-          ...event,
-          timestamp: Date.now()
-        }
-      }
-    );
+    errorLogger.log(new Error(`Auth Event: ${event.action}`), {
+      level: event.status === 'success' ? 'info' : 'error',
+      context: {
+        ...event,
+        timestamp: Date.now(),
+      },
+    });
   }
 
   /**
@@ -199,7 +196,7 @@ export class AuthManager {
       // 更新尝试记录
       this.loginAttempts.set(username, {
         count: attempts.count + 1,
-        lastAttempt: now
+        lastAttempt: now,
       });
     } else {
       // 创建新的尝试记录
@@ -216,7 +213,7 @@ export class AuthManager {
       action: 'login_error',
       status: 'failure',
       timestamp: Date.now(),
-      details: { error: errorMessage }
+      details: { error: errorMessage },
     });
   }
 
@@ -229,13 +226,15 @@ export class AuthManager {
 
       // TODO: 实现实际的登录逻辑
       if (username === 'test' && password === 'test') {
-        this.setToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U');
+        this.setToken(
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U'
+        );
         this.startSession();
         this.logAuthEvent({
           action: 'login',
           status: 'success',
           timestamp: Date.now(),
-          details: { username }
+          details: { username },
         });
       } else {
         const error = new Error('invalid_credentials');
@@ -256,7 +255,7 @@ export class AuthManager {
     this.logAuthEvent({
       action: 'logout',
       status: 'success',
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
   }
 
@@ -279,4 +278,4 @@ export class AuthManager {
 }
 
 // 导出单例实例
-export const authManager = AuthManager.getInstance(); 
+export const authManager = AuthManager.getInstance();

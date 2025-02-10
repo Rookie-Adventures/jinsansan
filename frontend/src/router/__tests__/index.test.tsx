@@ -39,11 +39,11 @@ interface RootState {
 const createMockObservable = () => {
   const observable = {
     subscribe: () => ({
-      unsubscribe: vi.fn()
+      unsubscribe: vi.fn(),
     }),
-    [Symbol.observable]: function() {
+    [Symbol.observable]: function () {
       return this;
-    }
+    },
   };
   return observable;
 };
@@ -51,13 +51,13 @@ const createMockObservable = () => {
 // Create a basic test store
 const createTestStore = (initialState = { isAuthenticated: false }): Store<RootState> => {
   const observable = createMockObservable();
-  
+
   return {
     getState: () => ({ auth: initialState }),
     dispatch: vi.fn(),
     subscribe: vi.fn(),
     replaceReducer: vi.fn(),
-    [Symbol.observable]: () => observable
+    [Symbol.observable]: () => observable,
   };
 };
 
@@ -77,23 +77,30 @@ const GuestGuard = ({ children }: { children: React.ReactNode }) => {
 const createTestRoutes = () => [
   {
     path: '/login',
-    element: <GuestGuard><LoginPage /></GuestGuard>
+    element: (
+      <GuestGuard>
+        <LoginPage />
+      </GuestGuard>
+    ),
   },
   {
     path: '/',
-    element: <AuthGuard><MainLayout><HomePage /></MainLayout></AuthGuard>
-  }
+    element: (
+      <AuthGuard>
+        <MainLayout>
+          <HomePage />
+        </MainLayout>
+      </AuthGuard>
+    ),
+  },
 ];
 
 // Test renderer
-const renderApp = (
-  initialPath = '/',
-  initialState = { isAuthenticated: false }
-) => {
+const renderApp = (initialPath = '/', initialState = { isAuthenticated: false }) => {
   const store = createTestStore(initialState);
   const routes = createTestRoutes();
   const router = createMemoryRouter(routes, {
-    initialEntries: [initialPath]
+    initialEntries: [initialPath],
   });
 
   return render(
@@ -113,7 +120,7 @@ describe('Router', () => {
   describe('Route Rendering', () => {
     it('should render login page at /login', async () => {
       renderApp('/login');
-      
+
       await waitFor(() => {
         expect(screen.getByTestId('login-page')).toBeInTheDocument();
       });
@@ -121,7 +128,7 @@ describe('Router', () => {
 
     it('should render home page at / when authenticated', async () => {
       renderApp('/', { isAuthenticated: true });
-      
+
       await waitFor(() => {
         expect(screen.getByTestId('main-layout')).toBeInTheDocument();
         expect(screen.getByTestId('home-page')).toBeInTheDocument();
@@ -142,17 +149,22 @@ describe('Router', () => {
       rerender(
         <Provider store={createTestStore({ isAuthenticated: true })}>
           <Suspense fallback={<Loading />}>
-            <RouterProvider router={createMemoryRouter(createTestRoutes(), {
-              initialEntries: ['/']
-            })} />
+            <RouterProvider
+              router={createMemoryRouter(createTestRoutes(), {
+                initialEntries: ['/'],
+              })}
+            />
           </Suspense>
         </Provider>
       );
 
       // Should show home page
-      await waitFor(() => {
-        expect(screen.getByTestId('home-page')).toBeInTheDocument();
-      }, { timeout: 3000 });
+      await waitFor(
+        () => {
+          expect(screen.getByTestId('home-page')).toBeInTheDocument();
+        },
+        { timeout: 3000 }
+      );
     });
   });
-}); 
+});

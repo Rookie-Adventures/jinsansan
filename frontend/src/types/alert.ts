@@ -31,4 +31,4 @@ export interface AlertNotification {
   rule: AlertRule;
   value?: number;
   timestamp: number;
-} 
+}

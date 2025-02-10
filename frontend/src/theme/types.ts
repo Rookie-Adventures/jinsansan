@@ -52,4 +52,4 @@ export type CustomTheme = BaseTheme & {
 };
 
 // 使用 MUI System 的主题类型
-export type Theme = SystemTheme; 
+export type Theme = SystemTheme;

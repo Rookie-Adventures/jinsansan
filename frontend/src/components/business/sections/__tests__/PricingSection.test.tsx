@@ -12,7 +12,7 @@ vi.mock('@mui/material', async () => {
   const actual = await vi.importActual<typeof import('@mui/material')>('@mui/material');
   return {
     ...actual,
-    useMediaQuery: vi.fn()
+    useMediaQuery: vi.fn(),
   };
 });
 
@@ -51,12 +51,12 @@ describe('PricingSection', () => {
 
   it('应该正确渲染所有价格方案', async () => {
     renderPricingSection();
-    
+
     // 检查每个方案的标题和价格
     const plans = [
       { title: '免费版', price: '0' },
       { title: '专业版', price: '99' },
-      { title: '企业版', price: '联系我们' }
+      { title: '企业版', price: '联系我们' },
     ];
 
     for (const plan of plans) {
@@ -77,29 +77,19 @@ describe('PricingSection', () => {
 
   it('应该正确显示每个方案的功能列表', async () => {
     renderPricingSection();
-    
+
     // 免费版功能
-    const freePlanFeatures = [
-      '每日固定调用次数',
-      '基础模型支持',
-      '标准响应速度',
-      '社区支持'
-    ];
-    
+    const freePlanFeatures = ['每日固定调用次数', '基础模型支持', '标准响应速度', '社区支持'];
+
     // 专业版功能
-    const proPlanFeatures = [
-      '无限制调用次数',
-      '所有模型支持',
-      '优先响应速度',
-      '专属客服支持'
-    ];
-    
+    const proPlanFeatures = ['无限制调用次数', '所有模型支持', '优先响应速度', '专属客服支持'];
+
     // 企业版功能
     const enterprisePlanFeatures = [
       '定制化解决方案',
       'API 独享配置',
       '企业级 SLA 保障',
-      '7×24小时技术支持'
+      '7×24小时技术支持',
     ];
 
     for (const feature of [...freePlanFeatures, ...proPlanFeatures, ...enterprisePlanFeatures]) {
@@ -118,18 +108,18 @@ describe('PricingSection', () => {
       // 模拟移动端视图
       vi.mocked(useMediaQuery).mockReturnValue(true);
       renderPricingSection();
-      
+
       // 检查容器边距
       const container = await screen.findByRole('main', { name: /价格方案/i });
       expect(container).toHaveStyle({
-        padding: expect.any(String)
+        padding: expect.any(String),
       });
     });
 
     it('应该在桌面端正确显示', async () => {
       vi.mocked(useMediaQuery).mockReturnValue(false);
       renderPricingSection();
-      
+
       // 检查价格文字大小
       await waitFor(() => {
         const priceElements = screen.getAllByRole('heading', { level: 2 });
@@ -143,7 +133,7 @@ describe('PricingSection', () => {
   describe('交互测试', () => {
     it('应该正确处理按钮悬停效果', async () => {
       renderPricingSection();
-      
+
       const buttons = await screen.findAllByRole('button');
       for (const button of buttons) {
         await act(async () => {
@@ -158,7 +148,7 @@ describe('PricingSection', () => {
 
     it('应该正确处理卡片悬停效果', async () => {
       renderPricingSection();
-      
+
       const cards = await screen.findAllByRole('article');
       for (const card of cards) {
         await act(async () => {
@@ -175,7 +165,7 @@ describe('PricingSection', () => {
   describe('可访问性测试', () => {
     it('应该为所有价格方案提供正确的 ARIA 标签', async () => {
       renderPricingSection();
-      
+
       const cards = await screen.findAllByRole('article');
       expect(cards[0]).toHaveAttribute('aria-label', '免费版价格方案');
       expect(cards[1]).toHaveAttribute('aria-label', '专业版价格方案');
@@ -184,7 +174,7 @@ describe('PricingSection', () => {
 
     it('应该确保所有按钮都可以通过键盘访问', async () => {
       renderPricingSection();
-      
+
       const buttons = await screen.findAllByRole('button');
       for (const button of buttons) {
         expect(button).toHaveAttribute('tabindex', '0');
@@ -197,7 +187,7 @@ describe('PricingSection', () => {
 
     it('应该确保所有功能列表项都有正确的语义标记', async () => {
       renderPricingSection();
-      
+
       await waitFor(() => {
         const features = screen.getAllByTestId('CheckIcon');
         features.forEach(feature => {
@@ -211,13 +201,13 @@ describe('PricingSection', () => {
   describe('动画测试', () => {
     it('应该为每个价格卡片添加正确的动画属性', async () => {
       renderPricingSection();
-      
+
       const motionDivs = await screen.findAllByTestId('motion-div');
-      motionDivs.forEach((div) => {
+      motionDivs.forEach(div => {
         expect(div).toHaveAttribute('initial');
         expect(div).toHaveAttribute('animate');
         expect(div).toHaveAttribute('transition');
       });
     });
   });
-}); 
+});

@@ -6,7 +6,7 @@ import { hideToast } from '@/store/slices/appSlice';
 
 export const Toast = () => {
   const dispatch = useAppDispatch();
-  const { open, message, severity } = useAppSelector((state) => state.app.toast);
+  const { open, message, severity } = useAppSelector(state => state.app.toast);
 
   const handleClose = useCallback(() => {
     dispatch(hideToast());
@@ -24,4 +24,4 @@ export const Toast = () => {
       </Alert>
     </Snackbar>
   );
-}; 
+};

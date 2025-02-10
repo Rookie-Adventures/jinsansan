@@ -11,19 +11,19 @@ import { store } from '@/store';
 
 // Mock 子组件
 vi.mock('@/components/common/layout/Navbar', () => ({
-  default: () => <div data-testid="mock-navbar">Navbar</div>
+  default: () => <div data-testid="mock-navbar">Navbar</div>,
 }));
 
 vi.mock('@/components/business/sections/HeroSection', () => ({
-  default: () => <div data-testid="mock-hero-section">HeroSection</div>
+  default: () => <div data-testid="mock-hero-section">HeroSection</div>,
 }));
 
 vi.mock('@/components/business/sections/FeatureSection', () => ({
-  default: () => <div data-testid="mock-feature-section">FeatureSection</div>
+  default: () => <div data-testid="mock-feature-section">FeatureSection</div>,
 }));
 
 vi.mock('@/components/business/sections/PricingSection', () => ({
-  default: () => <div data-testid="mock-pricing-section">PricingSection</div>
+  default: () => <div data-testid="mock-pricing-section">PricingSection</div>,
 }));
 
 // 创建 matchMedia mock
@@ -76,38 +76,38 @@ describe('HomePage', () => {
     expect(container).toHaveStyle({
       background: 'linear-gradient(135deg, #24243e 0%, #302b63 50%, #0f0c29 100%)',
       color: 'rgb(255, 255, 255)',
-      position: 'relative'
+      position: 'relative',
     });
   });
 
   it('应该正确设置容器宽度和溢出处理', () => {
     const { container } = renderHomePage();
-    
+
     const mainContainer = container.firstChild as HTMLElement;
     expect(mainContainer).toHaveStyle({
       width: '100vw',
-      overflow: 'hidden'
+      overflow: 'hidden',
     });
   });
 
   it('应该在暗色主题下正确渲染', () => {
     renderHomePage(true);
-    
+
     const mainContainer = screen.getByTestId('mock-hero-section').parentElement;
     expect(mainContainer).toHaveStyle({
-      background: 'linear-gradient(135deg, #24243e 0%, #302b63 50%, #0f0c29 100%)'
+      background: 'linear-gradient(135deg, #24243e 0%, #302b63 50%, #0f0c29 100%)',
     });
   });
 
   it('应该在移动端视图下正确渲染', () => {
     // 模拟移动端视口
     window.matchMedia = createMatchMedia(375);
-    
+
     renderHomePage();
-    
+
     const mainContainer = screen.getByTestId('mock-hero-section').parentElement;
     expect(mainContainer).toHaveStyle({
-      paddingTop: '64px' // 导航栏空间
+      paddingTop: '64px', // 导航栏空间
     });
   });
 
@@ -127,4 +127,4 @@ describe('HomePage', () => {
     const { container } = renderHomePage();
     expect(container).toMatchSnapshot();
   });
-}); 
+});

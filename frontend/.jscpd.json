@@ -1,0 +1,24 @@
+{
+  "threshold": 0.1,
+  "reporters": [
+    "html",
+    "console"
+  ],
+  "ignore": [
+    "**/node_modules/**",
+    "**/.git/**",
+    "**/dist/**",
+    "**/*.test.{ts,tsx}",
+    "**/*.spec.{ts,tsx}",
+    "**/coverage/**",
+    "**/build/**",
+    "**/*.d.ts"
+  ],
+  "absolute": true,
+  "gitignore": true,
+  "output": "./reports/duplicates",
+  "format": [
+    "typescript",
+    "tsx"
+  ]
+} 

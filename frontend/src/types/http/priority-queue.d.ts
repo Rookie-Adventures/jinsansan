@@ -14,4 +14,4 @@ export declare class PriorityQueue<T> {
   peek(): T | null;
   contains(id: T): boolean;
   toArray(): T[];
-} 
+}

@@ -4,8 +4,8 @@ vi.mock('@/utils/http', () => ({
     get: vi.fn(),
     post: vi.fn(),
     put: vi.fn(),
-    delete: vi.fn()
-  }
+    delete: vi.fn(),
+  },
 }));
 
 import { renderHook } from '@testing-library/react';
@@ -34,7 +34,7 @@ describe('useHttp', () => {
     it('应该正确处理 GET 请求的配置参数', async () => {
       const mockConfig: HttpRequestConfig = {
         params: { id: 1 },
-        headers: { 'X-Test': 'test' }
+        headers: { 'X-Test': 'test' },
       };
       const mockResponse = { data: { id: 1, name: 'test' } };
       vi.mocked(http.get).mockResolvedValue(mockResponse);
@@ -71,7 +71,7 @@ describe('useHttp', () => {
     it('应该正确处理 POST 请求的配置参数', async () => {
       const mockData = { name: 'test' };
       const mockConfig: HttpRequestConfig = {
-        headers: { 'X-Test': 'test' }
+        headers: { 'X-Test': 'test' },
       };
       const mockResponse = { data: { id: 1, name: 'test' } };
       vi.mocked(http.post).mockResolvedValue(mockResponse);
@@ -108,7 +108,7 @@ describe('useHttp', () => {
     it('应该正确处理 PUT 请求的配置参数', async () => {
       const mockData = { name: 'test' };
       const mockConfig: HttpRequestConfig = {
-        headers: { 'X-Test': 'test' }
+        headers: { 'X-Test': 'test' },
       };
       const mockResponse = { data: { id: 1, name: 'test' } };
       vi.mocked(http.put).mockResolvedValue(mockResponse);
@@ -143,7 +143,7 @@ describe('useHttp', () => {
 
     it('应该正确处理 DELETE 请求的配置参数', async () => {
       const mockConfig: HttpRequestConfig = {
-        headers: { 'X-Test': 'test' }
+        headers: { 'X-Test': 'test' },
       };
       const mockResponse = { data: { success: true } };
       vi.mocked(http.delete).mockResolvedValue(mockResponse);
@@ -184,12 +184,12 @@ describe('useHttp', () => {
   describe('Hook 持久性', () => {
     it('重新渲染时应该返回相同的方法引用', () => {
       const { result, rerender } = renderHook(() => useHttp());
-      
+
       const firstRender = {
         get: result.current.get,
         post: result.current.post,
         put: result.current.put,
-        delete: result.current.delete
+        delete: result.current.delete,
       };
 
       rerender();
@@ -200,4 +200,4 @@ describe('useHttp', () => {
       expect(result.current.delete).toBe(firstRender.delete);
     });
   });
-}); 
+});

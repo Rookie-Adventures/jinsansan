@@ -1,19 +1,11 @@
 import React from 'react';
-import {
-  Box,
-  Container,
-  Grid,
-  Typography,
-  Card,
-  useTheme,
-  useMediaQuery,
-} from '@mui/material';
+import { Box, Container, Grid, Typography, Card, useTheme, useMediaQuery } from '@mui/material';
 import { motion } from 'framer-motion';
-import { 
+import {
   AutoMode as StreamIcon,
   Psychology as ContextIcon,
   Apps as ModelsIcon,
-  Security as SecurityIcon
+  Security as SecurityIcon,
 } from '@mui/icons-material';
 
 const features = [
@@ -135,10 +127,7 @@ const FeatureSection: React.FC = () => {
                       color: 'white',
                     }}
                   >
-                    <feature.icon
-                      data-testid={`feature-icon-${index}`}
-                      sx={{ fontSize: 40 }}
-                    />
+                    <feature.icon data-testid={`feature-icon-${index}`} sx={{ fontSize: 40 }} />
                   </Box>
                   <Typography
                     variant="h5"
@@ -148,11 +137,7 @@ const FeatureSection: React.FC = () => {
                   >
                     {feature.title}
                   </Typography>
-                  <Typography
-                    variant="body1"
-                    color="text.secondary"
-                    sx={{ flexGrow: 1 }}
-                  >
+                  <Typography variant="body1" color="text.secondary" sx={{ flexGrow: 1 }}>
                     {feature.description}
                   </Typography>
                 </Card>
@@ -165,4 +150,4 @@ const FeatureSection: React.FC = () => {
   );
 };
 
-export default FeatureSection; 
+export default FeatureSection;

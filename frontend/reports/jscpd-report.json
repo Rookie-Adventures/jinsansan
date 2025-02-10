@@ -1,0 +1,5661 @@
+{
+  "statistics": {
+    "detectionDate": "2025-02-09T23:17:04.018Z",
+    "formats": {
+      "typescript": {
+        "sources": {
+          "D:/jinsansan/frontend/src/utils/http/error/__tests__/logger.test.ts": {
+            "lines": 137,
+            "tokens": 1183,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/http/error/__tests__/factory.test.ts": {
+            "lines": 99,
+            "tokens": 1049,
+            "sources": 1,
+            "clones": 4,
+            "duplicatedLines": 34,
+            "duplicatedTokens": 360,
+            "percentage": 34.34,
+            "percentageTokens": 34.32,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/security/__tests__/setup.ts": {
+            "lines": 52,
+            "tokens": 580,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 12,
+            "duplicatedTokens": 201,
+            "percentage": 23.08,
+            "percentageTokens": 34.66,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/security/__tests__/rbac.test.ts": {
+            "lines": 75,
+            "tokens": 822,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/security/__tests__/policy.test.ts": {
+            "lines": 102,
+            "tokens": 952,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/security/__tests__/encryption.test.ts": {
+            "lines": 109,
+            "tokens": 1157,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/security/__tests__/csrf.test.ts": {
+            "lines": 48,
+            "tokens": 466,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/security/__tests__/auth.test.ts": {
+            "lines": 171,
+            "tokens": 1517,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/security/__tests__/audit.test.ts": {
+            "lines": 322,
+            "tokens": 2842,
+            "sources": 1,
+            "clones": 3,
+            "duplicatedLines": 62,
+            "duplicatedTokens": 549,
+            "percentage": 19.25,
+            "percentageTokens": 19.32,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/router/__tests__/error-handler.test.ts": {
+            "lines": 216,
+            "tokens": 1776,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 60,
+            "duplicatedTokens": 430,
+            "percentage": 27.78,
+            "percentageTokens": 24.21,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/http/__tests__/retry.test.ts": {
+            "lines": 197,
+            "tokens": 2317,
+            "sources": 1,
+            "clones": 6,
+            "duplicatedLines": 52,
+            "duplicatedTokens": 538,
+            "percentage": 26.4,
+            "percentageTokens": 23.22,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/http/error/types.ts": {
+            "lines": 45,
+            "tokens": 394,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/http/error/recovery.ts": {
+            "lines": 122,
+            "tokens": 1131,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/http/error/logger.ts": {
+            "lines": 16,
+            "tokens": 149,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/http/error/factory.ts": {
+            "lines": 27,
+            "tokens": 267,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/error/__tests__/errorUtils.test.ts": {
+            "lines": 115,
+            "tokens": 1163,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/error/__tests__/errorLogger.test.ts": {
+            "lines": 202,
+            "tokens": 2281,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 22,
+            "duplicatedTokens": 178,
+            "percentage": 10.89,
+            "percentageTokens": 7.8,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/auth/__tests__/validation.test.ts": {
+            "lines": 166,
+            "tokens": 1506,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/store/middleware/__tests__/performance.test.ts": {
+            "lines": 99,
+            "tokens": 964,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/store/middleware/__tests__/error.test.ts": {
+            "lines": 102,
+            "tokens": 851,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/services/auth/__tests__/tokenService.test.ts": {
+            "lines": 192,
+            "tokens": 1962,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/services/auth/__tests__/authService.test.ts": {
+            "lines": 194,
+            "tokens": 2024,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/UserAnalytics.test.ts": {
+            "lines": 251,
+            "tokens": 2459,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/RouterAnalytics.test.ts": {
+            "lines": 366,
+            "tokens": 3355,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/PerformanceMonitor.test.ts": {
+            "lines": 364,
+            "tokens": 3112,
+            "sources": 1,
+            "clones": 6,
+            "duplicatedLines": 72,
+            "duplicatedTokens": 622,
+            "percentage": 19.78,
+            "percentageTokens": 19.99,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/HttpRequestMonitor.test.ts": {
+            "lines": 41,
+            "tokens": 361,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/DataReporter.test.ts": {
+            "lines": 167,
+            "tokens": 1676,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 26,
+            "duplicatedTokens": 228,
+            "percentage": 15.57,
+            "percentageTokens": 13.6,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/AlertManager.test.ts": {
+            "lines": 328,
+            "tokens": 3157,
+            "sources": 1,
+            "clones": 6,
+            "duplicatedLines": 118,
+            "duplicatedTokens": 898,
+            "percentage": 35.98,
+            "percentageTokens": 28.44,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/infrastructure/logging/__tests__/Logger.test.ts": {
+            "lines": 175,
+            "tokens": 1504,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/infrastructure/http/__tests__/httpClient.test.ts": {
+            "lines": 307,
+            "tokens": 2987,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 20,
+            "duplicatedTokens": 230,
+            "percentage": 6.51,
+            "percentageTokens": 7.7,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/infrastructure/file/__tests__/FileManager.test.ts": {
+            "lines": 256,
+            "tokens": 2974,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 26,
+            "duplicatedTokens": 214,
+            "percentage": 10.16,
+            "percentageTokens": 7.2,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/hooks/http/__tests__/useHttp.test.ts": {
+            "lines": 202,
+            "tokens": 2586,
+            "sources": 1,
+            "clones": 6,
+            "duplicatedLines": 32,
+            "duplicatedTokens": 594,
+            "percentage": 15.84,
+            "percentageTokens": 22.97,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/hooks/http/__tests__/useCache.test.ts": {
+            "lines": 139,
+            "tokens": 1456,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts": {
+            "lines": 318,
+            "tokens": 3079,
+            "sources": 1,
+            "clones": 8,
+            "duplicatedLines": 102,
+            "duplicatedTokens": 1084,
+            "percentage": 32.08,
+            "percentageTokens": 35.21,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/validations/rules.ts": {
+            "lines": 50,
+            "tokens": 606,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/security/rbac.ts": {
+            "lines": 129,
+            "tokens": 804,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/security/policy.ts": {
+            "lines": 157,
+            "tokens": 1320,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/security/logger.ts": {
+            "lines": 17,
+            "tokens": 65,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/security/encryption.ts": {
+            "lines": 149,
+            "tokens": 1293,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/security/csrf.ts": {
+            "lines": 71,
+            "tokens": 453,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/security/auth.ts": {
+            "lines": 280,
+            "tokens": 2325,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/security/audit.ts": {
+            "lines": 287,
+            "tokens": 2318,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 13,
+            "duplicatedTokens": 117,
+            "percentage": 4.53,
+            "percentageTokens": 5.05,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/router/error-handler.ts": {
+            "lines": 105,
+            "tokens": 935,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/router/analytics.ts": {
+            "lines": 122,
+            "tokens": 1108,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/notification/types.ts": {
+            "lines": 14,
+            "tokens": 119,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/notification/manager.ts": {
+            "lines": 42,
+            "tokens": 372,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/monitoring/types.ts": {
+            "lines": 41,
+            "tokens": 357,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/monitoring/performance.ts": {
+            "lines": 233,
+            "tokens": 2322,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/http/types.ts": {
+            "lines": 39,
+            "tokens": 428,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/http/retry.ts": {
+            "lines": 84,
+            "tokens": 853,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/http/requestManager.ts": {
+            "lines": 37,
+            "tokens": 404,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/http/progress-monitor.ts": {
+            "lines": 18,
+            "tokens": 147,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/http/index.ts": {
+            "lines": 12,
+            "tokens": 94,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/http/client.ts": {
+            "lines": 49,
+            "tokens": 561,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/error/errorUtils.ts": {
+            "lines": 26,
+            "tokens": 197,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/error/errorLogger.ts": {
+            "lines": 168,
+            "tokens": 1475,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/auth/validation.ts": {
+            "lines": 70,
+            "tokens": 532,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/types/utils/index.ts": {
+            "lines": 48,
+            "tokens": 467,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/types/store/index.ts": {
+            "lines": 51,
+            "tokens": 425,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/types/security/auth.d.ts": {
+            "lines": 39,
+            "tokens": 463,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/types/http/priority-queue.d.ts": {
+            "lines": 16,
+            "tokens": 172,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/types/components/index.ts": {
+            "lines": 55,
+            "tokens": 498,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/test/mocks/server.ts": {
+            "lines": 10,
+            "tokens": 127,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/store/types/actions.ts": {
+            "lines": 29,
+            "tokens": 254,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/store/slices/error.ts": {
+            "lines": 26,
+            "tokens": 225,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/store/slices/authSlice.ts": {
+            "lines": 110,
+            "tokens": 1124,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/store/slices/appSlice.ts": {
+            "lines": 48,
+            "tokens": 416,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/store/selectors/auth.ts": {
+            "lines": 20,
+            "tokens": 232,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/store/selectors/app.ts": {
+            "lines": 19,
+            "tokens": 214,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/store/middleware/performance.ts": {
+            "lines": 23,
+            "tokens": 270,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/store/middleware/logger.ts": {
+            "lines": 105,
+            "tokens": 882,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 18,
+            "duplicatedTokens": 178,
+            "percentage": 17.14,
+            "percentageTokens": 20.18,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/store/middleware/logger.test.ts": {
+            "lines": 232,
+            "tokens": 2344,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/store/middleware/error.ts": {
+            "lines": 28,
+            "tokens": 264,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/services/auth/tokenService.ts": {
+            "lines": 73,
+            "tokens": 496,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/services/auth/authService.ts": {
+            "lines": 88,
+            "tokens": 741,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/mocks/handlers/index.ts": {
+            "lines": 3,
+            "tokens": 46,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/mocks/handlers/auth.ts": {
+            "lines": 166,
+            "tokens": 1371,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/mocks/handlers/audit.ts": {
+            "lines": 47,
+            "tokens": 429,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 13,
+            "duplicatedTokens": 117,
+            "percentage": 27.66,
+            "percentageTokens": 27.27,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/infrastructure/search/SearchService.ts": {
+            "lines": 38,
+            "tokens": 414,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/infrastructure/monitoring/UserAnalytics.ts": {
+            "lines": 275,
+            "tokens": 2057,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/infrastructure/monitoring/types.ts": {
+            "lines": 237,
+            "tokens": 1196,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/infrastructure/monitoring/RouterAnalytics.ts": {
+            "lines": 312,
+            "tokens": 3018,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/infrastructure/monitoring/PerformanceMonitor.ts": {
+            "lines": 193,
+            "tokens": 1848,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/infrastructure/monitoring/AlertManager.ts": {
+            "lines": 202,
+            "tokens": 2105,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/infrastructure/logging/types.ts": {
+            "lines": 51,
+            "tokens": 272,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/infrastructure/logging/Logger.ts": {
+            "lines": 147,
+            "tokens": 1587,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/infrastructure/http/HttpClient.ts": {
+            "lines": 168,
+            "tokens": 1659,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/infrastructure/file/types.ts": {
+            "lines": 32,
+            "tokens": 148,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/infrastructure/file/FileService.ts": {
+            "lines": 87,
+            "tokens": 1063,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/infrastructure/file/FileManager.ts": {
+            "lines": 219,
+            "tokens": 1664,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 20,
+            "duplicatedTokens": 240,
+            "percentage": 9.13,
+            "percentageTokens": 14.42,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/hooks/store/useAppSelector.ts": {
+            "lines": 9,
+            "tokens": 68,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/hooks/store/useAppDispatch.ts": {
+            "lines": 8,
+            "tokens": 56,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/hooks/http/useHttp.ts": {
+            "lines": 37,
+            "tokens": 433,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/hooks/http/useCache.ts": {
+            "lines": 31,
+            "tokens": 353,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/hooks/form/useForm.ts": {
+            "lines": 48,
+            "tokens": 406,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/hooks/feedback/useGlobalProgress.ts": {
+            "lines": 16,
+            "tokens": 206,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/hooks/data/useRequest.ts": {
+            "lines": 179,
+            "tokens": 1643,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/hooks/auth/useAuthForm.ts": {
+            "lines": 27,
+            "tokens": 287,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/hooks/auth/useAuth.ts": {
+            "lines": 94,
+            "tokens": 1014,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/index.ts": {
+            "lines": 15,
+            "tokens": 165,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/security.ts": {
+            "lines": 27,
+            "tokens": 229,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/request.ts": {
+            "lines": 97,
+            "tokens": 904,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/logger.ts": {
+            "lines": 59,
+            "tokens": 608,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/errorLogger.ts": {
+            "lines": 55,
+            "tokens": 411,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/types/http.ts": {
+            "lines": 5,
+            "tokens": 147,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/types/global.d.ts": {
+            "lines": 24,
+            "tokens": 167,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/types/error.ts": {
+            "lines": 19,
+            "tokens": 143,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/types/axios-retry.d.ts": {
+            "lines": 16,
+            "tokens": 150,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/types/auth.ts": {
+            "lines": 27,
+            "tokens": 195,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/types/api.ts": {
+            "lines": 105,
+            "tokens": 571,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/types/alert.ts": {
+            "lines": 33,
+            "tokens": 288,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/theme/utils.ts": {
+            "lines": 169,
+            "tokens": 1919,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/theme/utils.test.ts": {
+            "lines": 122,
+            "tokens": 1381,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/theme/types.ts": {
+            "lines": 54,
+            "tokens": 442,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/theme/index.ts": {
+            "lines": 173,
+            "tokens": 1275,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/theme/index.test.ts": {
+            "lines": 204,
+            "tokens": 2471,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/tests/setup.ts": {
+            "lines": 113,
+            "tokens": 954,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 28,
+            "duplicatedTokens": 278,
+            "percentage": 24.78,
+            "percentageTokens": 29.14,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/test/setup.ts": {
+            "lines": 110,
+            "tokens": 938,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 14,
+            "duplicatedTokens": 139,
+            "percentage": 12.73,
+            "percentageTokens": 14.82,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/store/types.ts": {
+            "lines": 15,
+            "tokens": 115,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/store/persistConfig.ts": {
+            "lines": 88,
+            "tokens": 737,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/store/persistConfig.test.ts": {
+            "lines": 227,
+            "tokens": 2100,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/store/index.ts": {
+            "lines": 67,
+            "tokens": 575,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/services/auth.ts": {
+            "lines": 75,
+            "tokens": 674,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/mocks/handlers.ts": {
+            "lines": 73,
+            "tokens": 635,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/mocks/browser.ts": {
+            "lines": 13,
+            "tokens": 107,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/hooks/index.ts": {
+            "lines": 4,
+            "tokens": 47,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/setupTests.ts": {
+            "lines": 46,
+            "tokens": 420,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 14,
+            "duplicatedTokens": 139,
+            "percentage": 30.43,
+            "percentageTokens": 33.1,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          }
+        },
+        "total": {
+          "lines": 13603,
+          "tokens": 126872,
+          "sources": 127,
+          "clones": 30,
+          "duplicatedLines": 379,
+          "duplicatedTokens": 3667,
+          "percentage": 2.79,
+          "percentageTokens": 2.89,
+          "newDuplicatedLines": 0,
+          "newClones": 0
+        }
+      },
+      "javascript": {
+        "sources": {
+          "D:/jinsansan/frontend/src/components/common/Loading/__tests__/Loading.test.tsx": {
+            "lines": 0,
+            "tokens": 3,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx": {
+            "lines": 0,
+            "tokens": 3,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/layout/__tests__/MainLayout.test.tsx": {
+            "lines": 0,
+            "tokens": 3,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/business/sections/__tests__/PricingSection.test.tsx": {
+            "lines": 0,
+            "tokens": 6,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/business/sections/__tests__/HeroSection.test.tsx": {
+            "lines": 0,
+            "tokens": 6,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/business/sections/__tests__/FeatureSection.test.tsx": {
+            "lines": 0,
+            "tokens": 6,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuth.test.tsx": {
+            "lines": 191,
+            "tokens": 1903,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/monitoring/__tests__/AlertRuleForm.test.tsx": {
+            "lines": 113,
+            "tokens": 1236,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/form/__tests__/FormField.test.tsx": {
+            "lines": 105,
+            "tokens": 1091,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/feedback/__tests__/Toast.test.tsx": {
+            "lines": 0,
+            "tokens": 3,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/feedback/__tests__/LoadingBar.test.tsx": {
+            "lines": 0,
+            "tokens": 3,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/ErrorNotification/__tests__/index.test.tsx": {
+            "lines": 145,
+            "tokens": 1470,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 270,
+            "duplicatedTokens": 2740,
+            "percentage": 186.21,
+            "percentageTokens": 186.39,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/ErrorBoundary/__tests__/ErrorBoundary.test.tsx": {
+            "lines": 88,
+            "tokens": 724,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/__tests__/ThemeToggle.test.tsx": {
+            "lines": 63,
+            "tokens": 625,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/__tests__/FileUploader.test.tsx": {
+            "lines": 13,
+            "tokens": 175,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/Loading/index.tsx": {
+            "lines": 0,
+            "tokens": 9,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/layout/Navbar.tsx": {
+            "lines": 171,
+            "tokens": 1327,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/layout/MainLayout.tsx": {
+            "lines": 14,
+            "tokens": 68,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/business/sections/PricingSection.tsx": {
+            "lines": 118,
+            "tokens": 1027,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/business/sections/HeroSection.tsx": {
+            "lines": 71,
+            "tokens": 629,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/business/sections/FeatureSection.tsx": {
+            "lines": 61,
+            "tokens": 495,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/auth/__tests__/RegisterForm.test.tsx": {
+            "lines": 22,
+            "tokens": 241,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/auth/__tests__/LoginForm.test.tsx": {
+            "lines": 0,
+            "tokens": 3,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx": {
+            "lines": 0,
+            "tokens": 9,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/auth/__tests__/AuthForm.test.tsx": {
+            "lines": 5,
+            "tokens": 25,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/auth/__tests__/AuthCard.test.tsx": {
+            "lines": 73,
+            "tokens": 745,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/tests/react/SuspenseList.test.tsx": {
+            "lines": 167,
+            "tokens": 1621,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/router/__tests__/index.test.tsx": {
+            "lines": 48,
+            "tokens": 448,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/pages/__tests__/HomePage.test.tsx": {
+            "lines": 2,
+            "tokens": 24,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/pages/monitoring/MetricsDisplay.tsx": {
+            "lines": 15,
+            "tokens": 217,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/pages/monitoring/AlertManagement.tsx": {
+            "lines": 19,
+            "tokens": 168,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/pages/auth/RegisterPage.tsx": {
+            "lines": 5,
+            "tokens": 25,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/pages/auth/LoginPage.tsx": {
+            "lines": 0,
+            "tokens": 14,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/monitoring/AlertRuleList.tsx": {
+            "lines": 45,
+            "tokens": 506,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/monitoring/AlertRuleForm.tsx": {
+            "lines": 182,
+            "tokens": 1414,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/form/FormField.tsx": {
+            "lines": 0,
+            "tokens": 14,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/feedback/TopProgressBar.tsx": {
+            "lines": 1,
+            "tokens": 34,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/feedback/Toast.tsx": {
+            "lines": 5,
+            "tokens": 51,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/feedback/LoadingBar.tsx": {
+            "lines": 0,
+            "tokens": 3,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/ErrorNotification/index.tsx": {
+            "lines": 23,
+            "tokens": 209,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/ErrorBoundary/index.tsx": {
+            "lines": 56,
+            "tokens": 553,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/ThemeToggle.tsx": {
+            "lines": 1,
+            "tokens": 32,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/SearchBar.tsx": {
+            "lines": 0,
+            "tokens": 15,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/Loading.tsx": {
+            "lines": 5,
+            "tokens": 25,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/FileUploader.tsx": {
+            "lines": 10,
+            "tokens": 114,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/ErrorNotification.tsx": {
+            "lines": 55,
+            "tokens": 432,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/auth/RegisterForm.tsx": {
+            "lines": 5,
+            "tokens": 45,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/auth/LoginForm.tsx": {
+            "lines": 5,
+            "tokens": 45,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/auth/AuthPage.tsx": {
+            "lines": 29,
+            "tokens": 222,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/auth/AuthForm.tsx": {
+            "lines": 102,
+            "tokens": 793,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/auth/AuthCard.tsx": {
+            "lines": 20,
+            "tokens": 166,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/test/utils.tsx": {
+            "lines": 1,
+            "tokens": 17,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/router/index.tsx": {
+            "lines": 55,
+            "tokens": 386,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/router/guards.tsx": {
+            "lines": 15,
+            "tokens": 168,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/pages/HomePage.tsx": {
+            "lines": 45,
+            "tokens": 264,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/pages/ErrorPage.tsx": {
+            "lines": 6,
+            "tokens": 30,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/contexts/ErrorContext.tsx": {
+            "lines": 2,
+            "tokens": 33,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/main.tsx": {
+            "lines": 1,
+            "tokens": 24,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/App.tsx": {
+            "lines": 4,
+            "tokens": 50,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          }
+        },
+        "total": {
+          "lines": 2182,
+          "tokens": 19997,
+          "sources": 59,
+          "clones": 1,
+          "duplicatedLines": 135,
+          "duplicatedTokens": 1370,
+          "percentage": 6.19,
+          "percentageTokens": 6.85,
+          "newDuplicatedLines": 0,
+          "newClones": 0
+        }
+      },
+      "tsx": {
+        "sources": {
+          "D:/jinsansan/frontend/src/components/common/Loading/__tests__/Loading.test.tsx": {
+            "lines": 21,
+            "tokens": 261,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx": {
+            "lines": 393,
+            "tokens": 3597,
+            "sources": 1,
+            "clones": 10,
+            "duplicatedLines": 206,
+            "duplicatedTokens": 1746,
+            "percentage": 52.42,
+            "percentageTokens": 48.54,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/layout/__tests__/MainLayout.test.tsx": {
+            "lines": 101,
+            "tokens": 913,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/business/sections/__tests__/PricingSection.test.tsx": {
+            "lines": 212,
+            "tokens": 2079,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 12,
+            "duplicatedTokens": 101,
+            "percentage": 5.66,
+            "percentageTokens": 4.86,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/business/sections/__tests__/HeroSection.test.tsx": {
+            "lines": 101,
+            "tokens": 953,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 23,
+            "duplicatedTokens": 190,
+            "percentage": 22.77,
+            "percentageTokens": 19.94,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/business/sections/__tests__/FeatureSection.test.tsx": {
+            "lines": 108,
+            "tokens": 1026,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 11,
+            "duplicatedTokens": 89,
+            "percentage": 10.19,
+            "percentageTokens": 8.67,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/utils/router/__tests__/analytics.test.tsx": {
+            "lines": 169,
+            "tokens": 1637,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/router/guards/__tests__/GuestGuard.test.tsx": {
+            "lines": 108,
+            "tokens": 923,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 24,
+            "duplicatedTokens": 222,
+            "percentage": 22.22,
+            "percentageTokens": 24.05,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/router/guards/__tests__/AuthGuard.test.tsx": {
+            "lines": 150,
+            "tokens": 1317,
+            "sources": 1,
+            "clones": 3,
+            "duplicatedLines": 42,
+            "duplicatedTokens": 327,
+            "percentage": 28,
+            "percentageTokens": 24.83,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/pages/monitoring/__tests__/AlertManagement.test.tsx": {
+            "lines": 138,
+            "tokens": 1293,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx": {
+            "lines": 117,
+            "tokens": 1178,
+            "sources": 1,
+            "clones": 6,
+            "duplicatedLines": 90,
+            "duplicatedTokens": 921,
+            "percentage": 76.92,
+            "percentageTokens": 78.18,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/pages/auth/__tests__/LoginPage.test.tsx": {
+            "lines": 113,
+            "tokens": 1098,
+            "sources": 1,
+            "clones": 4,
+            "duplicatedLines": 70,
+            "duplicatedTokens": 681,
+            "percentage": 61.95,
+            "percentageTokens": 62.02,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/hooks/form/__tests__/useForm.test.tsx": {
+            "lines": 207,
+            "tokens": 1928,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuthForm.test.tsx": {
+            "lines": 148,
+            "tokens": 1385,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 26,
+            "duplicatedTokens": 208,
+            "percentage": 17.57,
+            "percentageTokens": 15.02,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuth.test.tsx": {
+            "lines": 362,
+            "tokens": 3460,
+            "sources": 1,
+            "clones": 6,
+            "duplicatedLines": 82,
+            "duplicatedTokens": 726,
+            "percentage": 22.65,
+            "percentageTokens": 20.98,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/monitoring/__tests__/AlertRuleForm.test.tsx": {
+            "lines": 167,
+            "tokens": 1735,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/form/__tests__/FormField.test.tsx": {
+            "lines": 159,
+            "tokens": 1609,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 18,
+            "duplicatedTokens": 222,
+            "percentage": 11.32,
+            "percentageTokens": 13.8,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/feedback/__tests__/Toast.test.tsx": {
+            "lines": 96,
+            "tokens": 925,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 35,
+            "duplicatedTokens": 300,
+            "percentage": 36.46,
+            "percentageTokens": 32.43,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/feedback/__tests__/LoadingBar.test.tsx": {
+            "lines": 116,
+            "tokens": 1118,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 35,
+            "duplicatedTokens": 300,
+            "percentage": 30.17,
+            "percentageTokens": 26.83,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/ErrorNotification/__tests__/index.test.tsx": {
+            "lines": 183,
+            "tokens": 1872,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 24,
+            "duplicatedTokens": 200,
+            "percentage": 13.11,
+            "percentageTokens": 10.68,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/ErrorBoundary/__tests__/ErrorBoundary.test.tsx": {
+            "lines": 166,
+            "tokens": 1425,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/__tests__/ThemeToggle.test.tsx": {
+            "lines": 119,
+            "tokens": 1155,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/__tests__/SearchBar.test.tsx": {
+            "lines": 124,
+            "tokens": 1278,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/__tests__/FileUploader.test.tsx": {
+            "lines": 62,
+            "tokens": 714,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/__tests__/ErrorNotification.test.tsx": {
+            "lines": 276,
+            "tokens": 2463,
+            "sources": 1,
+            "clones": 4,
+            "duplicatedLines": 62,
+            "duplicatedTokens": 462,
+            "percentage": 22.46,
+            "percentageTokens": 18.76,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/Loading/index.tsx": {
+            "lines": 16,
+            "tokens": 184,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/layout/Navbar.tsx": {
+            "lines": 243,
+            "tokens": 1951,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 58,
+            "duplicatedTokens": 514,
+            "percentage": 23.87,
+            "percentageTokens": 26.35,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/layout/MainLayout.tsx": {
+            "lines": 31,
+            "tokens": 190,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/business/sections/PricingSection.tsx": {
+            "lines": 219,
+            "tokens": 1803,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 23,
+            "duplicatedTokens": 205,
+            "percentage": 10.5,
+            "percentageTokens": 11.37,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/business/sections/HeroSection.tsx": {
+            "lines": 99,
+            "tokens": 909,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/business/sections/FeatureSection.tsx": {
+            "lines": 152,
+            "tokens": 1223,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 23,
+            "duplicatedTokens": 205,
+            "percentage": 15.13,
+            "percentageTokens": 16.76,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/auth/__tests__/RegisterForm.test.tsx": {
+            "lines": 110,
+            "tokens": 1236,
+            "sources": 1,
+            "clones": 3,
+            "duplicatedLines": 21,
+            "duplicatedTokens": 309,
+            "percentage": 19.09,
+            "percentageTokens": 25,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/auth/__tests__/LoginForm.test.tsx": {
+            "lines": 69,
+            "tokens": 767,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 11,
+            "duplicatedTokens": 144,
+            "percentage": 15.94,
+            "percentageTokens": 18.77,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx": {
+            "lines": 351,
+            "tokens": 3165,
+            "sources": 1,
+            "clones": 12,
+            "duplicatedLines": 226,
+            "duplicatedTokens": 1856,
+            "percentage": 64.39,
+            "percentageTokens": 58.64,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/auth/__tests__/AuthForm.test.tsx": {
+            "lines": 81,
+            "tokens": 875,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 14,
+            "duplicatedTokens": 186,
+            "percentage": 17.28,
+            "percentageTokens": 21.26,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/auth/__tests__/AuthCard.test.tsx": {
+            "lines": 104,
+            "tokens": 1064,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/tests/react/SuspenseList.test.tsx": {
+            "lines": 229,
+            "tokens": 2170,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 10,
+            "duplicatedTokens": 128,
+            "percentage": 4.37,
+            "percentageTokens": 5.9,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/router/__tests__/index.test.tsx": {
+            "lines": 169,
+            "tokens": 1677,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/router/guards/GuestGuard.tsx": {
+            "lines": 24,
+            "tokens": 214,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/router/guards/AuthGuard.tsx": {
+            "lines": 43,
+            "tokens": 408,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/pages/__tests__/HomePage.test.tsx": {
+            "lines": 129,
+            "tokens": 1241,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/pages/__tests__/ErrorPage.test.tsx": {
+            "lines": 55,
+            "tokens": 547,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/pages/monitoring/MetricsDisplay.tsx": {
+            "lines": 93,
+            "tokens": 970,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/pages/monitoring/MetricsDisplay.test.tsx": {
+            "lines": 135,
+            "tokens": 1227,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/pages/monitoring/AlertManagement.tsx": {
+            "lines": 96,
+            "tokens": 885,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/pages/auth/RegisterPage.tsx": {
+            "lines": 31,
+            "tokens": 243,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 11,
+            "duplicatedTokens": 106,
+            "percentage": 35.48,
+            "percentageTokens": 43.62,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/pages/auth/LoginPage.tsx": {
+            "lines": 23,
+            "tokens": 231,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 11,
+            "duplicatedTokens": 106,
+            "percentage": 47.83,
+            "percentageTokens": 45.89,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/monitoring/AlertRuleList.tsx": {
+            "lines": 96,
+            "tokens": 913,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/monitoring/AlertRuleForm.tsx": {
+            "lines": 373,
+            "tokens": 3273,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/form/FormField.tsx": {
+            "lines": 23,
+            "tokens": 262,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/feedback/TopProgressBar.tsx": {
+            "lines": 47,
+            "tokens": 466,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/feedback/Toast.tsx": {
+            "lines": 26,
+            "tokens": 265,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/feedback/LoadingBar.tsx": {
+            "lines": 55,
+            "tokens": 571,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/ErrorNotification/index.tsx": {
+            "lines": 125,
+            "tokens": 1089,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/ErrorBoundary/index.tsx": {
+            "lines": 87,
+            "tokens": 821,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/ThemeToggle.tsx": {
+            "lines": 18,
+            "tokens": 216,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/SearchBar.tsx": {
+            "lines": 59,
+            "tokens": 580,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/Loading.tsx": {
+            "lines": 16,
+            "tokens": 107,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/FileUploader.tsx": {
+            "lines": 56,
+            "tokens": 588,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/ErrorNotification.tsx": {
+            "lines": 141,
+            "tokens": 1150,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/auth/RegisterForm.tsx": {
+            "lines": 42,
+            "tokens": 377,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/auth/LoginForm.tsx": {
+            "lines": 37,
+            "tokens": 354,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/auth/AuthPage.tsx": {
+            "lines": 130,
+            "tokens": 1195,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/auth/AuthForm.tsx": {
+            "lines": 133,
+            "tokens": 1149,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/auth/AuthCard.tsx": {
+            "lines": 51,
+            "tokens": 398,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/test/utils.tsx": {
+            "lines": 33,
+            "tokens": 323,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/router/index.tsx": {
+            "lines": 91,
+            "tokens": 770,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/router/guards.tsx": {
+            "lines": 34,
+            "tokens": 377,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/pages/HomePage.tsx": {
+            "lines": 64,
+            "tokens": 402,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/pages/ErrorPage.tsx": {
+            "lines": 30,
+            "tokens": 262,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/contexts/ErrorContext.tsx": {
+            "lines": 34,
+            "tokens": 377,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/main.tsx": {
+            "lines": 37,
+            "tokens": 325,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/App.tsx": {
+            "lines": 29,
+            "tokens": 335,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          }
+        },
+        "total": {
+          "lines": 8285,
+          "tokens": 77467,
+          "sources": 73,
+          "clones": 38,
+          "duplicatedLines": 584,
+          "duplicatedTokens": 5227,
+          "percentage": 7.05,
+          "percentageTokens": 6.75,
+          "newDuplicatedLines": 0,
+          "newClones": 0
+        }
+      }
+    },
+    "total": {
+      "lines": 24070,
+      "tokens": 224336,
+      "sources": 259,
+      "clones": 69,
+      "duplicatedLines": 1098,
+      "duplicatedTokens": 10264,
+      "percentage": 4.56,
+      "percentageTokens": 4.58,
+      "newDuplicatedLines": 0,
+      "newClones": 0
+    }
+  },
+  "duplicates": [
+    {
+      "format": "typescript",
+      "lines": 10,
+      "fragment": ",\r\n      });\r\n\r\n      const result = HttpErrorFactory.create(axiosError as AxiosError);\r\n\r\n      expect(result).toBeInstanceOf(HttpError);\r\n      expect(result.type).toBe(HttpErrorType.HTTP_ERROR);\r\n      expect(result.message).toBe('Network Error');\r\n      expect(result.code).toBe('ECONNABORTED');\r\n      expect(result.status).toBeUndefined",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/utils/http/error/__tests__/factory.test.ts",
+        "start": 46,
+        "end": 55,
+        "startLoc": {
+          "line": 46,
+          "column": 10,
+          "position": 511
+        },
+        "endLoc": {
+          "line": 55,
+          "column": 14,
+          "position": 612
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/utils/http/error/__tests__/factory.test.ts",
+        "start": 28,
+        "end": 37,
+        "startLoc": {
+          "line": 28,
+          "column": 2,
+          "position": 301
+        },
+        "endLoc": {
+          "line": 37,
+          "column": 5,
+          "position": 402
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 9,
+      "fragment": "},\r\n        },\r\n      });\r\n\r\n      const result = HttpErrorFactory.create(axiosError as AxiosError);\r\n\r\n      expect(result).toBeInstanceOf(HttpError);\r\n      expect(result.type).toBe(HttpErrorType.HTTP_ERROR);\r\n      expect(result.message).toBe('Validation Error'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/utils/http/error/__tests__/factory.test.ts",
+        "start": 81,
+        "end": 89,
+        "startLoc": {
+          "line": 81,
+          "column": 11,
+          "position": 874
+        },
+        "endLoc": {
+          "line": 89,
+          "column": 19,
+          "position": 953
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/utils/http/error/__tests__/factory.test.ts",
+        "start": 27,
+        "end": 35,
+        "startLoc": {
+          "line": 27,
+          "column": 2,
+          "position": 295
+        },
+        "endLoc": {
+          "line": 35,
+          "column": 16,
+          "position": 374
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 15,
+      "fragment": ",\r\n        login: vi.fn(),\r\n        register: vi.fn(),\r\n        loading: false,\r\n        error: null,\r\n        token: 'test-token',\r\n        getCurrentUser: vi.fn(),\r\n      });\r\n\r\n      renderNavbar();\r\n\r\n      const accountButton = screen.getByLabelText('account of current user');\r\n      fireEvent.click(accountButton);\r\n\r\n      const",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx",
+        "start": 188,
+        "end": 202,
+        "startLoc": {
+          "line": 188,
+          "column": 11,
+          "position": 1756
+        },
+        "endLoc": {
+          "line": 202,
+          "column": 6,
+          "position": 1865
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx",
+        "start": 160,
+        "end": 174,
+        "startLoc": {
+          "line": 160,
+          "column": 2,
+          "position": 1503
+        },
+        "endLoc": {
+          "line": 174,
+          "column": 7,
+          "position": 1612
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 26,
+      "fragment": ");\r\n\r\n      vi.mocked(useAuth).mockReturnValue({\r\n        isAuthenticated: true,\r\n        user: {\r\n          id: 1,\r\n          username: 'testuser',\r\n          email: 'test@example.com',\r\n          permissions: ['read:posts'],\r\n        },\r\n        logout: mockLogout,\r\n        login: vi.fn(),\r\n        register: vi.fn(),\r\n        loading: false,\r\n        error: null,\r\n        token: 'test-token',\r\n        getCurrentUser: vi.fn(),\r\n      });\r\n\r\n      renderNavbar();\r\n\r\n      const accountButton = screen.getByLabelText('account of current user');\r\n      fireEvent.click(accountButton);\r\n\r\n      const logoutButton = screen.getByText('退出登录');\r\n      await",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx",
+        "start": 217,
+        "end": 242,
+        "startLoc": {
+          "line": 217,
+          "column": 13,
+          "position": 2031
+        },
+        "endLoc": {
+          "line": 242,
+          "column": 6,
+          "position": 2234
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx",
+        "start": 179,
+        "end": 203,
+        "startLoc": {
+          "line": 179,
+          "column": 2,
+          "position": 1680
+        },
+        "endLoc": {
+          "line": 203,
+          "column": 10,
+          "position": 1881
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 21,
+      "fragment": ", () => {\r\n      vi.mocked(useAuth).mockReturnValue({\r\n        isAuthenticated: true,\r\n        user: {\r\n          id: 1,\r\n          username: 'testuser',\r\n          email: 'test@example.com',\r\n          permissions: ['read:posts'],\r\n        },\r\n        logout: vi.fn(),\r\n        login: vi.fn(),\r\n        register: vi.fn(),\r\n        loading: false,\r\n        error: null,\r\n        token: 'test-token',\r\n        getCurrentUser: vi.fn(),\r\n      });\r\n\r\n      renderNavbar();\r\n\r\n      expect",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx",
+        "start": 282,
+        "end": 302,
+        "startLoc": {
+          "line": 282,
+          "column": 19,
+          "position": 2623
+        },
+        "endLoc": {
+          "line": 302,
+          "column": 7,
+          "position": 2790
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx",
+        "start": 151,
+        "end": 171,
+        "startLoc": {
+          "line": 151,
+          "column": 16,
+          "position": 1417
+        },
+        "endLoc": {
+          "line": 171,
+          "column": 6,
+          "position": 1584
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 28,
+      "fragment": "() => {\r\n      const mockLogout = vi.fn();\r\n      vi.mocked(useAuth).mockReturnValue({\r\n        isAuthenticated: true,\r\n        user: {\r\n          id: 1,\r\n          username: 'testuser',\r\n          email: 'test@example.com',\r\n          permissions: ['read:posts'],\r\n        },\r\n        logout: mockLogout,\r\n        login: vi.fn(),\r\n        register: vi.fn(),\r\n        loading: false,\r\n        error: null,\r\n        token: 'test-token',\r\n        getCurrentUser: vi.fn(),\r\n      });\r\n\r\n      renderNavbar();\r\n\r\n      const accountButton = screen.getByLabelText('account of current user');\r\n      fireEvent.click(accountButton);\r\n\r\n      expect(screen.getByText('testuser')).toBeInTheDocument();\r\n      expect(screen.getByText('退出登录')).toBeInTheDocument();\r\n\r\n      fireEvent",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx",
+        "start": 306,
+        "end": 333,
+        "startLoc": {
+          "line": 306,
+          "column": 2,
+          "position": 2839
+        },
+        "endLoc": {
+          "line": 333,
+          "column": 10,
+          "position": 3079
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx",
+        "start": 178,
+        "end": 176,
+        "startLoc": {
+          "line": 178,
+          "column": 2,
+          "position": 1661
+        },
+        "endLoc": {
+          "line": 176,
+          "column": 2,
+          "position": 1646
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 18,
+      "fragment": "() => {\r\n      vi.mocked(useAuth).mockReturnValue({\r\n        isAuthenticated: true,\r\n        user: {\r\n          id: 1,\r\n          username: 'testuser',\r\n          email: 'test@example.com',\r\n          permissions: ['read:posts'],\r\n        },\r\n        logout: vi.fn(),\r\n        login: vi.fn(),\r\n        register: vi.fn(),\r\n        loading: false,\r\n        error: null,\r\n        token: 'test-token',\r\n        getCurrentUser: vi.fn(),\r\n      });\r\n    }",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx",
+        "start": 340,
+        "end": 357,
+        "startLoc": {
+          "line": 340,
+          "column": 2,
+          "position": 3149
+        },
+        "endLoc": {
+          "line": 357,
+          "column": 2,
+          "position": 3303
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx",
+        "start": 151,
+        "end": 169,
+        "startLoc": {
+          "line": 151,
+          "column": 2,
+          "position": 1419
+        },
+        "endLoc": {
+          "line": 169,
+          "column": 13,
+          "position": 1575
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 13,
+      "fragment": ";\r\nimport { createTheme } from '@/theme';\r\n\r\n// Mock useMediaQuery\r\nvi.mock('@mui/material', async () => {\r\n  const actual = await vi.importActual<typeof import('@mui/material')>('@mui/material');\r\n  return {\r\n    ...actual,\r\n    useMediaQuery: vi.fn(),\r\n  };\r\n});\r\n\r\ndescribe",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/business/sections/__tests__/HeroSection.test.tsx",
+        "start": 6,
+        "end": 18,
+        "startLoc": {
+          "line": 6,
+          "column": 17,
+          "position": 68
+        },
+        "endLoc": {
+          "line": 18,
+          "column": 9,
+          "position": 169
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/business/sections/__tests__/PricingSection.test.tsx",
+        "start": 7,
+        "end": 19,
+        "startLoc": {
+          "line": 7,
+          "column": 20,
+          "position": 84
+        },
+        "endLoc": {
+          "line": 19,
+          "column": 57,
+          "position": 185
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 12,
+      "fragment": ";\r\n\r\n// Mock useMediaQuery\r\nvi.mock('@mui/material', async () => {\r\n  const actual = await vi.importActual<typeof import('@mui/material')>('@mui/material');\r\n  return {\r\n    ...actual,\r\n    useMediaQuery: vi.fn(),\r\n  };\r\n});\r\n\r\ndescribe('FeatureSection'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/business/sections/__tests__/FeatureSection.test.tsx",
+        "start": 7,
+        "end": 18,
+        "startLoc": {
+          "line": 7,
+          "column": 20,
+          "position": 82
+        },
+        "endLoc": {
+          "line": 18,
+          "column": 17,
+          "position": 171
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/business/sections/__tests__/HeroSection.test.tsx",
+        "start": 7,
+        "end": 18,
+        "startLoc": {
+          "line": 7,
+          "column": 10,
+          "position": 82
+        },
+        "endLoc": {
+          "line": 18,
+          "column": 14,
+          "position": 171
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 13,
+      "fragment": "const store = new Map<string, string>();\r\n    const localStorageMock = {\r\n      getItem: vi.fn((key: string) => store.get(key) || null),\r\n      setItem: vi.fn((key: string, value: string) => store.set(key, value)),\r\n      removeItem: vi.fn((key: string) => store.delete(key)),\r\n      clear: vi.fn(() => store.clear()),\r\n      length: 0,\r\n      key: vi.fn((_: number) => null),\r\n    } as Storage;\r\n\r\n    global.localStorage = localStorageMock;\r\n\r\n    // 清理日志",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/utils/security/__tests__/audit.test.ts",
+        "start": 28,
+        "end": 40,
+        "startLoc": {
+          "line": 28,
+          "column": 5,
+          "position": 241
+        },
+        "endLoc": {
+          "line": 40,
+          "column": 8,
+          "position": 442
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/utils/security/__tests__/setup.ts",
+        "start": 4,
+        "end": 16,
+        "startLoc": {
+          "line": 4,
+          "column": 1,
+          "position": 19
+        },
+        "endLoc": {
+          "line": 16,
+          "column": 14,
+          "position": 216
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 26,
+      "fragment": "await auditLogManager.log(\r\n        testLog.type,\r\n        testLog.level,\r\n        testLog.action,\r\n        testLog.resource,\r\n        testLog.details\r\n      );\r\n\r\n      // 等待异步操作完成\r\n      await vi.runAllTimersAsync();\r\n\r\n      // 验证错误被正确记录\r\n      expect(mockErrorLogger.log).toHaveBeenCalledWith(\r\n        expect.any(Error),\r\n        expect.objectContaining({\r\n          context: expect.objectContaining({\r\n            action: 'test-error',\r\n            level: 'error',\r\n            resource: 'test-resource',\r\n            source: 'AuditLogger',\r\n          }),\r\n          level: 'error',\r\n        })\r\n      );\r\n    });\r\n  }",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/utils/security/__tests__/audit.test.ts",
+        "start": 291,
+        "end": 316,
+        "startLoc": {
+          "line": 291,
+          "column": 7,
+          "position": 2604
+        },
+        "endLoc": {
+          "line": 316,
+          "column": 2,
+          "position": 2778
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/utils/security/__tests__/audit.test.ts",
+        "start": 209,
+        "end": 235,
+        "startLoc": {
+          "line": 209,
+          "column": 7,
+          "position": 1967
+        },
+        "endLoc": {
+          "line": 235,
+          "column": 3,
+          "position": 2143
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 31,
+      "fragment": ");\r\n\r\n      routerErrorHandler.handleError(error);\r\n\r\n      expect(errorLogger.log).toHaveBeenCalledTimes(2);\r\n      // 验证第一次调用 - 记录原始错误\r\n      expect(errorLogger.log).toHaveBeenNthCalledWith(\r\n        1,\r\n        error,\r\n        expect.objectContaining({\r\n          level: ErrorLevel.ERROR,\r\n          context: expect.objectContaining({\r\n            status: 500,\r\n          }),\r\n        })\r\n      );\r\n      // 验证第二次调用 - 记录严重错误\r\n      expect(errorLogger.log).toHaveBeenNthCalledWith(\r\n        2,\r\n        error,\r\n        expect.objectContaining({\r\n          level: ErrorLevel.CRITICAL,\r\n          context: expect.objectContaining({\r\n            isCritical: true,\r\n            timestamp: expect.any(Number),\r\n          }),\r\n        })\r\n      );\r\n    });\r\n\r\n    it('应该处理 null 或 undefined 错误'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/utils/router/__tests__/error-handler.test.ts",
+        "start": 164,
+        "end": 194,
+        "startLoc": {
+          "line": 164,
+          "column": 2,
+          "position": 1367
+        },
+        "endLoc": {
+          "line": 194,
+          "column": 27,
+          "position": 1582
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/utils/router/__tests__/error-handler.test.ts",
+        "start": 96,
+        "end": 126,
+        "startLoc": {
+          "line": 96,
+          "column": 16,
+          "position": 841
+        },
+        "endLoc": {
+          "line": 126,
+          "column": 17,
+          "position": 1056
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 10,
+      "fragment": ", async () => {\r\n    const fn = vi\r\n      .fn()\r\n      .mockRejectedValueOnce(new Error('fail'))\r\n      .mockRejectedValueOnce(new Error('fail'))\r\n      .mockResolvedValue('success');\r\n\r\n    const promise = retry(fn, { times: 3, delay: 1000 });\r\n\r\n    // 第一次调用",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/utils/http/__tests__/retry.test.ts",
+        "start": 53,
+        "end": 62,
+        "startLoc": {
+          "line": 53,
+          "column": 13,
+          "position": 577
+        },
+        "endLoc": {
+          "line": 62,
+          "column": 9,
+          "position": 676
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/utils/http/__tests__/retry.test.ts",
+        "start": 22,
+        "end": 30,
+        "startLoc": {
+          "line": 22,
+          "column": 15,
+          "position": 230
+        },
+        "endLoc": {
+          "line": 30,
+          "column": 6,
+          "position": 327
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 9,
+      "fragment": ");\r\n\r\n    const promise = retry(fn, { onRetry, delay: 1000 });\r\n    await vi.runAllTimersAsync();\r\n    const result = await promise;\r\n\r\n    expect(result).toBe('success');\r\n    expect(onRetry).toHaveBeenCalledTimes(1);\r\n  }",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/utils/http/__tests__/retry.test.ts",
+        "start": 125,
+        "end": 133,
+        "startLoc": {
+          "line": 125,
+          "column": 2,
+          "position": 1453
+        },
+        "endLoc": {
+          "line": 133,
+          "column": 2,
+          "position": 1539
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/utils/http/__tests__/retry.test.ts",
+        "start": 109,
+        "end": 117,
+        "startLoc": {
+          "line": 109,
+          "column": 2,
+          "position": 1250
+        },
+        "endLoc": {
+          "line": 117,
+          "column": 7,
+          "position": 1336
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 10,
+      "fragment": ").mockResolvedValue('success');\r\n\r\n      const promise = retry(fn);\r\n      await vi.runAllTimersAsync();\r\n      const result = await promise;\r\n\r\n      expect(result).toBe('success');\r\n      expect(fn).toHaveBeenCalledTimes(2);\r\n    });\r\n  }",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/utils/http/__tests__/retry.test.ts",
+        "start": 188,
+        "end": 197,
+        "startLoc": {
+          "line": 188,
+          "column": 16,
+          "position": 2226
+        },
+        "endLoc": {
+          "line": 197,
+          "column": 2,
+          "position": 2310
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/utils/http/__tests__/retry.test.ts",
+        "start": 163,
+        "end": 173,
+        "startLoc": {
+          "line": 163,
+          "column": 13,
+          "position": 1927
+        },
+        "endLoc": {
+          "line": 173,
+          "column": 3,
+          "position": 2013
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 12,
+      "fragment": "));\r\n\r\n      const error = new Error('测试错误');\r\n      await errorLogger.log(error, { level: 'error' });\r\n\r\n      expect(localStorage.setItem).toHaveBeenCalledWith(\r\n        'error_logs',\r\n        expect.stringContaining('测试错误')\r\n      );\r\n    });\r\n\r\n    it('应该在本地存储已有日志时追加新日志'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/utils/error/__tests__/errorLogger.test.ts",
+        "start": 156,
+        "end": 167,
+        "startLoc": {
+          "line": 156,
+          "column": 2,
+          "position": 1787
+        },
+        "endLoc": {
+          "line": 167,
+          "column": 20,
+          "position": 1876
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/utils/error/__tests__/errorLogger.test.ts",
+        "start": 144,
+        "end": 155,
+        "startLoc": {
+          "line": 144,
+          "column": 7,
+          "position": 1665
+        },
+        "endLoc": {
+          "line": 155,
+          "column": 28,
+          "position": 1754
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 13,
+      "fragment": "vi.mock('react-router-dom', async () => {\r\n  const actual = await vi.importActual('react-router-dom');\r\n  return {\r\n    ...(actual as any),\r\n    useNavigate: vi.fn(),\r\n  };\r\n});\r\n\r\nvi.mock('@/hooks/auth', () => ({\r\n  useAuth: vi.fn(),\r\n}));\r\n\r\nvi",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/router/guards/__tests__/AuthGuard.test.tsx",
+        "start": 9,
+        "end": 21,
+        "startLoc": {
+          "line": 9,
+          "column": 1,
+          "position": 94
+        },
+        "endLoc": {
+          "line": 21,
+          "column": 3,
+          "position": 207
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/router/guards/__tests__/GuestGuard.test.tsx",
+        "start": 8,
+        "end": 20,
+        "startLoc": {
+          "line": 8,
+          "column": 1,
+          "position": 84
+        },
+        "endLoc": {
+          "line": 20,
+          "column": 9,
+          "position": 197
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 16,
+      "fragment": "vi.mocked(useAuth).mockReturnValue({\r\n        isAuthenticated: true,\r\n        token: 'valid-token',\r\n        getCurrentUser: mockGetCurrentUser,\r\n      } as any);\r\n\r\n      render(\r\n        <MemoryRouter>\r\n          <AuthGuard>\r\n            <TestChild />\r\n          </AuthGuard>\r\n        </MemoryRouter>\r\n      );\r\n\r\n      await waitFor(() => {\r\n        expect(mockGetCurrentUser",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/router/guards/__tests__/AuthGuard.test.tsx",
+        "start": 85,
+        "end": 100,
+        "startLoc": {
+          "line": 85,
+          "column": 7,
+          "position": 776
+        },
+        "endLoc": {
+          "line": 100,
+          "column": 19,
+          "position": 883
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/router/guards/__tests__/AuthGuard.test.tsx",
+        "start": 39,
+        "end": 54,
+        "startLoc": {
+          "line": 39,
+          "column": 7,
+          "position": 398
+        },
+        "endLoc": {
+          "line": 54,
+          "column": 7,
+          "position": 505
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 13,
+      "fragment": ";\r\n\r\n// Mock hooks\r\nvi.mock('react-router-dom', async () => {\r\n  const actual = await vi.importActual('react-router-dom');\r\n  return {\r\n    ...(actual as any),\r\n    useNavigate: vi.fn(),\r\n  };\r\n});\r\n\r\nvi.mock('@/hooks/auth', () => ({\r\n  useAuth: vi.fn((",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx",
+        "start": 6,
+        "end": 18,
+        "startLoc": {
+          "line": 6,
+          "column": 15,
+          "position": 94
+        },
+        "endLoc": {
+          "line": 18,
+          "column": 2,
+          "position": 203
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/router/guards/__tests__/GuestGuard.test.tsx",
+        "start": 5,
+        "end": 17,
+        "startLoc": {
+          "line": 5,
+          "column": 15,
+          "position": 76
+        },
+        "endLoc": {
+          "line": 17,
+          "column": 2,
+          "position": 185
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 27,
+      "fragment": ";\r\nimport { useAuth } from '@/hooks/auth';\r\nimport type { User } from '@/types/auth';\r\n\r\n// Mock hooks\r\nvi.mock('react-router-dom', async () => {\r\n  const actual = await vi.importActual('react-router-dom');\r\n  return {\r\n    ...(actual as any),\r\n    useNavigate: vi.fn(),\r\n  };\r\n});\r\n\r\nvi.mock('@/hooks/auth', () => ({\r\n  useAuth: vi.fn(() => ({\r\n    login: vi.fn(),\r\n    register: vi.fn(),\r\n    logout: vi.fn(),\r\n    getCurrentUser: vi.fn(),\r\n    loading: false,\r\n    user: null,\r\n    token: null,\r\n    error: null,\r\n    isAuthenticated: false,\r\n  })),\r\n  useAuthForm: vi.fn(() => ({\r\n    formData: { username: '', password: '' }",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/pages/auth/__tests__/LoginPage.test.tsx",
+        "start": 4,
+        "end": 30,
+        "startLoc": {
+          "line": 4,
+          "column": 15,
+          "position": 64
+        },
+        "endLoc": {
+          "line": 30,
+          "column": 2,
+          "position": 341
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx",
+        "start": 4,
+        "end": 30,
+        "startLoc": {
+          "line": 4,
+          "column": 18,
+          "position": 64
+        },
+        "endLoc": {
+          "line": 30,
+          "column": 2,
+          "position": 340
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 17,
+      "fragment": ")).toBeInTheDocument();\r\n  });\r\n\r\n  it('在加载状态下应禁用表单', () => {\r\n    vi.mocked(useAuth).mockReturnValue({\r\n      login: vi.fn(),\r\n      register: vi.fn(),\r\n      logout: vi.fn(),\r\n      getCurrentUser: vi.fn(),\r\n      loading: true,\r\n      user: null,\r\n      token: null,\r\n      error: null,\r\n      isAuthenticated: false,\r\n    });\r\n\r\n    renderLoginPage",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/pages/auth/__tests__/LoginPage.test.tsx",
+        "start": 66,
+        "end": 82,
+        "startLoc": {
+          "line": 66,
+          "column": 12,
+          "position": 670
+        },
+        "endLoc": {
+          "line": 82,
+          "column": 16,
+          "position": 811
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx",
+        "start": 68,
+        "end": 84,
+        "startLoc": {
+          "line": 68,
+          "column": 12,
+          "position": 716
+        },
+        "endLoc": {
+          "line": 84,
+          "column": 19,
+          "position": 857
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 24,
+      "fragment": "})).toBeDisabled();\r\n  });\r\n\r\n  it('已认证用户应重定向到首页', () => {\r\n    const mockUser: User = {\r\n      id: 1,\r\n      username: 'test',\r\n      email: 'test@example.com',\r\n      permissions: [],\r\n    };\r\n\r\n    vi.mocked(useAuth).mockReturnValue({\r\n      login: vi.fn(),\r\n      register: vi.fn(),\r\n      logout: vi.fn(),\r\n      getCurrentUser: vi.fn(),\r\n      loading: false,\r\n      user: mockUser,\r\n      token: 'token',\r\n      error: null,\r\n      isAuthenticated: true,\r\n    });\r\n\r\n    renderLoginPage",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/pages/auth/__tests__/LoginPage.test.tsx",
+        "start": 86,
+        "end": 109,
+        "startLoc": {
+          "line": 86,
+          "column": 2,
+          "position": 870
+        },
+        "endLoc": {
+          "line": 109,
+          "column": 16,
+          "position": 1065
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx",
+        "start": 90,
+        "end": 113,
+        "startLoc": {
+          "line": 90,
+          "column": 2,
+          "position": 950
+        },
+        "endLoc": {
+          "line": 113,
+          "column": 19,
+          "position": 1145
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 11,
+      "fragment": ",\r\n      };\r\n\r\n      mockObserver.callback({\r\n        getEntries: () => [mockEntry],\r\n      });\r\n\r\n      const metrics = monitor['metrics'];\r\n      expect(metrics).toHaveLength(1);\r\n      expect(metrics[0]).toMatchObject({\r\n        type: 'long_task'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/PerformanceMonitor.test.ts",
+        "start": 228,
+        "end": 238,
+        "startLoc": {
+          "line": 228,
+          "column": 2,
+          "position": 1915
+        },
+        "endLoc": {
+          "line": 238,
+          "column": 12,
+          "position": 2001
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/PerformanceMonitor.test.ts",
+        "start": 185,
+        "end": 195,
+        "startLoc": {
+          "line": 185,
+          "column": 9,
+          "position": 1553
+        },
+        "endLoc": {
+          "line": 195,
+          "column": 11,
+          "position": 1639
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 16,
+      "fragment": ", () => {\r\n    let mockObserver: any;\r\n\r\n    beforeEach(() => {\r\n      mockObserver = {\r\n        observe: vi.fn(),\r\n        disconnect: vi.fn(),\r\n      };\r\n\r\n      (global as any).PerformanceObserver = vi.fn(callback => {\r\n        mockObserver.callback = callback;\r\n        return mockObserver;\r\n      });\r\n    });\r\n\r\n    it('应该能观察用户交互'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/PerformanceMonitor.test.ts",
+        "start": 247,
+        "end": 262,
+        "startLoc": {
+          "line": 247,
+          "column": 9,
+          "position": 2061
+        },
+        "endLoc": {
+          "line": 262,
+          "column": 12,
+          "position": 2192
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/PerformanceMonitor.test.ts",
+        "start": 205,
+        "end": 220,
+        "startLoc": {
+          "line": 205,
+          "column": 8,
+          "position": 1709
+        },
+        "endLoc": {
+          "line": 220,
+          "column": 11,
+          "position": 1840
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 12,
+      "fragment": ",\r\n        startTime: 0,\r\n      };\r\n\r\n      mockObserver.callback({\r\n        getEntries: () => [mockEntry],\r\n      });\r\n\r\n      const metrics = monitor['metrics'];\r\n      expect(metrics).toHaveLength(1);\r\n      expect(metrics[0]).toMatchObject({\r\n        type: 'interaction'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/PerformanceMonitor.test.ts",
+        "start": 270,
+        "end": 281,
+        "startLoc": {
+          "line": 270,
+          "column": 3,
+          "position": 2267
+        },
+        "endLoc": {
+          "line": 281,
+          "column": 14,
+          "position": 2361
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/PerformanceMonitor.test.ts",
+        "start": 227,
+        "end": 195,
+        "startLoc": {
+          "line": 227,
+          "column": 4,
+          "position": 1907
+        },
+        "endLoc": {
+          "line": 195,
+          "column": 11,
+          "position": 1639
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 14,
+      "fragment": ");\r\n      global.fetch = mockFetch;\r\n\r\n      performanceMonitor.trackCustomMetric('test-metric', 100);\r\n      await performanceMonitor.flush();\r\n\r\n      expect(errorLogger.log).toHaveBeenCalledWith(\r\n        expect.any(Error),\r\n        expect.objectContaining({ level: 'error' })\r\n      );\r\n      expect(performanceMonitor.getMetrics()).toHaveLength(1);\r\n    });\r\n\r\n    it('应该处理无效数据'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/DataReporter.test.ts",
+        "start": 145,
+        "end": 158,
+        "startLoc": {
+          "line": 145,
+          "column": 2,
+          "position": 1473
+        },
+        "endLoc": {
+          "line": 158,
+          "column": 11,
+          "position": 1587
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/DataReporter.test.ts",
+        "start": 129,
+        "end": 142,
+        "startLoc": {
+          "line": 129,
+          "column": 2,
+          "position": 1305
+        },
+        "endLoc": {
+          "line": 142,
+          "column": 12,
+          "position": 1419
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 18,
+      "fragment": ", () => {\r\n    const testRule: AlertRule = {\r\n      id: 'test-rule-1',\r\n      name: '测试规则1',\r\n      type: 'threshold',\r\n      metric: 'cpu_usage',\r\n      condition: {\r\n        operator: '>',\r\n        value: 80,\r\n      },\r\n      severity: 'warning',\r\n      enabled: true,\r\n      notification: {\r\n        email: ['test@example.com'],\r\n      },\r\n    };\r\n\r\n    beforeEach",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/AlertManager.test.ts",
+        "start": 69,
+        "end": 86,
+        "startLoc": {
+          "line": 69,
+          "column": 7,
+          "position": 648
+        },
+        "endLoc": {
+          "line": 86,
+          "column": 11,
+          "position": 777
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/AlertManager.test.ts",
+        "start": 16,
+        "end": 33,
+        "startLoc": {
+          "line": 16,
+          "column": 7,
+          "position": 168
+        },
+        "endLoc": {
+          "line": 33,
+          "column": 3,
+          "position": 297
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 22,
+      "fragment": ", () => {\r\n    const testRule: AlertRule = {\r\n      id: 'test-rule-1',\r\n      name: '测试规则1',\r\n      type: 'threshold',\r\n      metric: 'cpu_usage',\r\n      condition: {\r\n        operator: '>',\r\n        value: 80,\r\n      },\r\n      severity: 'warning',\r\n      enabled: true,\r\n      notification: {\r\n        email: ['test@example.com'],\r\n      },\r\n    };\r\n\r\n    beforeEach(() => {\r\n      alertManager.addRule(testRule);\r\n    });\r\n\r\n    it('应该正确记录告警历史'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/AlertManager.test.ts",
+        "start": 206,
+        "end": 227,
+        "startLoc": {
+          "line": 206,
+          "column": 7,
+          "position": 1951
+        },
+        "endLoc": {
+          "line": 227,
+          "column": 13,
+          "position": 2111
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/AlertManager.test.ts",
+        "start": 16,
+        "end": 90,
+        "startLoc": {
+          "line": 16,
+          "column": 7,
+          "position": 168
+        },
+        "endLoc": {
+          "line": 90,
+          "column": 17,
+          "position": 808
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 22,
+      "fragment": ", () => {\r\n    const testRule: AlertRule = {\r\n      id: 'test-rule-1',\r\n      name: '测试规则1',\r\n      type: 'threshold',\r\n      metric: 'cpu_usage',\r\n      condition: {\r\n        operator: '>',\r\n        value: 80,\r\n      },\r\n      severity: 'warning',\r\n      enabled: true,\r\n      notification: {\r\n        email: ['test@example.com'],\r\n      },\r\n    };\r\n\r\n    beforeEach(() => {\r\n      alertManager.addRule(testRule);\r\n    });\r\n\r\n    it('应该能够添加多个通知处理器'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/AlertManager.test.ts",
+        "start": 266,
+        "end": 287,
+        "startLoc": {
+          "line": 266,
+          "column": 7,
+          "position": 2531
+        },
+        "endLoc": {
+          "line": 287,
+          "column": 16,
+          "position": 2691
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/AlertManager.test.ts",
+        "start": 16,
+        "end": 90,
+        "startLoc": {
+          "line": 16,
+          "column": 7,
+          "position": 168
+        },
+        "endLoc": {
+          "line": 90,
+          "column": 17,
+          "position": 808
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 11,
+      "fragment": "{\r\n      get: vi.fn(),\r\n      post: vi.fn(),\r\n      put: vi.fn(),\r\n      delete: vi.fn(),\r\n      patch: vi.fn(),\r\n      interceptors: {\r\n        request: { use: vi.fn() },\r\n        response: { use: vi.fn() },\r\n      },\r\n    };",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/infrastructure/http/__tests__/httpClient.test.ts",
+        "start": 51,
+        "end": 61,
+        "startLoc": {
+          "line": 51,
+          "column": 2,
+          "position": 508
+        },
+        "endLoc": {
+          "line": 61,
+          "column": 2,
+          "position": 623
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/infrastructure/http/__tests__/httpClient.test.ts",
+        "start": 12,
+        "end": 22,
+        "startLoc": {
+          "line": 12,
+          "column": 2,
+          "position": 155
+        },
+        "endLoc": {
+          "line": 22,
+          "column": 2,
+          "position": 270
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 14,
+      "fragment": ";\r\n            this.onload?.();\r\n          });\r\n        }),\r\n        onload: null,\r\n        onerror: null,\r\n        result: '',\r\n      };\r\n\r\n      vi.spyOn(window, 'FileReader').mockImplementation(\r\n        () => mockFileReader as unknown as FileReader\r\n      );\r\n\r\n      const result = await fileManager.convertToBase64",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/infrastructure/file/__tests__/FileManager.test.ts",
+        "start": 132,
+        "end": 145,
+        "startLoc": {
+          "line": 132,
+          "column": 11,
+          "position": 1580
+        },
+        "endLoc": {
+          "line": 145,
+          "column": 16,
+          "position": 1687
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/infrastructure/file/__tests__/FileManager.test.ts",
+        "start": 86,
+        "end": 99,
+        "startLoc": {
+          "line": 86,
+          "column": 11,
+          "position": 1108
+        },
+        "endLoc": {
+          "line": 99,
+          "column": 16,
+          "position": 1215
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 6,
+      "fragment": "};\r\n      const mockResponse = { data: { id: 1, name: 'test' } };\r\n      vi.mocked(http.post).mockResolvedValue(mockResponse);\r\n\r\n      const { result } = renderHook(() => useHttp());\r\n      const response = await result.current.post('/test', mockData,",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/hooks/http/__tests__/useHttp.test.ts",
+        "start": 75,
+        "end": 80,
+        "startLoc": {
+          "line": 75,
+          "column": 7,
+          "position": 938
+        },
+        "endLoc": {
+          "line": 80,
+          "column": 2,
+          "position": 1036
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/hooks/http/__tests__/useHttp.test.ts",
+        "start": 60,
+        "end": 65,
+        "startLoc": {
+          "line": 60,
+          "column": 2,
+          "position": 729
+        },
+        "endLoc": {
+          "line": 65,
+          "column": 2,
+          "position": 827
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 7,
+      "fragment": ", async () => {\r\n      const mockData = { name: 'test' };\r\n      const mockConfig: HttpRequestConfig = {\r\n        headers: { 'X-Test': 'test' },\r\n      };\r\n      const mockResponse = { data: { id: 1, name: 'test' } };\r\n      vi.mocked(http.put",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/hooks/http/__tests__/useHttp.test.ts",
+        "start": 108,
+        "end": 114,
+        "startLoc": {
+          "line": 108,
+          "column": 21,
+          "position": 1399
+        },
+        "endLoc": {
+          "line": 114,
+          "column": 4,
+          "position": 1500
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/hooks/http/__tests__/useHttp.test.ts",
+        "start": 71,
+        "end": 77,
+        "startLoc": {
+          "line": 71,
+          "column": 22,
+          "position": 879
+        },
+        "endLoc": {
+          "line": 77,
+          "column": 5,
+          "position": 980
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 6,
+      "fragment": "};\r\n      const mockResponse = { data: { id: 1, name: 'test' } };\r\n      vi.mocked(http.put).mockResolvedValue(mockResponse);\r\n\r\n      const { result } = renderHook(() => useHttp());\r\n      const response = await result.current.put('/test', mockData,",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/hooks/http/__tests__/useHttp.test.ts",
+        "start": 112,
+        "end": 117,
+        "startLoc": {
+          "line": 112,
+          "column": 7,
+          "position": 1458
+        },
+        "endLoc": {
+          "line": 117,
+          "column": 2,
+          "position": 1556
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/hooks/http/__tests__/useHttp.test.ts",
+        "start": 97,
+        "end": 102,
+        "startLoc": {
+          "line": 97,
+          "column": 2,
+          "position": 1249
+        },
+        "endLoc": {
+          "line": 102,
+          "column": 2,
+          "position": 1347
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 16,
+      "fragment": "const mockResponse = {\r\n        code: 200,\r\n        data: { id: 1, name: 'test' },\r\n        message: 'success',\r\n      };\r\n      mockGetCacheData.mockReturnValue(null);\r\n      mockGet.mockResolvedValue(mockResponse);\r\n\r\n      const { result } = renderHook(() => useRequest<typeof mockResponse.data>('/test'));\r\n\r\n      await act(async () => {\r\n        await result.current.execute({\r\n          cache: {\r\n            enable: true,\r\n            ttl: 5000,\r\n            key",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts",
+        "start": 163,
+        "end": 178,
+        "startLoc": {
+          "line": 163,
+          "column": 7,
+          "position": 1667
+        },
+        "endLoc": {
+          "line": 178,
+          "column": 4,
+          "position": 1826
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts",
+        "start": 138,
+        "end": 153,
+        "startLoc": {
+          "line": 138,
+          "column": 7,
+          "position": 1414
+        },
+        "endLoc": {
+          "line": 153,
+          "column": 2,
+          "position": 1573
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 9,
+      "fragment": "const mockResponse = {\r\n        code: 200,\r\n        data: { id: 1, name: 'test' },\r\n        message: 'success',\r\n      };\r\n      mockGet.mockResolvedValue(mockResponse);\r\n\r\n      const { result } = renderHook(() =>\r\n        useRequest<typeof mockResponse.data>('/test',",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts",
+        "start": 203,
+        "end": 211,
+        "startLoc": {
+          "line": 203,
+          "column": 7,
+          "position": 2025
+        },
+        "endLoc": {
+          "line": 211,
+          "column": 2,
+          "position": 2118
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts",
+        "start": 54,
+        "end": 61,
+        "startLoc": {
+          "line": 54,
+          "column": 7,
+          "position": 556
+        },
+        "endLoc": {
+          "line": 61,
+          "column": 2,
+          "position": 647
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 11,
+      "fragment": ", async () => {\r\n      const mockResponse = {\r\n        code: 200,\r\n        data: { id: 1, name: 'test' },\r\n        message: 'success',\r\n      };\r\n      mockGet.mockResolvedValue(mockResponse);\r\n\r\n      const { result } = renderHook(() => useRequest<typeof mockResponse.data>('/test'));\r\n\r\n      await",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts",
+        "start": 230,
+        "end": 240,
+        "startLoc": {
+          "line": 230,
+          "column": 13,
+          "position": 2249
+        },
+        "endLoc": {
+          "line": 240,
+          "column": 6,
+          "position": 2361
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts",
+        "start": 53,
+        "end": 63,
+        "startLoc": {
+          "line": 53,
+          "column": 14,
+          "position": 543
+        },
+        "endLoc": {
+          "line": 63,
+          "column": 7,
+          "position": 655
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 19,
+      "fragment": ";\r\n      mockGet.mockRejectedValue(mockError);\r\n\r\n      const { result } = renderHook(() => useRequest<any>('/test'));\r\n\r\n      await act(async () => {\r\n        try {\r\n          await result.current.execute();\r\n        } catch (error) {\r\n          expect(error).toBe(mockError);\r\n        }\r\n      });\r\n\r\n      expect(result.current.loading).toBeFalsy();\r\n      expect(result.current.error).toBe(mockError);\r\n      expect(result.current.data).toBeNull();\r\n    });\r\n  });\r\n}",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts",
+        "start": 301,
+        "end": 319,
+        "startLoc": {
+          "line": 301,
+          "column": 2,
+          "position": 2899
+        },
+        "endLoc": {
+          "line": 319,
+          "column": 2,
+          "position": 3077
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts",
+        "start": 96,
+        "end": 115,
+        "startLoc": {
+          "line": 96,
+          "column": 2,
+          "position": 986
+        },
+        "endLoc": {
+          "line": 115,
+          "column": 9,
+          "position": 1167
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 14,
+      "fragment": "({ initialData: initialRegisterData })\r\n      );\r\n\r\n      act(() => {\r\n        result.current.handleFormChange({ email: 'newemail@example.com' });\r\n      });\r\n\r\n      expect(result.current.formData).toEqual({\r\n        ...initialRegisterData,\r\n        email: 'newemail@example.com',\r\n      });\r\n    });\r\n  });\r\n}",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuthForm.test.tsx",
+        "start": 136,
+        "end": 149,
+        "startLoc": {
+          "line": 136,
+          "column": 2,
+          "position": 1279
+        },
+        "endLoc": {
+          "line": 149,
+          "column": 2,
+          "position": 1383
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuthForm.test.tsx",
+        "start": 93,
+        "end": 106,
+        "startLoc": {
+          "line": 93,
+          "column": 12,
+          "position": 896
+        },
+        "endLoc": {
+          "line": 106,
+          "column": 9,
+          "position": 1000
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 23,
+      "fragment": ",\r\n      payload: {\r\n        user: {\r\n          id: 1,\r\n          username: 'testuser',\r\n          email: 'test@example.com',\r\n          permissions: [],\r\n        },\r\n        token: 'test-token',\r\n      },\r\n      unwrap: () =>\r\n        Promise.resolve({\r\n          user: {\r\n            id: 1,\r\n            username: 'testuser',\r\n            email: 'test@example.com',\r\n            permissions: [],\r\n          },\r\n          token: 'test-token',\r\n        }),\r\n    };\r\n  }),\r\n  logout",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuth.test.tsx",
+        "start": 115,
+        "end": 137,
+        "startLoc": {
+          "line": 115,
+          "column": 26,
+          "position": 1036
+        },
+        "endLoc": {
+          "line": 137,
+          "column": 7,
+          "position": 1193
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuth.test.tsx",
+        "start": 91,
+        "end": 113,
+        "startLoc": {
+          "line": 91,
+          "column": 23,
+          "position": 850
+        },
+        "endLoc": {
+          "line": 113,
+          "column": 9,
+          "position": 1007
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 9,
+      "fragment": "const { result } = renderHook(() => useAuth(), { wrapper });\r\n\r\n      await act(async () => {\r\n        await result.current.logout();\r\n      });\r\n\r\n      expect(mockNavigate).toHaveBeenCalledWith('/');\r\n      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('persist:root');\r\n      expect",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuth.test.tsx",
+        "start": 314,
+        "end": 322,
+        "startLoc": {
+          "line": 314,
+          "column": 7,
+          "position": 2932
+        },
+        "endLoc": {
+          "line": 322,
+          "column": 7,
+          "position": 3030
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuth.test.tsx",
+        "start": 295,
+        "end": 303,
+        "startLoc": {
+          "line": 295,
+          "column": 7,
+          "position": 2732
+        },
+        "endLoc": {
+          "line": 303,
+          "column": 2,
+          "position": 2830
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 12,
+      "fragment": "() => {\r\n      const store = createTestStore({\r\n        token: 'test-token',\r\n      });\r\n\r\n      const customWrapper = ({ children }: { children: React.ReactNode }) => (\r\n        <Provider store={store}>\r\n          <MemoryRouter>{children}</MemoryRouter>\r\n        </Provider>\r\n      );\r\n\r\n      const mockError",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuth.test.tsx",
+        "start": 337,
+        "end": 348,
+        "startLoc": {
+          "line": 337,
+          "column": 2,
+          "position": 3187
+        },
+        "endLoc": {
+          "line": 348,
+          "column": 10,
+          "position": 3295
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuth.test.tsx",
+        "start": 174,
+        "end": 185,
+        "startLoc": {
+          "line": 174,
+          "column": 2,
+          "position": 1593
+        },
+        "endLoc": {
+          "line": 185,
+          "column": 2,
+          "position": 1701
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 10,
+      "fragment": ", () => {\r\n      const WrapperComponent = () => {\r\n        const { control } = useForm<TestFormData>({\r\n          defaultValues: { testField: '' },\r\n        });\r\n        return <TestForm control={control} />;\r\n      };\r\n\r\n      render(<WrapperComponent />);\r\n      const input = screen.getByRole('textbox')",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/form/__tests__/FormField.test.tsx",
+        "start": 109,
+        "end": 118,
+        "startLoc": {
+          "line": 109,
+          "column": 12,
+          "position": 1099
+        },
+        "endLoc": {
+          "line": 118,
+          "column": 2,
+          "position": 1210
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/form/__tests__/FormField.test.tsx",
+        "start": 42,
+        "end": 51,
+        "startLoc": {
+          "line": 42,
+          "column": 14,
+          "position": 460
+        },
+        "endLoc": {
+          "line": 51,
+          "column": 2,
+          "position": 571
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 36,
+      "fragment": ";\r\nimport appReducer from '@/store/slices/appSlice';\r\n\r\nconst createTestStore = (preloadedState = {}) => {\r\n  return configureStore({\r\n    reducer: {\r\n      app: appReducer,\r\n    },\r\n    preloadedState: {\r\n      app: {\r\n        darkMode: false,\r\n        loading: false,\r\n        toast: {\r\n          open: false,\r\n          message: '',\r\n          severity: 'info' as AlertColor,\r\n        },\r\n        ...preloadedState,\r\n      },\r\n    },\r\n  });\r\n};\r\n\r\nconst renderWithProviders = (ui: React.ReactElement, { preloadedState = {} } = {}) => {\r\n  const store = createTestStore(preloadedState);\r\n  return {\r\n    ...render(\r\n      <Provider store={store}>\r\n        <ThemeProvider theme={createTheme({ palette: { mode: 'light' } })}>{ui}</ThemeProvider>\r\n      </Provider>\r\n    ),\r\n    store,\r\n  };\r\n};\r\n\r\ndescribe('LoadingBar'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/feedback/__tests__/LoadingBar.test.tsx",
+        "start": 8,
+        "end": 43,
+        "startLoc": {
+          "line": 8,
+          "column": 16,
+          "position": 121
+        },
+        "endLoc": {
+          "line": 43,
+          "column": 13,
+          "position": 421
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/feedback/__tests__/Toast.test.tsx",
+        "start": 7,
+        "end": 42,
+        "startLoc": {
+          "line": 7,
+          "column": 11,
+          "position": 101
+        },
+        "endLoc": {
+          "line": 42,
+          "column": 8,
+          "position": 401
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 136,
+      "fragment": "} onClose={mockOnClose} />);\r\n\r\n      expect(screen.getByText('网络错误')).toBeInTheDocument();\r\n      expect(screen.getByText('网络连接失败')).toBeInTheDocument();\r\n      expect(screen.getByText('重试')).toBeInTheDocument();\r\n    });\r\n\r\n    it('应该正确渲染认证错误', () => {\r\n      const error = new HttpError({\r\n        type: HttpErrorType.AUTH,\r\n        message: '登录已过期',\r\n      });\r\n\r\n      render(<ErrorNotification error={error} onClose={mockOnClose} />);\r\n\r\n      expect(screen.getByText('认证错误')).toBeInTheDocument();\r\n      expect(screen.getByText('登录已过期')).toBeInTheDocument();\r\n      expect(screen.getByText('重新登录')).toBeInTheDocument();\r\n    });\r\n\r\n    it('应该使用默认描述当没有错误消息时', () => {\r\n      const error = new HttpError({\r\n        type: HttpErrorType.HTTP_ERROR,\r\n        message: '',\r\n      });\r\n\r\n      render(<ErrorNotification error={error} onClose={mockOnClose} />);\r\n\r\n      expect(screen.getByText('服务器错误')).toBeInTheDocument();\r\n      expect(screen.getByText('服务器处理请求时出错')).toBeInTheDocument();\r\n    });\r\n  });\r\n\r\n  describe('错误处理', () => {\r\n    it('应该处理可恢复的错误', async () => {\r\n      vi.mocked(errorRecoveryManager.attemptRecovery).mockResolvedValue(true);\r\n\r\n      const error = new HttpError({\r\n        type: HttpErrorType.NETWORK_ERROR,\r\n        message: '网络错误',\r\n      });\r\n\r\n      render(<ErrorNotification error={error} onClose={mockOnClose} />);\r\n\r\n      const retryButton = screen.getByText('重试');\r\n      fireEvent.click(retryButton);\r\n\r\n      expect(retryButton).toBeDisabled();\r\n      expect(screen.getByText('处理中...')).toBeInTheDocument();\r\n\r\n      await waitFor(() => {\r\n        expect(errorRecoveryManager.attemptRecovery).toHaveBeenCalledWith(error);\r\n        expect(mockOnClose).toHaveBeenCalled();\r\n      });\r\n    });\r\n\r\n    it('应该处理恢复失败的情况', async () => {\r\n      vi.mocked(errorRecoveryManager.attemptRecovery).mockResolvedValue(false);\r\n\r\n      const error = new HttpError({\r\n        type: HttpErrorType.NETWORK_ERROR,\r\n        message: '网络错误',\r\n      });\r\n\r\n      render(<ErrorNotification error={error} onClose={mockOnClose} />);\r\n\r\n      const retryButton = screen.getByText('重试');\r\n      fireEvent.click(retryButton);\r\n\r\n      await waitFor(() => {\r\n        expect(errorRecoveryManager.attemptRecovery).toHaveBeenCalledWith(error);\r\n        expect(mockOnClose).not.toHaveBeenCalled();\r\n        expect(retryButton).not.toBeDisabled();\r\n        expect(screen.getByText('重试')).toBeInTheDocument();\r\n      });\r\n    });\r\n\r\n    it('应该正确处理刷新页面操作', () => {\r\n      const error = new HttpError({\r\n        type: HttpErrorType.REACT_ERROR,\r\n        message: '渲染错误',\r\n      });\r\n\r\n      render(<ErrorNotification error={error} onClose={mockOnClose} />);\r\n\r\n      fireEvent.click(screen.getByText('刷新页面'));\r\n      expect(window.location.reload).toHaveBeenCalled();\r\n    });\r\n\r\n    it('应该正确处理重新登录操作', () => {\r\n      const error = new HttpError({\r\n        type: HttpErrorType.AUTH,\r\n        message: '登录已过期',\r\n      });\r\n\r\n      render(<ErrorNotification error={error} onClose={mockOnClose} />);\r\n\r\n      fireEvent.click(screen.getByText('重新登录'));\r\n      expect(window.location.href).toBe('/login');\r\n    });\r\n  });\r\n\r\n  describe('自动关闭行为', () => {\r\n    it('错误提示不应该自动关闭', () => {\r\n      const error = new HttpError({\r\n        type: HttpErrorType.HTTP_ERROR,\r\n        message: '严重错误',\r\n      });\r\n\r\n      render(<ErrorNotification error={error} onClose={mockOnClose} />);\r\n\r\n      const alert = screen.getByRole('alert');\r\n      expect(alert.parentElement).toHaveAttribute('data-auto-hide-duration', 'false');\r\n    });\r\n\r\n    it('警告信息应该自动关闭', () => {\r\n      const error = new HttpError({\r\n        type: HttpErrorType.UNKNOWN_ERROR,\r\n        message: '警告信息',\r\n      });\r\n\r\n      render(<ErrorNotification error={error} onClose={mockOnClose} />);\r\n\r\n      const alert = screen.getByRole('alert');\r\n      expect(alert.parentElement).toHaveAttribute('data-auto-hide-duration', '6000');\r\n    });\r\n  });\r\n\r\n  describe('关闭行为', () => {\r\n    it('应该能通过关闭按钮关闭通知', () => {\r\n      const error = new HttpError({\r\n        type: HttpErrorType.UNKNOWN_ERROR,\r\n        message: '提示信息',\r\n      });\r\n\r\n      render(<ErrorNotification error={error} onClose={mockOnClose}",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/ErrorNotification/__tests__/index.test.tsx",
+        "start": 43,
+        "end": 178,
+        "startLoc": {
+          "line": 43,
+          "column": 6,
+          "position": 442
+        },
+        "endLoc": {
+          "line": 178,
+          "column": 2,
+          "position": 1812
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/ErrorNotification/__tests__/index.test.tsx",
+        "start": 33,
+        "end": 126,
+        "startLoc": {
+          "line": 33,
+          "column": 5,
+          "position": 345
+        },
+        "endLoc": {
+          "line": 126,
+          "column": 2,
+          "position": 1293
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 13,
+      "fragment": ");\r\n\r\n      const error = new HttpError({\r\n        type: HttpErrorType.NETWORK_ERROR,\r\n        message: '网络错误',\r\n      });\r\n\r\n      render(<ErrorNotification error={error} onClose={mockOnClose} />);\r\n\r\n      const retryButton = screen.getByText('重试');\r\n      fireEvent.click(retryButton);\r\n\r\n      await",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/ErrorNotification/__tests__/index.test.tsx",
+        "start": 100,
+        "end": 112,
+        "startLoc": {
+          "line": 100,
+          "column": 6,
+          "position": 1037
+        },
+        "endLoc": {
+          "line": 112,
+          "column": 6,
+          "position": 1137
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/ErrorNotification/__tests__/index.test.tsx",
+        "start": 78,
+        "end": 90,
+        "startLoc": {
+          "line": 78,
+          "column": 5,
+          "position": 824
+        },
+        "endLoc": {
+          "line": 90,
+          "column": 7,
+          "position": 924
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 18,
+      "fragment": ";\r\n\r\n      render(<ErrorNotification />);\r\n\r\n      await act(async () => {\r\n        const error = new Error('详细错误信息');\r\n        window.dispatchEvent(\r\n          new CustomEvent('show-error-modal', {\r\n            detail: {\r\n              title: '错误标题',\r\n              message: '错误消息',\r\n              error: error,\r\n            },\r\n          })\r\n        );\r\n      });\r\n\r\n      expect(screen.queryByText",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/common/__tests__/ErrorNotification.test.tsx",
+        "start": 155,
+        "end": 172,
+        "startLoc": {
+          "line": 155,
+          "column": 13,
+          "position": 1374
+        },
+        "endLoc": {
+          "line": 172,
+          "column": 12,
+          "position": 1500
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/common/__tests__/ErrorNotification.test.tsx",
+        "start": 134,
+        "end": 151,
+        "startLoc": {
+          "line": 134,
+          "column": 14,
+          "position": 1202
+        },
+        "endLoc": {
+          "line": 151,
+          "column": 10,
+          "position": 1328
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 15,
+      "fragment": ", async () => {\r\n      render(<ErrorNotification />);\r\n\r\n      await act(async () => {\r\n        window.dispatchEvent(\r\n          new CustomEvent('show-error-modal', {\r\n            detail: {\r\n              title: '错误标题',\r\n              message: '错误消息',\r\n            },\r\n          })\r\n        );\r\n      });\r\n\r\n      const",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/common/__tests__/ErrorNotification.test.tsx",
+        "start": 206,
+        "end": 220,
+        "startLoc": {
+          "line": 206,
+          "column": 16,
+          "position": 1847
+        },
+        "endLoc": {
+          "line": 220,
+          "column": 6,
+          "position": 1952
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/common/__tests__/ErrorNotification.test.tsx",
+        "start": 115,
+        "end": 129,
+        "startLoc": {
+          "line": 115,
+          "column": 14,
+          "position": 1030
+        },
+        "endLoc": {
+          "line": 129,
+          "column": 7,
+          "position": 1135
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 30,
+      "fragment": "();\r\n  const { isAuthenticated, user, logout } = useAuth();\r\n  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);\r\n\r\n  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {\r\n    setAnchorEl(event.currentTarget);\r\n  };\r\n\r\n  const handleClose = () => {\r\n    setAnchorEl(null);\r\n  };\r\n\r\n  const handleLogout = async () => {\r\n    try {\r\n      handleClose();\r\n      navigate('/');\r\n      await logout();\r\n    } catch (error) {\r\n      errorLogger.log(\r\n        new HttpError({\r\n          type: HttpErrorType.AUTH,\r\n          message: '退出登录失败',\r\n          data: error,\r\n        })\r\n      );\r\n    }\r\n  };\r\n\r\n  return (\r\n    <",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/common/layout/Navbar.tsx",
+        "start": 138,
+        "end": 167,
+        "startLoc": {
+          "line": 138,
+          "column": 12,
+          "position": 1084
+        },
+        "endLoc": {
+          "line": 167,
+          "column": 2,
+          "position": 1341
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/common/layout/Navbar.tsx",
+        "start": 26,
+        "end": 55,
+        "startLoc": {
+          "line": 26,
+          "column": 9,
+          "position": 227
+        },
+        "endLoc": {
+          "line": 55,
+          "column": 2,
+          "position": 484
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 9,
+      "fragment": ": React.FC = () => {\r\n  const theme = useTheme();\r\n  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));\r\n\r\n  return (\r\n    <Container maxWidth=\"lg\">\r\n      <Box\r\n        sx={{\r\n          py: { xs: 4, md: 8",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/business/sections/FeatureSection.tsx",
+        "start": 38,
+        "end": 46,
+        "startLoc": {
+          "line": 38,
+          "column": 15,
+          "position": 289
+        },
+        "endLoc": {
+          "line": 46,
+          "column": 2,
+          "position": 386
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/business/sections/PricingSection.tsx",
+        "start": 43,
+        "end": 51,
+        "startLoc": {
+          "line": 43,
+          "column": 15,
+          "position": 314
+        },
+        "endLoc": {
+          "line": 51,
+          "column": 2,
+          "position": 411
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 16,
+      "fragment": ">\r\n        <Typography\r\n          component=\"h2\"\r\n          variant=\"h3\"\r\n          align=\"center\"\r\n          gutterBottom\r\n          sx={{\r\n            mb: 2,\r\n            fontSize: { xs: '2rem', md: '3rem' },\r\n            fontWeight: 'bold',\r\n            background: 'linear-gradient(135deg, #24243e 0%, #302b63 100%)',\r\n            WebkitBackgroundClip: 'text',\r\n            WebkitTextFillColor: 'transparent',\r\n          }}\r\n        >\r\n          核心功能",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/business/sections/FeatureSection.tsx",
+        "start": 53,
+        "end": 68,
+        "startLoc": {
+          "line": 53,
+          "column": 7,
+          "position": 451
+        },
+        "endLoc": {
+          "line": 68,
+          "column": 5,
+          "position": 559
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/business/sections/PricingSection.tsx",
+        "start": 60,
+        "end": 75,
+        "startLoc": {
+          "line": 60,
+          "column": 7,
+          "position": 490
+        },
+        "endLoc": {
+          "line": 75,
+          "column": 5,
+          "position": 598
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 6,
+      "fragment": "expect(screen.getByLabelText('用户名')).toBeInTheDocument();\r\n    expect(screen.getByLabelText('邮箱')).toBeInTheDocument();\r\n    expect(screen.getByLabelText('密码')).toBeInTheDocument();\r\n    expect(screen.getByLabelText('确认密码')).toBeInTheDocument();\r\n    expect(screen.getByRole('button', { name: '注册' })).toBeInTheDocument();\r\n  }",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/auth/__tests__/RegisterForm.test.tsx",
+        "start": 31,
+        "end": 36,
+        "startLoc": {
+          "line": 31,
+          "column": 5,
+          "position": 268
+        },
+        "endLoc": {
+          "line": 36,
+          "column": 2,
+          "position": 363
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx",
+        "start": 61,
+        "end": 67,
+        "startLoc": {
+          "line": 61,
+          "column": 5,
+          "position": 608
+        },
+        "endLoc": {
+          "line": 67,
+          "column": 10,
+          "position": 705
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 9,
+      "fragment": ");\r\n\r\n    expect(screen.getByLabelText('用户名')).toBeDisabled();\r\n    expect(screen.getByLabelText('邮箱')).toBeDisabled();\r\n    expect(screen.getByLabelText('密码')).toBeDisabled();\r\n    expect(screen.getByLabelText('确认密码')).toBeDisabled();\r\n    expect(screen.getByRole('button', { name: '注册' })).toBeDisabled();\r\n\r\n    const",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/auth/__tests__/RegisterForm.test.tsx",
+        "start": 82,
+        "end": 90,
+        "startLoc": {
+          "line": 82,
+          "column": 3,
+          "position": 912
+        },
+        "endLoc": {
+          "line": 90,
+          "column": 6,
+          "position": 1016
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx",
+        "start": 84,
+        "end": 91,
+        "startLoc": {
+          "line": 84,
+          "column": 2,
+          "position": 859
+        },
+        "endLoc": {
+          "line": 91,
+          "column": 2,
+          "position": 961
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 6,
+      "fragment": ");\r\n\r\n    expect(screen.getByLabelText('用户名')).toBeDisabled();\r\n    expect(screen.getByLabelText('密码')).toBeDisabled();\r\n    expect(screen.getByRole('button', { name: '登录' })).toBeDisabled();\r\n    expect",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/auth/__tests__/LoginForm.test.tsx",
+        "start": 63,
+        "end": 68,
+        "startLoc": {
+          "line": 63,
+          "column": 3,
+          "position": 675
+        },
+        "endLoc": {
+          "line": 68,
+          "column": 7,
+          "position": 743
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/pages/auth/__tests__/LoginPage.test.tsx",
+        "start": 82,
+        "end": 87,
+        "startLoc": {
+          "line": 82,
+          "column": 2,
+          "position": 813
+        },
+        "endLoc": {
+          "line": 87,
+          "column": 2,
+          "position": 881
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 16,
+      "fragment": ");\r\n      vi.mocked(useAuth).mockReturnValue({\r\n        login: mockLogin,\r\n        register: vi.fn(),\r\n        loading: false,\r\n        user: null,\r\n        token: null,\r\n        error: null,\r\n        isAuthenticated: false,\r\n        logout: vi.fn(),\r\n        getCurrentUser: vi.fn(),\r\n      });\r\n\r\n      const testFormData: AuthFormData = {\r\n        username: 'testuser',\r\n        password: 'wrongpass'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx",
+        "start": 114,
+        "end": 129,
+        "startLoc": {
+          "line": 114,
+          "column": 2,
+          "position": 1135
+        },
+        "endLoc": {
+          "line": 129,
+          "column": 12,
+          "position": 1269
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx",
+        "start": 74,
+        "end": 89,
+        "startLoc": {
+          "line": 74,
+          "column": 10,
+          "position": 774
+        },
+        "endLoc": {
+          "line": 89,
+          "column": 14,
+          "position": 908
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 18,
+      "fragment": ",\r\n      };\r\n\r\n      vi.mocked(useAuthForm).mockReturnValue({\r\n        formData: testFormData,\r\n        showPassword: false,\r\n        handleFormChange: vi.fn(),\r\n        togglePasswordVisibility: vi.fn(),\r\n      });\r\n\r\n      renderAuthPage('login', testFormData);\r\n\r\n      const form = screen.getByTestId('auth-form');\r\n      fireEvent.submit(form);\r\n\r\n      await waitFor(\r\n        () => {\r\n          expect(screen",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx",
+        "start": 129,
+        "end": 146,
+        "startLoc": {
+          "line": 129,
+          "column": 12,
+          "position": 1270
+        },
+        "endLoc": {
+          "line": 146,
+          "column": 7,
+          "position": 1401
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx",
+        "start": 89,
+        "end": 106,
+        "startLoc": {
+          "line": 89,
+          "column": 14,
+          "position": 909
+        },
+        "endLoc": {
+          "line": 106,
+          "column": 10,
+          "position": 1040
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 15,
+      "fragment": ");\r\n      vi.mocked(useAuth).mockReturnValue({\r\n        login: vi.fn(),\r\n        register: mockRegister,\r\n        loading: false,\r\n        user: null,\r\n        token: null,\r\n        error: null,\r\n        isAuthenticated: false,\r\n        logout: vi.fn(),\r\n        getCurrentUser: vi.fn(),\r\n      });\r\n\r\n      const testFormData: AuthFormData = {\r\n        username: 'existinguser'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx",
+        "start": 203,
+        "end": 217,
+        "startLoc": {
+          "line": 203,
+          "column": 2,
+          "position": 1923
+        },
+        "endLoc": {
+          "line": 217,
+          "column": 15,
+          "position": 2049
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx",
+        "start": 155,
+        "end": 169,
+        "startLoc": {
+          "line": 155,
+          "column": 10,
+          "position": 1496
+        },
+        "endLoc": {
+          "line": 169,
+          "column": 10,
+          "position": 1622
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 27,
+      "fragment": ",\r\n        password: 'password123',\r\n        email: 'test@example.com',\r\n        confirmPassword: 'password123',\r\n      };\r\n\r\n      vi.mocked(validateRegisterForm).mockReturnValue({\r\n        isValid: true,\r\n        errorMessage: undefined,\r\n      });\r\n\r\n      vi.mocked(useAuthForm).mockReturnValue({\r\n        formData: testFormData,\r\n        showPassword: false,\r\n        handleFormChange: vi.fn(),\r\n        togglePasswordVisibility: vi.fn(),\r\n      });\r\n\r\n      renderAuthPage('register', testFormData);\r\n\r\n      const form = screen.getByTestId('auth-form');\r\n      fireEvent.submit(form);\r\n\r\n      await waitFor(\r\n        () => {\r\n          expect(validateRegisterForm).toHaveBeenCalledWith(testFormData);\r\n          expect(screen",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx",
+        "start": 217,
+        "end": 243,
+        "startLoc": {
+          "line": 217,
+          "column": 15,
+          "position": 2050
+        },
+        "endLoc": {
+          "line": 243,
+          "column": 7,
+          "position": 2255
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx",
+        "start": 169,
+        "end": 195,
+        "startLoc": {
+          "line": 169,
+          "column": 10,
+          "position": 1623
+        },
+        "endLoc": {
+          "line": 195,
+          "column": 13,
+          "position": 1828
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 19,
+      "fragment": ",\r\n      });\r\n\r\n      vi.mocked(useAuthForm).mockReturnValue({\r\n        formData: testFormData,\r\n        showPassword: false,\r\n        handleFormChange: vi.fn(),\r\n        togglePasswordVisibility: vi.fn(),\r\n      });\r\n\r\n      renderAuthPage('register', testFormData);\r\n\r\n      const form = screen.getByTestId('auth-form');\r\n      fireEvent.submit(form);\r\n\r\n      await waitFor(\r\n        () => {\r\n          expect(validateRegisterForm).toHaveBeenCalledWith(testFormData);\r\n          expect(screen.getByText('密码至少需要6个字符'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx",
+        "start": 259,
+        "end": 277,
+        "startLoc": {
+          "line": 259,
+          "column": 13,
+          "position": 2396
+        },
+        "endLoc": {
+          "line": 277,
+          "column": 13,
+          "position": 2545
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx",
+        "start": 177,
+        "end": 243,
+        "startLoc": {
+          "line": 177,
+          "column": 10,
+          "position": 1683
+        },
+        "endLoc": {
+          "line": 243,
+          "column": 9,
+          "position": 2259
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 24,
+      "fragment": ", async () => {\r\n      vi.mocked(validateLoginForm).mockReturnValue({\r\n        isValid: false,\r\n        errorMessage: '用户名不能为空',\r\n      });\r\n\r\n      const testFormData: AuthFormData = {\r\n        username: '',\r\n        password: '',\r\n      };\r\n\r\n      renderAuthPage('login', testFormData);\r\n\r\n      const form = screen.getByTestId('auth-form');\r\n      fireEvent.submit(form);\r\n\r\n      await waitFor(\r\n        () => {\r\n          expect(screen.getByText('用户名不能为空')).toBeInTheDocument();\r\n        },\r\n        { timeout: TEST_TIMEOUT }\r\n      );\r\n\r\n      const",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx",
+        "start": 318,
+        "end": 341,
+        "startLoc": {
+          "line": 318,
+          "column": 17,
+          "position": 2885
+        },
+        "endLoc": {
+          "line": 341,
+          "column": 6,
+          "position": 3068
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx",
+        "start": 285,
+        "end": 308,
+        "startLoc": {
+          "line": 285,
+          "column": 17,
+          "position": 2608
+        },
+        "endLoc": {
+          "line": 308,
+          "column": 6,
+          "position": 2791
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 7,
+      "fragment": ");\r\n    expect(screen.getByLabelText('用户名')).toBeInTheDocument();\r\n    expect(screen.getByLabelText('密码')).toBeInTheDocument();\r\n    expect(screen.getByRole('button', { name: '登录' })).toBeInTheDocument();\r\n  });\r\n\r\n  it('renders register form correctly'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/auth/__tests__/AuthForm.test.tsx",
+        "start": 18,
+        "end": 24,
+        "startLoc": {
+          "line": 18,
+          "column": 2,
+          "position": 223
+        },
+        "endLoc": {
+          "line": 24,
+          "column": 34,
+          "position": 299
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/auth/__tests__/LoginForm.test.tsx",
+        "start": 24,
+        "end": 31,
+        "startLoc": {
+          "line": 24,
+          "column": 3,
+          "position": 238
+        },
+        "endLoc": {
+          "line": 31,
+          "column": 15,
+          "position": 316
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 9,
+      "fragment": ");\r\n    expect(screen.getByLabelText('用户名')).toBeInTheDocument();\r\n    expect(screen.getByLabelText('邮箱')).toBeInTheDocument();\r\n    expect(screen.getByLabelText('密码')).toBeInTheDocument();\r\n    expect(screen.getByLabelText('确认密码')).toBeInTheDocument();\r\n    expect(screen.getByRole('button', { name: '注册' })).toBeInTheDocument();\r\n  });\r\n\r\n  it('handles form submission'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/auth/__tests__/AuthForm.test.tsx",
+        "start": 38,
+        "end": 46,
+        "startLoc": {
+          "line": 38,
+          "column": 2,
+          "position": 397
+        },
+        "endLoc": {
+          "line": 46,
+          "column": 26,
+          "position": 507
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/auth/__tests__/RegisterForm.test.tsx",
+        "start": 29,
+        "end": 38,
+        "startLoc": {
+          "line": 29,
+          "column": 3,
+          "position": 261
+        },
+        "endLoc": {
+          "line": 38,
+          "column": 15,
+          "position": 373
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 6,
+      "fragment": "expect(screen.getByTestId('component-A')).toHaveTextContent('A');\r\n    expect(screen.getByTestId('component-B')).toHaveTextContent('B');\r\n    expect(screen.getByTestId('component-C')).toHaveTextContent('C');\r\n  });\r\n\r\n  it('should handle errors gracefully'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/tests/react/SuspenseList.test.tsx",
+        "start": 154,
+        "end": 159,
+        "startLoc": {
+          "line": 154,
+          "column": 5,
+          "position": 1513
+        },
+        "endLoc": {
+          "line": 159,
+          "column": 34,
+          "position": 1577
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/tests/react/SuspenseList.test.tsx",
+        "start": 98,
+        "end": 103,
+        "startLoc": {
+          "line": 98,
+          "column": 5,
+          "position": 959
+        },
+        "endLoc": {
+          "line": 103,
+          "column": 43,
+          "position": 1023
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 10,
+      "fragment": "const endTime = performance.now();\r\n    const duration = endTime - startTime;\r\n\r\n    if (duration > EXECUTION_TIME_THRESHOLD) {\r\n      console.warn(`Warning: Action execution time exceeded ${EXECUTION_TIME_THRESHOLD}ms`);\r\n    }\r\n\r\n    console.info(`Action execution time: ${duration.toFixed(2)}ms`);\r\n\r\n    return result",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/store/middleware/logger.ts",
+        "start": 92,
+        "end": 101,
+        "startLoc": {
+          "line": 92,
+          "column": 5,
+          "position": 752
+        },
+        "endLoc": {
+          "line": 101,
+          "column": 7,
+          "position": 841
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/store/middleware/logger.ts",
+        "start": 54,
+        "end": 65,
+        "startLoc": {
+          "line": 54,
+          "column": 15,
+          "position": 465
+        },
+        "endLoc": {
+          "line": 65,
+          "column": 6,
+          "position": 560
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 12,
+      "fragment": ": React.FC = () => {\r\n  const navigate = useNavigate();\r\n  const { isAuthenticated } = useAuth();\r\n\r\n  useEffect(() => {\r\n    if (isAuthenticated) {\r\n      navigate('/');\r\n    }\r\n  }, [isAuthenticated, navigate]);\r\n\r\n  return (\r\n    <AuthPage ",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/pages/auth/LoginPage.tsx",
+        "start": 7,
+        "end": 18,
+        "startLoc": {
+          "line": 7,
+          "column": 10,
+          "position": 70
+        },
+        "endLoc": {
+          "line": 18,
+          "column": 2,
+          "position": 176
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/pages/auth/RegisterPage.tsx",
+        "start": 7,
+        "end": 19,
+        "startLoc": {
+          "line": 7,
+          "column": 13,
+          "position": 70
+        },
+        "endLoc": {
+          "line": 19,
+          "column": 7,
+          "position": 176
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 14,
+      "fragment": "interface AuditLog {\r\n  id: string;\r\n  timestamp: number;\r\n  type: AuditLogType;\r\n  level: AuditLogLevel;\r\n  userId?: string;\r\n  action: string;\r\n  resource: string;\r\n  details: Record<string, unknown>;\r\n  ip?: string;\r\n  userAgent?: string;\r\n  status: 'success' | 'failure';\r\n  errorMessage?: string;\r\n}",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/mocks/handlers/audit.ts",
+        "start": 5,
+        "end": 18,
+        "startLoc": {
+          "line": 5,
+          "column": 1,
+          "position": 52
+        },
+        "endLoc": {
+          "line": 18,
+          "column": 2,
+          "position": 169
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/utils/security/audit.ts",
+        "start": 28,
+        "end": 41,
+        "startLoc": {
+          "line": 28,
+          "column": 1,
+          "position": 148
+        },
+        "endLoc": {
+          "line": 41,
+          "column": 2,
+          "position": 266
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 11,
+      "fragment": "(file: File): Promise<string> {\r\n    return new Promise((resolve, reject) => {\r\n      const reader = new FileReader();\r\n\r\n      reader.onload = () => {\r\n        resolve(reader.result as string);\r\n      };\r\n\r\n      reader.onerror = () => {\r\n        const error: FileError = {\r\n          code: 'BASE64_CONVERSION_ERROR'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/infrastructure/file/FileManager.ts",
+        "start": 165,
+        "end": 175,
+        "startLoc": {
+          "line": 165,
+          "column": 16,
+          "position": 1147
+        },
+        "endLoc": {
+          "line": 175,
+          "column": 26,
+          "position": 1267
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/infrastructure/file/FileManager.ts",
+        "start": 82,
+        "end": 92,
+        "startLoc": {
+          "line": 82,
+          "column": 16,
+          "position": 565
+        },
+        "endLoc": {
+          "line": 92,
+          "column": 18,
+          "position": 685
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 15,
+      "fragment": "Object.defineProperty(window, 'matchMedia', {\r\n  writable: true,\r\n  value: vi.fn().mockImplementation(query => ({\r\n    matches: false,\r\n    media: query,\r\n    onchange: null,\r\n    addListener: vi.fn(),\r\n    removeListener: vi.fn(),\r\n    addEventListener: vi.fn(),\r\n    removeEventListener: vi.fn(),\r\n    dispatchEvent: vi.fn(),\r\n  })),\r\n});\r\n\r\n// 模拟 ResizeObserver",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/test/setup.ts",
+        "start": 49,
+        "end": 63,
+        "startLoc": {
+          "line": 49,
+          "column": 1,
+          "position": 366
+        },
+        "endLoc": {
+          "line": 63,
+          "column": 21,
+          "position": 505
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/tests/setup.ts",
+        "start": 67,
+        "end": 81,
+        "startLoc": {
+          "line": 67,
+          "column": 3,
+          "position": 563
+        },
+        "endLoc": {
+          "line": 81,
+          "column": 18,
+          "position": 704
+        }
+      }
+    },
+    {
+      "format": "typescript",
+      "lines": 15,
+      "fragment": "Object.defineProperty(window, 'matchMedia', {\r\n  writable: true,\r\n  value: vi.fn().mockImplementation(query => ({\r\n    matches: false,\r\n    media: query,\r\n    onchange: null,\r\n    addListener: vi.fn(),\r\n    removeListener: vi.fn(),\r\n    addEventListener: vi.fn(),\r\n    removeEventListener: vi.fn(),\r\n    dispatchEvent: vi.fn(),\r\n  })),\r\n});\r\n\r\n// Mock fetch API",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/setupTests.ts",
+        "start": 19,
+        "end": 33,
+        "startLoc": {
+          "line": 19,
+          "column": 1,
+          "position": 169
+        },
+        "endLoc": {
+          "line": 33,
+          "column": 18,
+          "position": 308
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/tests/setup.ts",
+        "start": 67,
+        "end": 81,
+        "startLoc": {
+          "line": 67,
+          "column": 3,
+          "position": 563
+        },
+        "endLoc": {
+          "line": 81,
+          "column": 18,
+          "position": 704
+        }
+      }
+    }
+  ]
+}

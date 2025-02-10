@@ -40,11 +40,7 @@ export class HttpClient {
   private logger: Logger;
   private performanceMonitor: PerformanceMonitor;
 
-  constructor(
-    logger: Logger,
-    performanceMonitor: PerformanceMonitor,
-    config: HttpConfig = {}
-  ) {
+  constructor(logger: Logger, performanceMonitor: PerformanceMonitor, config: HttpConfig = {}) {
     this.logger = logger;
     this.performanceMonitor = performanceMonitor;
 
@@ -76,10 +72,10 @@ export class HttpClient {
   private setupInterceptors(): void {
     // 请求拦截器
     this.instance.interceptors.request.use(
-      (config) => {
+      config => {
         // 记录请求开始时间
         config.metadata = { startTime: Date.now() };
-        
+
         // 记录请求日志
         this.logger.info('API Request', {
           url: config.url,
@@ -107,11 +103,7 @@ export class HttpClient {
         const duration = Date.now() - (config.metadata?.startTime || 0);
 
         // 记录性能指标
-        this.performanceMonitor.trackApiCall(
-          config.url || '',
-          duration,
-          true
-        );
+        this.performanceMonitor.trackApiCall(config.url || '', duration, true);
 
         // 记录响应日志
         this.logger.info('API Response', {
@@ -129,11 +121,7 @@ export class HttpClient {
 
         // 记录性能指标
         if (config?.url) {
-          this.performanceMonitor.trackApiCall(
-            config.url,
-            duration,
-            false
-          );
+          this.performanceMonitor.trackApiCall(config.url, duration, false);
         }
 
         // 记录错误日志
@@ -178,7 +166,4 @@ export class HttpClient {
 }
 
 // 导出默认实例
-export const http = new HttpClient(
-  Logger.getInstance(),
-  PerformanceMonitor.getInstance()
-); 
+export const http = new HttpClient(Logger.getInstance(), PerformanceMonitor.getInstance());

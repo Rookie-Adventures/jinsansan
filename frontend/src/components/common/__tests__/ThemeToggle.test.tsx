@@ -19,7 +19,7 @@ interface TestWrapperProps {
 const createTestStore = (initialState: Partial<AppState> = { darkMode: false }) => {
   const store = configureStore({
     reducer: {
-      app: appReducer
+      app: appReducer,
     },
     preloadedState: {
       app: {
@@ -28,11 +28,11 @@ const createTestStore = (initialState: Partial<AppState> = { darkMode: false }) 
         toast: {
           open: false,
           message: '',
-          severity: 'info' as AlertColor
+          severity: 'info' as AlertColor,
         },
-        ...initialState
-      }
-    }
+        ...initialState,
+      },
+    },
   });
 
   return store;
@@ -78,7 +78,7 @@ describe('ThemeToggle', () => {
 
       const button = screen.getByRole('button');
       fireEvent.mouseEnter(button);
-      
+
       const tooltip = await screen.findByText('切换到暗色模式', {}, { timeout: TEST_TIMEOUT });
       expect(tooltip).toBeInTheDocument();
     });
@@ -117,4 +117,4 @@ describe('ThemeToggle', () => {
       expect(tooltip).toBeInTheDocument();
     });
   });
-}); 
+});

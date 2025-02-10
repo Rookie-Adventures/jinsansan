@@ -6,8 +6,8 @@ import Logger from '@/utils/logger';
 // Mock Logger
 vi.mock('@/utils/logger', () => ({
   default: {
-    error: vi.fn()
-  }
+    error: vi.fn(),
+  },
 }));
 
 describe('errorLogger', () => {
@@ -21,24 +21,21 @@ describe('errorLogger', () => {
       message: 'API request failed',
       code: 'ERR_BAD_REQUEST',
       status: 400,
-      data: { field: 'username', error: 'Required' }
+      data: { field: 'username', error: 'Required' },
     });
 
     errorLogger.log(error);
 
-    expect(Logger.error).toHaveBeenCalledWith(
-      'HTTP Error:',
-      {
-        context: 'HttpClient',
-        data: {
-          code: 'ERR_BAD_REQUEST',
-          message: 'API request failed',
-          status: 400,
-          data: { field: 'username', error: 'Required' },
-          stack: error.stack
-        }
-      }
-    );
+    expect(Logger.error).toHaveBeenCalledWith('HTTP Error:', {
+      context: 'HttpClient',
+      data: {
+        code: 'ERR_BAD_REQUEST',
+        message: 'API request failed',
+        status: 400,
+        data: { field: 'username', error: 'Required' },
+        stack: error.stack,
+      },
+    });
   });
 
   it('应该处理认证错误', () => {
@@ -46,48 +43,42 @@ describe('errorLogger', () => {
       type: HttpErrorType.AUTH,
       message: '认证失败',
       code: 'UNAUTHORIZED',
-      status: 401
+      status: 401,
     });
 
     errorLogger.log(error);
 
-    expect(Logger.error).toHaveBeenCalledWith(
-      'HTTP Error:',
-      {
-        context: 'HttpClient',
-        data: {
-          code: 'UNAUTHORIZED',
-          message: '认证失败',
-          status: 401,
-          data: undefined,
-          stack: error.stack
-        }
-      }
-    );
+    expect(Logger.error).toHaveBeenCalledWith('HTTP Error:', {
+      context: 'HttpClient',
+      data: {
+        code: 'UNAUTHORIZED',
+        message: '认证失败',
+        status: 401,
+        data: undefined,
+        stack: error.stack,
+      },
+    });
   });
 
   it('应该处理网络错误', () => {
     const error = new HttpError({
       type: HttpErrorType.NETWORK_ERROR,
       message: '网络连接失败',
-      code: 'NETWORK_ERROR'
+      code: 'NETWORK_ERROR',
     });
 
     errorLogger.log(error);
 
-    expect(Logger.error).toHaveBeenCalledWith(
-      'HTTP Error:',
-      {
-        context: 'HttpClient',
-        data: {
-          code: 'NETWORK_ERROR',
-          message: '网络连接失败',
-          status: undefined,
-          data: undefined,
-          stack: error.stack
-        }
-      }
-    );
+    expect(Logger.error).toHaveBeenCalledWith('HTTP Error:', {
+      context: 'HttpClient',
+      data: {
+        code: 'NETWORK_ERROR',
+        message: '网络连接失败',
+        status: undefined,
+        data: undefined,
+        stack: error.stack,
+      },
+    });
   });
 
   it('应该处理未知错误', () => {
@@ -95,24 +86,21 @@ describe('errorLogger', () => {
       type: HttpErrorType.UNKNOWN_ERROR,
       message: '未知错误',
       code: 'UNKNOWN_ERROR',
-      data: { detail: 'Something went wrong' }
+      data: { detail: 'Something went wrong' },
     });
 
     errorLogger.log(error);
 
-    expect(Logger.error).toHaveBeenCalledWith(
-      'HTTP Error:',
-      {
-        context: 'HttpClient',
-        data: {
-          code: 'UNKNOWN_ERROR',
-          message: '未知错误',
-          status: undefined,
-          data: { detail: 'Something went wrong' },
-          stack: error.stack
-        }
-      }
-    );
+    expect(Logger.error).toHaveBeenCalledWith('HTTP Error:', {
+      context: 'HttpClient',
+      data: {
+        code: 'UNKNOWN_ERROR',
+        message: '未知错误',
+        status: undefined,
+        data: { detail: 'Something went wrong' },
+        stack: error.stack,
+      },
+    });
   });
 
   it('应该处理带有完整错误信息的错误', () => {
@@ -124,30 +112,27 @@ describe('errorLogger', () => {
       data: {
         errors: [
           { field: 'email', message: 'Invalid email format' },
-          { field: 'password', message: 'Password too short' }
-        ]
-      }
+          { field: 'password', message: 'Password too short' },
+        ],
+      },
     });
 
     errorLogger.log(error);
 
-    expect(Logger.error).toHaveBeenCalledWith(
-      'HTTP Error:',
-      {
-        context: 'HttpClient',
+    expect(Logger.error).toHaveBeenCalledWith('HTTP Error:', {
+      context: 'HttpClient',
+      data: {
+        code: 'VALIDATION_ERROR',
+        message: 'Validation failed',
+        status: 422,
         data: {
-          code: 'VALIDATION_ERROR',
-          message: 'Validation failed',
-          status: 422,
-          data: {
-            errors: [
-              { field: 'email', message: 'Invalid email format' },
-              { field: 'password', message: 'Password too short' }
-            ]
-          },
-          stack: error.stack
-        }
-      }
-    );
+          errors: [
+            { field: 'email', message: 'Invalid email format' },
+            { field: 'password', message: 'Password too short' },
+          ],
+        },
+        stack: error.stack,
+      },
+    });
   });
-}); 
+});

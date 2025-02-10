@@ -12,15 +12,15 @@ vi.mock('react-router-dom', async () => {
   return {
     ...actual,
     useLocation: vi.fn(),
-    useNavigationType: vi.fn()
+    useNavigationType: vi.fn(),
   };
 });
 
 // Mock errorLogger
 vi.mock('@/utils/error/errorLogger', () => ({
   errorLogger: {
-    log: vi.fn()
-  }
+    log: vi.fn(),
+  },
 }));
 
 // Mock fetch
@@ -36,7 +36,7 @@ describe('RouterAnalytics', () => {
       search: '',
       hash: '',
       state: null,
-      key: 'default'
+      key: 'default',
     });
     vi.mocked(useNavigationType).mockReturnValue('PUSH' as NavigationType);
     routerAnalytics.clearAnalytics(); // 确保每个测试前清空状态
@@ -56,11 +56,11 @@ describe('RouterAnalytics', () => {
     it('应该正确跟踪路由变化', () => {
       routerAnalytics.trackRoute('/home', 'PUSH' as NavigationType);
       const analytics = routerAnalytics.getAnalytics();
-      
+
       expect(analytics).toHaveLength(1);
       expect(analytics[0]).toMatchObject({
         path: '/home',
-        navigationType: 'PUSH'
+        navigationType: 'PUSH',
       });
     });
 
@@ -68,21 +68,21 @@ describe('RouterAnalytics', () => {
       const now = Date.now();
       vi.useFakeTimers();
       vi.setSystemTime(now);
-      
+
       routerAnalytics.trackRoute('/page1', 'PUSH' as NavigationType);
       vi.advanceTimersByTime(1000); // 前进1000ms
       routerAnalytics.trackRoute('/page2', 'PUSH' as NavigationType);
-      
+
       const analytics = routerAnalytics.getAnalytics();
       expect(analytics[1].duration).toBe(1000);
-      
+
       vi.useRealTimers();
     });
 
     it('应该记录前一个路由', () => {
       routerAnalytics.trackRoute('/first', 'PUSH' as NavigationType);
       routerAnalytics.trackRoute('/second', 'PUSH' as NavigationType);
-      
+
       const analytics = routerAnalytics.getAnalytics();
       expect(analytics[1].previousPath).toBe('/first');
     });
@@ -95,19 +95,19 @@ describe('RouterAnalytics', () => {
       vi.setSystemTime(now);
 
       await routerAnalytics.trackRoute('/test', 'PUSH' as NavigationType);
-      
+
       expect(mockFetch).toHaveBeenCalledWith(
         expect.stringMatching(/\/api\/analytics\/route$/),
         expect.objectContaining({
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             path: '/test',
             timestamp: now,
-            navigationType: 'PUSH'
-          })
+            navigationType: 'PUSH',
+          }),
         })
       );
 
@@ -117,22 +117,20 @@ describe('RouterAnalytics', () => {
     it('应该处理上报失败的情况', async () => {
       // Mock fetch to reject
       mockFetch.mockRejectedValueOnce(new Error('Network error'));
-      
+
       // 直接调用 trackRoute，不需要 try-catch
-      await routerAnalytics.trackRoute('/test', 'PUSH' as NavigationType)
-        .catch(() => {/* 忽略预期的错误 */});
-      
+      await routerAnalytics.trackRoute('/test', 'PUSH' as NavigationType).catch(() => {
+        /* 忽略预期的错误 */
+      });
+
       // 验证错误日志
-      expect(errorLogger.log).toHaveBeenCalledWith(
-        expect.any(Error),
-        {
-          level: 'error',
-          context: {
-            route: '/test',
-            timestamp: expect.any(Number)
-          }
-        }
-      );
+      expect(errorLogger.log).toHaveBeenCalledWith(expect.any(Error), {
+        level: 'error',
+        context: {
+          route: '/test',
+          timestamp: expect.any(Number),
+        },
+      });
     });
   });
 
@@ -143,30 +141,30 @@ describe('RouterAnalytics', () => {
 
     it('应该在路由变化时跟踪', () => {
       const { rerender } = renderHook(() => useRouteAnalytics(), { wrapper: Wrapper });
-      
+
       vi.mocked(useLocation).mockReturnValue({
         pathname: '/new-path',
         search: '',
         hash: '',
         state: null,
-        key: 'default'
+        key: 'default',
       });
-      
+
       rerender();
-      
+
       const analytics = routerAnalytics.getAnalytics();
       expect(analytics[analytics.length - 1].path).toBe('/new-path');
     });
 
     it('应该在导航类型变化时跟踪', () => {
       const { rerender } = renderHook(() => useRouteAnalytics(), { wrapper: Wrapper });
-      
+
       vi.mocked(useNavigationType).mockReturnValue('REPLACE' as NavigationType);
-      
+
       rerender();
-      
+
       const analytics = routerAnalytics.getAnalytics();
       expect(analytics[analytics.length - 1].navigationType).toBe('REPLACE');
     });
   });
-}); 
+});

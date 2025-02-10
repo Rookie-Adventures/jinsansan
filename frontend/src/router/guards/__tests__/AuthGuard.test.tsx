@@ -9,19 +9,19 @@ import Logger from '@/utils/logger';
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
   return {
-    ...actual as any,
-    useNavigate: vi.fn()
+    ...(actual as any),
+    useNavigate: vi.fn(),
   };
 });
 
 vi.mock('@/hooks/auth', () => ({
-  useAuth: vi.fn()
+  useAuth: vi.fn(),
 }));
 
 vi.mock('@/utils/logger', () => ({
   default: {
-    error: vi.fn()
-  }
+    error: vi.fn(),
+  },
 }));
 
 describe('AuthGuard', () => {
@@ -39,7 +39,7 @@ describe('AuthGuard', () => {
       vi.mocked(useAuth).mockReturnValue({
         isAuthenticated: true,
         token: 'valid-token',
-        getCurrentUser: mockGetCurrentUser
+        getCurrentUser: mockGetCurrentUser,
       } as any);
 
       render(
@@ -60,7 +60,7 @@ describe('AuthGuard', () => {
       vi.mocked(useAuth).mockReturnValue({
         isAuthenticated: false,
         token: null,
-        getCurrentUser: mockGetCurrentUser
+        getCurrentUser: mockGetCurrentUser,
       } as any);
 
       render(
@@ -81,11 +81,11 @@ describe('AuthGuard', () => {
   describe('Token 验证', () => {
     it('有效 token 应该验证用户身份', async () => {
       mockGetCurrentUser.mockResolvedValue({ id: 1, username: 'test' });
-      
+
       vi.mocked(useAuth).mockReturnValue({
         isAuthenticated: true,
         token: 'valid-token',
-        getCurrentUser: mockGetCurrentUser
+        getCurrentUser: mockGetCurrentUser,
       } as any);
 
       render(
@@ -104,11 +104,11 @@ describe('AuthGuard', () => {
 
     it('无效 token 应该重定向到登录页面', async () => {
       mockGetCurrentUser.mockRejectedValue(new Error('Invalid token'));
-      
+
       vi.mocked(useAuth).mockReturnValue({
         isAuthenticated: false,
         token: 'invalid-token',
-        getCurrentUser: mockGetCurrentUser
+        getCurrentUser: mockGetCurrentUser,
       } as any);
 
       render(
@@ -121,10 +121,7 @@ describe('AuthGuard', () => {
 
       await waitFor(() => {
         expect(mockNavigate).toHaveBeenCalledWith('/login');
-        expect(Logger.error).toHaveBeenCalledWith(
-          'Failed to verify auth:',
-          expect.any(Object)
-        );
+        expect(Logger.error).toHaveBeenCalledWith('Failed to verify auth:', expect.any(Object));
       });
     });
   });
@@ -132,11 +129,11 @@ describe('AuthGuard', () => {
   describe('加载状态', () => {
     it('验证过程中应该显示加载状态', () => {
       mockGetCurrentUser.mockImplementation(() => new Promise(() => {})); // 永不解析的 Promise
-      
+
       vi.mocked(useAuth).mockReturnValue({
         isAuthenticated: false,
         token: 'valid-token',
-        getCurrentUser: mockGetCurrentUser
+        getCurrentUser: mockGetCurrentUser,
       } as any);
 
       render(
@@ -151,4 +148,4 @@ describe('AuthGuard', () => {
       expect(screen.queryByText('Protected Content')).not.toBeInTheDocument();
     });
   });
-}); 
+});

@@ -1,8 +1,8 @@
 // Mock errorLogger
 vi.mock('@/utils/http/error/logger', () => ({
   errorLogger: {
-    log: vi.fn()
-  }
+    log: vi.fn(),
+  },
 }));
 
 import { render, screen, fireEvent, act } from '@testing-library/react';
@@ -60,7 +60,7 @@ describe('ErrorBoundary', () => {
     expect(mockErrorLogger.log).toHaveBeenCalledWith(
       expect.objectContaining({
         type: HttpErrorType.REACT_ERROR,
-        message: 'Test error'
+        message: 'Test error',
       })
     );
   });
@@ -90,12 +90,12 @@ describe('ErrorBoundary', () => {
         <TestComponent />
       </ErrorBoundary>
     );
-    
+
     expect(getByText('出错了')).toBeInTheDocument();
-    
+
     // 修改状态，使组件不再抛出错误
     shouldError = false;
-    
+
     // 点击重试按钮
     await act(async () => {
       fireEvent.click(getByText('重试'));
@@ -115,8 +115,8 @@ describe('ErrorBoundary', () => {
     expect(mockErrorLogger.log).toHaveBeenCalledWith(
       expect.objectContaining({
         data: expect.objectContaining({
-          componentStack: expect.any(String)
-        })
+          componentStack: expect.any(String),
+        }),
       })
     );
   });
@@ -164,4 +164,4 @@ describe('ErrorBoundary', () => {
     expect(screen.getByText('出错了')).toBeInTheDocument();
     expect(screen.getByText('Test error')).toBeInTheDocument();
   });
-}); 
+});

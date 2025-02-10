@@ -6,9 +6,9 @@ describe('validateLoginForm', () => {
   it('应该在表单数据有效时返回 isValid: true', () => {
     const validForm: LoginFormData = {
       username: 'testuser',
-      password: 'password123'
+      password: 'password123',
     };
-    
+
     const result = validateLoginForm(validForm);
     expect(result.isValid).toBe(true);
     expect(result.errorMessage).toBeUndefined();
@@ -17,9 +17,9 @@ describe('validateLoginForm', () => {
   it('应该在用户名为空时返回错误', () => {
     const formWithEmptyUsername: LoginFormData = {
       username: '',
-      password: 'password123'
+      password: 'password123',
     };
-    
+
     const result = validateLoginForm(formWithEmptyUsername);
     expect(result.isValid).toBe(false);
     expect(result.errorMessage).toBe('请输入用户名');
@@ -28,9 +28,9 @@ describe('validateLoginForm', () => {
   it('应该在用户名只包含空格时返回错误', () => {
     const formWithWhitespaceUsername: LoginFormData = {
       username: '   ',
-      password: 'password123'
+      password: 'password123',
     };
-    
+
     const result = validateLoginForm(formWithWhitespaceUsername);
     expect(result.isValid).toBe(false);
     expect(result.errorMessage).toBe('请输入用户名');
@@ -39,9 +39,9 @@ describe('validateLoginForm', () => {
   it('应该在密码为空时返回错误', () => {
     const formWithEmptyPassword: LoginFormData = {
       username: 'testuser',
-      password: ''
+      password: '',
     };
-    
+
     const result = validateLoginForm(formWithEmptyPassword);
     expect(result.isValid).toBe(false);
     expect(result.errorMessage).toBe('请输入密码');
@@ -54,9 +54,9 @@ describe('validateRegisterForm', () => {
       username: 'testuser',
       email: 'test@example.com',
       password: 'password123',
-      confirmPassword: 'password123'
+      confirmPassword: 'password123',
     };
-    
+
     const result = validateRegisterForm(validForm);
     expect(result.isValid).toBe(true);
     expect(result.errorMessage).toBeUndefined();
@@ -67,9 +67,9 @@ describe('validateRegisterForm', () => {
       username: '',
       email: 'test@example.com',
       password: 'password123',
-      confirmPassword: 'password123'
+      confirmPassword: 'password123',
     };
-    
+
     const result = validateRegisterForm(formWithEmptyUsername);
     expect(result.isValid).toBe(false);
     expect(result.errorMessage).toBe('请输入用户名');
@@ -80,9 +80,9 @@ describe('validateRegisterForm', () => {
       username: 'testuser',
       email: '',
       password: 'password123',
-      confirmPassword: 'password123'
+      confirmPassword: 'password123',
     };
-    
+
     const result = validateRegisterForm(formWithEmptyEmail);
     expect(result.isValid).toBe(false);
     expect(result.errorMessage).toBe('请输入邮箱');
@@ -93,9 +93,9 @@ describe('validateRegisterForm', () => {
       username: 'testuser',
       email: 'invalid-email',
       password: 'password123',
-      confirmPassword: 'password123'
+      confirmPassword: 'password123',
     };
-    
+
     const result = validateRegisterForm(formWithInvalidEmail);
     expect(result.isValid).toBe(false);
     expect(result.errorMessage).toBe('请输入有效的邮箱地址');
@@ -106,9 +106,9 @@ describe('validateRegisterForm', () => {
       username: 'testuser',
       email: 'test@example.com',
       password: '',
-      confirmPassword: 'password123'
+      confirmPassword: 'password123',
     };
-    
+
     const result = validateRegisterForm(formWithEmptyPassword);
     expect(result.isValid).toBe(false);
     expect(result.errorMessage).toBe('请输入密码');
@@ -119,9 +119,9 @@ describe('validateRegisterForm', () => {
       username: 'testuser',
       email: 'test@example.com',
       password: 'password123',
-      confirmPassword: ''
+      confirmPassword: '',
     };
-    
+
     const result = validateRegisterForm(formWithEmptyConfirmPassword);
     expect(result.isValid).toBe(false);
     expect(result.errorMessage).toBe('请确认密码');
@@ -132,9 +132,9 @@ describe('validateRegisterForm', () => {
       username: 'testuser',
       email: 'test@example.com',
       password: 'password123',
-      confirmPassword: 'password456'
+      confirmPassword: 'password456',
     };
-    
+
     const result = validateRegisterForm(formWithMismatchedPasswords);
     expect(result.isValid).toBe(false);
     expect(result.errorMessage).toBe('两次输入的密码不一致');
@@ -148,7 +148,7 @@ describe('validateRegisterForm', () => {
       'test@com',
       'test.example.com',
       '@.com',
-      'test@@example.com'
+      'test@@example.com',
     ];
 
     invalidEmails.forEach(email => {
@@ -156,12 +156,12 @@ describe('validateRegisterForm', () => {
         username: 'testuser',
         email,
         password: 'password123',
-        confirmPassword: 'password123'
+        confirmPassword: 'password123',
       };
-      
+
       const result = validateRegisterForm(formWithInvalidEmail);
       expect(result.isValid).toBe(false);
       expect(result.errorMessage).toBe('请输入有效的邮箱地址');
     });
   });
-}); 
+});

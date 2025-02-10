@@ -13,7 +13,7 @@ export class PerformanceMonitor {
       responseTimes: [],
       errorRates: new Map(),
       resourceUsage: new Map(),
-      customMetrics: new Map()
+      customMetrics: new Map(),
     };
     this.startReporting();
   }
@@ -36,15 +36,15 @@ export class PerformanceMonitor {
     if (startTime) {
       const endTime = performance.now();
       const responseTime = endTime - startTime;
-      
+
       // 添加到响应时间数组
       this.metrics.responseTimes.push(responseTime);
-      
+
       // 保持数组大小在限制范围内
       if (this.metrics.responseTimes.length > this.maxSampleSize) {
         this.metrics.responseTimes.shift();
       }
-      
+
       // 清理请求时间记录
       this.metrics.requestTimes.delete(requestId);
     }
@@ -70,7 +70,7 @@ export class PerformanceMonitor {
   public getPerformanceStats(): any {
     const responseTimes = this.metrics.responseTimes;
     const totalRequests = responseTimes.length;
-    
+
     if (totalRequests === 0) {
       return {
         avgResponseTime: 0,
@@ -78,7 +78,7 @@ export class PerformanceMonitor {
         p99ResponseTime: 0,
         errorRates: Object.fromEntries(this.metrics.errorRates),
         resourceUsage: Object.fromEntries(this.metrics.resourceUsage),
-        customMetrics: Object.fromEntries(this.metrics.customMetrics)
+        customMetrics: Object.fromEntries(this.metrics.customMetrics),
       };
     }
 
@@ -96,7 +96,7 @@ export class PerformanceMonitor {
       p99ResponseTime: sortedTimes[p99Index],
       errorRates: Object.fromEntries(this.metrics.errorRates),
       resourceUsage: Object.fromEntries(this.metrics.resourceUsage),
-      customMetrics: Object.fromEntries(this.metrics.customMetrics)
+      customMetrics: Object.fromEntries(this.metrics.customMetrics),
     };
   }
 
@@ -107,7 +107,7 @@ export class PerformanceMonitor {
       responseTimes: [],
       errorRates: new Map(),
       resourceUsage: new Map(),
-      customMetrics: new Map()
+      customMetrics: new Map(),
     };
   }
 
@@ -120,7 +120,7 @@ export class PerformanceMonitor {
     this.reportingTimer = setInterval(() => {
       const stats = this.getPerformanceStats();
       console.log('Performance Report:', stats);
-      
+
       // 可以在这里添加将性能数据发送到监控系统的逻辑
       this.sendToMonitoringSystem(stats);
     }, this.reportingInterval);
@@ -142,9 +142,9 @@ export class PerformanceMonitor {
       await fetch('/api/monitoring/metrics', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(stats)
+        body: JSON.stringify(stats),
       });
     } catch (error) {
       console.error('Failed to send metrics to monitoring system:', error);
@@ -155,7 +155,8 @@ export class PerformanceMonitor {
   public getMetricsInTimeRange(startTime: number, endTime: number): PerformanceMetrics {
     // 过滤指定时间范围内的数据
     const filteredResponseTimes = this.metrics.responseTimes.filter((_, index) => {
-      const timestamp = Date.now() - (this.metrics.responseTimes.length - index) * this.reportingInterval;
+      const timestamp =
+        Date.now() - (this.metrics.responseTimes.length - index) * this.reportingInterval;
       return timestamp >= startTime && timestamp <= endTime;
     });
 
@@ -164,7 +165,7 @@ export class PerformanceMonitor {
       responseTimes: filteredResponseTimes,
       errorRates: new Map(),
       resourceUsage: new Map(),
-      customMetrics: new Map()
+      customMetrics: new Map(),
     };
 
     // 过滤错误率数据
@@ -191,25 +192,25 @@ export class PerformanceMonitor {
     const trends = {
       responseTime: {
         trend: this.calculateTrend(this.metrics.responseTimes),
-        current: stats.avgResponseTime
+        current: stats.avgResponseTime,
       },
       errorRate: {
         trend: this.calculateErrorTrend(),
-        current: this.calculateCurrentErrorRate()
-      }
+        current: this.calculateCurrentErrorRate(),
+      },
     };
     return trends;
   }
 
   private calculateTrend(data: number[]): 'improving' | 'stable' | 'degrading' {
     if (data.length < 2) return 'stable';
-    
+
     const recentData = data.slice(-10); // 使用最近的10个数据点
     const avg = recentData.reduce((sum, val) => sum + val, 0) / recentData.length;
     const prevAvg = data.slice(-20, -10).reduce((sum, val) => sum + val, 0) / 10;
-    
+
     const threshold = 0.1; // 10%的变化阈值
-    
+
     if (avg < prevAvg * (1 - threshold)) return 'improving';
     if (avg > prevAvg * (1 + threshold)) return 'degrading';
     return 'stable';
@@ -221,11 +222,13 @@ export class PerformanceMonitor {
   }
 
   private calculateCurrentErrorRate(): number {
-    const totalErrors = Array.from(this.metrics.errorRates.values())
-      .reduce((sum, count) => sum + count, 0);
+    const totalErrors = Array.from(this.metrics.errorRates.values()).reduce(
+      (sum, count) => sum + count,
+      0
+    );
     const totalRequests = this.metrics.responseTimes.length;
     return totalRequests === 0 ? 0 : totalErrors / totalRequests;
   }
 }
 
-export default PerformanceMonitor; 
+export default PerformanceMonitor;

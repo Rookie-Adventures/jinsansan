@@ -6,7 +6,7 @@ export enum UserEventType {
   CLICK = 'click',
   FORM_SUBMIT = 'form_submit',
   ERROR = 'error',
-  CUSTOM = 'custom'
+  CUSTOM = 'custom',
 }
 
 /**
@@ -49,7 +49,7 @@ export class UserAnalytics {
     flushInterval: 5000,
     sampleRate: 1.0,
     sessionTimeout: 30 * 60 * 1000, // 30分钟
-    beforeTrack: event => event
+    beforeTrack: event => event,
   };
 
   private constructor(config?: UserAnalyticsConfig) {
@@ -96,7 +96,7 @@ export class UserAnalytics {
     this.track(UserEventType.PAGE_VIEW, {
       path,
       title: title || document.title,
-      referrer: document.referrer
+      referrer: document.referrer,
     });
   }
 
@@ -107,7 +107,7 @@ export class UserAnalytics {
     this.track(UserEventType.CLICK, {
       elementId,
       elementType,
-      path: window.location.pathname
+      path: window.location.pathname,
     });
   }
 
@@ -118,7 +118,7 @@ export class UserAnalytics {
     this.track(UserEventType.FORM_SUBMIT, {
       formId,
       success,
-      path: window.location.pathname
+      path: window.location.pathname,
     });
   }
 
@@ -130,7 +130,7 @@ export class UserAnalytics {
       name: error.name,
       message: error.message,
       stack: error.stack,
-      context
+      context,
     });
   }
 
@@ -140,7 +140,7 @@ export class UserAnalytics {
   public trackCustomEvent(name: string, data: Record<string, any>): void {
     this.track(UserEventType.CUSTOM, {
       name,
-      ...data
+      ...data,
     });
   }
 
@@ -158,7 +158,7 @@ export class UserAnalytics {
       timestamp: Date.now(),
       data,
       sessionId: this.sessionId,
-      userId: this.userId
+      userId: this.userId,
     };
 
     // 应用前置处理
@@ -184,20 +184,20 @@ export class UserAnalytics {
     }
 
     let currentBatch: UserEvent[] = [];
-    
+
     try {
       this.isTracking = true;
-      
+
       // 处理所有事件，每次处理 batchSize 个
       while (this.events.length > 0) {
         currentBatch = this.events.splice(0, this.config.batchSize);
-        
+
         const response = await fetch(this.config.endpoint, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
-          body: JSON.stringify(currentBatch)
+          body: JSON.stringify(currentBatch),
         });
 
         if (!response.ok) {
@@ -273,4 +273,4 @@ export class UserAnalytics {
       UserAnalytics.instance = null;
     }
   }
-} 
+}

@@ -6,8 +6,8 @@ import { RouterAnalytics } from '../RouterAnalytics';
 // Mock errorLogger
 vi.mock('../../../utils/errorLogger', () => ({
   errorLogger: {
-    log: vi.fn()
-  }
+    log: vi.fn(),
+  },
 }));
 
 // 添加类型定义
@@ -50,17 +50,20 @@ describe('Data Reporting', () => {
 
       await performanceMonitor.flush();
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/metrics', expect.objectContaining({
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }));
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/metrics',
+        expect.objectContaining({
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+      );
 
       const body = JSON.parse(mockFetch.mock.calls[0][1].body) as MetricData[];
       expect(body).toHaveLength(3);
-      expect(body.map((m) => m.type)).toContain('custom');
-      expect(body.map((m) => m.type)).toContain('api_call');
+      expect(body.map(m => m.type)).toContain('custom');
+      expect(body.map(m => m.type)).toContain('api_call');
     });
 
     it('应该在上报失败时保留数据', async () => {
@@ -93,7 +96,7 @@ describe('Data Reporting', () => {
 
       const testMetric = {
         name: 'test-metric',
-        value: 100
+        value: 100,
       };
       performanceMonitor.trackCustomMetric(testMetric.name, testMetric.value);
       await performanceMonitor.flush();
@@ -102,7 +105,7 @@ describe('Data Reporting', () => {
       expect(body[0]).toMatchObject({
         type: 'custom',
         timestamp: expect.any(Number),
-        data: testMetric
+        data: testMetric,
       });
     });
 
@@ -116,7 +119,7 @@ describe('Data Reporting', () => {
       expect(body).toMatchObject({
         path: '/home',
         timestamp: expect.any(Number),
-        navigationType: 'push'
+        navigationType: 'push',
       });
     });
   });
@@ -137,7 +140,9 @@ describe('Data Reporting', () => {
     });
 
     it('应该处理服务器错误', async () => {
-      const mockFetch = vi.fn().mockResolvedValue({ ok: false, status: 500, statusText: 'Internal Server Error' });
+      const mockFetch = vi
+        .fn()
+        .mockResolvedValue({ ok: false, status: 500, statusText: 'Internal Server Error' });
       global.fetch = mockFetch;
 
       performanceMonitor.trackCustomMetric('test-metric', 100);
@@ -153,11 +158,11 @@ describe('Data Reporting', () => {
     it('应该处理无效数据', async () => {
       // @ts-expect-error 故意传入无效数据以测试错误处理
       performanceMonitor.trackCustomMetric(null, 'invalid');
-      
+
       expect(errorLogger.log).toHaveBeenCalledWith(
         expect.any(Error),
         expect.objectContaining({ level: 'error' })
       );
     });
   });
-}); 
+});

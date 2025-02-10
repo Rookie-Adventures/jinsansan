@@ -11,7 +11,7 @@ interface FileUploaderProps {
 export const FileUploader: React.FC<FileUploaderProps> = ({
   onUploadComplete,
   onError,
-  maxFileSize = 5 * 1024 * 1024 // 默认 5MB
+  maxFileSize = 5 * 1024 * 1024, // 默认 5MB
 }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
@@ -43,12 +43,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         data-testid="file-input"
       />
       <label htmlFor="file-upload">
-        <Button
-          variant="contained"
-          component="span"
-          startIcon={<CloudUploadIcon />}
-          sx={{ mb: 2 }}
-        >
+        <Button variant="contained" component="span" startIcon={<CloudUploadIcon />} sx={{ mb: 2 }}>
           选择文件
         </Button>
       </label>
@@ -59,4 +54,4 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
       )}
     </Box>
   );
-}; 
+};

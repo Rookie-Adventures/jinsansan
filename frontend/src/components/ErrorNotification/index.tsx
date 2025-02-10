@@ -22,46 +22,46 @@ interface ErrorConfig {
 // 使用枚举值作为键的类型
 type ErrorMessageKey = `${HttpErrorType}`;
 const errorMessages: Record<ErrorMessageKey, ErrorConfig> = {
-  'NETWORK_ERROR': {
+  NETWORK_ERROR: {
     title: '网络错误',
     severity: 'error',
     description: '请检查您的网络连接',
     action: '重试',
     recoverable: true,
-    autoHideDuration: null
+    autoHideDuration: null,
   },
-  'HTTP_ERROR': {
+  HTTP_ERROR: {
     title: '服务器错误',
     severity: 'error',
     description: '服务器处理请求时出错',
     action: '重试',
     recoverable: true,
-    autoHideDuration: null
+    autoHideDuration: null,
   },
-  'AUTH_ERROR': {
+  AUTH_ERROR: {
     title: '认证错误',
     severity: 'error',
     description: '您的登录状态已过期',
     action: '重新登录',
     recoverable: false,
-    autoHideDuration: null
+    autoHideDuration: null,
   },
-  'REACT_ERROR': {
+  REACT_ERROR: {
     title: '组件错误',
     severity: 'error',
     description: '页面渲染出错',
     action: '刷新页面',
     recoverable: false,
-    autoHideDuration: null
+    autoHideDuration: null,
   },
-  'UNKNOWN_ERROR': {
+  UNKNOWN_ERROR: {
     title: '未知错误',
     severity: 'warning',
     description: '发生未知错误',
     action: '刷新页面',
     recoverable: false,
-    autoHideDuration: 6000
-  }
+    autoHideDuration: 6000,
+  },
 };
 
 export const ErrorNotification: React.FC<ErrorNotificationProps> = ({ error, onClose }) => {
@@ -95,7 +95,9 @@ export const ErrorNotification: React.FC<ErrorNotificationProps> = ({ error, onC
       autoHideDuration={config.autoHideDuration === null ? undefined : config.autoHideDuration}
       onClose={onClose}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      data-auto-hide-duration={config.autoHideDuration === null ? 'false' : config.autoHideDuration.toString()}
+      data-auto-hide-duration={
+        config.autoHideDuration === null ? 'false' : config.autoHideDuration.toString()
+      }
     >
       <Alert
         onClose={onClose}
@@ -121,4 +123,4 @@ export const ErrorNotification: React.FC<ErrorNotificationProps> = ({ error, onC
       </Alert>
     </Snackbar>
   );
-}; 
+};

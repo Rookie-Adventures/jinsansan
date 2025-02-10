@@ -9,14 +9,17 @@ const HeroSection: React.FC = () => {
 
   return (
     <Container maxWidth="lg">
-      <Box sx={{ 
-        width: '100%',
-        py: { xs: 4, md: 8 },
-        px: { xs: 2, sm: 3 }
-      }}>
+      <Box
+        sx={{
+          width: '100%',
+          py: { xs: 4, md: 8 },
+          px: { xs: 2, sm: 3 },
+        }}
+      >
         <Grid container spacing={4} alignItems="center">
           <Grid item xs={12} md={6}>
-            <Box component={motion.div}
+            <Box
+              component={motion.div}
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
@@ -29,12 +32,7 @@ const HeroSection: React.FC = () => {
               >
                 优质的 Jinsansan 模型调用体验
               </Typography>
-              <Typography
-                variant="h5"
-                color="inherit"
-                paragraph
-                sx={{ opacity: 0.9, mb: 4 }}
-              >
+              <Typography variant="h5" color="inherit" paragraph sx={{ opacity: 0.9, mb: 4 }}>
                 为中国用户提供稳定、快速的 AI 模型服务，支持流式响应，智能上下文管理
               </Typography>
               <Box sx={{ display: 'flex', gap: 3, mb: 4 }}>
@@ -99,4 +97,4 @@ const HeroSection: React.FC = () => {
   );
 };
 
-export default HeroSection; 
+export default HeroSection;

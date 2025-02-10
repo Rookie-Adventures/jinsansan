@@ -28,17 +28,12 @@ const createTestStore = (preloadedState = {}) => {
   });
 };
 
-const renderWithProviders = (
-  ui: React.ReactElement,
-  { preloadedState = {} } = {}
-) => {
+const renderWithProviders = (ui: React.ReactElement, { preloadedState = {} } = {}) => {
   const store = createTestStore(preloadedState);
   return {
     ...render(
       <Provider store={store}>
-        <ThemeProvider theme={createTheme({ palette: { mode: 'light' } })}>
-          {ui}
-        </ThemeProvider>
+        <ThemeProvider theme={createTheme({ palette: { mode: 'light' } })}>{ui}</ThemeProvider>
       </Provider>
     ),
     store,
@@ -72,20 +67,20 @@ describe('LoadingBar', () => {
     renderWithProviders(<LoadingBar />, {
       preloadedState: { loading: true },
     });
-    
+
     const progressBar = screen.getByRole('progressbar');
     expect(progressBar.getAttribute('aria-valuenow')).toBe('0');
-    
+
     // 等待一个 tick 让 useEffect 执行
     await act(async () => {
       await vi.advanceTimersByTimeAsync(0);
     });
-    
+
     // 前进 500ms 触发进度更新
     await act(async () => {
       await vi.advanceTimersByTimeAsync(500);
     });
-    
+
     const newValue = Number(progressBar.getAttribute('aria-valuenow'));
     expect(newValue).toBeGreaterThan(0);
     expect(newValue).toBeLessThanOrEqual(90);
@@ -95,28 +90,28 @@ describe('LoadingBar', () => {
     const { store } = renderWithProviders(<LoadingBar />, {
       preloadedState: { loading: true },
     });
-    
+
     const progressBar = screen.getByRole('progressbar');
-    
+
     // 等待一个 tick 让 useEffect 执行
     await act(async () => {
       await vi.advanceTimersByTimeAsync(0);
     });
-    
+
     // 切换到非加载状态
     await act(async () => {
       store.dispatch({ type: 'app/setLoading', payload: false });
       // 等待状态更新
       await vi.advanceTimersByTimeAsync(0);
     });
-    
+
     expect(progressBar.getAttribute('aria-valuenow')).toBe('100');
-    
+
     // 等待淡出动画
     await act(async () => {
       await vi.advanceTimersByTimeAsync(300);
     });
-    
+
     expect(screen.queryByRole('progressbar')).toBeNull();
   });
-}); 
+});

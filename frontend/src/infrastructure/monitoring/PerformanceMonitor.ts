@@ -42,8 +42,8 @@ export class PerformanceMonitor {
         data: {
           name,
           value,
-          tags
-        }
+          tags,
+        },
       });
     } catch (error) {
       errorLogger.log(error instanceof Error ? error : new Error('Invalid metric data'));
@@ -61,13 +61,13 @@ export class PerformanceMonitor {
         domComplete: timing.domComplete - navigationStart,
         loadEventEnd: timing.loadEventEnd - navigationStart,
         domInteractive: timing.domInteractive - navigationStart,
-        domContentLoadedEventEnd: timing.domContentLoadedEventEnd - navigationStart
-      }
+        domContentLoadedEventEnd: timing.domContentLoadedEventEnd - navigationStart,
+      },
     });
   }
 
   public observeResourceTiming(): void {
-    const observer = new PerformanceObserver((list) => {
+    const observer = new PerformanceObserver(list => {
       const entries = list.getEntries() as PerformanceResourceTiming[];
       entries.forEach(entry => {
         this.metrics.push({
@@ -76,8 +76,8 @@ export class PerformanceMonitor {
           data: {
             name: entry.name,
             duration: entry.duration,
-            type: entry.initiatorType
-          }
+            type: entry.initiatorType,
+          },
         });
       });
     });
@@ -86,7 +86,7 @@ export class PerformanceMonitor {
   }
 
   public observeLongTasks(): void {
-    const observer = new PerformanceObserver((list) => {
+    const observer = new PerformanceObserver(list => {
       const entries = list.getEntries();
       entries.forEach(entry => {
         this.metrics.push({
@@ -94,8 +94,8 @@ export class PerformanceMonitor {
           timestamp: Date.now(),
           data: {
             duration: entry.duration,
-            startTime: entry.startTime
-          }
+            startTime: entry.startTime,
+          },
         });
       });
     });
@@ -104,7 +104,7 @@ export class PerformanceMonitor {
   }
 
   public observeUserInteractions(): void {
-    const observer = new PerformanceObserver((list) => {
+    const observer = new PerformanceObserver(list => {
       const entries = list.getEntries();
       entries.forEach(entry => {
         this.metrics.push({
@@ -113,8 +113,8 @@ export class PerformanceMonitor {
           data: {
             name: entry.name,
             duration: entry.duration,
-            startTime: entry.startTime
-          }
+            startTime: entry.startTime,
+          },
         });
       });
     });
@@ -136,11 +136,13 @@ export class PerformanceMonitor {
         timestamp: Date.now(),
         data: {
           name,
-          value
-        }
+          value,
+        },
       });
     } catch (error) {
-      errorLogger.log(error instanceof Error ? error : new Error('Invalid metric data'), { level: 'error' });
+      errorLogger.log(error instanceof Error ? error : new Error('Invalid metric data'), {
+        level: 'error',
+      });
     }
   }
 
@@ -151,8 +153,8 @@ export class PerformanceMonitor {
       data: {
         url,
         duration,
-        success
-      }
+        success,
+      },
     });
   }
 
@@ -167,22 +169,26 @@ export class PerformanceMonitor {
       const response = await fetch('/api/metrics', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(this.metrics)
+        body: JSON.stringify(this.metrics),
       });
 
       if (response.ok) {
         this.metrics = [];
       } else {
-        errorLogger.log(new Error(`Failed to report metrics: ${response.statusText}`), { level: 'error' });
+        errorLogger.log(new Error(`Failed to report metrics: ${response.statusText}`), {
+          level: 'error',
+        });
       }
     } catch (error) {
-      errorLogger.log(error instanceof Error ? error : new Error('Failed to report metrics'), { level: 'error' });
+      errorLogger.log(error instanceof Error ? error : new Error('Failed to report metrics'), {
+        level: 'error',
+      });
     }
   }
 
   public clearMetrics(): void {
     this.metrics = [];
   }
-} 
+}

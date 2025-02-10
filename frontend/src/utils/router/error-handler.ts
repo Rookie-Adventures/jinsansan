@@ -22,15 +22,15 @@ class RouterErrorHandler {
 
   handleError(error: unknown, info?: { path?: string }): void {
     const routerError = this.normalizeError(error);
-    const errorStatus = routerError.status || 500;  // 默认为500
-    
+    const errorStatus = routerError.status || 500; // 默认为500
+
     // 记录错误
     this.logger.log(routerError, {
       level: 'error',
       context: {
         path: info?.path,
-        status: errorStatus
-      }
+        status: errorStatus,
+      },
     });
 
     // 根据错误类型处理
@@ -58,8 +58,8 @@ class RouterErrorHandler {
       level: 'error',
       context: {
         status: error.status,
-        errorData: error.data
-      }
+        errorData: error.data,
+      },
     });
     // 可以在这里添加重定向到 404 页面的逻辑
   }
@@ -69,8 +69,8 @@ class RouterErrorHandler {
       level: 'error',
       context: {
         status: error.status,
-        errorData: error.data
-      }
+        errorData: error.data,
+      },
     });
     // 可以在这里添加重定向到 403 页面的逻辑
   }
@@ -80,15 +80,15 @@ class RouterErrorHandler {
       level: 'error',
       context: {
         status: error.status,
-        errorData: error.data
-      }
+        errorData: error.data,
+      },
     });
     // 可以在这里添加重定向到通用错误页面的逻辑
   }
 
   private handleWarning(warning: string): void {
     errorLogger.log(new Error(warning), {
-      level: 'warn'
+      level: 'warn',
     });
   }
 
@@ -97,10 +97,10 @@ class RouterErrorHandler {
       level: 'critical',
       context: {
         timestamp: Date.now(),
-        isCritical: true
-      }
+        isCritical: true,
+      },
     });
   }
 }
 
-export const routerErrorHandler = RouterErrorHandler.getInstance(); 
+export const routerErrorHandler = RouterErrorHandler.getInstance();

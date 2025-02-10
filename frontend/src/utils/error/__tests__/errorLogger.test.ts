@@ -38,7 +38,7 @@ describe('ErrorLogger', () => {
         Object.keys(mockStorage).forEach(key => delete mockStorage[key]);
       }),
       key: vi.fn((index: number) => Object.keys(mockStorage)[index]),
-      length: 0
+      length: 0,
     };
   });
 
@@ -112,7 +112,7 @@ describe('ErrorLogger', () => {
       const error = new Error('测试错误');
       const context: LogContext = {
         level: 'error',
-        context: { userId: '123' }
+        context: { userId: '123' },
       };
 
       await errorLogger.log(error, context);
@@ -122,9 +122,9 @@ describe('ErrorLogger', () => {
         expect.objectContaining({
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
-          body: expect.any(String)
+          body: expect.any(String),
         })
       );
 
@@ -134,7 +134,7 @@ describe('ErrorLogger', () => {
         stack: error.stack,
         level: 'error',
         timestamp: expect.any(Number),
-        context: { userId: '123' }
+        context: { userId: '123' },
       });
     });
   });
@@ -169,7 +169,7 @@ describe('ErrorLogger', () => {
         message: '已存在的错误',
         level: 'error',
         timestamp: Date.now(),
-        context: {}
+        context: {},
       };
       vi.spyOn(localStorage, 'getItem').mockReturnValueOnce(JSON.stringify([existingLog]));
 
@@ -180,12 +180,12 @@ describe('ErrorLogger', () => {
 
       const setItemCall = vi.mocked(localStorage.setItem).mock.calls[0];
       const savedLogs = JSON.parse(setItemCall[1]);
-      
+
       expect(savedLogs).toHaveLength(2);
       expect(savedLogs[0]).toEqual(existingLog);
       expect(savedLogs[1]).toMatchObject({
         message: '新错误',
-        level: 'error'
+        level: 'error',
       });
     });
 
@@ -197,9 +197,7 @@ describe('ErrorLogger', () => {
       fetchMock.mockRejectedValueOnce(new Error('网络错误'));
 
       const error = new Error('测试错误');
-      await expect(errorLogger.log(error, { level: 'error' }))
-        .resolves
-        .not.toThrow();
+      await expect(errorLogger.log(error, { level: 'error' })).resolves.not.toThrow();
     });
   });
-}); 
+});

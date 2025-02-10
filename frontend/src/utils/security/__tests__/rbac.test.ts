@@ -73,4 +73,4 @@ describe('PermissionManager', () => {
     const instance2 = permissionManager;
     expect(instance1).toBe(instance2);
   });
-}); 
+});

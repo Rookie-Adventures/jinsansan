@@ -5,7 +5,7 @@ export enum HttpErrorType {
   HTTP_ERROR = 'HTTP_ERROR',
   REACT_ERROR = 'REACT_ERROR',
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
-  AUTH = 'AUTH_ERROR'
+  AUTH = 'AUTH_ERROR',
 }
 
 export class HttpError extends Error {
@@ -43,4 +43,4 @@ export type ErrorFactory = (error: AxiosError | Error) => HttpError;
 
 export interface ErrorHandler {
   handle: (error: HttpError) => void;
-} 
+}

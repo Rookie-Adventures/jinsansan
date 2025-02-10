@@ -5,8 +5,8 @@ import { errorLogger } from '../../../utils/errorLogger';
 // Mock errorLogger
 vi.mock('../../../utils/errorLogger', () => ({
   errorLogger: {
-    log: vi.fn()
-  }
+    log: vi.fn(),
+  },
 }));
 
 // Mock fetch
@@ -23,9 +23,9 @@ Object.defineProperty(global, 'performance', {
       domComplete: 1000,
       loadEventEnd: 1200,
       domInteractive: 800,
-      domContentLoadedEventEnd: 900
-    }
-  }
+      domContentLoadedEventEnd: 900,
+    },
+  },
 });
 
 // Mock PerformanceObserver
@@ -44,7 +44,7 @@ class MockPerformanceObserver {
   // Helper method for tests to trigger callbacks
   triggerCallback(entries: any[]) {
     this.callback({
-      getEntries: () => entries
+      getEntries: () => entries,
     });
   }
 }
@@ -89,32 +89,34 @@ describe('PerformanceMonitor', () => {
 
       monitor.startTimer('test-timer');
       const duration = monitor.stopTimer('test-timer');
-      
+
       expect(duration).toBe(1000);
     });
 
     it('停止不存在的计时器时应该抛出错误', () => {
-      expect(() => monitor.stopTimer('non-existent')).toThrow('No timer found with id: non-existent');
+      expect(() => monitor.stopTimer('non-existent')).toThrow(
+        'No timer found with id: non-existent'
+      );
     });
 
     it('应该能记录自定义指标', () => {
       const testMetric = {
         name: 'test-metric',
         value: 100,
-        tags: { test: true }
+        tags: { test: true },
       };
 
       monitor.recordMetric(testMetric.name, testMetric.value, testMetric.tags);
       const metrics = monitor['metrics'];
-      
+
       expect(metrics).toHaveLength(1);
       expect(metrics[0]).toMatchObject({
         type: 'custom',
         data: {
           name: testMetric.name,
           value: testMetric.value,
-          tags: testMetric.tags
-        }
+          tags: testMetric.tags,
+        },
       });
     });
   });
@@ -128,16 +130,16 @@ describe('PerformanceMonitor', () => {
           domComplete: 1000,
           loadEventEnd: 1200,
           domInteractive: 800,
-          domContentLoadedEventEnd: 900
+          domContentLoadedEventEnd: 900,
         },
-        configurable: true
+        configurable: true,
       });
     });
 
     it('应该能收集页面加载指标', () => {
       monitor.observePageLoadMetrics();
       const metrics = monitor['metrics'];
-      
+
       expect(metrics).toHaveLength(1);
       expect(metrics[0]).toMatchObject({
         type: 'page_load',
@@ -145,8 +147,8 @@ describe('PerformanceMonitor', () => {
           domComplete: 1000,
           loadEventEnd: 1200,
           domInteractive: 800,
-          domContentLoadedEventEnd: 900
-        }
+          domContentLoadedEventEnd: 900,
+        },
       });
     });
   });
@@ -161,11 +163,11 @@ describe('PerformanceMonitor', () => {
       mockDisconnect = vi.fn();
       mockObserver = {
         observe: mockObserve,
-        disconnect: mockDisconnect
+        disconnect: mockDisconnect,
       };
 
       // Mock PerformanceObserver
-      (global as any).PerformanceObserver = vi.fn((callback) => {
+      (global as any).PerformanceObserver = vi.fn(callback => {
         mockObserver.callback = callback;
         return mockObserver;
       });
@@ -173,18 +175,18 @@ describe('PerformanceMonitor', () => {
 
     it('应该能观察资源加载性能', () => {
       monitor.observeResourceTiming();
-      
+
       expect(mockObserve).toHaveBeenCalledWith({ entryTypes: ['resource'] });
 
       // 模拟资源加载完成
       const mockEntry = {
         name: 'test.js',
         duration: 100,
-        initiatorType: 'script'
+        initiatorType: 'script',
       };
 
       mockObserver.callback({
-        getEntries: () => [mockEntry]
+        getEntries: () => [mockEntry],
       });
 
       const metrics = monitor['metrics'];
@@ -194,8 +196,8 @@ describe('PerformanceMonitor', () => {
         data: {
           name: mockEntry.name,
           duration: mockEntry.duration,
-          type: mockEntry.initiatorType
-        }
+          type: mockEntry.initiatorType,
+        },
       });
     });
   });
@@ -206,10 +208,10 @@ describe('PerformanceMonitor', () => {
     beforeEach(() => {
       mockObserver = {
         observe: vi.fn(),
-        disconnect: vi.fn()
+        disconnect: vi.fn(),
       };
 
-      (global as any).PerformanceObserver = vi.fn((callback) => {
+      (global as any).PerformanceObserver = vi.fn(callback => {
         mockObserver.callback = callback;
         return mockObserver;
       });
@@ -217,17 +219,17 @@ describe('PerformanceMonitor', () => {
 
     it('应该能观察长任务', () => {
       monitor.observeLongTasks();
-      
+
       expect(mockObserver.observe).toHaveBeenCalledWith({ entryTypes: ['longtask'] });
 
       // 模拟长任务
       const mockEntry = {
         duration: 100,
-        startTime: 0
+        startTime: 0,
       };
 
       mockObserver.callback({
-        getEntries: () => [mockEntry]
+        getEntries: () => [mockEntry],
       });
 
       const metrics = monitor['metrics'];
@@ -236,8 +238,8 @@ describe('PerformanceMonitor', () => {
         type: 'long_task',
         data: {
           duration: mockEntry.duration,
-          startTime: mockEntry.startTime
-        }
+          startTime: mockEntry.startTime,
+        },
       });
     });
   });
@@ -248,10 +250,10 @@ describe('PerformanceMonitor', () => {
     beforeEach(() => {
       mockObserver = {
         observe: vi.fn(),
-        disconnect: vi.fn()
+        disconnect: vi.fn(),
       };
 
-      (global as any).PerformanceObserver = vi.fn((callback) => {
+      (global as any).PerformanceObserver = vi.fn(callback => {
         mockObserver.callback = callback;
         return mockObserver;
       });
@@ -259,18 +261,18 @@ describe('PerformanceMonitor', () => {
 
     it('应该能观察用户交互', () => {
       monitor.observeUserInteractions();
-      
+
       expect(mockObserver.observe).toHaveBeenCalledWith({ entryTypes: ['event'] });
 
       // 模拟用户交互
       const mockEntry = {
         name: 'click',
         duration: 50,
-        startTime: 0
+        startTime: 0,
       };
 
       mockObserver.callback({
-        getEntries: () => [mockEntry]
+        getEntries: () => [mockEntry],
       });
 
       const metrics = monitor['metrics'];
@@ -280,8 +282,8 @@ describe('PerformanceMonitor', () => {
         data: {
           name: mockEntry.name,
           duration: mockEntry.duration,
-          startTime: mockEntry.startTime
-        }
+          startTime: mockEntry.startTime,
+        },
       });
     });
   });
@@ -289,7 +291,7 @@ describe('PerformanceMonitor', () => {
   describe('API 调用监控', () => {
     it('应该能跟踪 API 调用', () => {
       monitor.trackApiCall('/api/test', 100, true);
-      
+
       const metrics = monitor['metrics'];
       expect(metrics).toHaveLength(1);
       expect(metrics[0]).toMatchObject({
@@ -297,8 +299,8 @@ describe('PerformanceMonitor', () => {
         data: {
           url: '/api/test',
           duration: 100,
-          success: true
-        }
+          success: true,
+        },
       });
     });
   });
@@ -308,7 +310,7 @@ describe('PerformanceMonitor', () => {
       monitor.recordMetric('', 100);
       expect(errorLogger.log).toHaveBeenCalledWith(
         expect.objectContaining({
-          message: 'Invalid metric name'
+          message: 'Invalid metric name',
         })
       );
     });
@@ -317,7 +319,7 @@ describe('PerformanceMonitor', () => {
       monitor.recordMetric('test', NaN);
       expect(errorLogger.log).toHaveBeenCalledWith(
         expect.objectContaining({
-          message: 'Invalid metric value'
+          message: 'Invalid metric value',
         })
       );
     });
@@ -327,15 +329,15 @@ describe('PerformanceMonitor', () => {
     it('应该成功发送指标', async () => {
       mockFetch.mockResolvedValueOnce({ ok: true });
       monitor.recordMetric('test', 100);
-      
+
       await monitor.flush();
-      
+
       expect(mockFetch).toHaveBeenCalledWith('/api/metrics', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: expect.any(String)
+        body: expect.any(String),
       });
       expect(monitor['metrics']).toHaveLength(0);
     });
@@ -343,9 +345,9 @@ describe('PerformanceMonitor', () => {
     it('应该处理发送失败的情况', async () => {
       mockFetch.mockRejectedValueOnce(new Error('Network error'));
       monitor.recordMetric('test', 100);
-      
+
       await monitor.flush();
-      
+
       expect(errorLogger.log).toHaveBeenCalled();
       expect(monitor['metrics']).toHaveLength(1);
     });
@@ -353,11 +355,11 @@ describe('PerformanceMonitor', () => {
     it('应该处理服务器错误响应', async () => {
       mockFetch.mockResolvedValueOnce({ ok: false, statusText: 'Server Error' });
       monitor.recordMetric('test', 100);
-      
+
       await monitor.flush();
-      
+
       expect(errorLogger.log).toHaveBeenCalled();
       expect(monitor['metrics']).toHaveLength(1);
     });
   });
-}); 
+});

@@ -30,4 +30,4 @@ export type FileError = {
   message: string;
   /** 原始错误 */
   originalError?: Error;
-}; 
+};

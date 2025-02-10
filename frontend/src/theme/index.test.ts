@@ -6,7 +6,7 @@ describe('Theme', () => {
   describe('createTheme', () => {
     it('应该创建亮色主题', () => {
       const theme = createTheme(false) as unknown as CustomTheme;
-      
+
       expect(theme.palette?.mode).toBe('light');
       expect(theme.palette?.background?.default).toBe(defaultTheme.palette?.background?.default);
       expect(theme.palette?.text?.primary).toBe(defaultTheme.palette?.text?.primary);
@@ -14,7 +14,7 @@ describe('Theme', () => {
 
     it('应该创建暗色主题', () => {
       const theme = createTheme(true) as unknown as CustomTheme;
-      
+
       expect(theme.palette?.mode).toBe('dark');
       expect(theme.palette?.background?.default).toBe(darkTheme.palette?.background?.default);
       expect(theme.palette?.text?.primary).toBe(darkTheme.palette?.text?.primary);
@@ -24,9 +24,9 @@ describe('Theme', () => {
       const customOptions: CustomThemeOptions = {
         palette: {
           primary: {
-            main: '#ff0000'
-          }
-        }
+            main: '#ff0000',
+          },
+        },
       };
 
       const theme = createTheme(false, customOptions as any) as unknown as CustomTheme;
@@ -36,11 +36,11 @@ describe('Theme', () => {
     it('应该保持默认值不变', () => {
       const theme = createTheme(false) as unknown as CustomTheme;
       const defaultTypography = (defaultTheme as unknown as CustomTheme).typography;
-      
+
       // 检查关键属性而不是整个对象
       expect(theme.palette?.primary).toEqual(defaultTheme.palette?.primary);
       expect(theme.palette?.secondary).toEqual(defaultTheme.palette?.secondary);
-      
+
       // 检查关键的 typography 属性
       expect(theme.typography).toBeDefined();
       expect(theme.typography.fontFamily).toBe(defaultTypography.fontFamily);
@@ -49,7 +49,7 @@ describe('Theme', () => {
       expect(theme.typography.body1?.fontSize).toBe(defaultTypography.body1?.fontSize);
       expect(theme.typography.body1?.lineHeight).toBe(defaultTypography.body1?.lineHeight);
       expect(theme.typography.button?.textTransform).toBe(defaultTypography.button?.textTransform);
-      
+
       expect(theme.breakpoints?.values).toEqual(defaultTheme.breakpoints?.values);
       expect(theme.spacing).toBeDefined();
       expect(theme.transitions).toBeDefined();
@@ -70,7 +70,7 @@ describe('Theme', () => {
 
     it('应该有正确的调色板配置', () => {
       const { palette } = defaultTheme;
-      
+
       expect(palette?.primary).toBeDefined();
       expect(palette?.secondary).toBeDefined();
       expect(palette?.error).toBeDefined();
@@ -82,7 +82,7 @@ describe('Theme', () => {
     it('应该有正确的排版配置', () => {
       const theme = defaultTheme as unknown as CustomThemeOptions;
       const { typography } = theme;
-      
+
       expect(typography?.fontFamily).toBeDefined();
       expect(typography?.h1).toBeDefined();
       expect(typography?.body1).toBeDefined();
@@ -91,7 +91,7 @@ describe('Theme', () => {
 
     it('应该有响应式断点配置', () => {
       const { breakpoints } = defaultTheme;
-      
+
       expect(breakpoints?.values?.xs).toBeDefined();
       expect(breakpoints?.values?.sm).toBeDefined();
       expect(breakpoints?.values?.md).toBeDefined();
@@ -103,7 +103,7 @@ describe('Theme', () => {
   describe('darkTheme', () => {
     it('应该有正确的暗色调色板', () => {
       const { palette } = darkTheme;
-      
+
       expect(palette?.mode).toBe('dark');
       expect(palette?.background?.default).toBeDefined();
       expect(palette?.background?.paper).toBeDefined();
@@ -117,7 +117,7 @@ describe('Theme', () => {
 
     it('应该有适当的对比度', () => {
       const { palette } = darkTheme;
-      
+
       expect(palette?.background?.default).not.toBe(palette?.text?.primary);
       expect(palette?.background?.paper).not.toBe(palette?.text?.primary);
     });
@@ -130,16 +130,18 @@ describe('Theme', () => {
 
       expect(lightTheme.palette?.mode).toBe('light');
       expect(darkTheme.palette?.mode).toBe('dark');
-      expect(lightTheme.palette?.background?.default).not.toBe(darkTheme.palette?.background?.default);
+      expect(lightTheme.palette?.background?.default).not.toBe(
+        darkTheme.palette?.background?.default
+      );
     });
 
     it('应该保持自定义设置在切换时不变', () => {
       const customOptions: CustomThemeOptions = {
         palette: {
           primary: {
-            main: '#ff0000'
-          }
-        }
+            main: '#ff0000',
+          },
+        },
       };
 
       const lightTheme = createTheme(false, customOptions as any) as unknown as CustomTheme;
@@ -153,7 +155,7 @@ describe('Theme', () => {
   describe('组件样式', () => {
     it('应该有默认的组件样式覆盖', () => {
       const theme = createTheme(false) as unknown as CustomTheme;
-      
+
       expect(theme.components?.MuiButton).toBeDefined();
       expect(theme.components?.MuiTextField).toBeDefined();
       expect(theme.components?.MuiCard).toBeDefined();
@@ -165,11 +167,11 @@ describe('Theme', () => {
           MuiButton: {
             styleOverrides: {
               root: {
-                borderRadius: 8
-              }
-            }
-          }
-        }
+                borderRadius: 8,
+              },
+            },
+          },
+        },
       };
 
       const theme = createTheme(false, customOptions as any) as unknown as CustomTheme;
@@ -182,22 +184,22 @@ describe('Theme', () => {
   describe('响应式设计', () => {
     it('应该有正确的断点值', () => {
       const theme = createTheme(false) as unknown as CustomTheme;
-      
+
       expect(theme.breakpoints?.values).toEqual({
         xs: 0,
         sm: 600,
         md: 960,
         lg: 1280,
-        xl: 1920
+        xl: 1920,
       });
     });
 
     it('应该有正确的间距单位', () => {
       const theme = createTheme(false) as unknown as CustomTheme;
-      
+
       expect(typeof theme.spacing(1)).toBe('string');
       expect(theme.spacing(2)).toBe('16px');
       expect(theme.spacing(0.5)).toBe('4px');
     });
   });
-}); 
+});

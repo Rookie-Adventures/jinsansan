@@ -14,7 +14,7 @@ describe('AuthForm', () => {
 
   it('renders login form correctly', () => {
     render(<AuthForm {...mockProps} />);
-    
+
     expect(screen.getByRole('heading', { level: 1, name: '登录' })).toBeInTheDocument();
     expect(screen.getByLabelText('用户名')).toBeInTheDocument();
     expect(screen.getByLabelText('密码')).toBeInTheDocument();
@@ -22,13 +22,19 @@ describe('AuthForm', () => {
   });
 
   it('renders register form correctly', () => {
-    render(<AuthForm {...mockProps} type="register" formData={{ 
-      username: '', 
-      password: '', 
-      email: '', 
-      confirmPassword: '' 
-    }} />);
-    
+    render(
+      <AuthForm
+        {...mockProps}
+        type="register"
+        formData={{
+          username: '',
+          password: '',
+          email: '',
+          confirmPassword: '',
+        }}
+      />
+    );
+
     expect(screen.getByRole('heading', { level: 1, name: '注册' })).toBeInTheDocument();
     expect(screen.getByLabelText('用户名')).toBeInTheDocument();
     expect(screen.getByLabelText('邮箱')).toBeInTheDocument();
@@ -39,7 +45,7 @@ describe('AuthForm', () => {
 
   it('handles form submission', () => {
     render(<AuthForm {...mockProps} />);
-    
+
     const form = screen.getByTestId('auth-form');
     fireEvent.submit(form);
     expect(mockProps.onSubmit).toHaveBeenCalled();
@@ -47,30 +53,30 @@ describe('AuthForm', () => {
 
   it('handles form changes', () => {
     render(<AuthForm {...mockProps} />);
-    
+
     fireEvent.change(screen.getByLabelText('用户名'), {
-      target: { value: 'testuser' }
+      target: { value: 'testuser' },
     });
-    
+
     expect(mockProps.onFormChange).toHaveBeenCalledWith({
-      username: 'testuser'
+      username: 'testuser',
     });
   });
 
   it('toggles password visibility', () => {
     render(<AuthForm {...mockProps} />);
-    
+
     const toggleButton = screen.getByTestId('password-visibility-toggle');
     fireEvent.click(toggleButton);
-    
+
     expect(mockProps.onTogglePassword).toHaveBeenCalled();
   });
 
   it('handles disabled state', () => {
     render(<AuthForm {...mockProps} disabled />);
-    
+
     expect(screen.getByRole('button', { name: '登录' })).toBeDisabled();
     expect(screen.getByLabelText('用户名')).toBeDisabled();
     expect(screen.getByLabelText('密码')).toBeDisabled();
   });
-}); 
+});

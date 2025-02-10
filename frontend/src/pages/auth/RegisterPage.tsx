@@ -17,11 +17,11 @@ const RegisterPage: React.FC = () => {
   return (
     <AuthPage
       type="register"
-      initialData={{ 
-        username: '', 
-        password: '', 
-        email: '', 
-        confirmPassword: '' 
+      initialData={{
+        username: '',
+        password: '',
+        email: '',
+        confirmPassword: '',
       }}
     >
       <RegisterForm />
@@ -29,4 +29,4 @@ const RegisterPage: React.FC = () => {
   );
 };
 
-export default RegisterPage; 
+export default RegisterPage;

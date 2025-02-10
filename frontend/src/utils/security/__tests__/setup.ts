@@ -50,4 +50,4 @@ beforeEach(() => {
   vi.clearAllMocks();
   store.clear();
   fetchMock.mockClear();
-}); 
+});

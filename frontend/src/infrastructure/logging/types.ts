@@ -49,4 +49,4 @@ export interface LogConfig {
   enableRemote: boolean;
   /** 远程日志接口地址 */
   remoteUrl?: string;
-} 
+}

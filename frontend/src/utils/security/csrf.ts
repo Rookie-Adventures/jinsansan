@@ -69,4 +69,4 @@ export class CSRFTokenManager {
 }
 
 // 导出单例实例
-export const csrfTokenManager = CSRFTokenManager.getInstance(); 
+export const csrfTokenManager = CSRFTokenManager.getInstance();

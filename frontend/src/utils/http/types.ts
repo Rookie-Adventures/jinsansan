@@ -28,7 +28,7 @@ export enum ErrorSeverity {
   INFO = 'info',
   WARNING = 'warning',
   ERROR = 'error',
-  CRITICAL = 'critical'
+  CRITICAL = 'critical',
 }
 
 export interface HttpError extends Error {
@@ -37,4 +37,4 @@ export interface HttpError extends Error {
   severity?: NotificationSeverity;
   isAxiosError?: boolean;
   response?: AxiosResponse;
-} 
+}

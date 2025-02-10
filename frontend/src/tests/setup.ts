@@ -1,15 +1,15 @@
-import '@testing-library/jest-dom'
-import { cleanup } from '@testing-library/react'
-import { setupServer } from 'msw/node'
-import { afterAll, afterEach, beforeAll, beforeEach, Mock, vi } from 'vitest'
-import { handlers } from '../mocks/handlers'
+import '@testing-library/jest-dom';
+import { cleanup } from '@testing-library/react';
+import { setupServer } from 'msw/node';
+import { afterAll, afterEach, beforeAll, beforeEach, Mock, vi } from 'vitest';
+import { handlers } from '../mocks/handlers';
 
 // MSW 服务器设置
-export const server = setupServer(...handlers)
+export const server = setupServer(...handlers);
 
 // 全局 Mock 设置
 vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual('react-router-dom')
+  const actual = await vi.importActual('react-router-dom');
   return {
     ...actual,
     useNavigate: () => vi.fn(),
@@ -17,10 +17,10 @@ vi.mock('react-router-dom', async () => {
       pathname: '/',
       search: '',
       hash: '',
-      state: null
-    })
-  }
-})
+      state: null,
+    }),
+  };
+});
 
 // Mock localStorage
 interface MockStorage {
@@ -41,8 +41,8 @@ const createMockStorage = (): MockStorage => ({
   length: 0,
   key: vi.fn(),
   [Symbol.iterator]: function* () {
-    yield* Object.entries(this)
-  }
+    yield* Object.entries(this);
+  },
 });
 
 const localStorageMock = createMockStorage();
@@ -53,16 +53,16 @@ const fetchMock = vi.fn();
 // 环境设置
 beforeAll(() => {
   // 启动 MSW
-  server.listen({ onUnhandledRequest: 'error' })
-  
+  server.listen({ onUnhandledRequest: 'error' });
+
   // Mock window 对象
   Object.defineProperty(window, 'localStorage', {
     value: localStorageMock,
-    writable: true
-  })
-  
-  global.fetch = fetchMock
-  
+    writable: true,
+  });
+
+  global.fetch = fetchMock;
+
   // Mock window.matchMedia
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
@@ -75,37 +75,40 @@ beforeAll(() => {
       addEventListener: vi.fn(),
       removeEventListener: vi.fn(),
       dispatchEvent: vi.fn(),
-    }))
-  })
+    })),
+  });
 
   // 设置 fake timers
-  vi.useFakeTimers()
-})
+  vi.useFakeTimers();
+});
 
 beforeEach(() => {
   // 重置所有 mocks
-  vi.clearAllMocks()
-  localStorageMock.clear.mockClear()
-  fetchMock.mockClear()
-  
+  vi.clearAllMocks();
+  localStorageMock.clear.mockClear();
+  fetchMock.mockClear();
+
   // 重置 localStorage 数据
   Object.keys(localStorageMock).forEach(key => {
-    if (typeof key === 'string' && !['getItem', 'setItem', 'removeItem', 'clear', 'key', 'length'].includes(key)) {
-      delete localStorageMock[key]
+    if (
+      typeof key === 'string' &&
+      !['getItem', 'setItem', 'removeItem', 'clear', 'key', 'length'].includes(key)
+    ) {
+      delete localStorageMock[key];
     }
-  })
-})
+  });
+});
 
 // 每个测试后清理
 afterEach(() => {
-  cleanup()
-  server.resetHandlers()
-})
+  cleanup();
+  server.resetHandlers();
+});
 
 // 所有测试结束后清理
 afterAll(() => {
-  server.close()
-  vi.clearAllTimers()
-  vi.useRealTimers()
-  vi.restoreAllMocks()
-}) 
+  server.close();
+  vi.clearAllTimers();
+  vi.useRealTimers();
+  vi.restoreAllMocks();
+});

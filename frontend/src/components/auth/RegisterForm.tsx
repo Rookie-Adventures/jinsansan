@@ -12,20 +12,20 @@ interface RegisterFormProps {
 }
 
 const defaultProps: Required<RegisterFormProps> = {
-  formData: { 
-    username: '', 
-    password: '', 
-    email: '', 
-    confirmPassword: '' 
+  formData: {
+    username: '',
+    password: '',
+    email: '',
+    confirmPassword: '',
   },
   showPassword: false,
   disabled: false,
   onSubmit: () => {},
   onFormChange: () => {},
-  onTogglePassword: () => {}
+  onTogglePassword: () => {},
 };
 
-const RegisterForm: React.FC<RegisterFormProps> = (props) => {
+const RegisterForm: React.FC<RegisterFormProps> = props => {
   const finalProps = { ...defaultProps, ...props };
   return (
     <AuthForm
@@ -40,4 +40,4 @@ const RegisterForm: React.FC<RegisterFormProps> = (props) => {
   );
 };
 
-export default RegisterForm; 
+export default RegisterForm;

@@ -8,10 +8,10 @@ interface GlobalProgressState {
   reset: () => void;
 }
 
-export const useGlobalProgress = create<GlobalProgressState>((set) => ({
+export const useGlobalProgress = create<GlobalProgressState>(set => ({
   loading: false,
   progress: null,
-  setLoading: (loading) => set({ loading }),
-  setProgress: (progress) => set({ progress }),
-  reset: () => set({ loading: false, progress: null })
-})); 
+  setLoading: loading => set({ loading }),
+  setProgress: progress => set({ progress }),
+  reset: () => set({ loading: false, progress: null }),
+}));

@@ -81,10 +81,10 @@ describe('errorUtils', () => {
   describe('toLogData', () => {
     it('应该将非 Error 对象转换为日志数据', () => {
       const result = toLogData('测试错误');
-      
+
       expect(result).toMatchObject({
         error: '测试错误',
-        timestamp: 1707264000000
+        timestamp: 1707264000000,
       });
       // 不比较具体的 stack trace，只验证其存在性
       expect(result.stack).toBeDefined();
@@ -93,10 +93,10 @@ describe('errorUtils', () => {
 
     it('应该处理 null', () => {
       const result = toLogData(null);
-      
+
       expect(result).toMatchObject({
         error: 'null',
-        timestamp: 1707264000000
+        timestamp: 1707264000000,
       });
       expect(result.stack).toBeDefined();
       expect(typeof result.stack).toBe('string');
@@ -104,13 +104,13 @@ describe('errorUtils', () => {
 
     it('应该处理 undefined', () => {
       const result = toLogData(undefined);
-      
+
       expect(result).toMatchObject({
         error: 'undefined',
-        timestamp: 1707264000000
+        timestamp: 1707264000000,
       });
       expect(result.stack).toBeDefined();
       expect(typeof result.stack).toBe('string');
     });
   });
-}); 
+});

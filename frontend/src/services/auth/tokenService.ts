@@ -61,7 +61,7 @@ export class TokenService {
    */
   public isTokenExpired(token: string | null): boolean {
     if (!token) return true;
-    
+
     try {
       const decoded = this.parseToken(token);
       return decoded.exp * 1000 < Date.now();
@@ -71,4 +71,4 @@ export class TokenService {
   }
 }
 
-export const tokenService = new TokenService(); 
+export const tokenService = new TokenService();

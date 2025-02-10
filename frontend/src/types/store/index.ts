@@ -46,10 +46,7 @@ export interface Action<T = unknown> {
 }
 
 // Thunk Action类型
-export type ThunkAction<R = void, S = RootState> = (
-  dispatch: Dispatch,
-  getState: () => S
-) => R;
+export type ThunkAction<R = void, S = RootState> = (dispatch: Dispatch, getState: () => S) => R;
 
 // Dispatch类型
-export type Dispatch = <T = unknown>(action: Action<T> | ThunkAction) => Promise<T> | T; 
+export type Dispatch = <T = unknown>(action: Action<T> | ThunkAction) => Promise<T> | T;

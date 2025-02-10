@@ -22,27 +22,27 @@ export class EncryptionManager {
     this._config = Object.freeze({
       algorithm: 'AES',
       keySize: 256,
-      iterations: 1000
+      iterations: 1000,
     });
 
     // 设置只读的公开配置
     Object.defineProperty(this, 'config', {
       get: () => this._config,
       configurable: false,
-      enumerable: true
+      enumerable: true,
     });
-    
+
     // 使方法不可配置
     const prototype = Object.getPrototypeOf(this);
     const descriptors = Object.getOwnPropertyDescriptors(prototype);
-    
+
     Object.defineProperties(prototype, {
       updateConfig: { ...descriptors.updateConfig, configurable: false },
       encrypt: { ...descriptors.encrypt, configurable: false },
       decrypt: { ...descriptors.decrypt, configurable: false },
       hash: { ...descriptors.hash, configurable: false },
       generateRandomString: { ...descriptors.generateRandomString, configurable: false },
-      verifyHash: { ...descriptors.verifyHash, configurable: false }
+      verifyHash: { ...descriptors.verifyHash, configurable: false },
     });
   }
 
@@ -59,7 +59,7 @@ export class EncryptionManager {
   private generateKey(salt: string, passphrase: string): string {
     return CryptoJS.PBKDF2(passphrase, salt, {
       keySize: this._config.keySize / 32,
-      iterations: this._config.iterations
+      iterations: this._config.iterations,
     }).toString();
   }
 
@@ -127,7 +127,7 @@ export class EncryptionManager {
     // 更新私有配置
     this._config = Object.freeze({
       ...this._config,
-      ...newConfig
+      ...newConfig,
     });
   }
 
@@ -135,19 +135,16 @@ export class EncryptionManager {
    * 处理加密/解密错误
    */
   private handleCryptoError(error: unknown, operation: string): void {
-    errorLogger.log(
-      error instanceof Error ? error : new Error(`Crypto error in ${operation}`),
-      {
-        level: 'error',
-        context: {
-          operation,
-          timestamp: Date.now(),
-          source: 'EncryptionManager'
-        }
-      }
-    );
+    errorLogger.log(error instanceof Error ? error : new Error(`Crypto error in ${operation}`), {
+      level: 'error',
+      context: {
+        operation,
+        timestamp: Date.now(),
+        source: 'EncryptionManager',
+      },
+    });
   }
 }
 
 // 导出单例实例
-export const encryptionManager = EncryptionManager.getInstance(); 
+export const encryptionManager = EncryptionManager.getInstance();

@@ -15,12 +15,7 @@ export const getThemeTransitionStyles = (theme: Theme) => ({
   // 全局过渡效果
   '*': {
     transition: theme.transitions.create(
-      [
-        'background-color',
-        'color',
-        'border-color',
-        'box-shadow',
-      ],
+      ['background-color', 'color', 'border-color', 'box-shadow'],
       {
         duration: THEME_TRANSITION_DURATION,
         easing: theme.transitions.easing.easeInOut,
@@ -29,22 +24,16 @@ export const getThemeTransitionStyles = (theme: Theme) => ({
   },
   // 特定元素过渡效果
   '.MuiPaper-root': {
-    transition: theme.transitions.create(
-      ['background-color', 'box-shadow'],
-      {
-        duration: THEME_TRANSITION_DURATION,
-        easing: theme.transitions.easing.easeInOut,
-      }
-    ),
+    transition: theme.transitions.create(['background-color', 'box-shadow'], {
+      duration: THEME_TRANSITION_DURATION,
+      easing: theme.transitions.easing.easeInOut,
+    }),
   },
   '.MuiAppBar-root': {
-    transition: theme.transitions.create(
-      ['background-color', 'box-shadow'],
-      {
-        duration: THEME_TRANSITION_DURATION,
-        easing: theme.transitions.easing.easeInOut,
-      }
-    ),
+    transition: theme.transitions.create(['background-color', 'box-shadow'], {
+      duration: THEME_TRANSITION_DURATION,
+      easing: theme.transitions.easing.easeInOut,
+    }),
   },
 });
 
@@ -63,9 +52,18 @@ export const adjustColor = (color: string, amount: number): string => {
   }
   const rgb = hexToRgb(color);
   const adjusted = {
-    r: Math.min(255, Math.max(0, Math.round(rgb.r + (amount < 0 ? -rgb.r : (255 - rgb.r)) * Math.abs(amount)))),
-    g: Math.min(255, Math.max(0, Math.round(rgb.g + (amount < 0 ? -rgb.g : (255 - rgb.g)) * Math.abs(amount)))),
-    b: Math.min(255, Math.max(0, Math.round(rgb.b + (amount < 0 ? -rgb.b : (255 - rgb.b)) * Math.abs(amount))))
+    r: Math.min(
+      255,
+      Math.max(0, Math.round(rgb.r + (amount < 0 ? -rgb.r : 255 - rgb.r) * Math.abs(amount)))
+    ),
+    g: Math.min(
+      255,
+      Math.max(0, Math.round(rgb.g + (amount < 0 ? -rgb.g : 255 - rgb.g) * Math.abs(amount)))
+    ),
+    b: Math.min(
+      255,
+      Math.max(0, Math.round(rgb.b + (amount < 0 ? -rgb.b : 255 - rgb.b) * Math.abs(amount)))
+    ),
   };
   return rgbToHex(adjusted);
 };
@@ -75,10 +73,13 @@ export const createTransitions = (
   duration: number = 200,
   easing: string = 'ease'
 ): Record<string, string> => {
-  return properties.reduce((acc, prop) => ({
-    ...acc,
-    [prop]: `${duration}ms${easing ? ` ${easing}` : ''}`
-  }), {});
+  return properties.reduce(
+    (acc, prop) => ({
+      ...acc,
+      [prop]: `${duration}ms${easing ? ` ${easing}` : ''}`,
+    }),
+    {}
+  );
 };
 
 export interface ColorPalette {
@@ -93,7 +94,10 @@ export interface ExtendedColorPalette extends ColorPalette {
   secondary: ColorPalette;
 }
 
-export const generatePalette = (primaryColor: string, withSecondary: boolean = false): ColorPalette | ExtendedColorPalette => {
+export const generatePalette = (
+  primaryColor: string,
+  withSecondary: boolean = false
+): ColorPalette | ExtendedColorPalette => {
   if (!isValidColor(primaryColor)) {
     throw new Error('Invalid color format');
   }
@@ -108,7 +112,7 @@ export const generatePalette = (primaryColor: string, withSecondary: boolean = f
     light: lighten(primaryColor, 0.2),
     dark: darken(primaryColor, 0.2),
     contrastText: getContrastText(primaryColor),
-    alpha: createAlphaFn(primaryColor)
+    alpha: createAlphaFn(primaryColor),
   };
 
   if (withSecondary) {
@@ -120,8 +124,8 @@ export const generatePalette = (primaryColor: string, withSecondary: boolean = f
         light: lighten(secondaryColor, 0.2),
         dark: darken(secondaryColor, 0.2),
         contrastText: getContrastText(secondaryColor),
-        alpha: createAlphaFn(secondaryColor)
-      }
+        alpha: createAlphaFn(secondaryColor),
+      },
     };
   }
 
@@ -134,11 +138,13 @@ const hexToRgb = (hex: string) => {
   hex = hex.replace(shorthandRegex, (_, r, g, b) => r + r + g + g + b + b);
 
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ? {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16)
-  } : { r: 0, g: 0, b: 0 };
+  return result
+    ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
+    : { r: 0, g: 0, b: 0 };
 };
 
 const isValidColor = (color: string): boolean => {
@@ -161,4 +167,4 @@ const rgbToHex = (rgb: { r: number; g: number; b: number }): string => {
     return hex.length === 1 ? '0' + hex : hex;
   };
   return `#${toHex(rgb.r)}${toHex(rgb.g)}${toHex(rgb.b)}`;
-}; 
+};

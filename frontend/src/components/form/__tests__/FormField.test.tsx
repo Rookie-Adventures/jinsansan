@@ -18,7 +18,7 @@ interface TestFormProps {
 }
 
 const schema = yup.object({
-  testField: yup.string().required('这是必填项')
+  testField: yup.string().required('这是必填项'),
 });
 
 // 测试配置
@@ -26,16 +26,12 @@ const TEST_TIMEOUT = 1000;
 
 const TestForm: React.FC<TestFormProps> = ({ control, onSubmit, defaultValues }) => {
   const { handleSubmit } = useForm<TestFormData>({
-    defaultValues: defaultValues || { testField: '' }
+    defaultValues: defaultValues || { testField: '' },
   });
 
   return (
     <form onSubmit={handleSubmit(onSubmit || (() => {}))} data-testid="test-form">
-      <FormField<TestFormData>
-        name="testField"
-        control={control}
-        label="测试字段"
-      />
+      <FormField<TestFormData> name="testField" control={control} label="测试字段" />
       <button type="submit">提交</button>
     </form>
   );
@@ -46,7 +42,7 @@ describe('FormField', () => {
     it('应该正确渲染文本输入框', () => {
       const WrapperComponent = () => {
         const { control } = useForm<TestFormData>({
-          defaultValues: { testField: '' }
+          defaultValues: { testField: '' },
         });
         return <TestForm control={control} />;
       };
@@ -83,26 +79,29 @@ describe('FormField', () => {
       const WrapperComponent = () => {
         const { control } = useForm<TestFormData>({
           resolver: yupResolver(schema),
-          mode: 'onBlur'
+          mode: 'onBlur',
         });
         return <TestForm control={control} />;
       };
 
       render(<WrapperComponent />);
       const input = screen.getByRole('textbox');
-      
+
       // 触发验证
       fireEvent.focus(input);
       fireEvent.blur(input);
 
       // 等待错误消息显示
-      await waitFor(() => {
-        const errorMessage = screen.getByText('这是必填项');
-        expect(errorMessage).toBeInTheDocument();
-        expect(input).toHaveAttribute('aria-invalid', 'true');
-      }, {
-        timeout: TEST_TIMEOUT
-      });
+      await waitFor(
+        () => {
+          const errorMessage = screen.getByText('这是必填项');
+          expect(errorMessage).toBeInTheDocument();
+          expect(input).toHaveAttribute('aria-invalid', 'true');
+        },
+        {
+          timeout: TEST_TIMEOUT,
+        }
+      );
     });
   });
 
@@ -110,7 +109,7 @@ describe('FormField', () => {
     it('应该正确更新输入值', () => {
       const WrapperComponent = () => {
         const { control } = useForm<TestFormData>({
-          defaultValues: { testField: '' }
+          defaultValues: { testField: '' },
         });
         return <TestForm control={control} />;
       };
@@ -125,22 +124,18 @@ describe('FormField', () => {
   describe('表单集成', () => {
     it('应该与 react-hook-form 正确集成', async () => {
       const onSubmit = vi.fn();
-      
+
       const TestComponent = () => {
         const methods = useForm<TestFormData>({
           defaultValues: {
-            testField: '测试值'
-          }
+            testField: '测试值',
+          },
         });
-        
+
         return (
           <FormProvider {...methods}>
             <form data-testid="test-form" onSubmit={methods.handleSubmit(onSubmit)}>
-              <FormField
-                name="testField"
-                label="测试字段"
-                control={methods.control}
-              />
+              <FormField name="testField" label="测试字段" control={methods.control} />
               <button type="submit">提交</button>
             </form>
           </FormProvider>
@@ -156,10 +151,10 @@ describe('FormField', () => {
 
       expect(onSubmit).toHaveBeenCalledWith(
         expect.objectContaining({
-          testField: '测试值'
+          testField: '测试值',
         }),
         expect.anything()
       );
     });
   });
-}); 
+});

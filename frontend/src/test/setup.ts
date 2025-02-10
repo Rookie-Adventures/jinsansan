@@ -6,13 +6,13 @@ import { afterAll, afterEach, beforeAll, vi } from 'vitest';
 beforeAll(() => {
   // 确保开始时使用真实定时器
   vi.useRealTimers();
-})
+});
 
 // 在所有测试结束后清理
 afterAll(() => {
   // 确保结束时使用真实定时器
   vi.useRealTimers();
-})
+});
 
 // 在每个测试后清理
 afterEach(() => {
@@ -20,19 +20,19 @@ afterEach(() => {
   vi.clearAllMocks();
   // 确保每个测试后重置为真实定时器
   vi.useRealTimers();
-})
+});
 
 // 模拟 console.error，避免测试输出太多错误信息
-const originalConsoleError = console.error
+const originalConsoleError = console.error;
 console.error = (...args: any[]) => {
   if (
     typeof args[0] === 'string' &&
     args[0].includes('Warning: ReactDOM.render is no longer supported')
   ) {
-    return
+    return;
   }
-  originalConsoleError.apply(console, args)
-}
+  originalConsoleError.apply(console, args);
+};
 
 // 模拟 localStorage
 const localStorageMock = {
@@ -42,8 +42,8 @@ const localStorageMock = {
   clear: vi.fn(),
   length: 0,
   key: vi.fn(),
-}
-global.localStorage = localStorageMock as Storage
+};
+global.localStorage = localStorageMock as Storage;
 
 // 模拟 matchMedia
 Object.defineProperty(window, 'matchMedia', {
@@ -58,14 +58,14 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
   })),
-})
+});
 
 // 模拟 ResizeObserver
 global.ResizeObserver = class ResizeObserver {
-  observe = vi.fn()
-  unobserve = vi.fn()
-  disconnect = vi.fn()
-}
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+};
 
 // 模拟 Intersection Observer
 global.IntersectionObserver = class IntersectionObserver {
@@ -76,7 +76,7 @@ global.IntersectionObserver = class IntersectionObserver {
   unobserve = vi.fn();
   disconnect = vi.fn();
   takeRecords = vi.fn().mockReturnValue([]);
-}
+};
 
 // 添加自定义匹配器
 expect.extend({
@@ -108,4 +108,4 @@ expect.extend({
       pass,
     };
   },
-}); 
+});

@@ -18,7 +18,7 @@ interface TestStoreOptions {
 
 // Mock Navbar 组件
 vi.mock('../Navbar', () => ({
-  default: () => <div data-testid="mock-navbar">{TEST_NAVBAR_TEXT}</div>
+  default: () => <div data-testid="mock-navbar">{TEST_NAVBAR_TEXT}</div>,
 }));
 
 // Mock Outlet 组件
@@ -26,7 +26,7 @@ vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
   return {
     ...actual,
-    Outlet: () => <div data-testid="mock-outlet">{TEST_OUTLET_TEXT}</div>
+    Outlet: () => <div data-testid="mock-outlet">{TEST_OUTLET_TEXT}</div>,
   };
 });
 
@@ -34,20 +34,22 @@ describe('MainLayout', () => {
   const createTestStore = ({ initialState }: TestStoreOptions = {}) => {
     return configureStore({
       reducer: {
-        app: appReducer
+        app: appReducer,
       },
-      preloadedState: initialState ? {
-        app: {
-          darkMode: false,
-          loading: false,
-          toast: {
-            open: false,
-            message: '',
-            severity: 'info' as AlertColor
-          },
-          ...initialState
-        }
-      } : undefined
+      preloadedState: initialState
+        ? {
+            app: {
+              darkMode: false,
+              loading: false,
+              toast: {
+                open: false,
+                message: '',
+                severity: 'info' as AlertColor,
+              },
+              ...initialState,
+            },
+          }
+        : undefined,
     });
   };
 
@@ -56,12 +58,10 @@ describe('MainLayout', () => {
     return {
       ...render(
         <Provider store={store}>
-          <MemoryRouter>
-            {ui}
-          </MemoryRouter>
+          <MemoryRouter>{ui}</MemoryRouter>
         </Provider>
       ),
-      store
+      store,
     };
   };
 
@@ -72,7 +72,7 @@ describe('MainLayout', () => {
     const navbar = screen.getByTestId('mock-navbar');
     expect(navbar).toBeInTheDocument();
     expect(navbar).toHaveTextContent(TEST_NAVBAR_TEXT);
-    
+
     // 验证主内容区域是否渲染
     const outlet = screen.getByTestId('mock-outlet');
     expect(outlet).toBeInTheDocument();
@@ -88,7 +88,7 @@ describe('MainLayout', () => {
       minHeight: '100vh',
       display: 'flex',
       flexDirection: 'column',
-      position: 'relative'
+      position: 'relative',
     });
 
     // 验证主内容区域样式
@@ -96,7 +96,7 @@ describe('MainLayout', () => {
     expect(mainContent).toHaveStyle({
       flexGrow: 1,
       width: '100%',
-      position: 'relative'
+      position: 'relative',
     });
   });
-}); 
+});

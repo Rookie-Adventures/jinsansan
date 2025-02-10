@@ -25,4 +25,4 @@ export function validateNumber(value: number, min?: number, max?: number): boole
   if (min !== undefined && value < min) return false;
   if (max !== undefined && value > max) return false;
   return true;
-} 
+}

@@ -7,7 +7,7 @@ vi.mock('../PerformanceMonitor', () => ({
   PerformanceMonitor: {
     getInstance: vi.fn().mockReturnValue({
       trackCustomMetric: vi.fn().mockImplementation((metricName: string, value: number) => {
-        switch(metricName) {
+        switch (metricName) {
           case 'route_transition_fps':
             return value >= 30 ? value : 30; // 确保帧率至少为30
           case 'route_transition_performance_issue':
@@ -19,7 +19,7 @@ vi.mock('../PerformanceMonitor', () => ({
           case 'route_preload_js_size':
           case 'route_preload_css_size':
           case 'route_preload_total_size':
-          case 'route_preload_cache_hit_rate': 
+          case 'route_preload_cache_hit_rate':
           case 'route_preload_error_count':
           case 'route_preload_success_rate':
           case 'route_preload_deduplication_count':
@@ -30,9 +30,9 @@ vi.mock('../PerformanceMonitor', () => ({
             return value;
         }
       }),
-      trackTiming: vi.fn()
-    })
-  }
+      trackTiming: vi.fn(),
+    }),
+  },
 }));
 
 // Mock fetch
@@ -47,14 +47,14 @@ Object.defineProperty(window, 'performance', {
       navigationStart: 0,
       loadEventEnd: 1000,
       domContentLoadedEventEnd: 800,
-      domInteractive: 600
+      domInteractive: 600,
     },
     getEntriesByType: vi.fn().mockReturnValue([]),
     mark: vi.fn(),
-    measure: vi.fn()
+    measure: vi.fn(),
   },
   writable: true,
-  configurable: true
+  configurable: true,
 });
 
 // Mock requestAnimationFrame
@@ -73,17 +73,17 @@ describe('RouterAnalytics', () => {
     mockPerformanceMonitor = PerformanceMonitor.getInstance();
     analytics = RouterAnalytics.getInstance();
     analytics.clearAnalytics();
-    
+
     // Reset performance.now mock with safe number conversion
     mockPerformanceNow.mockReset();
     mockPerformanceNow.mockImplementation(() => {
       const currentTime = vi.getMockedSystemTime();
       return Number(currentTime) - baseTime;
     });
-    
+
     // Mock fetch success response
     (global.fetch as jest.Mock).mockResolvedValue({
-      ok: true
+      ok: true,
     });
 
     // 重置所有mock
@@ -125,10 +125,10 @@ describe('RouterAnalytics', () => {
       Object.defineProperty(window.performance, 'timing', {
         value: {
           navigationStart: 0,
-          loadEventEnd: 1000
+          loadEventEnd: 1000,
         },
         configurable: true,
-        enumerable: true
+        enumerable: true,
       });
 
       analytics.trackRoute('/', 'initial');
@@ -141,13 +141,13 @@ describe('RouterAnalytics', () => {
   describe('路由转场动画', () => {
     it('应该跟踪转场动画的开始和结束', async () => {
       analytics.trackRouteTransitionStart('/home', '/about');
-      
+
       // 模拟多个动画帧
       for (let i = 0; i < 10; i++) {
         await vi.advanceTimersByTimeAsync(16.67); // 约60fps
         mockPerformanceNow.mockReturnValue(Number(vi.getMockedSystemTime()));
       }
-      
+
       analytics.trackRouteTransitionEnd();
 
       // 验证转场时间
@@ -165,17 +165,19 @@ describe('RouterAnalytics', () => {
 
     it('应该检测性能问题', async () => {
       analytics.trackRouteTransitionStart('/home', '/about');
-      
+
       // 模拟低帧率场景，使用 50ms 每帧
       for (let i = 0; i < 5; i++) {
         await vi.advanceTimersByTimeAsync(50);
         mockPerformanceNow.mockReturnValue(Number(vi.getMockedSystemTime()));
       }
-      
+
       analytics.trackRouteTransitionEnd();
-      
+
       const calls = mockPerformanceMonitor.trackCustomMetric.mock.calls as MetricCall[];
-      const performanceIssueCall = calls.find((call: MetricCall) => call[0] === 'route_transition_performance_issue');
+      const performanceIssueCall = calls.find(
+        (call: MetricCall) => call[0] === 'route_transition_performance_issue'
+      );
       if (performanceIssueCall) {
         expect(performanceIssueCall[1]).toBe(1);
       }
@@ -183,15 +185,15 @@ describe('RouterAnalytics', () => {
 
     it('应该计算帧率', async () => {
       analytics.trackRouteTransitionStart('/home', '/about');
-      
+
       // 模拟稳定 60fps 场景，使用约 16.67ms 每帧
       for (let i = 0; i < 60; i++) {
         await vi.advanceTimersByTimeAsync(16.67);
         mockPerformanceNow.mockReturnValue(Number(vi.getMockedSystemTime()));
       }
-      
+
       analytics.trackRouteTransitionEnd();
-      
+
       expect(mockPerformanceMonitor.trackCustomMetric).toHaveBeenCalledWith(
         'route_transition_fps',
         expect.closeTo(62.5, 1)
@@ -212,7 +214,7 @@ describe('RouterAnalytics', () => {
       const promise2 = analytics.trackPreloadStart('/dashboard');
 
       await vi.runAllTimersAsync();
-      
+
       expect(promise1).toBe(promise2);
       expect(mockPerformanceMonitor.trackCustomMetric).toHaveBeenCalledWith(
         'route_preload_deduplication_count',
@@ -232,7 +234,7 @@ describe('RouterAnalytics', () => {
       await analytics.trackPreloadEnd('/dashboard', true, {
         jsSize: 100000,
         cssSize: 50000,
-        totalSize: 150000
+        totalSize: 150000,
       });
 
       const calls = mockPerformanceMonitor.trackCustomMetric.mock.calls as MetricCall[];
@@ -259,7 +261,7 @@ describe('RouterAnalytics', () => {
       const startPromise = analytics.trackPreloadStart('/dashboard');
       await vi.runAllTimersAsync();
       await startPromise;
-      
+
       const error = new Error('Failed to preload');
       await analytics.trackPreloadError('/dashboard', error);
 
@@ -296,7 +298,7 @@ describe('RouterAnalytics', () => {
       const startPromise = analytics.trackPreloadStart('/dashboard');
       await vi.runAllTimersAsync();
       await startPromise;
-      
+
       expect(analytics.getActivePreloadCount('/dashboard')).toBe(1);
 
       await analytics.trackPreloadEnd('/dashboard', true);
@@ -307,18 +309,18 @@ describe('RouterAnalytics', () => {
   describe('数据上报', () => {
     it('应该成功上报分析数据', async () => {
       analytics.trackRoute('/home', 'push');
-      
+
       // 等待异步上报完成
       await vi.runAllTimersAsync();
-      
+
       expect(global.fetch).toHaveBeenCalledWith(
         '/api/analytics/route',
         expect.objectContaining({
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
-          body: expect.any(String)
+          body: expect.any(String),
         })
       );
     });
@@ -328,10 +330,10 @@ describe('RouterAnalytics', () => {
       (global.fetch as jest.Mock).mockRejectedValueOnce(new Error('Network error'));
 
       analytics.trackRoute('/home', 'push');
-      
+
       // 等待异步上报完成
       await vi.runAllTimersAsync();
-      
+
       expect(mockPerformanceMonitor.trackCustomMetric).toHaveBeenCalledWith(
         'route_analytics_error',
         1
@@ -358,8 +360,8 @@ describe('RouterAnalytics', () => {
       const stats = analytics.getRouteStats();
       expect(stats).toEqual({
         '/home': 2,
-        '/about': 1
+        '/about': 1,
       });
     });
   });
-}); 
+});

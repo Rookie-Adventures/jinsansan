@@ -7,11 +7,11 @@ describe('useAuthForm', () => {
     it('应该使用初始数据初始化表单', () => {
       const initialLoginData: LoginFormData = {
         username: 'testuser',
-        password: 'password123'
+        password: 'password123',
       };
 
       const { result } = renderHook(() => useAuthForm({ initialData: initialLoginData }));
-      
+
       expect(result.current.formData).toEqual(initialLoginData);
       expect(result.current.showPassword).toBeFalsy();
     });
@@ -21,11 +21,11 @@ describe('useAuthForm', () => {
         username: 'testuser',
         password: 'password123',
         email: 'test@example.com',
-        confirmPassword: 'password123'
+        confirmPassword: 'password123',
       };
 
       const { result } = renderHook(() => useAuthForm({ initialData: initialRegisterData }));
-      
+
       expect(result.current.formData).toEqual(initialRegisterData);
       expect(result.current.showPassword).toBeFalsy();
     });
@@ -35,18 +35,18 @@ describe('useAuthForm', () => {
     it('应该正确更新表单数据', () => {
       const initialData: LoginFormData = {
         username: '',
-        password: ''
+        password: '',
       };
 
       const { result } = renderHook(() => useAuthForm({ initialData }));
-      
+
       act(() => {
         result.current.handleFormChange({ username: 'newuser' });
       });
 
       expect(result.current.formData).toEqual({
         username: 'newuser',
-        password: ''
+        password: '',
       });
 
       act(() => {
@@ -55,18 +55,18 @@ describe('useAuthForm', () => {
 
       expect(result.current.formData).toEqual({
         username: 'newuser',
-        password: 'newpassword'
+        password: 'newpassword',
       });
     });
 
     it('应该正确切换密码可见性', () => {
       const initialData: LoginFormData = {
         username: 'testuser',
-        password: 'password123'
+        password: 'password123',
       };
 
       const { result } = renderHook(() => useAuthForm({ initialData }));
-      
+
       expect(result.current.showPassword).toBeFalsy();
 
       act(() => {
@@ -87,18 +87,18 @@ describe('useAuthForm', () => {
         username: 'testuser',
         password: 'password123',
         email: 'test@example.com',
-        confirmPassword: 'password123'
+        confirmPassword: 'password123',
       };
 
       const { result } = renderHook(() => useAuthForm({ initialData: initialRegisterData }));
-      
+
       act(() => {
         result.current.handleFormChange({ email: 'newemail@example.com' });
       });
 
       expect(result.current.formData).toEqual({
         ...initialRegisterData,
-        email: 'newemail@example.com'
+        email: 'newemail@example.com',
       });
     });
   });
@@ -107,18 +107,20 @@ describe('useAuthForm', () => {
     it('应该正确处理 LoginFormData 类型', () => {
       const initialLoginData: LoginFormData = {
         username: 'testuser',
-        password: 'password123'
+        password: 'password123',
       };
 
-      const { result } = renderHook(() => useAuthForm<LoginFormData>({ initialData: initialLoginData }));
-      
+      const { result } = renderHook(() =>
+        useAuthForm<LoginFormData>({ initialData: initialLoginData })
+      );
+
       act(() => {
         result.current.handleFormChange({ username: 'newuser' });
       });
 
       expect(result.current.formData).toEqual({
         username: 'newuser',
-        password: 'password123'
+        password: 'password123',
       });
     });
 
@@ -127,19 +129,21 @@ describe('useAuthForm', () => {
         username: 'testuser',
         password: 'password123',
         email: 'test@example.com',
-        confirmPassword: 'password123'
+        confirmPassword: 'password123',
       };
 
-      const { result } = renderHook(() => useAuthForm<RegisterFormData>({ initialData: initialRegisterData }));
-      
+      const { result } = renderHook(() =>
+        useAuthForm<RegisterFormData>({ initialData: initialRegisterData })
+      );
+
       act(() => {
         result.current.handleFormChange({ email: 'newemail@example.com' });
       });
 
       expect(result.current.formData).toEqual({
         ...initialRegisterData,
-        email: 'newemail@example.com'
+        email: 'newemail@example.com',
       });
     });
   });
-}); 
+});

@@ -1,17 +1,24 @@
 /**
  * 性能指标类型
  */
-export type MetricType = 'page_load' | 'resource' | 'long_task' | 'interaction' | 'custom' | 'api_call' | 'cpu_usage';
+export type MetricType =
+  | 'page_load'
+  | 'resource'
+  | 'long_task'
+  | 'interaction'
+  | 'custom'
+  | 'api_call'
+  | 'cpu_usage';
 
 /**
  * 指标数据联合类型
  */
-export type MetricData = 
-  | PageLoadMetrics 
-  | ResourceMetrics 
-  | LongTaskMetrics 
-  | InteractionMetrics 
-  | CustomMetrics 
+export type MetricData =
+  | PageLoadMetrics
+  | ResourceMetrics
+  | LongTaskMetrics
+  | InteractionMetrics
+  | CustomMetrics
   | ApiCallMetrics;
 
 /**
@@ -228,4 +235,4 @@ export type AlertOperator = '>' | '<' | '>=' | '<=' | '==' | '!=';
 export interface AlertCondition {
   operator: AlertOperator;
   value: number;
-} 
+}

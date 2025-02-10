@@ -14,7 +14,7 @@ describe('performanceMiddleware', () => {
     next = vi.fn();
     const api = {
       getState: vi.fn(),
-      dispatch: vi.fn()
+      dispatch: vi.fn(),
     };
     invoke = performanceMiddleware(api)(next);
     vi.clearAllMocks();
@@ -23,7 +23,7 @@ describe('performanceMiddleware', () => {
     const mockPerformanceNow = vi.fn(() => 0);
     global.performance = {
       ...originalPerformance,
-      now: mockPerformanceNow
+      now: mockPerformanceNow,
     };
   });
 
@@ -45,7 +45,7 @@ describe('performanceMiddleware', () => {
   it('在开发环境中应该记录耗时超过16ms的 action', () => {
     process.env.NODE_ENV = 'development';
     const action = { type: 'test/slowAction' };
-    
+
     // Mock performance.now to simulate slow action
     let callCount = 0;
     (global.performance.now as ReturnType<typeof vi.fn>).mockImplementation(() => {
@@ -60,8 +60,8 @@ describe('performanceMiddleware', () => {
         context: 'performanceMiddleware',
         data: expect.objectContaining({
           duration: 20,
-          actionType: 'test/slowAction'
-        })
+          actionType: 'test/slowAction',
+        }),
       })
     );
   });
@@ -69,7 +69,7 @@ describe('performanceMiddleware', () => {
   it('在开发环境中不应该记录耗时小于16ms的 action', () => {
     process.env.NODE_ENV = 'development';
     const action = { type: 'test/fastAction' };
-    
+
     // Mock performance.now to simulate fast action
     let callCount = 0;
     (global.performance.now as ReturnType<typeof vi.fn>).mockImplementation(() => {
@@ -84,7 +84,7 @@ describe('performanceMiddleware', () => {
   it('应该处理没有 type 的 action', () => {
     process.env.NODE_ENV = 'development';
     const action = {};
-    
+
     let callCount = 0;
     (global.performance.now as ReturnType<typeof vi.fn>).mockImplementation(() => {
       return callCount++ === 0 ? 0 : 20;
@@ -97,4 +97,4 @@ describe('performanceMiddleware', () => {
       expect.any(Object)
     );
   });
-}); 
+});

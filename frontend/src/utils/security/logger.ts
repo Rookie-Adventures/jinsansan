@@ -14,5 +14,5 @@ export const securityLogger = {
    */
   log: (...args: any[]): void => {
     console.log('[Security]', ...args);
-  }
-}; 
+  },
+};

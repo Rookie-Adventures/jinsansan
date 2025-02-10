@@ -11,7 +11,7 @@ const createResource = (name: string, delay: number) => {
   return {
     read() {
       if (status === 'pending') {
-        promise = new Promise<string>((resolve) => {
+        promise = new Promise<string>(resolve => {
           setTimeout(() => {
             status = 'success';
             result = name;
@@ -27,7 +27,7 @@ const createResource = (name: string, delay: number) => {
     },
     reset() {
       status = 'pending';
-    }
+    },
   };
 };
 
@@ -41,10 +41,7 @@ const createAsyncComponent = (name: string, delay: number) => {
 };
 
 // 正确的错误边界实现
-class ErrorBoundary extends React.Component<
-  { children: React.ReactNode },
-  { hasError: boolean }
-> {
+class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
   constructor(props: { children: React.ReactNode }) {
     super(props);
     this.state = { hasError: false };
@@ -180,7 +177,7 @@ describe('Suspense Component Group', () => {
 
   it('should work with startTransition', async () => {
     const resource = createResource('A', 500);
-    
+
     const AsyncComponent = () => {
       const data = resource.read();
       return <div data-testid="component-A">{data}</div>;
@@ -192,7 +189,7 @@ describe('Suspense Component Group', () => {
       React.useEffect(() => {
         // 重置资源状态
         resource.reset();
-        
+
         // 使用 act 包装 startTransition
         act(() => {
           startTransition(() => {
@@ -215,9 +212,12 @@ describe('Suspense Component Group', () => {
     render(<TestComponent />);
 
     // 验证加载状态
-    await waitFor(() => {
-      expect(screen.getByText('Loading...')).toBeInTheDocument();
-    }, { timeout: 1000 });
+    await waitFor(
+      () => {
+        expect(screen.getByText('Loading...')).toBeInTheDocument();
+      },
+      { timeout: 1000 }
+    );
 
     // 等待组件加载完成
     await waitFor(() => {
@@ -227,4 +227,4 @@ describe('Suspense Component Group', () => {
     // 验证组件内容
     expect(screen.getByTestId('component-A')).toHaveTextContent('A');
   });
-}); 
+});

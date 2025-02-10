@@ -103,4 +103,4 @@ export interface CacheItem<T = unknown> {
   timestamp: number;
   /** 缓存有效期（毫秒） */
   ttl: number;
-} 
+}

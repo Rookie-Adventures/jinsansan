@@ -8,11 +8,11 @@ import { AxiosHeaders } from 'axios';
 
 // Mock hooks
 vi.mock('@/hooks/http/useHttp', () => ({
-  useHttp: vi.fn()
+  useHttp: vi.fn(),
 }));
 
 vi.mock('@/hooks/http/useCache', () => ({
-  useCache: vi.fn()
+  useCache: vi.fn(),
 }));
 
 describe('useRequest', () => {
@@ -28,7 +28,7 @@ describe('useRequest', () => {
       get: mockGet,
       post: vi.fn(),
       put: vi.fn(),
-      delete: vi.fn()
+      delete: vi.fn(),
     });
 
     // Mock useCache
@@ -36,7 +36,7 @@ describe('useRequest', () => {
       getCacheData: mockGetCacheData,
       setCacheData: mockSetCacheData,
       generateCacheKey: vi.fn(),
-      clearCache: vi.fn()
+      clearCache: vi.fn(),
     });
   });
 
@@ -54,7 +54,7 @@ describe('useRequest', () => {
       const mockResponse = {
         code: 200,
         data: { id: 1, name: 'test' },
-        message: 'success'
+        message: 'success',
       };
       mockGet.mockResolvedValue(mockResponse);
 
@@ -82,7 +82,7 @@ describe('useRequest', () => {
         isAxiosError: true,
         toJSON: () => ({}),
         config: {
-          headers
+          headers,
         },
         response: {
           data: { message: 'Internal server error' },
@@ -90,9 +90,9 @@ describe('useRequest', () => {
           statusText: 'Internal Server Error',
           headers: {},
           config: {
-            headers
-          }
-        }
+            headers,
+          },
+        },
       };
       mockGet.mockRejectedValue(mockError);
 
@@ -124,8 +124,8 @@ describe('useRequest', () => {
         response = await result.current.execute({
           cache: {
             enable: true,
-            ttl: 5000
-          }
+            ttl: 5000,
+          },
         });
       });
 
@@ -138,36 +138,7 @@ describe('useRequest', () => {
       const mockResponse = {
         code: 200,
         data: { id: 1, name: 'test' },
-        message: 'success'
-      };
-      mockGetCacheData.mockReturnValue(null);
-      mockGet.mockResolvedValue(mockResponse);
-
-      const { result } = renderHook(() => useRequest<typeof mockResponse.data>('/test'));
-
-      await act(async () => {
-        await result.current.execute({
-          cache: {
-            enable: true,
-            ttl: 5000
-          }
-        });
-      });
-
-      expect(mockSetCacheData).toHaveBeenCalledWith(
-        '/test',
-        mockResponse.data,
-        5000
-      );
-      expect(result.current.data).toEqual(mockResponse.data);
-    });
-
-    it('应该使用自定义缓存键', async () => {
-      const customCacheKey = 'custom-key';
-      const mockResponse = {
-        code: 200,
-        data: { id: 1, name: 'test' },
-        message: 'success'
+        message: 'success',
       };
       mockGetCacheData.mockReturnValue(null);
       mockGet.mockResolvedValue(mockResponse);
@@ -179,17 +150,38 @@ describe('useRequest', () => {
           cache: {
             enable: true,
             ttl: 5000,
-            key: customCacheKey
-          }
+          },
+        });
+      });
+
+      expect(mockSetCacheData).toHaveBeenCalledWith('/test', mockResponse.data, 5000);
+      expect(result.current.data).toEqual(mockResponse.data);
+    });
+
+    it('应该使用自定义缓存键', async () => {
+      const customCacheKey = 'custom-key';
+      const mockResponse = {
+        code: 200,
+        data: { id: 1, name: 'test' },
+        message: 'success',
+      };
+      mockGetCacheData.mockReturnValue(null);
+      mockGet.mockResolvedValue(mockResponse);
+
+      const { result } = renderHook(() => useRequest<typeof mockResponse.data>('/test'));
+
+      await act(async () => {
+        await result.current.execute({
+          cache: {
+            enable: true,
+            ttl: 5000,
+            key: customCacheKey,
+          },
         });
       });
 
       expect(mockGetCacheData).toHaveBeenCalledWith(customCacheKey);
-      expect(mockSetCacheData).toHaveBeenCalledWith(
-        customCacheKey,
-        mockResponse.data,
-        5000
-      );
+      expect(mockSetCacheData).toHaveBeenCalledWith(customCacheKey, mockResponse.data, 5000);
     });
   });
 
@@ -198,43 +190,48 @@ describe('useRequest', () => {
       const defaultOptions = {
         cache: {
           enable: true,
-          ttl: 5000
-        }
+          ttl: 5000,
+        },
       };
       const executeOptions = {
         cache: {
           enable: true,
           ttl: 10000,
-          key: 'custom-key'
-        }
+          key: 'custom-key',
+        },
       };
       const mockResponse = {
         code: 200,
         data: { id: 1, name: 'test' },
-        message: 'success'
+        message: 'success',
       };
       mockGet.mockResolvedValue(mockResponse);
 
-      const { result } = renderHook(() => useRequest<typeof mockResponse.data>('/test', defaultOptions));
+      const { result } = renderHook(() =>
+        useRequest<typeof mockResponse.data>('/test', defaultOptions)
+      );
 
       await act(async () => {
         await result.current.execute(executeOptions);
       });
 
-      expect(mockGet).toHaveBeenCalledWith('/test', expect.objectContaining({
-        cache: {
-          enable: true,
-          ttl: 10000,
-          key: 'custom-key'
-        }
-      }));
+      expect(mockGet).toHaveBeenCalledWith(
+        '/test',
+        expect.objectContaining({
+          cache: {
+            enable: true,
+            ttl: 10000,
+            key: 'custom-key',
+          },
+        })
+      );
     });
 
     it('应该正确处理队列配置', async () => {
       const mockResponse = {
         code: 200,
         data: { id: 1, name: 'test' },
-        message: 'success'
+        message: 'success',
       };
       mockGet.mockResolvedValue(mockResponse);
 
@@ -244,17 +241,20 @@ describe('useRequest', () => {
         await result.current.execute({
           queue: {
             enable: true,
-            priority: 1
-          }
+            priority: 1,
+          },
         });
       });
 
-      expect(mockGet).toHaveBeenCalledWith('/test', expect.objectContaining({
-        queue: {
-          enable: true,
-          priority: 1
-        }
-      }));
+      expect(mockGet).toHaveBeenCalledWith(
+        '/test',
+        expect.objectContaining({
+          queue: {
+            enable: true,
+            priority: 1,
+          },
+        })
+      );
     });
   });
 
@@ -263,13 +263,16 @@ describe('useRequest', () => {
       const mockResponse = {
         code: 200,
         data: { id: 1, name: 'test' },
-        message: 'success'
+        message: 'success',
       };
-      
+
       let resolveRequest: (value: any) => void;
-      mockGet.mockImplementation(() => new Promise(resolve => {
-        resolveRequest = resolve;
-      }));
+      mockGet.mockImplementation(
+        () =>
+          new Promise(resolve => {
+            resolveRequest = resolve;
+          })
+      );
 
       const { result } = renderHook(() => useRequest<typeof mockResponse.data>('/test'));
 
@@ -313,4 +316,4 @@ describe('useRequest', () => {
       expect(result.current.data).toBeNull();
     });
   });
-}); 
+});

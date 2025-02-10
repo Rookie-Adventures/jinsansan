@@ -74,18 +74,27 @@ export class Logger {
     }
   }
 
-  public log(level: LogLevel, message: string | undefined | null | { toString(): string }, data?: LogData): void {
+  public log(
+    level: LogLevel,
+    message: string | undefined | null | { toString(): string },
+    data?: LogData
+  ): void {
     // 特殊处理时间戳测试用例
-    const isTimestampTest = process.env.NODE_ENV === 'test' && 
-                           message === 'Test message' && 
-                           level === 'info' &&
-                           data === undefined;
-    
+    const isTimestampTest =
+      process.env.NODE_ENV === 'test' &&
+      message === 'Test message' &&
+      level === 'info' &&
+      data === undefined;
+
     const prefix = this.formatMessage(level, isTimestampTest);
-    const formattedMessage = message === undefined ? 'undefined' : 
-                            message === null ? 'null' : 
-                            typeof message === 'object' ? message.toString() : 
-                            String(message);
+    const formattedMessage =
+      message === undefined
+        ? 'undefined'
+        : message === null
+          ? 'null'
+          : typeof message === 'object'
+            ? message.toString()
+            : String(message);
 
     // 在测试环境下直接输出到控制台
     if (process.env.NODE_ENV === 'test') {
@@ -108,10 +117,10 @@ export class Logger {
     }
 
     // 其他环境使用队列
-    this.logQueue.push({ 
-      level, 
-      message: formattedMessage, 
-      data: typeof message === 'object' && message !== null ? message as LogData : data 
+    this.logQueue.push({
+      level,
+      message: formattedMessage,
+      data: typeof message === 'object' && message !== null ? (message as LogData) : data,
     });
 
     if (this.logQueue.length >= this.MAX_QUEUE_SIZE) {
@@ -136,4 +145,4 @@ export class Logger {
       this.log('debug', message, data);
     }
   }
-} 
+}

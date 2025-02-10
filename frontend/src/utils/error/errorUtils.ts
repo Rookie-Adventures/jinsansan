@@ -22,6 +22,6 @@ export function toLogData(error: unknown): LogData {
   return {
     error: err.message,
     stack: err.stack,
-    timestamp: Date.now()
+    timestamp: Date.now(),
   };
-} 
+}

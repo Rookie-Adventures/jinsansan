@@ -11,7 +11,7 @@ import { useMediaQuery } from '@mui/material';
 
 // Mock useAuth hook
 vi.mock('@/hooks/auth', () => ({
-  useAuth: vi.fn()
+  useAuth: vi.fn(),
 }));
 
 // Mock useMediaQuery
@@ -22,14 +22,14 @@ vi.mock('@mui/material', async () => {
     useMediaQuery: vi.fn(() => false), // 默认为桌面视图
     useTheme: () => ({
       breakpoints: {
-        down: () => false
+        down: () => false,
       },
       palette: {
         text: {
-          primary: '#000'
-        }
-      }
-    })
+          primary: '#000',
+        },
+      },
+    }),
   };
 });
 
@@ -39,15 +39,15 @@ vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
   return {
     ...actual,
-    useNavigate: () => mockNavigate
+    useNavigate: () => mockNavigate,
   };
 });
 
 // Mock errorLogger
 vi.mock('@/utils/http/error/logger', () => ({
   errorLogger: {
-    log: vi.fn()
-  }
+    log: vi.fn(),
+  },
 }));
 
 // Mock HttpError and HttpErrorType
@@ -57,7 +57,7 @@ vi.mock('@/utils/http/error/types', async () => {
     NETWORK_ERROR: 'NETWORK_ERROR',
     HTTP_ERROR: 'HTTP_ERROR',
     REACT_ERROR: 'REACT_ERROR',
-    UNKNOWN_ERROR: 'UNKNOWN_ERROR'
+    UNKNOWN_ERROR: 'UNKNOWN_ERROR',
   };
 
   class HttpError extends Error {
@@ -69,7 +69,7 @@ vi.mock('@/utils/http/error/types', async () => {
 
   return {
     HttpError,
-    HttpErrorType
+    HttpErrorType,
   };
 });
 
@@ -77,8 +77,8 @@ describe('Navbar', () => {
   const createTestStore = () => {
     return configureStore({
       reducer: {
-        app: appReducer
-      }
+        app: appReducer,
+      },
     });
   };
 
@@ -105,7 +105,7 @@ describe('Navbar', () => {
       loading: false,
       error: null,
       token: null,
-      getCurrentUser: vi.fn()
+      getCurrentUser: vi.fn(),
     });
   });
 
@@ -128,20 +128,20 @@ describe('Navbar', () => {
   describe('导航功能', () => {
     it('点击导航链接应该正确跳转', () => {
       renderNavbar();
-      
+
       fireEvent.click(screen.getByRole('button', { name: '文档' }));
       expect(mockNavigate).toHaveBeenCalledWith('/docs');
-      
+
       fireEvent.click(screen.getByRole('button', { name: 'API' }));
       expect(mockNavigate).toHaveBeenCalledWith('/api');
-      
+
       fireEvent.click(screen.getByRole('button', { name: '价格' }));
       expect(mockNavigate).toHaveBeenCalledWith('/pricing');
     });
 
     it('点击登录按钮应该跳转到登录页面', () => {
       renderNavbar();
-      
+
       fireEvent.click(screen.getByRole('button', { name: '登录' }));
       expect(mockNavigate).toHaveBeenCalledWith('/login');
     });
@@ -151,11 +151,11 @@ describe('Navbar', () => {
     it('已登录状态应该显示用户菜单', () => {
       vi.mocked(useAuth).mockReturnValue({
         isAuthenticated: true,
-        user: { 
+        user: {
           id: 1,
           username: 'testuser',
           email: 'test@example.com',
-          permissions: ['read:posts']
+          permissions: ['read:posts'],
         },
         logout: vi.fn(),
         login: vi.fn(),
@@ -163,14 +163,14 @@ describe('Navbar', () => {
         loading: false,
         error: null,
         token: 'test-token',
-        getCurrentUser: vi.fn()
+        getCurrentUser: vi.fn(),
       });
 
       renderNavbar();
-      
+
       const accountButton = screen.getByLabelText('account of current user');
       fireEvent.click(accountButton);
-      
+
       expect(screen.getByText('testuser')).toBeInTheDocument();
       expect(screen.getByText('退出登录')).toBeInTheDocument();
     });
@@ -179,11 +179,11 @@ describe('Navbar', () => {
       const mockLogout = vi.fn();
       vi.mocked(useAuth).mockReturnValue({
         isAuthenticated: true,
-        user: { 
+        user: {
           id: 1,
           username: 'testuser',
           email: 'test@example.com',
-          permissions: ['read:posts']
+          permissions: ['read:posts'],
         },
         logout: mockLogout,
         login: vi.fn(),
@@ -191,17 +191,17 @@ describe('Navbar', () => {
         loading: false,
         error: null,
         token: 'test-token',
-        getCurrentUser: vi.fn()
+        getCurrentUser: vi.fn(),
       });
 
       renderNavbar();
-      
+
       const accountButton = screen.getByLabelText('account of current user');
       fireEvent.click(accountButton);
-      
+
       const logoutButton = screen.getByText('退出登录');
       fireEvent.click(logoutButton);
-      
+
       expect(mockLogout).toHaveBeenCalled();
       expect(mockNavigate).toHaveBeenCalledWith('/');
     });
@@ -212,17 +212,17 @@ describe('Navbar', () => {
       const mockError = new Error('退出登录失败');
       const mockLogout = vi.fn().mockRejectedValue(mockError);
       const mockErrorLog = vi.fn();
-      
+
       // Mock errorLogger
       vi.mocked(errorLogger.log).mockImplementation(mockErrorLog);
-      
+
       vi.mocked(useAuth).mockReturnValue({
         isAuthenticated: true,
-        user: { 
+        user: {
           id: 1,
           username: 'testuser',
           email: 'test@example.com',
-          permissions: ['read:posts']
+          permissions: ['read:posts'],
         },
         logout: mockLogout,
         login: vi.fn(),
@@ -230,26 +230,28 @@ describe('Navbar', () => {
         loading: false,
         error: null,
         token: 'test-token',
-        getCurrentUser: vi.fn()
+        getCurrentUser: vi.fn(),
       });
 
       renderNavbar();
-      
+
       const accountButton = screen.getByLabelText('account of current user');
       fireEvent.click(accountButton);
-      
+
       const logoutButton = screen.getByText('退出登录');
       await fireEvent.click(logoutButton);
-      
+
       // 等待 Promise 拒绝后的错误处理
       await vi.waitFor(() => {
         expect(mockLogout).toHaveBeenCalled();
         expect(mockNavigate).toHaveBeenCalledWith('/');
-        expect(errorLogger.log).toHaveBeenCalledWith(expect.objectContaining({
-          type: 'AUTH_ERROR',
-          message: '退出登录失败',
-          data: mockError
-        }));
+        expect(errorLogger.log).toHaveBeenCalledWith(
+          expect.objectContaining({
+            type: 'AUTH_ERROR',
+            message: '退出登录失败',
+            data: mockError,
+          })
+        );
       });
     });
   });
@@ -266,13 +268,13 @@ describe('Navbar', () => {
 
     it('移动端应该显示菜单图标而不是导航链接', () => {
       renderNavbar();
-      
+
       // 不应该显示导航链接
       expect(screen.queryByRole('button', { name: '首页' })).not.toBeInTheDocument();
       expect(screen.queryByRole('button', { name: '文档' })).not.toBeInTheDocument();
       expect(screen.queryByRole('button', { name: 'API' })).not.toBeInTheDocument();
       expect(screen.queryByRole('button', { name: '价格' })).not.toBeInTheDocument();
-      
+
       // 应该显示菜单图标
       expect(screen.getByLabelText('menu')).toBeInTheDocument();
     });
@@ -280,11 +282,11 @@ describe('Navbar', () => {
     it('移动端已登录状态应该显示用户头像', () => {
       vi.mocked(useAuth).mockReturnValue({
         isAuthenticated: true,
-        user: { 
+        user: {
           id: 1,
           username: 'testuser',
           email: 'test@example.com',
-          permissions: ['read:posts']
+          permissions: ['read:posts'],
         },
         logout: vi.fn(),
         login: vi.fn(),
@@ -292,11 +294,11 @@ describe('Navbar', () => {
         loading: false,
         error: null,
         token: 'test-token',
-        getCurrentUser: vi.fn()
+        getCurrentUser: vi.fn(),
       });
 
       renderNavbar();
-      
+
       expect(screen.getByLabelText('account of current user')).toBeInTheDocument();
       expect(screen.queryByLabelText('menu')).not.toBeInTheDocument();
     });
@@ -305,11 +307,11 @@ describe('Navbar', () => {
       const mockLogout = vi.fn();
       vi.mocked(useAuth).mockReturnValue({
         isAuthenticated: true,
-        user: { 
+        user: {
           id: 1,
           username: 'testuser',
           email: 'test@example.com',
-          permissions: ['read:posts']
+          permissions: ['read:posts'],
         },
         logout: mockLogout,
         login: vi.fn(),
@@ -317,17 +319,17 @@ describe('Navbar', () => {
         loading: false,
         error: null,
         token: 'test-token',
-        getCurrentUser: vi.fn()
+        getCurrentUser: vi.fn(),
       });
 
       renderNavbar();
-      
+
       const accountButton = screen.getByLabelText('account of current user');
       fireEvent.click(accountButton);
-      
+
       expect(screen.getByText('testuser')).toBeInTheDocument();
       expect(screen.getByText('退出登录')).toBeInTheDocument();
-      
+
       fireEvent.click(screen.getByText('退出登录'));
       expect(mockLogout).toHaveBeenCalled();
       expect(mockNavigate).toHaveBeenCalledWith('/');
@@ -338,11 +340,11 @@ describe('Navbar', () => {
     beforeEach(() => {
       vi.mocked(useAuth).mockReturnValue({
         isAuthenticated: true,
-        user: { 
+        user: {
           id: 1,
           username: 'testuser',
           email: 'test@example.com',
-          permissions: ['read:posts']
+          permissions: ['read:posts'],
         },
         logout: vi.fn(),
         login: vi.fn(),
@@ -350,43 +352,43 @@ describe('Navbar', () => {
         loading: false,
         error: null,
         token: 'test-token',
-        getCurrentUser: vi.fn()
+        getCurrentUser: vi.fn(),
       });
     });
 
     it('点击用户名应该关闭菜单', () => {
       renderNavbar();
-      
+
       // 打开菜单
       const accountButton = screen.getByLabelText('account of current user');
       fireEvent.click(accountButton);
-      
+
       // 验证菜单已打开
       expect(screen.getByText('testuser')).toBeInTheDocument();
-      
+
       // 点击用户名
       fireEvent.click(screen.getByText('testuser'));
-      
+
       // 验证菜单已关闭
       expect(screen.queryByRole('menu')).not.toBeInTheDocument();
     });
 
     it('点击菜单外部应该关闭菜单', () => {
       renderNavbar();
-      
+
       // 打开菜单
       const accountButton = screen.getByLabelText('account of current user');
       fireEvent.click(accountButton);
-      
+
       // 验证菜单已打开
       expect(screen.getByText('testuser')).toBeInTheDocument();
-      
+
       // 触发菜单关闭事件
       const menu = screen.getByRole('menu');
       fireEvent.keyDown(menu, { key: 'Escape' });
-      
+
       // 验证菜单已关闭
       expect(screen.queryByRole('menu')).not.toBeInTheDocument();
     });
   });
-}); 
+});
