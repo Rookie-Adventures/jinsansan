@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { vi, describe, beforeEach, afterEach, it, expect } from 'vitest';
 import ErrorNotification from '../ErrorNotification';
 
@@ -19,18 +19,16 @@ describe('ErrorNotification', () => {
     it('应该正确显示通知消息', async () => {
       render(<ErrorNotification />);
 
-      await act(async () => {
-        window.dispatchEvent(
-          new CustomEvent('show-notification', {
-            detail: {
-              message: '测试消息',
-              type: 'error',
-              position: 'top',
-              duration: 5000,
-            },
-          })
-        );
-      });
+      window.dispatchEvent(
+        new CustomEvent('show-notification', {
+          detail: {
+            message: '测试消息',
+            type: 'error',
+            position: 'top',
+            duration: 5000,
+          },
+        })
+      );
 
       expect(screen.getByText('测试消息')).toBeInTheDocument();
     });
@@ -38,29 +36,23 @@ describe('ErrorNotification', () => {
     it('应该在指定时间后自动关闭通知', async () => {
       render(<ErrorNotification />);
 
-      await act(async () => {
-        window.dispatchEvent(
-          new CustomEvent('show-notification', {
-            detail: {
-              message: '测试消息',
-              type: 'error',
-              position: 'top',
-              duration: 2000,
-            },
-          })
-        );
-      });
+      window.dispatchEvent(
+        new CustomEvent('show-notification', {
+          detail: {
+            message: '测试消息',
+            type: 'error',
+            position: 'top',
+            duration: 2000,
+          },
+        })
+      );
 
       expect(screen.getByText('测试消息')).toBeInTheDocument();
 
-      await act(async () => {
-        vi.advanceTimersByTime(2000);
-      });
-
-      await act(async () => {
-        // 等待动画完成
-        vi.advanceTimersByTime(1000);
-      });
+      // 等待通知关闭
+      vi.advanceTimersByTime(2000);
+      // 等待动画完成
+      vi.advanceTimersByTime(1000);
 
       expect(screen.queryByText('测试消息')).not.toBeInTheDocument();
     });
@@ -69,18 +61,16 @@ describe('ErrorNotification', () => {
       render(<ErrorNotification />);
 
       for (const type of ['error', 'warning', 'info']) {
-        await act(async () => {
-          window.dispatchEvent(
-            new CustomEvent('show-notification', {
-              detail: {
-                message: `${type}消息`,
-                type: type as 'error' | 'warning' | 'info',
-                position: 'top',
-                duration: 5000,
-              },
-            })
-          );
-        });
+        window.dispatchEvent(
+          new CustomEvent('show-notification', {
+            detail: {
+              message: `${type}消息`,
+              type: type as 'error' | 'warning' | 'info',
+              position: 'top',
+              duration: 5000,
+            },
+          })
+        );
 
         expect(screen.getByText(`${type}消息`)).toBeInTheDocument();
       }
@@ -90,21 +80,19 @@ describe('ErrorNotification', () => {
       render(<ErrorNotification />);
 
       for (const position of ['top', 'bottom']) {
-        await act(async () => {
-          window.dispatchEvent(
-            new CustomEvent('show-notification', {
-              detail: {
-                message: `${position}消息`,
-                type: 'info',
-                position: position as 'top' | 'bottom',
-                duration: 5000,
-              },
-            })
-          );
-        });
+        window.dispatchEvent(
+          new CustomEvent('show-notification', {
+            detail: {
+              message: `${position}消息`,
+              type: 'info',
+              position: position as 'top' | 'bottom',
+              duration: 5000,
+            },
+          })
+        );
 
-        const alert = screen.getByText(`${position}消息`).closest('.MuiSnackbar-root');
-        expect(alert).toHaveClass(
+        const notification = screen.getByTestId(`notification-${position}`);
+        expect(notification).toHaveClass(
           `MuiSnackbar-anchorOrigin${position.charAt(0).toUpperCase() + position.slice(1)}Center`
         );
       }
@@ -115,16 +103,14 @@ describe('ErrorNotification', () => {
     it('应该正确显示错误对话框', async () => {
       render(<ErrorNotification />);
 
-      await act(async () => {
-        window.dispatchEvent(
-          new CustomEvent('show-error-modal', {
-            detail: {
-              title: '错误标题',
-              message: '错误消息',
-            },
-          })
-        );
-      });
+      window.dispatchEvent(
+        new CustomEvent('show-error-modal', {
+          detail: {
+            title: '错误标题',
+            message: '错误消息',
+          },
+        })
+      );
 
       expect(screen.getByText('错误标题')).toBeInTheDocument();
       expect(screen.getByText('错误消息')).toBeInTheDocument();
@@ -135,18 +121,16 @@ describe('ErrorNotification', () => {
 
       render(<ErrorNotification />);
 
-      await act(async () => {
-        const error = new Error('详细错误信息');
-        window.dispatchEvent(
-          new CustomEvent('show-error-modal', {
-            detail: {
-              title: '错误标题',
-              message: '错误消息',
-              error: error,
-            },
-          })
-        );
-      });
+      const error = new Error('详细错误信息');
+      window.dispatchEvent(
+        new CustomEvent('show-error-modal', {
+          detail: {
+            title: '错误标题',
+            message: '错误消息',
+            error: error,
+          },
+        })
+      );
 
       expect(screen.getByText('详细错误信息')).toBeInTheDocument();
     });
@@ -156,18 +140,16 @@ describe('ErrorNotification', () => {
 
       render(<ErrorNotification />);
 
-      await act(async () => {
-        const error = new Error('详细错误信息');
-        window.dispatchEvent(
-          new CustomEvent('show-error-modal', {
-            detail: {
-              title: '错误标题',
-              message: '错误消息',
-              error: error,
-            },
-          })
-        );
-      });
+      const error = new Error('详细错误信息');
+      window.dispatchEvent(
+        new CustomEvent('show-error-modal', {
+          detail: {
+            title: '错误标题',
+            message: '错误消息',
+            error: error,
+          },
+        })
+      );
 
       expect(screen.queryByText('详细错误信息')).not.toBeInTheDocument();
     });
@@ -184,17 +166,15 @@ describe('ErrorNotification', () => {
       ];
 
       for (const { error, expected } of testCases) {
-        await act(async () => {
-          window.dispatchEvent(
-            new CustomEvent('show-error-modal', {
-              detail: {
-                title: '错误标题',
-                message: '错误消息',
-                error: error,
-              },
-            })
-          );
-        });
+        window.dispatchEvent(
+          new CustomEvent('show-error-modal', {
+            detail: {
+              title: '错误标题',
+              message: '错误消息',
+              error: error,
+            },
+          })
+        );
 
         const errorText = screen.getByText(content =>
           content.includes(expected.replace(/\s+/g, ' ').trim())
@@ -206,26 +186,20 @@ describe('ErrorNotification', () => {
     it('点击关闭按钮应该关闭对话框', async () => {
       render(<ErrorNotification />);
 
-      await act(async () => {
-        window.dispatchEvent(
-          new CustomEvent('show-error-modal', {
-            detail: {
-              title: '错误标题',
-              message: '错误消息',
-            },
-          })
-        );
-      });
+      window.dispatchEvent(
+        new CustomEvent('show-error-modal', {
+          detail: {
+            title: '错误标题',
+            message: '错误消息',
+          },
+        })
+      );
 
       const closeButton = screen.getByText('关闭');
-      await act(async () => {
-        fireEvent.click(closeButton);
-      });
+      fireEvent.click(closeButton);
 
       // 等待动画完成
-      await act(async () => {
-        vi.advanceTimersByTime(300);
-      });
+      vi.advanceTimersByTime(300);
 
       expect(screen.queryByText('错误标题')).not.toBeInTheDocument();
     });
@@ -239,21 +213,17 @@ describe('ErrorNotification', () => {
 
       render(<ErrorNotification />);
 
-      await act(async () => {
-        window.dispatchEvent(
-          new CustomEvent('show-error-modal', {
-            detail: {
-              title: '错误标题',
-              message: '错误消息',
-            },
-          })
-        );
-      });
+      window.dispatchEvent(
+        new CustomEvent('show-error-modal', {
+          detail: {
+            title: '错误标题',
+            message: '错误消息',
+          },
+        })
+      );
 
       const refreshButton = screen.getByText('刷新页面');
-      await act(async () => {
-        fireEvent.click(refreshButton);
-      });
+      fireEvent.click(refreshButton);
 
       expect(reloadMock).toHaveBeenCalled();
     });

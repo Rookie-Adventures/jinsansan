@@ -29,25 +29,21 @@ export interface CustomThemeOptions extends Omit<ThemeOptions, 'typography'> {
   typography?: Partial<ExtendedTypographyOptions>;
 }
 
+// MUI 组件样式覆盖类型
+export interface ComponentStyleOverrides {
+  styleOverrides?: {
+    root?: Partial<CSSObject>;
+    [key: string]: Partial<CSSObject> | undefined;
+  };
+}
+
 // 扩展完整主题类型
 export type CustomTheme = BaseTheme & {
   components?: {
-    MuiButton?: {
-      styleOverrides?: {
-        root?: Partial<CSSObject>;
-      };
-    };
-    MuiTextField?: {
-      styleOverrides?: {
-        root?: Partial<CSSObject>;
-      };
-    };
-    MuiCard?: {
-      styleOverrides?: {
-        root?: Partial<CSSObject>;
-      };
-    };
-    [key: string]: any;
+    MuiButton?: ComponentStyleOverrides;
+    MuiTextField?: ComponentStyleOverrides;
+    MuiCard?: ComponentStyleOverrides;
+    [key: string]: ComponentStyleOverrides | undefined;
   };
 };
 

@@ -11,6 +11,18 @@ declare module 'axios' {
   }
 }
 
+// HTTP 请求数据类型
+export type RequestData = 
+  | string 
+  | number 
+  | boolean 
+  | null 
+  | { [key: string]: RequestData }
+  | RequestData[];
+
+// HTTP 响应数据类型
+export type ResponseData<T> = T;
+
 // HTTP 客户端配置接口
 interface HttpConfig extends AxiosRequestConfig {
   cache?: {
@@ -139,27 +151,39 @@ export class HttpClient {
   }
 
   // HTTP 方法
-  public async get<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
+  public async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.instance.get<T>(url, config);
     return response.data;
   }
 
-  public async post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  public async post<T>(
+    url: string, 
+    data?: RequestData, 
+    config?: AxiosRequestConfig
+  ): Promise<T> {
     const response = await this.instance.post<T>(url, data, config);
     return response.data;
   }
 
-  public async put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  public async put<T>(
+    url: string, 
+    data?: RequestData, 
+    config?: AxiosRequestConfig
+  ): Promise<T> {
     const response = await this.instance.put<T>(url, data, config);
     return response.data;
   }
 
-  public async delete<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
+  public async delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.instance.delete<T>(url, config);
     return response.data;
   }
 
-  public async patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  public async patch<T>(
+    url: string, 
+    data?: RequestData, 
+    config?: AxiosRequestConfig
+  ): Promise<T> {
     const response = await this.instance.patch<T>(url, data, config);
     return response.data;
   }

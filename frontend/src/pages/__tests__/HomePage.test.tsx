@@ -72,7 +72,7 @@ describe('HomePage', () => {
     renderHomePage();
 
     // 获取主容器
-    const container = screen.getByTestId('mock-hero-section').parentElement;
+    const container = screen.getByTestId('hero-section-container');
     expect(container).toHaveStyle({
       background: 'linear-gradient(135deg, #24243e 0%, #302b63 50%, #0f0c29 100%)',
       color: 'rgb(255, 255, 255)',
@@ -81,9 +81,9 @@ describe('HomePage', () => {
   });
 
   it('应该正确设置容器宽度和溢出处理', () => {
-    const { container } = renderHomePage();
+    renderHomePage();
 
-    const mainContainer = container.firstChild as HTMLElement;
+    const mainContainer = screen.getByTestId('home-page-container');
     expect(mainContainer).toHaveStyle({
       width: '100vw',
       overflow: 'hidden',
@@ -93,7 +93,7 @@ describe('HomePage', () => {
   it('应该在暗色主题下正确渲染', () => {
     renderHomePage(true);
 
-    const mainContainer = screen.getByTestId('mock-hero-section').parentElement;
+    const mainContainer = screen.getByTestId('hero-section-container');
     expect(mainContainer).toHaveStyle({
       background: 'linear-gradient(135deg, #24243e 0%, #302b63 50%, #0f0c29 100%)',
     });
@@ -105,7 +105,7 @@ describe('HomePage', () => {
 
     renderHomePage();
 
-    const mainContainer = screen.getByTestId('mock-hero-section').parentElement;
+    const mainContainer = screen.getByTestId('hero-section-container');
     expect(mainContainer).toHaveStyle({
       paddingTop: '64px', // 导航栏空间
     });

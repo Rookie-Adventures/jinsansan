@@ -72,14 +72,23 @@ export const AlertManagement: React.FC = () => {
             secondaryAction={
               <>
                 <Switch
+                  data-testid="rule-toggle"
                   edge="end"
                   checked={rule.enabled}
                   onChange={e => handleEnableRule(rule.id, e.target.checked)}
                 />
-                <IconButton edge="end" onClick={() => handleUpdateRule(rule)}>
+                <IconButton 
+                  data-testid="edit-rule-button"
+                  edge="end" 
+                  onClick={() => handleUpdateRule(rule)}
+                >
                   <EditIcon />
                 </IconButton>
-                <IconButton edge="end" onClick={() => handleDeleteRule(rule.id)}>
+                <IconButton 
+                  data-testid="delete-rule-button"
+                  edge="end" 
+                  onClick={() => handleDeleteRule(rule.id)}
+                >
                   <DeleteIcon />
                 </IconButton>
               </>

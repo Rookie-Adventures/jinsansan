@@ -83,7 +83,7 @@ describe('MainLayout', () => {
     renderWithProviders(<MainLayout />);
 
     // 验证根容器样式
-    const rootContainer = screen.getByTestId('mock-outlet').parentElement?.parentElement;
+    const rootContainer = screen.getByTestId('root-container');
     expect(rootContainer).toHaveStyle({
       minHeight: '100vh',
       display: 'flex',
@@ -92,7 +92,7 @@ describe('MainLayout', () => {
     });
 
     // 验证主内容区域样式
-    const mainContent = screen.getByTestId('mock-outlet').parentElement;
+    const mainContent = screen.getByTestId('main-content');
     expect(mainContent).toHaveStyle({
       flexGrow: 1,
       width: '100%',

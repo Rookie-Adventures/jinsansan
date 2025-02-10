@@ -10,15 +10,27 @@ export enum UserEventType {
 }
 
 /**
+ * 事件数据类型
+ */
+export type EventData = {
+  [key: string]: string | number | boolean | null | undefined | Record<string, unknown>;
+};
+
+/**
  * 用户行为事件接口
  */
 export interface UserEvent {
   type: UserEventType;
   timestamp: number;
-  data: Record<string, any>;
+  data: EventData;
   sessionId: string;
   userId?: string;
 }
+
+/**
+ * 错误上下文类型
+ */
+export type ErrorContext = Record<string, string | number | boolean | null | undefined>;
 
 /**
  * 用户分析配置接口
@@ -125,7 +137,7 @@ export class UserAnalytics {
   /**
    * 跟踪错误
    */
-  public trackError(error: Error, context?: Record<string, any>): void {
+  public trackError(error: Error, context?: ErrorContext): void {
     this.track(UserEventType.ERROR, {
       name: error.name,
       message: error.message,
@@ -137,7 +149,7 @@ export class UserAnalytics {
   /**
    * 跟踪自定义事件
    */
-  public trackCustomEvent(name: string, data: Record<string, any>): void {
+  public trackCustomEvent(name: string, data: EventData): void {
     this.track(UserEventType.CUSTOM, {
       name,
       ...data,
@@ -147,7 +159,7 @@ export class UserAnalytics {
   /**
    * 跟踪事件
    */
-  private track(type: UserEventType, data: Record<string, any>): void {
+  private track(type: UserEventType, data: EventData): void {
     // 检查采样率
     if (Math.random() > this.config.sampleRate) {
       return;

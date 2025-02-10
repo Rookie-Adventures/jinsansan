@@ -10,13 +10,14 @@ interface AuthCardProps {
 const AuthCard: React.FC<AuthCardProps> = ({ children, onToLogin, onToRegister }) => {
   return (
     <Box
+      data-testid="auth-card-container"
       display="flex"
       justifyContent="center"
       alignItems="center"
       minHeight="100vh"
       bgcolor="background.default"
     >
-      <Card sx={{ maxWidth: 400, width: '100%', m: 2 }}>
+      <Card data-testid="auth-card" sx={{ maxWidth: 400, width: '100%', m: 2 }}>
         <CardContent>
           {children}
           <Box sx={{ mt: 2, textAlign: 'center' }}>

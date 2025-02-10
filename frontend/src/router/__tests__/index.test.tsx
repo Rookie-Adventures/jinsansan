@@ -131,6 +131,9 @@ describe('Router', () => {
 
       await waitFor(() => {
         expect(screen.getByTestId('main-layout')).toBeInTheDocument();
+      });
+
+      await waitFor(() => {
         expect(screen.getByTestId('home-page')).toBeInTheDocument();
       });
     });
@@ -163,7 +166,7 @@ describe('Router', () => {
         () => {
           expect(screen.getByTestId('home-page')).toBeInTheDocument();
         },
-        { timeout: 3000 }
+        { timeout: 1000 }
       );
     });
   });

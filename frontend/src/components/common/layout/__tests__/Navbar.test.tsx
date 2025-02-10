@@ -239,7 +239,7 @@ describe('Navbar', () => {
       fireEvent.click(accountButton);
 
       const logoutButton = screen.getByText('退出登录');
-      await fireEvent.click(logoutButton);
+      fireEvent.click(logoutButton);
 
       // 等待 Promise 拒绝后的错误处理
       await vi.waitFor(() => {

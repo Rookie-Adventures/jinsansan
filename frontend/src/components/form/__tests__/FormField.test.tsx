@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { FormField } from '../FormField';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -20,9 +20,6 @@ interface TestFormProps {
 const schema = yup.object({
   testField: yup.string().required('这是必填项'),
 });
-
-// 测试配置
-const TEST_TIMEOUT = 1000;
 
 const TestForm: React.FC<TestFormProps> = ({ control, onSubmit, defaultValues }) => {
   const { handleSubmit } = useForm<TestFormData>({
@@ -92,16 +89,9 @@ describe('FormField', () => {
       fireEvent.blur(input);
 
       // 等待错误消息显示
-      await waitFor(
-        () => {
-          const errorMessage = screen.getByText('这是必填项');
-          expect(errorMessage).toBeInTheDocument();
-          expect(input).toHaveAttribute('aria-invalid', 'true');
-        },
-        {
-          timeout: TEST_TIMEOUT,
-        }
-      );
+      const errorMessage = await screen.findByText('这是必填项');
+      expect(errorMessage).toBeInTheDocument();
+      expect(input).toHaveAttribute('aria-invalid', 'true');
     });
   });
 
@@ -142,19 +132,18 @@ describe('FormField', () => {
         );
       };
 
-      const { getByTestId } = render(<TestComponent />);
+      render(<TestComponent />);
+      const form = screen.getByTestId('test-form');
+      fireEvent.submit(form);
 
-      const form = getByTestId('test-form');
-      await act(async () => {
-        fireEvent.submit(form);
+      await waitFor(() => {
+        expect(onSubmit).toHaveBeenCalledWith(
+          expect.objectContaining({
+            testField: '测试值',
+          }),
+          expect.anything()
+        );
       });
-
-      expect(onSubmit).toHaveBeenCalledWith(
-        expect.objectContaining({
-          testField: '测试值',
-        }),
-        expect.anything()
-      );
     });
   });
 });

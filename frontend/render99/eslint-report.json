@@ -1,0 +1,822 @@
+{
+  "issues": [
+    {
+      "file": "src/components/ErrorBoundary/__tests__/ErrorBoundary.test.tsx",
+      "errors": [
+        {
+          "line": 32,
+          "column": 12,
+          "message": "Avoid destructuring queries from `render` result, use `screen.getByText` instead",
+          "ruleId": "testing-library/prefer-screen-queries"
+        },
+        {
+          "line": 41,
+          "column": 12,
+          "message": "Avoid destructuring queries from `render` result, use `screen.getByText` instead",
+          "ruleId": "testing-library/prefer-screen-queries"
+        },
+        {
+          "line": 42,
+          "column": 12,
+          "message": "Avoid destructuring queries from `render` result, use `screen.getByText` instead",
+          "ruleId": "testing-library/prefer-screen-queries"
+        },
+        {
+          "line": 51,
+          "column": 12,
+          "message": "Avoid destructuring queries from `render` result, use `screen.getByText` instead",
+          "ruleId": "testing-library/prefer-screen-queries"
+        },
+        {
+          "line": 75,
+          "column": 21,
+          "message": "Avoid destructuring queries from `render` result, use `screen.getByText` instead",
+          "ruleId": "testing-library/prefer-screen-queries"
+        },
+        {
+          "line": 94,
+          "column": 12,
+          "message": "Avoid destructuring queries from `render` result, use `screen.getByText` instead",
+          "ruleId": "testing-library/prefer-screen-queries"
+        },
+        {
+          "line": 100,
+          "column": 11,
+          "message": "Avoid wrapping Testing Library util calls in `act`",
+          "ruleId": "testing-library/no-unnecessary-act"
+        },
+        {
+          "line": 101,
+          "column": 23,
+          "message": "Avoid destructuring queries from `render` result, use `screen.getByText` instead",
+          "ruleId": "testing-library/prefer-screen-queries"
+        }
+      ]
+    },
+    {
+      "file": "src/components/ErrorNotification/__tests__/index.test.tsx",
+      "errors": [
+        {
+          "line": 95,
+          "column": 9,
+          "message": "Avoid using multiple assertions within `waitFor` callback",
+          "ruleId": "testing-library/no-wait-for-multiple-assertions"
+        },
+        {
+          "line": 114,
+          "column": 9,
+          "message": "Avoid using multiple assertions within `waitFor` callback",
+          "ruleId": "testing-library/no-wait-for-multiple-assertions"
+        },
+        {
+          "line": 115,
+          "column": 9,
+          "message": "Avoid using multiple assertions within `waitFor` callback",
+          "ruleId": "testing-library/no-wait-for-multiple-assertions"
+        },
+        {
+          "line": 116,
+          "column": 9,
+          "message": "Avoid using multiple assertions within `waitFor` callback",
+          "ruleId": "testing-library/no-wait-for-multiple-assertions"
+        },
+        {
+          "line": 155,
+          "column": 20,
+          "message": "Avoid direct Node access. Prefer using the methods from Testing Library",
+          "ruleId": "testing-library/no-node-access"
+        },
+        {
+          "line": 167,
+          "column": 20,
+          "message": "Avoid direct Node access. Prefer using the methods from Testing Library",
+          "ruleId": "testing-library/no-node-access"
+        }
+      ]
+    },
+    {
+      "file": "src/components/auth/__tests__/AuthCard.test.tsx",
+      "errors": [
+        {
+          "line": 68,
+          "column": 58,
+          "message": "Avoid direct Node access. Prefer using the methods from Testing Library",
+          "ruleId": "testing-library/no-node-access"
+        },
+        {
+          "line": 80,
+          "column": 53,
+          "message": "Avoid direct Node access. Prefer using the methods from Testing Library",
+          "ruleId": "testing-library/no-node-access"
+        }
+      ]
+    },
+    {
+      "file": "src/components/auth/__tests__/AuthPage.test.tsx",
+      "errors": [
+        {
+          "line": 195,
+          "column": 11,
+          "message": "Avoid using multiple assertions within `waitFor` callback",
+          "ruleId": "testing-library/no-wait-for-multiple-assertions"
+        },
+        {
+          "line": 243,
+          "column": 11,
+          "message": "Avoid using multiple assertions within `waitFor` callback",
+          "ruleId": "testing-library/no-wait-for-multiple-assertions"
+        },
+        {
+          "line": 277,
+          "column": 11,
+          "message": "Avoid using multiple assertions within `waitFor` callback",
+          "ruleId": "testing-library/no-wait-for-multiple-assertions"
+        }
+      ]
+    },
+    {
+      "file": "src/components/business/sections/__tests__/HeroSection.test.tsx",
+      "errors": [
+        {
+          "line": 80,
+          "column": 72,
+          "message": "Avoid direct Node access. Prefer using the methods from Testing Library",
+          "ruleId": "testing-library/no-node-access"
+        }
+      ]
+    },
+    {
+      "file": "src/components/business/sections/__tests__/PricingSection.test.tsx",
+      "errors": [
+        {
+          "line": 65,
+          "column": 9,
+          "message": "Avoid using multiple assertions within `waitFor` callback",
+          "ruleId": "testing-library/no-wait-for-multiple-assertions"
+        },
+        {
+          "line": 74,
+          "column": 37,
+          "message": "Avoid direct Node access. Prefer using the methods from Testing Library",
+          "ruleId": "testing-library/no-node-access"
+        },
+        {
+          "line": 100,
+          "column": 43,
+          "message": "Avoid direct Node access. Prefer using the methods from Testing Library",
+          "ruleId": "testing-library/no-node-access"
+        },
+        {
+          "line": 101,
+          "column": 9,
+          "message": "Avoid using multiple assertions within `waitFor` callback",
+          "ruleId": "testing-library/no-wait-for-multiple-assertions"
+        },
+        {
+          "line": 101,
+          "column": 28,
+          "message": "Avoid direct Node access. Prefer using the methods from Testing Library",
+          "ruleId": "testing-library/no-node-access"
+        }
+      ]
+    },
+    {
+      "file": "src/components/common/SearchBar.tsx",
+      "warnings": [
+        {
+          "line": 28,
+          "column": 27,
+          "message": "React Hook useCallback received a function whose dependencies are unknown. Pass an inline function instead",
+          "ruleId": "react-hooks/exhaustive-deps"
+        }
+      ]
+    },
+    {
+      "file": "src/components/common/__tests__/ErrorNotification.test.tsx",
+      "errors": [
+        {
+          "line": 106,
+          "column": 57,
+          "message": "Avoid direct Node access. Prefer using the methods from Testing Library",
+          "ruleId": "testing-library/no-node-access"
+        },
+        {
+          "line": 221,
+          "column": 13,
+          "message": "Avoid wrapping Testing Library util calls in `act`",
+          "ruleId": "testing-library/no-unnecessary-act"
+        },
+        {
+          "line": 254,
+          "column": 13,
+          "message": "Avoid wrapping Testing Library util calls in `act`",
+          "ruleId": "testing-library/no-unnecessary-act"
+        }
+      ]
+    },
+    {
+      "file": "src/components/common/__tests__/SearchBar.test.tsx",
+      "errors": [
+        {
+          "line": 34,
+          "column": 17,
+          "message": "The `Function` type accepts any function-like value. Prefer explicitly defining any function parameters and return type",
+          "ruleId": "@typescript-eslint/no-unsafe-function-type"
+        },
+        {
+          "line": 82,
+          "column": 11,
+          "message": "Avoid using multiple assertions within `waitFor` callback",
+          "ruleId": "testing-library/no-wait-for-multiple-assertions"
+        },
+        {
+          "line": 98,
+          "column": 11,
+          "message": "Avoid using multiple assertions within `waitFor` callback",
+          "ruleId": "testing-library/no-wait-for-multiple-assertions"
+        },
+        {
+          "line": 119,
+          "column": 11,
+          "message": "Avoid using multiple assertions within `waitFor` callback",
+          "ruleId": "testing-library/no-wait-for-multiple-assertions"
+        }
+      ]
+    },
+    {
+      "file": "src/components/common/layout/__tests__/MainLayout.test.tsx",
+      "errors": [
+        {
+          "line": 86,
+          "column": 61,
+          "message": "Avoid direct Node access. Prefer using the methods from Testing Library",
+          "ruleId": "testing-library/no-node-access"
+        },
+        {
+          "line": 86,
+          "column": 76,
+          "message": "Avoid direct Node access. Prefer using the methods from Testing Library",
+          "ruleId": "testing-library/no-node-access"
+        },
+        {
+          "line": 95,
+          "column": 59,
+          "message": "Avoid direct Node access. Prefer using the methods from Testing Library",
+          "ruleId": "testing-library/no-node-access"
+        }
+      ]
+    },
+    {
+      "file": "src/components/common/layout/__tests__/Navbar.test.tsx",
+      "errors": [
+        {
+          "line": 242,
+          "column": 13,
+          "message": "`fireEvent.click` is sync and does not need `await` operator",
+          "ruleId": "testing-library/no-await-sync-events"
+        }
+      ]
+    },
+    {
+      "file": "src/components/form/__tests__/FormField.test.tsx",
+      "errors": [
+        {
+          "line": 99,
+          "column": 11,
+          "message": "Avoid using multiple assertions within `waitFor` callback",
+          "ruleId": "testing-library/no-wait-for-multiple-assertions"
+        },
+        {
+          "line": 147,
+          "column": 20,
+          "message": "Avoid destructuring queries from `render` result, use `screen.getByTestId` instead",
+          "ruleId": "testing-library/prefer-screen-queries"
+        },
+        {
+          "line": 148,
+          "column": 13,
+          "message": "Avoid wrapping Testing Library util calls in `act`",
+          "ruleId": "testing-library/no-unnecessary-act"
+        }
+      ]
+    },
+    {
+      "file": "src/components/monitoring/AlertRuleForm.tsx",
+      "warnings": [
+        {
+          "line": 227,
+          "column": 5,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        }
+      ]
+    },
+    {
+      "file": "src/components/monitoring/__tests__/AlertRuleForm.test.tsx",
+      "errors": [
+        {
+          "line": 76,
+          "column": 24,
+          "message": "Avoid destructuring queries from `render` result, use `screen.getByRole` instead",
+          "ruleId": "testing-library/prefer-screen-queries"
+        },
+        {
+          "line": 79,
+          "column": 31,
+          "message": "Avoid destructuring queries from `render` result, use `screen.findByText` instead",
+          "ruleId": "testing-library/prefer-screen-queries"
+        },
+        {
+          "line": 89,
+          "column": 24,
+          "message": "Avoid destructuring queries from `render` result, use `screen.getByLabelText` instead",
+          "ruleId": "testing-library/prefer-screen-queries"
+        },
+        {
+          "line": 92,
+          "column": 24,
+          "message": "Avoid destructuring queries from `render` result, use `screen.getByRole` instead",
+          "ruleId": "testing-library/prefer-screen-queries"
+        },
+        {
+          "line": 95,
+          "column": 36,
+          "message": "Avoid destructuring queries from `render` result, use `screen.findByText` instead",
+          "ruleId": "testing-library/prefer-screen-queries"
+        },
+        {
+          "line": 106,
+          "column": 25,
+          "message": "Avoid destructuring queries from `render` result, use `screen.getByLabelText` instead",
+          "ruleId": "testing-library/prefer-screen-queries"
+        },
+        {
+          "line": 107,
+          "column": 25,
+          "message": "Avoid destructuring queries from `render` result, use `screen.getByLabelText` instead",
+          "ruleId": "testing-library/prefer-screen-queries"
+        },
+        {
+          "line": 108,
+          "column": 26,
+          "message": "Avoid destructuring queries from `render` result, use `screen.getByRole` instead",
+          "ruleId": "testing-library/prefer-screen-queries"
+        }
+      ]
+    },
+    {
+      "file": "src/hooks/auth/__tests__/useAuth.test.tsx",
+      "warnings": [
+        {
+          "line": 284,
+          "column": 18,
+          "message": "'error' is defined but never used",
+          "ruleId": "unused-imports/no-unused-vars"
+        }
+      ]
+    },
+    {
+      "file": "src/infrastructure/logging/Logger.ts",
+      "warnings": [
+        {
+          "line": 58,
+          "column": 15,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        },
+        {
+          "line": 61,
+          "column": 15,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        },
+        {
+          "line": 64,
+          "column": 15,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        },
+        {
+          "line": 67,
+          "column": 15,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        },
+        {
+          "line": 73,
+          "column": 7,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        },
+        {
+          "line": 104,
+          "column": 11,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        },
+        {
+          "line": 107,
+          "column": 11,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        },
+        {
+          "line": 110,
+          "column": 11,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        },
+        {
+          "line": 113,
+          "column": 11,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        }
+      ]
+    },
+    {
+      "file": "src/infrastructure/logging/__tests__/Logger.test.ts",
+      "warnings": [
+        {
+          "line": 86,
+          "column": 14,
+          "message": "Unexpected debug statement",
+          "ruleId": "testing-library/no-debugging-utils"
+        }
+      ]
+    },
+    {
+      "file": "src/infrastructure/monitoring/RouterAnalytics.ts",
+      "warnings": [
+        {
+          "line": 157,
+          "column": 5,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        },
+        {
+          "line": 289,
+          "column": 5,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        }
+      ]
+    },
+    {
+      "file": "src/infrastructure/monitoring/UserAnalytics.ts",
+      "warnings": [
+        {
+          "line": 210,
+          "column": 7,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        }
+      ]
+    },
+    {
+      "file": "src/infrastructure/monitoring/__tests__/UserAnalytics.test.ts",
+      "errors": [
+        {
+          "line": 71,
+          "column": 36,
+          "message": "Each then() should return a value or throw",
+          "ruleId": "promise/always-return"
+        }
+      ]
+    },
+    {
+      "file": "src/main.tsx",
+      "warnings": [
+        {
+          "line": 38,
+          "column": 23,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        }
+      ]
+    },
+    {
+      "file": "src/mocks/handlers.ts",
+      "warnings": [
+        {
+          "line": 53,
+          "column": 15,
+          "message": "'password' is assigned a value but never used. Allowed unused vars must match /^_/u",
+          "ruleId": "unused-imports/no-unused-vars"
+        }
+      ]
+    },
+    {
+      "file": "src/pages/__tests__/HomePage.test.tsx",
+      "errors": [
+        {
+          "line": 75,
+          "column": 63,
+          "message": "Avoid direct Node access. Prefer using the methods from Testing Library",
+          "ruleId": "testing-library/no-node-access"
+        },
+        {
+          "line": 86,
+          "column": 37,
+          "message": "Avoid direct Node access. Prefer using the methods from Testing Library",
+          "ruleId": "testing-library/no-node-access"
+        },
+        {
+          "line": 96,
+          "column": 67,
+          "message": "Avoid direct Node access. Prefer using the methods from Testing Library",
+          "ruleId": "testing-library/no-node-access"
+        },
+        {
+          "line": 108,
+          "column": 67,
+          "message": "Avoid direct Node access. Prefer using the methods from Testing Library",
+          "ruleId": "testing-library/no-node-access"
+        }
+      ]
+    },
+    {
+      "file": "src/pages/monitoring/AlertManagement.tsx",
+      "warnings": [
+        {
+          "line": 14,
+          "column": 6,
+          "message": "React Hook useEffect has a missing dependency: 'loadRules'. Either include it or remove the dependency array",
+          "ruleId": "react-hooks/exhaustive-deps"
+        }
+      ]
+    },
+    {
+      "file": "src/pages/monitoring/MetricsDisplay.tsx",
+      "warnings": [
+        {
+          "line": 24,
+          "column": 6,
+          "message": "React Hook useEffect has a missing dependency: 'updateMetrics'. Either include it or remove the dependency array",
+          "ruleId": "react-hooks/exhaustive-deps"
+        }
+      ]
+    },
+    {
+      "file": "src/pages/monitoring/__tests__/AlertManagement.test.tsx",
+      "errors": [
+        {
+          "line": 87,
+          "column": 61,
+          "message": "Avoid direct Node access. Prefer using the methods from Testing Library",
+          "ruleId": "testing-library/no-node-access"
+        },
+        {
+          "line": 96,
+          "column": 57,
+          "message": "Avoid direct Node access. Prefer using the methods from Testing Library",
+          "ruleId": "testing-library/no-node-access"
+        },
+        {
+          "line": 134,
+          "column": 61,
+          "message": "Avoid direct Node access. Prefer using the methods from Testing Library",
+          "ruleId": "testing-library/no-node-access"
+        }
+      ]
+    },
+    {
+      "file": "src/router/__tests__/index.test.tsx",
+      "errors": [
+        {
+          "line": 134,
+          "column": 9,
+          "message": "Avoid using multiple assertions within `waitFor` callback",
+          "ruleId": "testing-library/no-wait-for-multiple-assertions"
+        }
+      ]
+    },
+    {
+      "file": "src/router/guards/__tests__/AuthGuard.test.tsx",
+      "errors": [
+        {
+          "line": 101,
+          "column": 9,
+          "message": "Avoid using multiple assertions within `waitFor` callback",
+          "ruleId": "testing-library/no-wait-for-multiple-assertions"
+        },
+        {
+          "line": 124,
+          "column": 9,
+          "message": "Avoid using multiple assertions within `waitFor` callback",
+          "ruleId": "testing-library/no-wait-for-multiple-assertions"
+        }
+      ]
+    },
+    {
+      "file": "src/services/auth/authService.ts",
+      "warnings": [
+        {
+          "line": 75,
+          "column": 14,
+          "message": "'error' is defined but never used",
+          "ruleId": "unused-imports/no-unused-vars"
+        }
+      ]
+    },
+    {
+      "file": "src/services/auth/tokenService.ts",
+      "errors": [
+        {
+          "line": 16,
+          "column": 5,
+          "message": "Unnecessary try/catch wrapper",
+          "ruleId": "no-useless-catch"
+        }
+      ]
+    },
+    {
+      "file": "src/test/setup.ts",
+      "errors": [
+        {
+          "line": 2,
+          "column": 10,
+          "message": "`cleanup` is performed automatically by your test runner, you don't need manual cleanups",
+          "ruleId": "testing-library/no-manual-cleanup"
+        }
+      ],
+      "warnings": [
+        {
+          "line": 26,
+          "column": 30,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        },
+        {
+          "line": 27,
+          "column": 1,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        }
+      ]
+    },
+    {
+      "file": "src/test/utils.tsx",
+      "warnings": [
+        {
+          "line": 16,
+          "column": 18,
+          "message": "'initialState' is assigned a value but never used. Allowed unused args must match /^_/u",
+          "ruleId": "unused-imports/no-unused-vars"
+        }
+      ]
+    },
+    {
+      "file": "src/tests/react/SuspenseList.test.tsx",
+      "errors": [
+        {
+          "line": 93,
+          "column": 7,
+          "message": "Avoid using multiple assertions within `waitFor` callback",
+          "ruleId": "testing-library/no-wait-for-multiple-assertions"
+        },
+        {
+          "line": 94,
+          "column": 7,
+          "message": "Avoid using multiple assertions within `waitFor` callback",
+          "ruleId": "testing-library/no-wait-for-multiple-assertions"
+        },
+        {
+          "line": 125,
+          "column": 5,
+          "message": "Avoid wrapping Testing Library util calls in `act`",
+          "ruleId": "testing-library/no-unnecessary-act"
+        }
+      ]
+    },
+    {
+      "file": "src/tests/setup.ts",
+      "errors": [
+        {
+          "line": 2,
+          "column": 10,
+          "message": "`cleanup` is performed automatically by your test runner, you don't need manual cleanups",
+          "ruleId": "testing-library/no-manual-cleanup"
+        }
+      ]
+    },
+    {
+      "file": "src/utils/error/errorLogger.ts",
+      "warnings": [
+        {
+          "line": 41,
+          "column": 5,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        },
+        {
+          "line": 45,
+          "column": 5,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        },
+        {
+          "line": 49,
+          "column": 5,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        },
+        {
+          "line": 53,
+          "column": 5,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        }
+      ]
+    },
+    {
+      "file": "src/utils/http/error/recovery.ts",
+      "warnings": [
+        {
+          "line": 37,
+          "column": 14,
+          "message": "'e' is defined but never used",
+          "ruleId": "unused-imports/no-unused-vars"
+        }
+      ]
+    },
+    {
+      "file": "src/utils/http/retry.ts",
+      "warnings": [
+        {
+          "line": 70,
+          "column": 11,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        }
+      ]
+    },
+    {
+      "file": "src/utils/monitoring/performance.ts",
+      "warnings": [
+        {
+          "line": 122,
+          "column": 7,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        },
+        {
+          "line": 150,
+          "column": 7,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        }
+      ]
+    },
+    {
+      "file": "src/utils/notification/manager.ts",
+      "warnings": [
+        {
+          "line": 24,
+          "column": 7,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        }
+      ]
+    },
+    {
+      "file": "src/utils/router/analytics.ts",
+      "warnings": [
+        {
+          "line": 32,
+          "column": 7,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        },
+        {
+          "line": 104,
+          "column": 7,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        },
+        {
+          "line": 120,
+          "column": 7,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        }
+      ]
+    },
+    {
+      "file": "src/utils/security/logger.ts",
+      "warnings": [
+        {
+          "line": 16,
+          "column": 5,
+          "message": "Unexpected console statement",
+          "ruleId": "no-console"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total": 117,
+    "errors": 80,
+    "warnings": 37
+  }
+} 

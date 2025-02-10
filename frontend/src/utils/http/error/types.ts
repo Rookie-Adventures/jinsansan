@@ -8,10 +8,19 @@ export enum HttpErrorType {
   AUTH = 'AUTH_ERROR',
 }
 
+// 定义错误数据类型
+export type ErrorData = 
+  | string 
+  | number 
+  | boolean 
+  | null 
+  | { [key: string]: ErrorData }
+  | ErrorData[];
+
 export class HttpError extends Error {
   code: string;
   status?: number;
-  data?: any;
+  data?: ErrorData;
   isAxiosError?: boolean;
   type: HttpErrorType;
 
@@ -20,7 +29,7 @@ export class HttpError extends Error {
     message: string;
     code?: string;
     status?: number;
-    data?: any;
+    data?: ErrorData;
     isAxiosError?: boolean;
   }) {
     super(params.message);
@@ -36,7 +45,7 @@ export class HttpError extends Error {
 export interface ErrorResponse {
   code: string;
   message: string;
-  data?: any;
+  data?: ErrorData;
 }
 
 export type ErrorFactory = (error: AxiosError | Error) => HttpError;

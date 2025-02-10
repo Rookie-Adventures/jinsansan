@@ -1,5 +1,5 @@
 import { errorLogger } from '../../utils/errorLogger';
-import { PerformanceMetric } from './types';
+import { PerformanceMetric, CustomMetrics } from './types';
 
 export class PerformanceMonitor {
   private static instance: PerformanceMonitor;
@@ -27,7 +27,7 @@ export class PerformanceMonitor {
     return duration;
   }
 
-  public recordMetric(name: string, value: number, tags: Record<string, any> = {}): void {
+  public recordMetric(name: string, value: number, tags: CustomMetrics['tags'] = {}): void {
     try {
       if (!name) {
         throw new Error('Invalid metric name');

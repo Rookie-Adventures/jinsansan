@@ -90,7 +90,7 @@ export interface CustomMetrics {
   /** 指标值 */
   value: number;
   /** 标签 */
-  tags?: Record<string, any>;
+  tags?: Record<string, string | number | boolean>;
 }
 
 /**

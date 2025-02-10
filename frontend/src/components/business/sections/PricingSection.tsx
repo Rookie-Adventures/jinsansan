@@ -128,6 +128,7 @@ const PricingSection: React.FC = () => {
                     }}
                   >
                     <CardHeader
+                      data-testid={tier.subheader ? 'popular-card-header' : `${tier.title}-card-header`}
                       title={
                         <Typography variant="h5" component="h3" sx={{ fontWeight: 'bold' }}>
                           {tier.title}
@@ -175,6 +176,7 @@ const PricingSection: React.FC = () => {
                         {tier.description.map(line => (
                           <Box
                             key={line}
+                            data-testid={`feature-${line}`}
                             sx={{
                               display: 'flex',
                               alignItems: 'center',
@@ -182,7 +184,7 @@ const PricingSection: React.FC = () => {
                               mb: 1,
                             }}
                           >
-                            <Check sx={{ color: 'primary.main' }} />
+                            <Check data-testid={`feature-${line}-icon`} sx={{ color: 'primary.main' }} />
                             <Typography variant="subtitle1" align="left">
                               {line}
                             </Typography>

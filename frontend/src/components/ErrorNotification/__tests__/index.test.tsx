@@ -92,6 +92,9 @@ describe('ErrorNotification', () => {
 
       await waitFor(() => {
         expect(errorRecoveryManager.attemptRecovery).toHaveBeenCalledWith(error);
+      });
+
+      await waitFor(() => {
         expect(mockOnClose).toHaveBeenCalled();
       });
     });
@@ -111,8 +114,17 @@ describe('ErrorNotification', () => {
 
       await waitFor(() => {
         expect(errorRecoveryManager.attemptRecovery).toHaveBeenCalledWith(error);
+      });
+
+      await waitFor(() => {
         expect(mockOnClose).not.toHaveBeenCalled();
+      });
+
+      await waitFor(() => {
         expect(retryButton).not.toBeDisabled();
+      });
+
+      await waitFor(() => {
         expect(screen.getByText('重试')).toBeInTheDocument();
       });
     });
@@ -151,8 +163,7 @@ describe('ErrorNotification', () => {
 
       render(<ErrorNotification error={error} onClose={mockOnClose} />);
 
-      const alert = screen.getByRole('alert');
-      expect(alert.parentElement).toHaveAttribute('data-auto-hide-duration', 'false');
+      expect(screen.getByRole('alert')).toHaveAttribute('data-auto-hide-duration', 'false');
     });
 
     it('警告信息应该自动关闭', () => {
@@ -163,8 +174,7 @@ describe('ErrorNotification', () => {
 
       render(<ErrorNotification error={error} onClose={mockOnClose} />);
 
-      const alert = screen.getByRole('alert');
-      expect(alert.parentElement).toHaveAttribute('data-auto-hide-duration', '6000');
+      expect(screen.getByRole('alert')).toHaveAttribute('data-auto-hide-duration', '6000');
     });
   });
 

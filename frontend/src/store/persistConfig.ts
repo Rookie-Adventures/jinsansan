@@ -3,10 +3,23 @@ import storage from 'redux-persist/lib/storage';
 import { createTransform } from 'redux-persist';
 import { RootState } from './types';
 
+interface AuthState {
+  token?: string;
+  user?: {
+    id: number;
+    username: string;
+  } | null;
+}
+
+interface ThemeState {
+  mode?: string;
+  customizations?: Record<string, unknown>;
+}
+
 // 转换函数
 const authTransform = createTransform(
   // 保存时转换
-  (inboundState: any) => {
+  (inboundState: AuthState) => {
     if (inboundState) {
       const { token, user } = inboundState;
       return { token, user: { id: user?.id, username: user?.username } };
@@ -14,13 +27,13 @@ const authTransform = createTransform(
     return inboundState;
   },
   // 加载时转换
-  (outboundState: any) => outboundState,
+  (outboundState: AuthState) => outboundState,
   { whitelist: ['auth'] }
 );
 
 const themeTransform = createTransform(
   // 保存时转换
-  (inboundState: any) => {
+  (inboundState: ThemeState) => {
     if (inboundState) {
       const { mode, customizations } = inboundState;
       return { mode, customizations };
@@ -28,12 +41,12 @@ const themeTransform = createTransform(
     return inboundState;
   },
   // 加载时转换
-  (outboundState: any) => outboundState,
+  (outboundState: ThemeState) => outboundState,
   { whitelist: ['theme'] }
 );
 
 // 迁移函数
-const migrate = async (state: any, version: number) => {
+const migrate = async (state: RootState | undefined, version: number) => {
   if (!state) return {};
 
   if (version === 0) {
@@ -57,11 +70,11 @@ const migrate = async (state: any, version: number) => {
 };
 
 // 状态合并函数
-const stateReconciler = (
-  inboundState: any,
-  _originalState: any,
-  reducedState: any,
-  _config: any
+const stateReconciler = <T extends object>(
+  inboundState: T,
+  _originalState: T,
+  reducedState: T,
+  _config: PersistConfig<T>
 ) => {
   return {
     ...reducedState,

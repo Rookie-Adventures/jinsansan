@@ -75,6 +75,7 @@ export const ErrorNotification: React.FC = () => {
   return (
     <>
       <Snackbar
+        data-testid={`notification-${notification.position}`}
         open={notification.open}
         autoHideDuration={notification.duration}
         onClose={handleCloseNotification}

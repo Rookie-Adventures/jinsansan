@@ -1,20 +1,29 @@
 import request from '../request';
-import type { HttpRequestConfig } from './types';
-import { RequestMethod } from './types';
+import type { HttpRequestConfig, RequestMethod } from './types';
 import type { AxiosRequestHeaders } from 'axios';
+import type { ResponseType } from '../../types/http';
 
 class HttpClient implements RequestMethod {
-  async get<T = any>(url: string, config?: HttpRequestConfig): Promise<T> {
+  async get<T = unknown>(url: string, config?: HttpRequestConfig): Promise<ResponseType<T>> {
     const response = await request<T>({
       ...config,
       url,
       method: 'GET',
       headers: (config?.headers || {}) as AxiosRequestHeaders,
     });
-    return response.data;
+    return {
+      data: response.data,
+      status: response.status,
+      statusText: response.statusText,
+      headers: response.headers as Record<string, string>
+    };
   }
 
-  async post<T = any>(url: string, data?: any, config?: HttpRequestConfig): Promise<T> {
+  async post<T = unknown>(
+    url: string,
+    data?: Record<string, unknown>,
+    config?: HttpRequestConfig
+  ): Promise<ResponseType<T>> {
     const response = await request<T>({
       ...config,
       url,
@@ -22,10 +31,19 @@ class HttpClient implements RequestMethod {
       data,
       headers: (config?.headers || {}) as AxiosRequestHeaders,
     });
-    return response.data;
+    return {
+      data: response.data,
+      status: response.status,
+      statusText: response.statusText,
+      headers: response.headers as Record<string, string>
+    };
   }
 
-  async put<T = any>(url: string, data?: any, config?: HttpRequestConfig): Promise<T> {
+  async put<T = unknown>(
+    url: string,
+    data?: Record<string, unknown>,
+    config?: HttpRequestConfig
+  ): Promise<ResponseType<T>> {
     const response = await request<T>({
       ...config,
       url,
@@ -33,17 +51,27 @@ class HttpClient implements RequestMethod {
       data,
       headers: (config?.headers || {}) as AxiosRequestHeaders,
     });
-    return response.data;
+    return {
+      data: response.data,
+      status: response.status,
+      statusText: response.statusText,
+      headers: response.headers as Record<string, string>
+    };
   }
 
-  async delete<T = any>(url: string, config?: HttpRequestConfig): Promise<T> {
+  async delete<T = unknown>(url: string, config?: HttpRequestConfig): Promise<ResponseType<T>> {
     const response = await request<T>({
       ...config,
       url,
       method: 'DELETE',
       headers: (config?.headers || {}) as AxiosRequestHeaders,
     });
-    return response.data;
+    return {
+      data: response.data,
+      status: response.status,
+      statusText: response.statusText,
+      headers: response.headers as Record<string, string>
+    };
   }
 }
 

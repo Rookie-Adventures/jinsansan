@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material/styles';
 import { useMediaQuery } from '@mui/material';
 import { vi } from 'vitest';
@@ -77,15 +77,21 @@ describe('HeroSection', () => {
   it('应该正确应用动画效果', async () => {
     renderHeroSection();
 
-    const contentContainer = screen.getByText(/优质的 Jinsansan 模型调用体验/i).parentElement;
+    const contentContainer = screen.getByTestId('hero-content');
     expect(contentContainer).not.toBeNull();
 
     // 等待动画完成
     await new Promise(resolve => setTimeout(resolve, 1500));
 
-    const styles = window.getComputedStyle(contentContainer!);
-    expect(styles.opacity).not.toBe('0');
-    expect(styles.transform).not.toContain('translateX(-20px)');
+    await waitFor(() => {
+      const styles = window.getComputedStyle(contentContainer);
+      expect(styles.opacity).not.toBe('0');
+    });
+
+    await waitFor(() => {
+      const styles = window.getComputedStyle(contentContainer);
+      expect(styles.transform).not.toContain('translateX(-20px)');
+    });
   });
 
   // 添加快照测试

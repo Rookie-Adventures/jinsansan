@@ -60,10 +60,8 @@ describe('PricingSection', () => {
     ];
 
     for (const plan of plans) {
-      await waitFor(() => {
-        expect(screen.getByText(plan.title)).toBeInTheDocument();
-        expect(screen.getByText(plan.price)).toBeInTheDocument();
-      });
+      await screen.findByText(plan.title);
+      await screen.findByText(plan.price);
     }
   });
 
@@ -71,8 +69,7 @@ describe('PricingSection', () => {
     renderPricingSection();
     const popularBadge = await screen.findByText('最受欢迎');
     expect(popularBadge).toBeInTheDocument();
-    const headerRoot = popularBadge.closest('.MuiCardHeader-root');
-    expect(headerRoot).toHaveClass('css-r4xzz0-MuiCardHeader-root');
+    expect(screen.getByTestId('popular-card-header')).toHaveClass('css-r4xzz0-MuiCardHeader-root');
   });
 
   it('应该正确显示每个方案的功能列表', async () => {
@@ -92,14 +89,13 @@ describe('PricingSection', () => {
       '7×24小时技术支持',
     ];
 
-    for (const feature of [...freePlanFeatures, ...proPlanFeatures, ...enterprisePlanFeatures]) {
-      await waitFor(() => {
-        const featureElement = screen.getByText(feature);
-        expect(featureElement).toBeInTheDocument();
-        // 检查每个功能项是否有对应的图标
-        const iconParent = featureElement.parentElement;
-        expect(iconParent?.querySelector('[data-testid="CheckIcon"]')).toBeInTheDocument();
-      });
+    const allFeatures = [...freePlanFeatures, ...proPlanFeatures, ...enterprisePlanFeatures];
+    
+    // 等待并验证所有功能
+    for (const feature of allFeatures) {
+      await screen.findByText(feature);
+      await screen.findByTestId(`feature-${feature}`);
+      await screen.findByTestId(`feature-${feature}-icon`);
     }
   });
 
@@ -120,12 +116,9 @@ describe('PricingSection', () => {
       vi.mocked(useMediaQuery).mockReturnValue(false);
       renderPricingSection();
 
-      // 检查价格文字大小
-      await waitFor(() => {
-        const priceElements = screen.getAllByRole('heading', { level: 2 });
-        priceElements.forEach(element => {
-          expect(element).toHaveClass('MuiTypography-h3');
-        });
+      const priceElements = await screen.findAllByRole('heading', { level: 2 });
+      priceElements.forEach(element => {
+        expect(element).toHaveClass('MuiTypography-h3');
       });
     });
   });
@@ -136,13 +129,9 @@ describe('PricingSection', () => {
 
       const buttons = await screen.findAllByRole('button');
       for (const button of buttons) {
-        await act(async () => {
-          await user.hover(button);
-        });
+        await user.hover(button);
         expect(button).toHaveClass('MuiButton-root');
-        await act(async () => {
-          await user.unhover(button);
-        });
+        await user.unhover(button);
       }
     });
 
@@ -151,13 +140,9 @@ describe('PricingSection', () => {
 
       const cards = await screen.findAllByRole('article');
       for (const card of cards) {
-        await act(async () => {
-          await user.hover(card);
-        });
+        await user.hover(card);
         expect(card).toHaveClass('MuiCard-root');
-        await act(async () => {
-          await user.unhover(card);
-        });
+        await user.unhover(card);
       }
     });
   });

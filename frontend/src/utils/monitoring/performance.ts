@@ -1,5 +1,27 @@
 import { PerformanceMetrics } from './types';
 
+interface PerformanceStats {
+  avgResponseTime: number;
+  p95ResponseTime: number;
+  p99ResponseTime: number;
+  errorRates: Record<string, number>;
+  resourceUsage: Record<string, number>;
+  customMetrics: Record<string, number>;
+}
+
+interface PerformanceTrends {
+  responseTime: {
+    trend: TrendDirection;
+    current: number;
+  };
+  errorRate: {
+    trend: TrendDirection;
+    current: number;
+  };
+}
+
+type TrendDirection = 'improving' | 'stable' | 'degrading';
+
 export class PerformanceMonitor {
   private static instance: PerformanceMonitor;
   private metrics: PerformanceMetrics;
@@ -67,7 +89,7 @@ export class PerformanceMonitor {
   }
 
   // 获取性能统计
-  public getPerformanceStats(): any {
+  public getPerformanceStats(): PerformanceStats {
     const responseTimes = this.metrics.responseTimes;
     const totalRequests = responseTimes.length;
 
@@ -135,17 +157,19 @@ export class PerformanceMonitor {
   }
 
   // 发送数据到监控系统
-  private async sendToMonitoringSystem(stats: any): Promise<void> {
+  private async sendToMonitoringSystem(stats: PerformanceStats): Promise<void> {
     try {
-      // 这里可以实现将数据发送到实际的监控系统的逻辑
-      // 例如：
-      await fetch('/api/monitoring/metrics', {
+      const response = await fetch('/api/monitoring/metrics', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(stats),
       });
+
+      if (!response.ok) {
+        throw new Error(`Failed to send metrics: ${response.statusText}`);
+      }
     } catch (error) {
       console.error('Failed to send metrics to monitoring system:', error);
     }
@@ -187,9 +211,9 @@ export class PerformanceMonitor {
   }
 
   // 分析性能趋势
-  public analyzeTrends(): any {
+  public analyzeTrends(): PerformanceTrends {
     const stats = this.getPerformanceStats();
-    const trends = {
+    return {
       responseTime: {
         trend: this.calculateTrend(this.metrics.responseTimes),
         current: stats.avgResponseTime,
@@ -199,10 +223,9 @@ export class PerformanceMonitor {
         current: this.calculateCurrentErrorRate(),
       },
     };
-    return trends;
   }
 
-  private calculateTrend(data: number[]): 'improving' | 'stable' | 'degrading' {
+  private calculateTrend(data: number[]): TrendDirection {
     if (data.length < 2) return 'stable';
 
     const recentData = data.slice(-10); // 使用最近的10个数据点
@@ -216,7 +239,7 @@ export class PerformanceMonitor {
     return 'stable';
   }
 
-  private calculateErrorTrend(): 'improving' | 'stable' | 'degrading' {
+  private calculateErrorTrend(): TrendDirection {
     // 实现错误率趋势计算逻辑
     return 'stable';
   }

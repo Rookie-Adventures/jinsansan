@@ -84,8 +84,8 @@ describe('AlertManagement', () => {
     it('点击删除按钮应该删除规则', () => {
       render(<AlertManagement />);
 
-      const deleteButton = screen.getByTestId('DeleteIcon').parentElement;
-      fireEvent.click(deleteButton!);
+      const deleteButton = screen.getByTestId('delete-rule-button');
+      fireEvent.click(deleteButton);
 
       expect(mockAlertManager.deleteRule).toHaveBeenCalledWith('rule-1');
     });
@@ -93,8 +93,8 @@ describe('AlertManagement', () => {
     it('点击编辑按钮应该更新规则', () => {
       render(<AlertManagement />);
 
-      const editButton = screen.getByTestId('EditIcon').parentElement;
-      fireEvent.click(editButton!);
+      const editButton = screen.getByTestId('edit-rule-button');
+      fireEvent.click(editButton);
 
       expect(mockAlertManager.updateRule).toHaveBeenCalledWith(mockRules[0]);
     });
@@ -102,7 +102,7 @@ describe('AlertManagement', () => {
     it('切换开关应该更新规则状态', () => {
       render(<AlertManagement />);
 
-      const toggleSwitch = screen.getByRole('checkbox');
+      const toggleSwitch = screen.getByTestId('rule-toggle');
       fireEvent.click(toggleSwitch);
 
       expect(mockAlertManager.updateRule).toHaveBeenCalledWith({
@@ -131,8 +131,8 @@ describe('AlertManagement', () => {
       expect(mockAlertManager.getRules).toHaveBeenCalledTimes(2);
 
       // 删除规则
-      const deleteButton = screen.getByTestId('DeleteIcon').parentElement;
-      fireEvent.click(deleteButton!);
+      const deleteButton = screen.getByTestId('delete-rule-button');
+      fireEvent.click(deleteButton);
       expect(mockAlertManager.getRules).toHaveBeenCalledTimes(3);
     });
   });

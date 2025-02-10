@@ -101,13 +101,13 @@ describe('AuthPage', () => {
       const form = screen.getByTestId('auth-form');
       fireEvent.submit(form);
 
-      await waitFor(
-        () => {
-          expect(mockLogin).toHaveBeenCalledWith(testFormData);
-        },
-        { timeout: TEST_TIMEOUT }
-      );
-      expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+      await waitFor(() => {
+        expect(mockLogin).toHaveBeenCalledWith(testFormData);
+      });
+
+      await waitFor(() => {
+        expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+      });
     });
 
     test('登录失败时应显示错误消息', async () => {
@@ -189,14 +189,17 @@ describe('AuthPage', () => {
       const form = screen.getByTestId('auth-form');
       fireEvent.submit(form);
 
-      await waitFor(
-        () => {
-          expect(validateRegisterForm).toHaveBeenCalledWith(testFormData);
-          expect(mockRegister).toHaveBeenCalledWith(testFormData);
-        },
-        { timeout: TEST_TIMEOUT }
-      );
-      expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+      await waitFor(() => {
+        expect(validateRegisterForm).toHaveBeenCalledWith(testFormData);
+      });
+
+      await waitFor(() => {
+        expect(mockRegister).toHaveBeenCalledWith(testFormData);
+      });
+
+      await waitFor(() => {
+        expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+      });
     });
 
     test('注册失败时应显示错误消息', async () => {
@@ -240,6 +243,12 @@ describe('AuthPage', () => {
       await waitFor(
         () => {
           expect(validateRegisterForm).toHaveBeenCalledWith(testFormData);
+        },
+        { timeout: TEST_TIMEOUT }
+      );
+
+      await waitFor(
+        () => {
           expect(screen.getByText('用户名已存在')).toBeInTheDocument();
         },
         { timeout: TEST_TIMEOUT }
@@ -274,6 +283,12 @@ describe('AuthPage', () => {
       await waitFor(
         () => {
           expect(validateRegisterForm).toHaveBeenCalledWith(testFormData);
+        },
+        { timeout: TEST_TIMEOUT }
+      );
+
+      await waitFor(
+        () => {
           expect(screen.getByText('密码至少需要6个字符')).toBeInTheDocument();
         },
         { timeout: TEST_TIMEOUT }

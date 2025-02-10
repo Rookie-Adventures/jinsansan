@@ -65,7 +65,7 @@ describe('AuthCard', () => {
     test('应该应用正确的布局样式', () => {
       render(<AuthCard>Test Content</AuthCard>);
 
-      const container = screen.getByText('Test Content').closest('.MuiBox-root');
+      const container = screen.getByTestId('auth-card-container');
       expect(container).toHaveStyle({
         display: 'flex',
         justifyContent: 'center',
@@ -77,7 +77,7 @@ describe('AuthCard', () => {
     test('卡片应该有正确的最大宽度', () => {
       render(<AuthCard>Test Content</AuthCard>);
 
-      const card = screen.getByText('Test Content').closest('.MuiCard-root');
+      const card = screen.getByTestId('auth-card');
       expect(card).toHaveStyle({
         maxWidth: '400px',
       });

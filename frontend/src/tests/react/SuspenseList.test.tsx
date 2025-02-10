@@ -1,5 +1,5 @@
 import React, { Suspense, startTransition } from 'react';
-import { render, screen, waitFor, act } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 // 创建一个包装了 Promise 的资源
@@ -87,10 +87,18 @@ describe('Suspense Component Group', () => {
     expect(screen.getByText('Loading B...')).toBeInTheDocument();
     expect(screen.getByText('Loading C...')).toBeInTheDocument();
 
-    // 等待所有组件加载完成
+    // 等待组件 A 加载完成
     await waitFor(() => {
       expect(screen.getByTestId('component-A')).toBeInTheDocument();
+    }, extendedWaitForOptions);
+
+    // 等待组件 B 加载完成
+    await waitFor(() => {
       expect(screen.getByTestId('component-B')).toBeInTheDocument();
+    }, extendedWaitForOptions);
+
+    // 等待组件 C 加载完成
+    await waitFor(() => {
       expect(screen.getByTestId('component-C')).toBeInTheDocument();
     }, extendedWaitForOptions);
 
@@ -121,18 +129,15 @@ describe('Suspense Component Group', () => {
       return <div data-testid="component-C">{data}</div>;
     };
 
-    // 使用 act 包装渲染过程
-    act(() => {
-      render(
-        <Suspense fallback={<div>Loading outer...</div>}>
-          <div>
-            <AsyncComponent1 />
-            <AsyncComponent2 />
-            <AsyncComponent3 />
-          </div>
-        </Suspense>
-      );
-    });
+    render(
+      <Suspense fallback={<div>Loading outer...</div>}>
+        <div>
+          <AsyncComponent1 />
+          <AsyncComponent2 />
+          <AsyncComponent3 />
+        </div>
+      </Suspense>
+    );
 
     // 验证初始加载状态
     expect(screen.getByText('Loading outer...')).toBeInTheDocument();
@@ -190,11 +195,8 @@ describe('Suspense Component Group', () => {
         // 重置资源状态
         resource.reset();
 
-        // 使用 act 包装 startTransition
-        act(() => {
-          startTransition(() => {
-            setShow(true);
-          });
+        startTransition(() => {
+          setShow(true);
         });
       }, []);
 
@@ -212,12 +214,9 @@ describe('Suspense Component Group', () => {
     render(<TestComponent />);
 
     // 验证加载状态
-    await waitFor(
-      () => {
-        expect(screen.getByText('Loading...')).toBeInTheDocument();
-      },
-      { timeout: 1000 }
-    );
+    await waitFor(() => {
+      expect(screen.getByText('Loading...')).toBeInTheDocument();
+    }, { timeout: 1000 });
 
     // 等待组件加载完成
     await waitFor(() => {

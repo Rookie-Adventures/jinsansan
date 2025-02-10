@@ -20,6 +20,7 @@ const HeroSection: React.FC = () => {
           <Grid item xs={12} md={6}>
             <Box
               component={motion.div}
+              data-testid="hero-content"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}

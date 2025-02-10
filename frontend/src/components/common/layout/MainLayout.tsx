@@ -7,6 +7,7 @@ import Navbar from './Navbar';
 const MainLayout: React.FC = () => {
   return (
     <Box
+      data-testid="root-container"
       sx={{
         minHeight: '100vh',
         display: 'flex',
@@ -17,6 +18,7 @@ const MainLayout: React.FC = () => {
       <Navbar />
       <Box
         component="main"
+        data-testid="main-content"
         sx={{
           flexGrow: 1,
           width: '100%',

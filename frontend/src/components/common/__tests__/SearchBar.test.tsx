@@ -31,7 +31,7 @@ vi.mock('../../../infrastructure/logging/Logger', () => ({
 
 // Mock lodash debounce to execute immediately in tests
 vi.mock('lodash/debounce', () => ({
-  default: (fn: Function) => fn,
+  default: <T extends (...args: any[]) => any>(fn: T): T => fn,
 }));
 
 describe('SearchBar', () => {
@@ -72,17 +72,17 @@ describe('SearchBar', () => {
       const searchInput = screen.getByPlaceholderText('搜索...');
       fireEvent.change(searchInput, { target: { value: 'test' } });
 
-      await waitFor(
-        () => {
-          expect(mockSearch).toHaveBeenCalledWith({
-            keyword: 'test',
-            page: 1,
-            pageSize: 10,
-          });
-          expect(onSearchResult).toHaveBeenCalledWith(mockResult.items);
-        },
-        { timeout: TEST_TIMEOUT }
-      );
+      await waitFor(() => {
+        expect(mockSearch).toHaveBeenCalledWith({
+          keyword: 'test',
+          page: 1,
+          pageSize: 10,
+        });
+      });
+
+      await waitFor(() => {
+        expect(onSearchResult).toHaveBeenCalledWith(mockResult.items);
+      });
     });
 
     it('不应该搜索空字符串', async () => {
@@ -92,13 +92,13 @@ describe('SearchBar', () => {
       const searchInput = screen.getByPlaceholderText('搜索...');
       fireEvent.change(searchInput, { target: { value: '   ' } });
 
-      await waitFor(
-        () => {
-          expect(mockSearch).not.toHaveBeenCalled();
-          expect(onSearchResult).not.toHaveBeenCalled();
-        },
-        { timeout: TEST_TIMEOUT }
-      );
+      await waitFor(() => {
+        expect(mockSearch).not.toHaveBeenCalled();
+      });
+
+      await waitFor(() => {
+        expect(onSearchResult).not.toHaveBeenCalled();
+      });
     });
   });
 
@@ -116,6 +116,12 @@ describe('SearchBar', () => {
       await waitFor(
         () => {
           expect(onError).toHaveBeenCalledWith(expect.any(Error));
+        },
+        { timeout: TEST_TIMEOUT }
+      );
+
+      await waitFor(
+        () => {
           expect(onError.mock.calls[0][0].message).toBe('Search failed');
         },
         { timeout: TEST_TIMEOUT }

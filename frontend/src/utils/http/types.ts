@@ -1,7 +1,8 @@
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { NotificationSeverity } from '../notification/types';
+import type { RequestConfig, ResponseType } from '../../types/http';
 
-export interface HttpRequestConfig extends AxiosRequestConfig {
+export interface HttpRequestConfig extends RequestConfig {
   retry?: boolean;
   retryTimes?: number;
   retryDelay?: number;
@@ -18,10 +19,10 @@ export interface HttpRequestConfig extends AxiosRequestConfig {
 }
 
 export abstract class RequestMethod {
-  abstract get<T = any>(_url: string, _config?: HttpRequestConfig): Promise<T>;
-  abstract post<T = any>(_url: string, _data?: any, _config?: HttpRequestConfig): Promise<T>;
-  abstract put<T = any>(_url: string, _data?: any, _config?: HttpRequestConfig): Promise<T>;
-  abstract delete<T = any>(_url: string, _config?: HttpRequestConfig): Promise<T>;
+  abstract get<T = unknown>(url: string, config?: HttpRequestConfig): Promise<ResponseType<T>>;
+  abstract post<T = unknown>(url: string, data?: Record<string, unknown>, config?: HttpRequestConfig): Promise<ResponseType<T>>;
+  abstract put<T = unknown>(url: string, data?: Record<string, unknown>, config?: HttpRequestConfig): Promise<ResponseType<T>>;
+  abstract delete<T = unknown>(url: string, config?: HttpRequestConfig): Promise<ResponseType<T>>;
 }
 
 export enum ErrorSeverity {

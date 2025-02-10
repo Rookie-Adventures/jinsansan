@@ -9,6 +9,7 @@ import Navbar from '../components/common/layout/Navbar';
 const HomePage: React.FC = () => {
   return (
     <Box
+      data-testid="home-page-container"
       sx={{
         width: '100vw',
         margin: '-8px',
@@ -24,6 +25,7 @@ const HomePage: React.FC = () => {
       <Navbar />
       {/* Hero Section */}
       <Box
+        data-testid="hero-section-container"
         sx={{
           background: 'linear-gradient(135deg, #24243e 0%, #302b63 50%, #0f0c29 100%)',
           color: 'white',
@@ -46,12 +48,13 @@ const HomePage: React.FC = () => {
       </Box>
 
       {/* Feature Section */}
-      <Box>
+      <Box data-testid="feature-section-container">
         <FeatureSection />
       </Box>
 
       {/* Pricing Section */}
       <Box
+        data-testid="pricing-section-container"
         sx={{
           background: 'linear-gradient(135deg, #f5f7fa 0%, #e8ecf3 100%)',
         }}

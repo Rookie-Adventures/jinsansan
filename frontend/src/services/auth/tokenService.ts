@@ -1,3 +1,11 @@
+export interface TokenPayload {
+  exp: number;
+  iat: number;
+  sub: string;
+  username: string;
+  roles: string[];
+}
+
 export class TokenService {
   private readonly TOKEN_KEY = 'auth_token';
 
@@ -38,7 +46,7 @@ export class TokenService {
    * 解析 token
    * @param token JWT token
    */
-  public parseToken(token: string): any {
+  public parseToken(token: string): TokenPayload {
     if (!token || typeof token !== 'string') {
       throw new Error('Invalid token format');
     }
@@ -49,7 +57,11 @@ export class TokenService {
     }
 
     try {
-      return JSON.parse(atob(parts[1]));
+      const payload = JSON.parse(atob(parts[1]));
+      if (!this.isValidTokenPayload(payload)) {
+        throw new Error('Invalid token payload');
+      }
+      return payload;
     } catch {
       throw new Error('Invalid token format');
     }
@@ -68,6 +80,23 @@ export class TokenService {
     } catch {
       return true;
     }
+  }
+
+  /**
+   * 验证 token payload 是否有效
+   * @param payload token payload
+   */
+  private isValidTokenPayload(payload: unknown): payload is TokenPayload {
+    if (!payload || typeof payload !== 'object') return false;
+    
+    const p = payload as Partial<TokenPayload>;
+    return (
+      typeof p.exp === 'number' &&
+      typeof p.iat === 'number' &&
+      typeof p.sub === 'string' &&
+      typeof p.username === 'string' &&
+      Array.isArray(p.roles)
+    );
   }
 }
 
