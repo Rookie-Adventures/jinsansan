@@ -4,6 +4,7 @@ exports[`HomePage > 应该匹配快照 1`] = `
 <div>
   <div
     class="MuiBox-root css-7tuhkw"
+    data-testid="home-page-container"
   >
     <div
       data-testid="mock-navbar"
@@ -12,6 +13,7 @@ exports[`HomePage > 应该匹配快照 1`] = `
     </div>
     <div
       class="MuiBox-root css-se6w4j"
+      data-testid="hero-section-container"
     >
       <div
         data-testid="mock-hero-section"
@@ -21,6 +23,7 @@ exports[`HomePage > 应该匹配快照 1`] = `
     </div>
     <div
       class="MuiBox-root css-0"
+      data-testid="feature-section-container"
     >
       <div
         data-testid="mock-feature-section"
@@ -30,6 +33,7 @@ exports[`HomePage > 应该匹配快照 1`] = `
     </div>
     <div
       class="MuiBox-root css-1qim88"
+      data-testid="pricing-section-container"
     >
       <div
         data-testid="mock-pricing-section"
@@ -45,6 +49,7 @@ exports[`HomePage > 应该在暗色主题下匹配快照 1`] = `
 <div>
   <div
     class="MuiBox-root css-7tuhkw"
+    data-testid="home-page-container"
   >
     <div
       data-testid="mock-navbar"
@@ -53,6 +58,7 @@ exports[`HomePage > 应该在暗色主题下匹配快照 1`] = `
     </div>
     <div
       class="MuiBox-root css-se6w4j"
+      data-testid="hero-section-container"
     >
       <div
         data-testid="mock-hero-section"
@@ -62,6 +68,7 @@ exports[`HomePage > 应该在暗色主题下匹配快照 1`] = `
     </div>
     <div
       class="MuiBox-root css-0"
+      data-testid="feature-section-container"
     >
       <div
         data-testid="mock-feature-section"
@@ -71,6 +78,7 @@ exports[`HomePage > 应该在暗色主题下匹配快照 1`] = `
     </div>
     <div
       class="MuiBox-root css-1qim88"
+      data-testid="pricing-section-container"
     >
       <div
         data-testid="mock-pricing-section"
@@ -86,6 +94,7 @@ exports[`HomePage > 应该在移动端视图下匹配快照 1`] = `
 <div>
   <div
     class="MuiBox-root css-7tuhkw"
+    data-testid="home-page-container"
   >
     <div
       data-testid="mock-navbar"
@@ -94,6 +103,7 @@ exports[`HomePage > 应该在移动端视图下匹配快照 1`] = `
     </div>
     <div
       class="MuiBox-root css-se6w4j"
+      data-testid="hero-section-container"
     >
       <div
         data-testid="mock-hero-section"
@@ -103,6 +113,7 @@ exports[`HomePage > 应该在移动端视图下匹配快照 1`] = `
     </div>
     <div
       class="MuiBox-root css-0"
+      data-testid="feature-section-container"
     >
       <div
         data-testid="mock-feature-section"
@@ -112,6 +123,7 @@ exports[`HomePage > 应该在移动端视图下匹配快照 1`] = `
     </div>
     <div
       class="MuiBox-root css-1qim88"
+      data-testid="pricing-section-container"
     >
       <div
         data-testid="mock-pricing-section"

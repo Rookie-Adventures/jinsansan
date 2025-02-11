@@ -34,39 +34,54 @@ module.exports = {
   settings: {
     react: {
       version: 'detect',
-    },
+    }
   },
   rules: {
     // 基础规则
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
+    'no-multiple-empty-lines': ['error', { max: 1, maxEOF: 0 }],
+    'no-var': 'error',
+    'prefer-const': 'error',
+    'object-shorthand': 'error',
     
     // TypeScript 规则
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/no-unused-vars': 'off', // 使用 unused-imports 插件替代
+    '@typescript-eslint/no-unused-vars': ['error', {
+      vars: 'all',
+      args: 'after-used',
+      ignoreRestSiblings: true,
+      argsIgnorePattern: '^_',
+      varsIgnorePattern: '^_'
+    }],
+    '@typescript-eslint/no-non-null-assertion': 'error',
+    '@typescript-eslint/no-empty-function': 'error',
+    '@typescript-eslint/no-empty-interface': 'error',
     
     // React 规则
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
+    'react/jsx-no-useless-fragment': 'error',
+    'react/jsx-pascal-case': 'error',
     
     // 未使用的导入
     'unused-imports/no-unused-imports': 'error',
-    'unused-imports/no-unused-vars': [
-      'warn',
-      {
-        vars: 'all',
-        varsIgnorePattern: '^_',
-        args: 'after-used',
-        argsIgnorePattern: '^_',
-      },
-    ],
+    'unused-imports/no-unused-vars': ['error', {
+      vars: 'all',
+      varsIgnorePattern: '^_',
+      args: 'after-used',
+      argsIgnorePattern: '^_'
+    }],
     
     // Promise 规则
     'promise/always-return': 'error',
     'promise/no-return-wrap': 'error',
+    'promise/catch-or-return': 'error',
+    'promise/no-nesting': 'warn',
+    'promise/prefer-await-to-then': 'error',
 
     // Testing Library 规则
     'testing-library/await-async-queries': 'error',
@@ -83,8 +98,8 @@ module.exports = {
       files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
       extends: ['plugin:testing-library/react'],
       rules: {
-        '@typescript-eslint/no-explicit-any': 'off', // 在测试文件中允许使用 any
-        'no-console': 'off', // 在测试文件中允许使用 console
+        '@typescript-eslint/no-explicit-any': 'off',
+        'no-console': 'off'
       },
     },
     {
