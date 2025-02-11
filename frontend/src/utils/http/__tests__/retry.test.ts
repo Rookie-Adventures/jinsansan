@@ -1,15 +1,49 @@
 import { vi, expect, describe, it, beforeEach, afterEach } from 'vitest';
 import { retry, createRetry } from '../retry';
 import { AxiosError } from 'axios';
+import { createMockRetryFunction, runRetryTest } from '../../../test/utils/testHelpers';
 
 describe('retry', () => {
   beforeEach(() => {
+    vi.clearAllMocks();
     vi.useFakeTimers();
   });
 
   afterEach(() => {
     vi.clearAllTimers();
     vi.useRealTimers();
+  });
+
+  it('should retry until success', async () => {
+    const fn = createMockRetryFunction();
+    const result = await runRetryTest(fn, { times: 3, delay: 1000 });
+    expect(result).toBe('success');
+    expect(fn).toHaveBeenCalledTimes(3);
+  });
+
+  it('should call onRetry callback', async () => {
+    const fn = createMockRetryFunction();
+    const onRetry = vi.fn();
+    const result = await runRetryTest(fn, { times: 3, delay: 1000, onRetry });
+    expect(result).toBe('success');
+    expect(onRetry).toHaveBeenCalledTimes(2);
+  });
+
+  it('should respect delay between retries', async () => {
+    const fn = createMockRetryFunction();
+    const promise = retry(fn, { times: 3, delay: 1000 });
+    
+    await vi.advanceTimersByTimeAsync(900);
+    expect(fn).toHaveBeenCalledTimes(1);
+    
+    await vi.advanceTimersByTimeAsync(100);
+    expect(fn).toHaveBeenCalledTimes(2);
+    
+    await vi.advanceTimersByTimeAsync(1000);
+    expect(fn).toHaveBeenCalledTimes(3);
+    
+    const result = await promise;
+    expect(result).toBe('success');
   });
 
   it('应该在成功时直接返回结果', async () => {

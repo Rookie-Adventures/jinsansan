@@ -2,18 +2,11 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material/styles';
 import { useMediaQuery } from '@mui/material';
 import { vi } from 'vitest';
-
 import HeroSection from '../HeroSection';
 import { createTheme } from '@/theme';
+import { setupMockMediaQuery } from '@/test/utils/mockSetup';
 
-// Mock useMediaQuery
-vi.mock('@mui/material', async () => {
-  const actual = await vi.importActual<typeof import('@mui/material')>('@mui/material');
-  return {
-    ...actual,
-    useMediaQuery: vi.fn(),
-  };
-});
+setupMockMediaQuery();
 
 describe('HeroSection', () => {
   const renderHeroSection = () => {

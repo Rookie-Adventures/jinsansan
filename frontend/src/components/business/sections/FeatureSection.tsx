@@ -1,12 +1,13 @@
 import React from 'react';
-import { Box, Container, Grid, Typography, Card, useTheme, useMediaQuery } from '@mui/material';
-import { motion } from 'framer-motion';
+import { Box, Grid, Typography } from '@mui/material';
 import {
   AutoMode as StreamIcon,
   Psychology as ContextIcon,
   Apps as ModelsIcon,
   Security as SecurityIcon,
 } from '@mui/icons-material';
+import BusinessSection from './BusinessSection';
+import AnimatedCard from './AnimatedCard';
 
 const features = [
   {
@@ -36,117 +37,62 @@ const features = [
 ];
 
 const FeatureSection: React.FC = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
   return (
-    <Container maxWidth="lg">
-      <Box
-        sx={{
-          py: { xs: 4, md: 8 },
-          px: { xs: 2, sm: 3 },
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Typography
-          component="h2"
-          variant="h3"
-          align="center"
-          gutterBottom
-          sx={{
-            mb: 2,
-            fontSize: { xs: '2rem', md: '3rem' },
-            fontWeight: 'bold',
-            background: 'linear-gradient(135deg, #24243e 0%, #302b63 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-          }}
-        >
-          核心功能
-        </Typography>
-        <Typography
-          variant="h6"
-          align="center"
-          color="text.secondary"
-          sx={{ mb: { xs: 4, md: 6 }, maxWidth: '800px' }}
-        >
-          我们提供全面的 AI 模型服务，让您的应用更智能
-        </Typography>
-
-        <Grid container spacing={3} justifyContent="center">
-          {features.map((feature, index) => (
-            <Grid
-              item
-              key={feature.title}
-              xs={12}
-              sm={6}
-              md={3}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: feature.delay }}
-                style={{ width: '100%' }}
+    <BusinessSection
+      title="核心功能"
+      subtitle="我们提供全面的 AI 模型服务，让您的应用更智能"
+    >
+      <Grid container spacing={3} justifyContent="center">
+        {features.map((feature, index) => (
+          <Grid
+            item
+            key={feature.title}
+            xs={12}
+            sm={6}
+            md={3}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <AnimatedCard delay={feature.delay} testId={`feature-card-${index}`}>
+              <Box
+                sx={{
+                  p: 3,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  textAlign: 'center',
+                }}
               >
-                <Card
-                  role="article"
-                  elevation={0}
+                <Box
                   sx={{
-                    height: '100%',
-                    p: 3,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    textAlign: 'center',
-                    background: 'rgba(255, 255, 255, 0.8)',
-                    backdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255, 255, 255, 0.3)',
-                    borderRadius: 2,
-                    transition: 'transform 0.3s ease-in-out',
-                    margin: isMobile ? '0 auto' : 'inherit',
-                    maxWidth: isMobile ? '350px' : 'none',
-                    '&:hover': {
-                      transform: 'translateY(-8px)',
-                      boxShadow: theme.shadows[4],
-                    },
+                    mb: 2,
+                    p: 1.5,
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #24243e 0%, #302b63 100%)',
+                    color: 'white',
                   }}
                 >
-                  <Box
-                    sx={{
-                      mb: 2,
-                      p: 1.5,
-                      borderRadius: '50%',
-                      background: 'linear-gradient(135deg, #24243e 0%, #302b63 100%)',
-                      color: 'white',
-                    }}
-                  >
-                    <feature.icon data-testid={`feature-icon-${index}`} sx={{ fontSize: 40 }} />
-                  </Box>
-                  <Typography
-                    variant="h5"
-                    component="h3"
-                    gutterBottom
-                    sx={{ fontWeight: 'bold', mb: 1 }}
-                  >
-                    {feature.title}
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary" sx={{ flexGrow: 1 }}>
-                    {feature.description}
-                  </Typography>
-                </Card>
-              </motion.div>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-    </Container>
+                  <feature.icon data-testid={`feature-icon-${index}`} sx={{ fontSize: 40 }} />
+                </Box>
+                <Typography
+                  variant="h5"
+                  component="h3"
+                  gutterBottom
+                  sx={{ fontWeight: 'bold', mb: 1 }}
+                >
+                  {feature.title}
+                </Typography>
+                <Typography variant="body1" color="text.secondary" sx={{ flexGrow: 1 }}>
+                  {feature.description}
+                </Typography>
+              </Box>
+            </AnimatedCard>
+          </Grid>
+        ))}
+      </Grid>
+    </BusinessSection>
   );
 };
 

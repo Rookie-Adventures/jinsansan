@@ -1,12 +1,10 @@
-import { AccountCircle, Menu as MenuIcon } from '@mui/icons-material';
+import { Menu as MenuIcon } from '@mui/icons-material';
 import {
   AppBar,
   Box,
   Button,
   Container,
   IconButton,
-  Menu,
-  MenuItem,
   Toolbar,
   Typography,
   useMediaQuery,
@@ -14,42 +12,14 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { useAuth } from '@/hooks/auth';
-import { HttpError } from '@/utils/http/error/types';
-import { errorLogger } from '@/utils/http/error/logger';
-import { HttpErrorType } from '@/utils/http/error/types';
 import { ThemeToggle } from '../ThemeToggle';
+import UserMenu from './UserMenu';
 
 const NavigationMenu: React.FC = () => {
   const navigate = useNavigate();
   const theme = useTheme();
-  const { isAuthenticated, user, logout } = useAuth();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleLogout = async () => {
-    try {
-      handleClose();
-      navigate('/');
-      await logout();
-    } catch (error) {
-      errorLogger.log(
-        new HttpError({
-          type: HttpErrorType.AUTH,
-          message: '退出登录失败',
-          data: error,
-        })
-      );
-    }
-  };
+  const { isAuthenticated } = useAuth();
 
   return (
     <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
@@ -83,36 +53,7 @@ const NavigationMenu: React.FC = () => {
       </Button>
 
       {isAuthenticated ? (
-        <>
-          <IconButton
-            size="large"
-            aria-label="account of current user"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            onClick={handleMenu}
-            color="inherit"
-          >
-            <AccountCircle />
-          </IconButton>
-          <Menu
-            id="menu-appbar"
-            anchorEl={anchorEl}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={handleClose}>{user?.username || '用户'}</MenuItem>
-            <MenuItem onClick={handleLogout}>退出登录</MenuItem>
-          </Menu>
-        </>
+        <UserMenu />
       ) : (
         <Button
           variant="contained"
@@ -136,32 +77,7 @@ const Navbar: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
-  const { isAuthenticated, user, logout } = useAuth();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleLogout = async () => {
-    try {
-      handleClose();
-      navigate('/');
-      await logout();
-    } catch (error) {
-      errorLogger.log(
-        new HttpError({
-          type: HttpErrorType.AUTH,
-          message: '退出登录失败',
-          data: error,
-        })
-      );
-    }
-  };
+  const { isAuthenticated } = useAuth();
 
   return (
     <AppBar
@@ -196,36 +112,7 @@ const Navbar: React.FC = () => {
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <ThemeToggle />
               {isAuthenticated ? (
-                <>
-                  <IconButton
-                    size="large"
-                    aria-label="account of current user"
-                    aria-controls="menu-appbar"
-                    aria-haspopup="true"
-                    onClick={handleMenu}
-                    color="inherit"
-                  >
-                    <AccountCircle />
-                  </IconButton>
-                  <Menu
-                    id="menu-appbar"
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'right',
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                  >
-                    <MenuItem onClick={handleClose}>{user?.username || '用户'}</MenuItem>
-                    <MenuItem onClick={handleLogout}>退出登录</MenuItem>
-                  </Menu>
-                </>
+                <UserMenu />
               ) : (
                 <IconButton size="large" edge="end" color="inherit" aria-label="menu">
                   <MenuIcon />

@@ -4,6 +4,7 @@
 import { errorLogger } from '@/utils/error/errorLogger';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { AuditLogLevel, auditLogManager, AuditLogType } from '../audit';
+import { setupMockLocalStorage } from '@/test/utils/mockSetup';
 
 // Mock errorLogger
 vi.mock('@/utils/error/errorLogger', () => ({
@@ -11,6 +12,8 @@ vi.mock('@/utils/error/errorLogger', () => ({
     log: vi.fn(),
   },
 }));
+
+const mockLocalStorage = setupMockLocalStorage();
 
 describe('AuditLogManager', () => {
   const mockFetch = vi.fn();
@@ -25,17 +28,7 @@ describe('AuditLogManager', () => {
     vi.setSystemTime(baseTime);
 
     // 重置 localStorage
-    const store = new Map<string, string>();
-    const localStorageMock = {
-      getItem: vi.fn((key: string) => store.get(key) || null),
-      setItem: vi.fn((key: string, value: string) => store.set(key, value)),
-      removeItem: vi.fn((key: string) => store.delete(key)),
-      clear: vi.fn(() => store.clear()),
-      length: 0,
-      key: vi.fn((_: number) => null),
-    } as Storage;
-
-    global.localStorage = localStorageMock;
+    mockLocalStorage.clear();
 
     // 清理日志
     auditLogManager['logs'] = [];

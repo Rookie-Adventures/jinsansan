@@ -1,6 +1,68 @@
 import { Logger } from '../logging/Logger';
 import { FileValidationOptions, FileValidationResult, FileError } from './types';
 
+/**
+ * 通用文件读取函数
+ * @param file 要读取的文件
+ * @param readMethod 读取方法 ('text' | 'dataURL')
+ * @param logger 日志记录器
+ * @returns Promise<string> 读取结果
+ */
+function readFile(
+  file: File,
+  readMethod: 'text' | 'dataURL',
+  logger?: Logger
+): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      resolve(reader.result as string);
+    };
+
+    reader.onerror = () => {
+      const error = createFileError(
+        readMethod === 'dataURL' ? 'BASE64_CONVERSION_ERROR' : 'FILE_READ_ERROR',
+        readMethod === 'dataURL' ? '转换Base64失败' : '文件读取失败',
+        reader.error as Error,
+        logger,
+        { fileName: file.name }
+      );
+      reject(error);
+    };
+
+    if (readMethod === 'text') {
+      reader.readAsText(file);
+    } else {
+      reader.readAsDataURL(file);
+    }
+  });
+}
+
+/**
+ * 创建标准化的文件错误对象
+ */
+function createFileError(
+  code: string,
+  message: string,
+  originalError: Error,
+  logger?: Logger,
+  context: Record<string, unknown> = {}
+): FileError {
+  const error: FileError = {
+    code,
+    message,
+    originalError,
+  };
+  
+  logger?.error(message, {
+    ...context,
+    error: originalError,
+  });
+  
+  return error;
+}
+
 export class FileManager {
   private logger: Logger;
 
@@ -80,28 +142,7 @@ export class FileManager {
    * @throws {FileError} 当文件读取失败时抛出
    */
   public readFileContent(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        resolve(reader.result as string);
-      };
-
-      reader.onerror = () => {
-        const error: FileError = {
-          code: 'FILE_READ_ERROR',
-          message: '文件读取失败',
-          originalError: reader.error as Error,
-        };
-        this.logger.error(error.message, {
-          fileName: file.name,
-          error: reader.error,
-        });
-        reject(error);
-      };
-
-      reader.readAsText(file);
-    });
+    return readFile(file, 'text', this.logger);
   }
 
   /**
@@ -113,16 +154,13 @@ export class FileManager {
     try {
       return URL.createObjectURL(file);
     } catch (error) {
-      const fileError: FileError = {
-        code: 'PREVIEW_URL_ERROR',
-        message: '创建预览URL失败',
-        originalError: error as Error,
-      };
-      this.logger.error(fileError.message, {
-        fileName: file.name,
-        error,
-      });
-      throw fileError;
+      throw createFileError(
+        'PREVIEW_URL_ERROR',
+        '创建预览URL失败',
+        error as Error,
+        this.logger,
+        { fileName: file.name }
+      );
     }
   }
 
@@ -144,16 +182,13 @@ export class FileManager {
     try {
       URL.revokeObjectURL(url);
     } catch (error) {
-      const fileError: FileError = {
-        code: 'REVOKE_URL_ERROR',
-        message: '释放预览URL失败',
-        originalError: error as Error,
-      };
-      this.logger.error(fileError.message, {
-        url,
-        error,
-      });
-      throw fileError;
+      throw createFileError(
+        'REVOKE_URL_ERROR',
+        '释放预览URL失败',
+        error as Error,
+        this.logger,
+        { url }
+      );
     }
   }
 
@@ -163,28 +198,7 @@ export class FileManager {
    * @throws {FileError} 当转换失败时抛出
    */
   public convertToBase64(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        resolve(reader.result as string);
-      };
-
-      reader.onerror = () => {
-        const error: FileError = {
-          code: 'BASE64_CONVERSION_ERROR',
-          message: '转换Base64失败',
-          originalError: reader.error as Error,
-        };
-        this.logger.error(error.message, {
-          fileName: file.name,
-          error: reader.error,
-        });
-        reject(error);
-      };
-
-      reader.readAsDataURL(file);
-    });
+    return readFile(file, 'dataURL', this.logger);
   }
 
   /**
@@ -206,15 +220,21 @@ export class FileManager {
 
       return new Blob([uInt8Array], { type: contentType });
     } catch (error) {
-      const fileError: FileError = {
-        code: 'BLOB_CONVERSION_ERROR',
-        message: 'Base64转换Blob失败',
-        originalError: error as Error,
-      };
-      this.logger.error(fileError.message, {
-        error,
-      });
-      throw fileError;
+      throw createFileError(
+        'BLOB_CONVERSION_ERROR',
+        'Base64转换Blob失败',
+        error as Error,
+        this.logger
+      );
     }
+  }
+
+  /**
+   * 预览文件内容
+   * @param file 要预览的文件
+   * @throws {FileError} 当预览失败时抛出
+   */
+  public async previewFile(file: File): Promise<string> {
+    return readFile(file, 'dataURL', this.logger);
   }
 }

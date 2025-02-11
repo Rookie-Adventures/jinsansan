@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 import { expect, vi } from 'vitest';
+import { setupMockMatchMedia } from '@/test/utils/mockSetup';
 
 // 扩展 Vitest 的匹配器
 expect.extend({
@@ -13,21 +14,6 @@ expect.extend({
       message: () => (pass ? `期望函数没有被调用一次或参数不匹配` : `期望函数被调用一次且参数匹配`),
     };
   },
-});
-
-// Mock matchMedia
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: vi.fn().mockImplementation(query => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  })),
 });
 
 // Mock fetch API
@@ -45,3 +31,6 @@ beforeEach(() => {
   vi.clearAllMocks();
   (global.fetch as jest.Mock).mockClear();
 });
+
+// Setup mock matchMedia
+setupMockMatchMedia();

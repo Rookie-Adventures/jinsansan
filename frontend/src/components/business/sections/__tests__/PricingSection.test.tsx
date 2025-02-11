@@ -6,6 +6,7 @@ import userEvent from '@testing-library/user-event';
 
 import PricingSection from '../PricingSection';
 import { createTheme } from '@/theme';
+import { setupMockMediaQuery } from '@/test/utils/mockSetup';
 
 // Mock useMediaQuery
 vi.mock('@mui/material', async () => {
@@ -26,6 +27,8 @@ vi.mock('framer-motion', () => ({
     ),
   },
 }));
+
+setupMockMediaQuery();
 
 describe('PricingSection', () => {
   const user = userEvent.setup();

@@ -171,20 +171,21 @@ export interface AlertRule {
   /** 规则名称 */
   name: string;
   /** 规则类型 */
-  type: AlertRuleType;
+  type: 'threshold';
   /** 监控指标 */
   metric: string;
   /** 告警条件 */
-  condition: AlertCondition;
+  condition: {
+    operator: '>' | '<' | '==' | '>=' | '<=' | '!=';
+    value: number;
+  };
   /** 告警级别 */
-  severity: AlertSeverity;
+  severity: 'info' | 'warning' | 'error' | 'critical';
   /** 是否启用 */
   enabled: boolean;
   /** 通知配置 */
   notification: {
-    email?: string[];
-    webhook?: string;
-    slack?: string;
+    email: string[];
   };
 }
 
@@ -235,4 +236,25 @@ export type AlertOperator = '>' | '<' | '>=' | '<=' | '==' | '!=';
 export interface AlertCondition {
   operator: AlertOperator;
   value: number;
+}
+
+export interface AlertHistory {
+  ruleId: string;
+  timestamp: number;
+  severity: AlertRule['severity'];
+  value: number;
+  status: 'triggered' | 'resolved';
+}
+
+export interface AlertManager {
+  addRule(rule: AlertRule): void;
+  updateRule(rule: AlertRule): void;
+  removeRule(id: string): void;
+  getRules(): AlertRule[];
+  clearRules(): void;
+  triggerAlert(ruleId: string): void;
+  getHistory(): AlertHistory[];
+  clearHistory(): void;
+  setNotificationHandler(handler: (alert: AlertHistory) => void): void;
+  getInstance(): AlertManager;
 }

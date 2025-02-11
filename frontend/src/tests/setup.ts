@@ -1,8 +1,8 @@
 import '@testing-library/jest-dom';
-import { cleanup } from '@testing-library/react';
 import { setupServer } from 'msw/node';
 import { afterAll, afterEach, beforeAll, beforeEach, Mock, vi } from 'vitest';
 import { handlers } from '../mocks/handlers';
+import { setupMockMatchMedia } from '@/test/utils/mockSetup';
 
 // MSW 服务器设置
 export const server = setupServer(...handlers);
@@ -24,7 +24,7 @@ vi.mock('react-router-dom', async () => {
 
 // Mock localStorage
 interface MockStorage {
-  [key: string]: any;
+  [key: string]: string | null | Mock | number | (() => Generator<[string, string], void, unknown>);
   getItem: Mock;
   setItem: Mock;
   removeItem: Mock;
@@ -63,23 +63,11 @@ beforeAll(() => {
 
   global.fetch = fetchMock;
 
-  // Mock window.matchMedia
-  Object.defineProperty(window, 'matchMedia', {
-    writable: true,
-    value: vi.fn().mockImplementation(query => ({
-      matches: false,
-      media: query,
-      onchange: null,
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-      dispatchEvent: vi.fn(),
-    })),
-  });
-
   // 设置 fake timers
   vi.useFakeTimers();
+
+  // Setup mock matchMedia
+  setupMockMatchMedia();
 });
 
 beforeEach(() => {
@@ -101,7 +89,6 @@ beforeEach(() => {
 
 // 每个测试后清理
 afterEach(() => {
-  cleanup();
   server.resetHandlers();
 });
 

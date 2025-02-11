@@ -4,19 +4,28 @@ import type { AxiosRequestHeaders } from 'axios';
 import type { ResponseType } from '../../types/http';
 
 class HttpClient implements RequestMethod {
-  async get<T = unknown>(url: string, config?: HttpRequestConfig): Promise<ResponseType<T>> {
+  private async makeRequest<T>(
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE',
+    url: string,
+    config?: HttpRequestConfig & { data?: Record<string, unknown> }
+  ): Promise<ResponseType<T>> {
     const response = await request<T>({
       ...config,
       url,
-      method: 'GET',
+      method,
       headers: (config?.headers || {}) as AxiosRequestHeaders,
     });
+
     return {
       data: response.data,
       status: response.status,
       statusText: response.statusText,
       headers: response.headers as Record<string, string>
     };
+  }
+
+  async get<T = unknown>(url: string, config?: HttpRequestConfig): Promise<ResponseType<T>> {
+    return this.makeRequest<T>('GET', url, config);
   }
 
   async post<T = unknown>(
@@ -24,19 +33,7 @@ class HttpClient implements RequestMethod {
     data?: Record<string, unknown>,
     config?: HttpRequestConfig
   ): Promise<ResponseType<T>> {
-    const response = await request<T>({
-      ...config,
-      url,
-      method: 'POST',
-      data,
-      headers: (config?.headers || {}) as AxiosRequestHeaders,
-    });
-    return {
-      data: response.data,
-      status: response.status,
-      statusText: response.statusText,
-      headers: response.headers as Record<string, string>
-    };
+    return this.makeRequest<T>('POST', url, { ...config, data });
   }
 
   async put<T = unknown>(
@@ -44,34 +41,11 @@ class HttpClient implements RequestMethod {
     data?: Record<string, unknown>,
     config?: HttpRequestConfig
   ): Promise<ResponseType<T>> {
-    const response = await request<T>({
-      ...config,
-      url,
-      method: 'PUT',
-      data,
-      headers: (config?.headers || {}) as AxiosRequestHeaders,
-    });
-    return {
-      data: response.data,
-      status: response.status,
-      statusText: response.statusText,
-      headers: response.headers as Record<string, string>
-    };
+    return this.makeRequest<T>('PUT', url, { ...config, data });
   }
 
   async delete<T = unknown>(url: string, config?: HttpRequestConfig): Promise<ResponseType<T>> {
-    const response = await request<T>({
-      ...config,
-      url,
-      method: 'DELETE',
-      headers: (config?.headers || {}) as AxiosRequestHeaders,
-    });
-    return {
-      data: response.data,
-      status: response.status,
-      statusText: response.statusText,
-      headers: response.headers as Record<string, string>
-    };
+    return this.makeRequest<T>('DELETE', url, config);
   }
 }
 

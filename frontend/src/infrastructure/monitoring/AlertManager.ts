@@ -1,5 +1,5 @@
 import { errorLogger } from '../../utils/errorLogger';
-import type { Alert, AlertNotification, AlertRule } from './types';
+import type { Alert, AlertNotification, AlertRule, AlertHistory } from './types';
 
 export class AlertManager {
   private static instance: AlertManager;
@@ -9,6 +9,8 @@ export class AlertManager {
   private notificationHandlers: ((notification: AlertNotification) => void)[] = [];
   private historyLimit: number = 1000;
   private metricTimestamps: Map<string, number[]> = new Map();
+  private history: AlertHistory[] = [];
+  private notificationHandler?: (alert: AlertHistory) => void;
 
   private constructor() {}
 
@@ -20,12 +22,12 @@ export class AlertManager {
   }
 
   public addRule(rule: AlertRule): void {
-    this.rules.set(rule.id, rule);
+    this.rules.set(rule.id, { ...rule });
   }
 
   public updateRule(rule: AlertRule): void {
     if (this.rules.has(rule.id)) {
-      this.rules.set(rule.id, rule);
+      this.rules.set(rule.id, { ...rule });
     }
   }
 
@@ -146,8 +148,8 @@ export class AlertManager {
     this.trimHistory();
   }
 
-  public setNotificationHandler(handler: (notification: AlertNotification) => void): void {
-    this.notificationHandlers = [handler];
+  public setNotificationHandler(handler: (alert: AlertHistory) => void): void {
+    this.notificationHandler = handler;
   }
 
   public addNotificationHandler(handler: (notification: AlertNotification) => void): void {
@@ -199,5 +201,39 @@ export class AlertManager {
     this.alertHistory = [];
     this.metricTimestamps.clear();
     this.notificationHandlers = [];
+  }
+
+  public triggerAlert(ruleId: string): void {
+    const rule = this.rules.get(ruleId);
+    if (!rule || !rule.enabled) {
+      return;
+    }
+
+    const alert: AlertHistory = {
+      ruleId,
+      timestamp: Date.now(),
+      severity: rule.severity,
+      value: 0,
+      status: 'triggered',
+    };
+
+    this.history.push(alert);
+    this.notificationHandler?.(alert);
+  }
+
+  public getHistory(): AlertHistory[] {
+    return this.history;
+  }
+
+  public clearHistory(): void {
+    this.history = [];
+  }
+
+  public removeRule(id: string): void {
+    this.rules.delete(id);
+  }
+
+  public clearRules(): void {
+    this.rules.clear();
   }
 }

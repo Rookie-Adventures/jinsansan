@@ -1,18 +1,10 @@
 import AuthPage from '@/components/auth/AuthPage';
 import LoginForm from '@/components/auth/LoginForm';
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/auth';
+import React from 'react';
+import useRedirectIfAuthenticated from '@/hooks/auth/useRedirectIfAuthenticated';
 
 const LoginPage: React.FC = () => {
-  const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/');
-    }
-  }, [isAuthenticated, navigate]);
+  useRedirectIfAuthenticated();
 
   return (
     <AuthPage type="login" initialData={{ username: '', password: '' }}>

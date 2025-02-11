@@ -3,8 +3,8 @@ import { ThemeProvider } from '@mui/material/styles';
 import { useMediaQuery } from '@mui/material';
 import { vi } from 'vitest';
 import { createTheme } from '@/theme';
-
 import FeatureSection from '../FeatureSection';
+import { setupMockMediaQuery } from '@/test/utils/mockSetup';
 
 // Mock useMediaQuery
 vi.mock('@mui/material', async () => {
@@ -14,6 +14,8 @@ vi.mock('@mui/material', async () => {
     useMediaQuery: vi.fn(),
   };
 });
+
+setupMockMediaQuery();
 
 describe('FeatureSection', () => {
   const renderFeatureSection = () => {
@@ -105,5 +107,10 @@ describe('FeatureSection', () => {
     vi.mocked(useMediaQuery).mockReturnValue(true);
     const { container } = renderFeatureSection();
     expect(container).toMatchSnapshot();
+  });
+
+  it('should render correctly', () => {
+    render(<FeatureSection />);
+    expect(screen.getByRole('heading')).toBeInTheDocument();
   });
 });

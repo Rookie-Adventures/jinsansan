@@ -1,21 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import type { ApiResponse } from '@/types/api';
-import { AuditLogType, AuditLogLevel } from '@/utils/security/audit';
-
-interface AuditLog {
-  id: string;
-  timestamp: number;
-  type: AuditLogType;
-  level: AuditLogLevel;
-  userId?: string;
-  action: string;
-  resource: string;
-  details: Record<string, unknown>;
-  ip?: string;
-  userAgent?: string;
-  status: 'success' | 'failure';
-  errorMessage?: string;
-}
+import type { AuditLog } from '@/types/audit';
 
 export const auditHandlers = [
   // 创建审计日志

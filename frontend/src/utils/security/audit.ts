@@ -1,60 +1,6 @@
 import { errorLogger } from '@/utils/error/errorLogger';
 import { encryptionManager } from './encryption';
-
-/**
- * 审计日志类型
- */
-export enum AuditLogType {
-  AUTH = 'auth',
-  ACCESS = 'access',
-  DATA = 'data',
-  SECURITY = 'security',
-  SYSTEM = 'system',
-}
-
-/**
- * 审计日志级别
- */
-export enum AuditLogLevel {
-  INFO = 'info',
-  WARN = 'warn',
-  ERROR = 'error',
-  CRITICAL = 'critical',
-}
-
-/**
- * 审计日志接口
- */
-interface AuditLog {
-  id: string;
-  timestamp: number;
-  type: AuditLogType;
-  level: AuditLogLevel;
-  userId?: string;
-  action: string;
-  resource: string;
-  details: Record<string, unknown>;
-  ip?: string;
-  userAgent?: string;
-  status: 'success' | 'failure';
-  errorMessage?: string;
-  [key: string]: unknown; // 添加索引签名
-}
-
-/**
- * 告警数据接口
- */
-interface AlertData {
-  type: AuditLogType;
-  level: AuditLogLevel;
-  action: string;
-  resource: string;
-  timestamp: string;
-  details: Record<string, unknown>;
-  status: string;
-  errorMessage?: string;
-  [key: string]: unknown; // 添加索引签名
-}
+import { AuditLog, AuditLogType, AuditLogLevel, AlertData } from '@/types/audit';
 
 /**
  * 审计日志管理器

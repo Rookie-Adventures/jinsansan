@@ -1,4 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { validateLogCall, waitForAsyncOperations } from '../../../test/utils/testHelpers';
 import { routerErrorHandler } from '../error-handler';
 import { errorLogger } from '@/utils/error/errorLogger';
 import { ErrorLevel } from '@/types/error';
@@ -11,8 +12,13 @@ vi.mock('@/utils/error/errorLogger', () => ({
 }));
 
 describe('RouterErrorHandler', () => {
+  const mockErrorLogger = {
+    log: vi.fn(),
+  };
+
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.useFakeTimers();
   });
 
   describe('handleError', () => {
@@ -212,6 +218,23 @@ describe('RouterErrorHandler', () => {
       const instance1 = routerErrorHandler;
       const instance2 = routerErrorHandler;
       expect(instance1).toBe(instance2);
+    });
+  });
+
+  it('should log error with correct context', async () => {
+    const error = new Error('Test error');
+    routerErrorHandler.handleError(error);
+
+    await waitForAsyncOperations();
+
+    validateLogCall(mockErrorLogger, {
+      action: 'router-error',
+      level: ErrorLevel.ERROR,
+      resource: 'router',
+      source: 'RouterErrorHandler',
+      context: {
+        status: 500,
+      },
     });
   });
 });

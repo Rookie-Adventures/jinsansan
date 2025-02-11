@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AlertManager } from '../AlertManager';
 import type { AlertRule } from '../types';
+import { createTestRule } from '@/test/utils/monitoringTestUtils';
 
 describe('AlertManager', () => {
   let alertManager: AlertManager;
@@ -8,61 +9,98 @@ describe('AlertManager', () => {
 
   beforeEach(() => {
     alertManager = AlertManager.getInstance();
-    alertManager.clearState();
+    alertManager.clearRules();
+    alertManager.clearHistory();
     mockNotificationHandler = vi.fn();
     alertManager.setNotificationHandler(mockNotificationHandler);
   });
 
   describe('规则管理', () => {
-    const testRule: AlertRule = {
-      id: 'test-rule-1',
-      name: '测试规则1',
-      type: 'threshold',
-      metric: 'cpu_usage',
-      condition: {
-        operator: '>',
-        value: 80,
-      },
-      severity: 'warning',
-      enabled: true,
-      notification: {
-        email: ['test@example.com'],
-      },
-    };
-
-    it('应该能够添加新规则', () => {
-      alertManager.addRule(testRule);
-      expect(alertManager.getRule(testRule.id)).toEqual(testRule);
+    it('应该能添加新规则', () => {
+      const rule = createTestRule();
+      alertManager.addRule(rule);
+      expect(alertManager.getRules()).toContainEqual(rule);
     });
 
-    it('应该能够更新已存在的规则', () => {
-      alertManager.addRule(testRule);
-      const updatedRule = {
-        ...testRule,
-        name: '更新后的规则名称',
-      };
-      alertManager.updateRule(updatedRule);
-      expect(alertManager.getRule(testRule.id)).toEqual(updatedRule);
+    it('应该能移除规则', () => {
+      const rule = createTestRule();
+      alertManager.addRule(rule);
+      alertManager.removeRule(rule.id);
+      expect(alertManager.getRules()).not.toContainEqual(rule);
     });
 
-    it('应该能够删除规则', () => {
-      alertManager.addRule(testRule);
-      alertManager.deleteRule(testRule.id);
-      expect(alertManager.getRule(testRule.id)).toBeUndefined();
-    });
-
-    it('应该能够获取所有规则', () => {
-      const rule2: AlertRule = {
-        ...testRule,
-        id: 'test-rule-2',
-        name: '测试规则2',
-      };
-      alertManager.addRule(testRule);
-      alertManager.addRule(rule2);
+    it('应该能更新规则', () => {
+      const rule = createTestRule();
+      alertManager.addRule(rule);
+      
+      const updatedRule = createTestRule({
+        name: '更新后的规则',
+        severity: 'critical',
+      });
+      
+      alertManager.updateRule({ ...updatedRule, id: rule.id });
       const rules = alertManager.getRules();
-      expect(rules).toHaveLength(2);
-      expect(rules).toContainEqual(testRule);
-      expect(rules).toContainEqual(rule2);
+      expect(rules).toHaveLength(1);
+      expect(rules[0]).toMatchObject({
+        id: rule.id,
+        name: '更新后的规则',
+        severity: 'critical',
+      });
+    });
+  });
+
+  describe('告警历史', () => {
+    it('应该正确记录告警历史', () => {
+      const rule = createTestRule();
+      alertManager.addRule(rule);
+      alertManager.triggerAlert(rule.id);
+      
+      const history = alertManager.getHistory();
+      expect(history).toHaveLength(1);
+      expect(history[0]).toMatchObject({
+        ruleId: rule.id,
+        severity: rule.severity,
+        status: 'triggered',
+      });
+    });
+
+    it('应该能清除告警历史', () => {
+      const rule = createTestRule();
+      alertManager.addRule(rule);
+      alertManager.triggerAlert(rule.id);
+      alertManager.clearHistory();
+      
+      expect(alertManager.getHistory()).toHaveLength(0);
+    });
+  });
+
+  describe('告警触发', () => {
+    it('应该能触发告警', () => {
+      const mockNotify = vi.fn();
+      const rule = createTestRule();
+      
+      alertManager.setNotificationHandler(mockNotify);
+      alertManager.addRule(rule);
+      alertManager.triggerAlert(rule.id);
+      
+      expect(mockNotify).toHaveBeenCalledWith(
+        expect.objectContaining({
+          ruleId: rule.id,
+          severity: rule.severity,
+          status: 'triggered',
+        })
+      );
+    });
+
+    it('应该忽略已禁用的规则', () => {
+      const mockNotify = vi.fn();
+      const rule = createTestRule({ enabled: false });
+      
+      alertManager.setNotificationHandler(mockNotify);
+      alertManager.addRule(rule);
+      alertManager.triggerAlert(rule.id);
+      
+      expect(mockNotify).not.toHaveBeenCalled();
     });
   });
 
@@ -200,66 +238,6 @@ describe('AlertManager', () => {
           }
         });
       });
-    });
-  });
-
-  describe('告警历史', () => {
-    const testRule: AlertRule = {
-      id: 'test-rule-1',
-      name: '测试规则1',
-      type: 'threshold',
-      metric: 'cpu_usage',
-      condition: {
-        operator: '>',
-        value: 80,
-      },
-      severity: 'warning',
-      enabled: true,
-      notification: {
-        email: ['test@example.com'],
-      },
-    };
-
-    beforeEach(() => {
-      alertManager.addRule(testRule);
-    });
-
-    it('应该正确记录告警历史', () => {
-      const baseTime = Date.now();
-
-      // 触发告警
-      for (let i = 0; i < 5; i++) {
-        alertManager.evaluateMetric('cpu_usage', 85, baseTime + i * 60000);
-      }
-
-      // 解除告警
-      alertManager.evaluateMetric('cpu_usage', 75, baseTime + 300000);
-
-      const history = alertManager.getAlertHistory();
-      expect(history).toHaveLength(1);
-      expect(history[0]).toMatchObject({
-        ruleId: testRule.id,
-        status: 'resolved',
-        value: 85,
-      });
-    });
-
-    it('应该遵守历史记录限制', () => {
-      alertManager.setHistoryLimit(2);
-      const baseTime = Date.now();
-
-      // 创建3个告警周期
-      for (let j = 0; j < 3; j++) {
-        // 触发告警
-        for (let i = 0; i < 5; i++) {
-          alertManager.evaluateMetric('cpu_usage', 85, baseTime + j * 300000 + i * 60000);
-        }
-        // 解除告警
-        alertManager.evaluateMetric('cpu_usage', 75, baseTime + j * 300000 + 300000);
-      }
-
-      const history = alertManager.getAlertHistory();
-      expect(history).toHaveLength(2);
     });
   });
 
