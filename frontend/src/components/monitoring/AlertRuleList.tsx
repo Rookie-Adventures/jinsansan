@@ -41,12 +41,7 @@ const severityColors: Record<AlertSeverity, 'default' | 'info' | 'warning' | 'er
  * 告警规则列表组件
  * 展示告警规则列表，并提供编辑、删除、启用/禁用等操作
  */
-export const AlertRuleList: FC<AlertRuleListProps> = ({
-  rules,
-  onEdit,
-  onDelete,
-  onToggle,
-}) => {
+export const AlertRuleList: FC<AlertRuleListProps> = ({ rules, onEdit, onDelete, onToggle }) => {
   return (
     <TableContainer component={Paper}>
       <Table>

@@ -5,14 +5,14 @@ import { http } from '../http/HttpClient';
 export interface UploadOptions {
   /** 上传进度回调函数 */
   onProgress?: (progress: number) => void;
-  /** 
+  /**
    * @todo - 将来用于实现分片上传
    * 文件分片大小（字节）
    */
   chunkSize?: number;
   /** 自定义请求头 */
   headers?: Record<string, string>;
-  /** 
+  /**
    * @todo - 将来用于CSV行数据验证
    * CSV行数据验证函数
    */

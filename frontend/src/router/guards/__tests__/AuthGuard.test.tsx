@@ -2,7 +2,6 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import { vi } from 'vitest';
 
-
 import { useAuth } from '@/hooks/auth';
 import Logger from '@/utils/logger';
 

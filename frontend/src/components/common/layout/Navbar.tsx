@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '@/hooks/auth';
 import { errorLogger } from '@/utils/http/error/logger';
-import { HttpError , HttpErrorType } from '@/utils/http/error/types';
+import { HttpError, HttpErrorType } from '@/utils/http/error/types';
 
 import { ThemeToggle } from '../ThemeToggle';
 

@@ -4,9 +4,9 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { AlertRuleForm } from '../AlertRuleForm';
-
 import type { AlertRule } from '@/infrastructure/monitoring/types';
+
+import { AlertRuleForm } from '../AlertRuleForm';
 
 describe('AlertRuleForm', () => {
   const mockOnSubmit = vi.fn();

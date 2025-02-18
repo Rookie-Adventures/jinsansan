@@ -110,12 +110,12 @@ const AuthForm: FC<AuthFormProps> = ({
   onFormChange,
   onTogglePassword,
 }) => (
-  <Box 
-    component="form" 
+  <Box
+    component="form"
     onSubmit={(e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       onSubmit(e);
-    }} 
+    }}
     data-testid="auth-form"
   >
     <FormHeader type={type} />
@@ -127,9 +127,7 @@ const AuthForm: FC<AuthFormProps> = ({
       margin="normal"
       value={formData.username}
       disabled={disabled}
-      onChange={(e: ChangeEvent<HTMLInputElement>) => 
-        onFormChange({ username: e.target.value })
-      }
+      onChange={(e: ChangeEvent<HTMLInputElement>) => onFormChange({ username: e.target.value })}
     />
 
     {type === 'register' && (
@@ -141,9 +139,7 @@ const AuthForm: FC<AuthFormProps> = ({
         margin="normal"
         value={(formData as RegisterFormData).email}
         disabled={disabled}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => 
-          onFormChange({ email: e.target.value })
-        }
+        onChange={(e: ChangeEvent<HTMLInputElement>) => onFormChange({ email: e.target.value })}
       />
     )}
 

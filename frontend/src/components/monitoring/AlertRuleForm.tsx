@@ -83,41 +83,49 @@ export const AlertRuleForm: FC<AlertRuleFormProps> = ({ rule, onSubmit, onCancel
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }, []);
 
-  const validateField = useCallback((field: string) => {
-    let error = '';
+  const validateField = useCallback(
+    (field: string) => {
+      let error = '';
 
-    switch (field) {
-      case 'name':
-        if (!formData.name.trim()) {
-          error = '规则名称不能为空';
-        }
-        break;
-      case 'threshold':
-        if (formData.condition.value < 0) {
-          error = '阈值不能为负数';
-        }
-        break;
-      case 'email':
-        if (formData.notification.email?.length) {
-          const invalidEmails = formData.notification.email.filter((email: string) => !validateEmail(email));
-          if (invalidEmails.length > 0) {
-            error = '邮箱格式不正确';
+      switch (field) {
+        case 'name':
+          if (!formData.name.trim()) {
+            error = '规则名称不能为空';
           }
-        }
-        break;
-    }
+          break;
+        case 'threshold':
+          if (formData.condition.value < 0) {
+            error = '阈值不能为负数';
+          }
+          break;
+        case 'email':
+          if (formData.notification.email?.length) {
+            const invalidEmails = formData.notification.email.filter(
+              (email: string) => !validateEmail(email)
+            );
+            if (invalidEmails.length > 0) {
+              error = '邮箱格式不正确';
+            }
+          }
+          break;
+      }
 
-    setErrors(prev => ({
-      ...prev,
-      [field]: error,
-    }));
+      setErrors(prev => ({
+        ...prev,
+        [field]: error,
+      }));
 
-    return !error;
-  }, [formData, validateEmail]);
+      return !error;
+    },
+    [formData, validateEmail]
+  );
 
-  const handleBlur = useCallback((field: string) => {
-    validateField(field);
-  }, [validateField]);
+  const handleBlur = useCallback(
+    (field: string) => {
+      validateField(field);
+    },
+    [validateField]
+  );
 
   const validateForm = useCallback((): boolean => {
     const fields = ['name', 'threshold', 'email'];
@@ -125,90 +133,110 @@ export const AlertRuleForm: FC<AlertRuleFormProps> = ({ rule, onSubmit, onCancel
     return validations.every(Boolean);
   }, [validateField]);
 
-  const handleSubmit = useCallback((e: FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    (e: FormEvent<HTMLFormElement>): void => {
+      e.preventDefault();
 
-    const isValid = validateForm();
-    if (isValid) {
-      const sanitizedData: AlertRuleFormData = {
-        ...formData,
-        name: sanitizeInput(formData.name),
-        notification: {
-          ...formData.notification,
-          email: formData.notification.email?.map((email: string) => sanitizeInput(email)) || [],
+      const isValid = validateForm();
+      if (isValid) {
+        const sanitizedData: AlertRuleFormData = {
+          ...formData,
+          name: sanitizeInput(formData.name),
+          notification: {
+            ...formData.notification,
+            email: formData.notification.email?.map((email: string) => sanitizeInput(email)) || [],
+          },
+        };
+        onSubmit(sanitizedData);
+      }
+    },
+    [formData, validateForm, onSubmit]
+  );
+
+  const handleThresholdChange = useCallback(
+    (value: number) => {
+      setFormData(prev => ({
+        ...prev,
+        condition: {
+          ...prev.condition,
+          value,
         },
-      };
-      onSubmit(sanitizedData);
-    }
-  }, [formData, validateForm, onSubmit]);
+      }));
+      validateField('threshold');
+    },
+    [validateField]
+  );
 
-  const handleThresholdChange = useCallback((value: number) => {
-    setFormData(prev => ({
-      ...prev,
-      condition: {
-        ...prev.condition,
-        value,
-      },
-    }));
-    validateField('threshold');
-  }, [validateField]);
-
-  const handleChange = useCallback(<K extends keyof AlertRuleFormData>(
-    field: K,
-    value: AlertRuleFormData[K]
-  ): void => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value,
-    }));
-    // 对特定字段进行即时验证
-    if (field === 'name' || field === 'condition' || (field === 'notification' && 'email' in (value as object))) {
-      validateField(field === 'condition' ? 'threshold' : field === 'notification' ? 'email' : field);
-    }
-  }, [validateField]);
+  const handleChange = useCallback(
+    <K extends keyof AlertRuleFormData>(field: K, value: AlertRuleFormData[K]): void => {
+      setFormData(prev => ({
+        ...prev,
+        [field]: value,
+      }));
+      // 对特定字段进行即时验证
+      if (
+        field === 'name' ||
+        field === 'condition' ||
+        (field === 'notification' && 'email' in (value as object))
+      ) {
+        validateField(
+          field === 'condition' ? 'threshold' : field === 'notification' ? 'email' : field
+        );
+      }
+    },
+    [validateField]
+  );
 
   // 修改阈值输入部分的渲染
-  const renderThresholdField = useCallback(() => (
-    <FormControl fullWidth error={!!errors.threshold}>
-      <InputLabel>阈值</InputLabel>
-      <TextField
-        fullWidth
-        type="number"
-        value={formData.condition.value}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => handleThresholdChange(Number(e.target.value))}
-        onBlur={() => handleBlur('threshold')}
-        error={!!errors.threshold}
-        inputProps={{
-          'aria-label': '阈值',
-          'data-testid': 'threshold-input',
-        }}
-      />
-      <StyledFormHelperText error data-testid="threshold-error-text">
-        {errors.threshold || '\u200B'}
-      </StyledFormHelperText>
-    </FormControl>
-  ), [errors.threshold, formData.condition.value, handleBlur, handleThresholdChange]);
+  const renderThresholdField = useCallback(
+    () => (
+      <FormControl fullWidth error={!!errors.threshold}>
+        <InputLabel>阈值</InputLabel>
+        <TextField
+          fullWidth
+          type="number"
+          value={formData.condition.value}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            handleThresholdChange(Number(e.target.value))
+          }
+          onBlur={() => handleBlur('threshold')}
+          error={!!errors.threshold}
+          inputProps={{
+            'aria-label': '阈值',
+            'data-testid': 'threshold-input',
+          }}
+        />
+        <StyledFormHelperText error data-testid="threshold-error-text">
+          {errors.threshold || '\u200B'}
+        </StyledFormHelperText>
+      </FormControl>
+    ),
+    [errors.threshold, formData.condition.value, handleBlur, handleThresholdChange]
+  );
 
   // 修改名称输入部分的渲染
-  const renderNameField = useCallback(() => (
-    <FormControl fullWidth error={!!errors.name}>
-      <TextField
-        fullWidth
-        label="规则名称"
-        value={formData.name}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange('name', e.target.value)}
-        onBlur={() => handleBlur('name')}
-        error={!!errors.name}
-        required
-        inputProps={{
-          'aria-label': '规则名称',
-        }}
-      />
-      <StyledFormHelperText error data-testid="name-error-text">
-        {errors.name || '\u200B'}
-      </StyledFormHelperText>
-    </FormControl>
-  ), [errors.name, formData.name, handleBlur, handleChange]);
+  const renderNameField = useCallback(
+    () => (
+      <FormControl fullWidth error={!!errors.name}>
+        <TextField
+          fullWidth
+          label="规则名称"
+          value={formData.name}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange('name', e.target.value)}
+          onBlur={() => handleBlur('name')}
+          error={!!errors.name}
+          required
+          inputProps={{
+            'aria-label': '规则名称',
+          }}
+        />
+        <StyledFormHelperText error data-testid="name-error-text">
+          {errors.name || '\u200B'}
+        </StyledFormHelperText>
+      </FormControl>
+    ),
+    [errors.name, formData.name, handleBlur, handleChange]
+  );
 
   return (
     <Box
@@ -230,7 +258,7 @@ export const AlertRuleForm: FC<AlertRuleFormProps> = ({ rule, onSubmit, onCancel
           <Select
             labelId="rule-type-label"
             value={formData.type}
-            onChange={(e) => handleChange('type', e.target.value as AlertRuleType)}
+            onChange={e => handleChange('type', e.target.value as AlertRuleType)}
             label="规则类型"
           >
             {RULE_TYPES.map(type => (

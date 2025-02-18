@@ -11,7 +11,6 @@ import { errorLogger } from '@/utils/http/error/logger';
 import appReducer from '../../../../store/slices/appSlice';
 import Navbar from '../Navbar';
 
-
 // Mock useAuth hook
 vi.mock('@/hooks/auth', () => ({
   useAuth: vi.fn(),

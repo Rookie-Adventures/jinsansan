@@ -8,7 +8,6 @@ import appReducer, { AppState } from '../../../store/slices/appSlice';
 import type { RootState } from '../../../store/types';
 import { ThemeToggle } from '../ThemeToggle';
 
-
 // 测试配置
 const TEST_TIMEOUT = 1000;
 

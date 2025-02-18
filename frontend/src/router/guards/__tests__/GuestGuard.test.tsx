@@ -6,7 +6,6 @@ import { useAuth } from '@/hooks/auth';
 
 import { GuestGuard } from '../GuestGuard';
 
-
 // Mock hooks
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');

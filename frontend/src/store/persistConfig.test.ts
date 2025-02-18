@@ -6,7 +6,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { persistConfig } from './persistConfig';
 import type { RootState } from './types';
 
-
 // Mock storage
 vi.mock('redux-persist/lib/storage', () => ({
   default: {

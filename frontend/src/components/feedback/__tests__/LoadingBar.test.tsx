@@ -1,12 +1,12 @@
-import { ThemeProvider, createTheme , AlertColor } from '@mui/material';
+import { ThemeProvider, createTheme, AlertColor } from '@mui/material';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen, act } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
-import { LoadingBar } from '../LoadingBar';
-
 import appReducer from '@/store/slices/appSlice';
+
+import { LoadingBar } from '../LoadingBar';
 
 const createTestStore = (preloadedState = {}) => {
   return configureStore({
@@ -69,7 +69,7 @@ describe('LoadingBar', () => {
     });
 
     const progressBar = screen.getByRole('progressbar');
-    
+
     // 初始值应该为 0
     expect(progressBar.getAttribute('aria-valuenow')).toBe('0');
 

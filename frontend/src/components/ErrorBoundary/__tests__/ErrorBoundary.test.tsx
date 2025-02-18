@@ -13,7 +13,9 @@ import { HttpErrorType } from '../../../utils/http/error/types';
 import { ErrorBoundary } from '../index';
 
 // 使用更具体的类型定义
-const mockErrorLogger = errorLogger as { log: (error: { type: HttpErrorType; message: string; data?: unknown }) => void };
+const mockErrorLogger = errorLogger as {
+  log: (error: { type: HttpErrorType; message: string; data?: unknown }) => void;
+};
 
 describe('ErrorBoundary', () => {
   const ErrorChild = () => {
