@@ -7,15 +7,15 @@ import {
   DialogActions,
   Button,
   Typography,
+  type AlertColor,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-interface NotificationState {
+import type { NotificationOptions, NotificationType } from '@/utils/notification/types';
+
+interface NotificationState extends NotificationOptions {
   open: boolean;
-  message: string;
-  type: 'error' | 'warning' | 'info';
   position: 'top' | 'bottom';
-  duration: number;
 }
 
 interface ErrorModalState {
@@ -25,11 +25,32 @@ interface ErrorModalState {
   error?: unknown;
 }
 
-export const ErrorNotification: React.FC = () => {
+/**
+ * 将 Severity 类型转换为 MUI Alert 的 severity 类型
+ */
+const getSeverityColor = (severity: NotificationType): AlertColor => {
+  switch (severity) {
+    case 'critical':
+    case 'error':
+      return 'error';
+    case 'warning':
+      return 'warning';
+    case 'info':
+      return 'info';
+    default:
+      return 'info';
+  }
+};
+
+/**
+ * 错误通知组件
+ * 用于显示全局错误通知和错误对话框
+ */
+export const ErrorNotification = (): JSX.Element => {
   const [notification, setNotification] = useState<NotificationState>({
     open: false,
     message: '',
-    type: 'error',
+    type: 'info',
     position: 'top',
     duration: 5000,
   });
@@ -85,7 +106,7 @@ export const ErrorNotification: React.FC = () => {
       >
         <Alert
           onClose={handleCloseNotification}
-          severity={notification.type}
+          severity={getSeverityColor(notification.type)}
           variant="filled"
           elevation={6}
         >

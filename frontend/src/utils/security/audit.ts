@@ -1,19 +1,26 @@
-import { ErrorSeverity } from '../http/types';
+/**
+ * 审计日志相关类型和实现
+ * @packageDocumentation
+ */
+
+import type { Severity } from '../../types/severity';
+import { SeverityLevel } from '../../types/severity';
 
 import { encryptionManager } from './encryption';
 
 import { errorLogger } from '@/utils/error/errorLogger';
 
 /**
- * 审计日志级别
- * @description 基于 ErrorSeverity 的审计日志级别
+ * 审计日志级别类型
+ * @description 基于 Severity 的审计日志级别
  */
-export enum AuditLogLevel {
-  INFO = ErrorSeverity.INFO,
-  WARNING = ErrorSeverity.WARNING,
-  ERROR = ErrorSeverity.ERROR,
-  CRITICAL = ErrorSeverity.CRITICAL
-}
+export type AuditLogLevel = Severity;
+
+/**
+ * 审计日志级别常量
+ * @description 提供类型安全的审计日志级别值
+ */
+export const AuditLogLevels = SeverityLevel;
 
 /**
  * 审计日志类型
@@ -106,14 +113,10 @@ export class AuditLogManager {
         errorMessage,
       };
 
-      // 添加日志到内存
       this.addLog(log);
-
-      // 发送到服务器
       await this.sendToServer(log);
 
-      // 检查是否需要触发告警
-      if (level === AuditLogLevel.ERROR || level === AuditLogLevel.CRITICAL) {
+      if (level === AuditLogLevels.ERROR || level === AuditLogLevels.CRITICAL) {
         this.triggerAlert(log);
       }
     } catch (error) {
@@ -193,7 +196,7 @@ export class AuditLogManager {
       localStorage.setItem('failedAuditLogs', JSON.stringify(failedLogs));
     } catch (error) {
       errorLogger.log(error instanceof Error ? error : new Error('Failed to store failed log'), {
-        level: ErrorSeverity.ERROR,
+        level: SeverityLevel.ERROR,
         context: { log },
       });
     }
@@ -216,12 +219,12 @@ export class AuditLogManager {
       };
 
       errorLogger.log(new Error(`Security Alert: ${log.action} on ${log.resource}`), {
-        level: ErrorSeverity.ERROR,
+        level: SeverityLevel.ERROR,
         context: alertData,
       });
     } catch (error) {
       errorLogger.log(error instanceof Error ? error : new Error('Failed to trigger alert'), {
-        level: ErrorSeverity.ERROR,
+        level: SeverityLevel.ERROR,
         context: { log },
       });
     }
@@ -276,7 +279,7 @@ export class AuditLogManager {
 
   private async handleError(error: Error, context: Record<string, unknown>): Promise<void> {
     errorLogger.log(error, {
-      level: ErrorSeverity.ERROR,
+      level: SeverityLevel.ERROR,
       context: {
         ...context,
         timestamp: Date.now(),

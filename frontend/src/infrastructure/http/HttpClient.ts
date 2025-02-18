@@ -3,39 +3,88 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } f
 import { Logger } from '../logging/Logger';
 import { PerformanceMonitor } from '../monitoring/PerformanceMonitor';
 
-// 扩展 AxiosRequestConfig 类型以包含 metadata
+/**
+ * 扩展 Axios 请求配置以包含元数据
+ */
 declare module 'axios' {
   export interface InternalAxiosRequestConfig {
-    metadata?: {
-      startTime: number;
-    };
+    metadata?: RequestMetadata;
   }
 }
 
-// HTTP 客户端配置接口
+/**
+ * 请求元数据接口
+ */
+interface RequestMetadata {
+  /** 请求开始时间 */
+  startTime: number;
+}
+
+/**
+ * HTTP 响应数据基础接口
+ */
+export interface BaseResponse<T> {
+  /** 响应数据 */
+  data: T;
+  /** 响应状态码 */
+  code: number;
+  /** 响应消息 */
+  message: string;
+}
+
+/**
+ * HTTP 请求数据基础接口
+ */
+export interface BaseRequest {
+  /** 请求参数 */
+  [key: string]: unknown;
+}
+
+/**
+ * HTTP 客户端配置接口
+ */
 interface HttpConfig extends AxiosRequestConfig {
+  /** 缓存配置 */
   cache?: {
+    /** 是否启用缓存 */
     enable: boolean;
+    /** 缓存时间（毫秒） */
     ttl?: number;
   };
+  /** 重试配置 */
   retry?: {
+    /** 重试次数 */
     times: number;
+    /** 重试延迟（毫秒） */
     delay: number;
   };
+  /** 队列配置 */
   queue?: {
+    /** 是否启用队列 */
     enable: boolean;
+    /** 并发数 */
     concurrency?: number;
   };
+  /** 防抖配置 */
   debounce?: {
+    /** 等待时间（毫秒） */
     wait: number;
+    /** 配置选项 */
     options?: { leading?: boolean; trailing?: boolean };
   };
+  /** 节流配置 */
   throttle?: {
+    /** 等待时间（毫秒） */
     wait: number;
+    /** 配置选项 */
     options?: { leading?: boolean; trailing?: boolean };
   };
 }
 
+/**
+ * HTTP 客户端类
+ * @description 封装了 Axios，提供了统一的 HTTP 请求接口
+ */
 export class HttpClient {
   private instance: AxiosInstance;
   private logger: Logger;
@@ -70,6 +119,9 @@ export class HttpClient {
     this.setupInterceptors();
   }
 
+  /**
+   * 设置请求和响应拦截器
+   */
   private setupInterceptors(): void {
     // 请求拦截器
     this.instance.interceptors.request.use(
@@ -139,29 +191,79 @@ export class HttpClient {
     );
   }
 
-  // HTTP 方法
-  public async get<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    const response = await this.instance.get<T>(url, config);
+  /**
+   * 发送 GET 请求
+   * @param url - 请求地址
+   * @param config - 请求配置
+   * @returns 响应数据
+   */
+  public async get<T>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<BaseResponse<T>> {
+    const response = await this.instance.get<BaseResponse<T>>(url, config);
     return response.data;
   }
 
-  public async post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
-    const response = await this.instance.post<T>(url, data, config);
+  /**
+   * 发送 POST 请求
+   * @param url - 请求地址
+   * @param data - 请求数据
+   * @param config - 请求配置
+   * @returns 响应数据
+   */
+  public async post<T, D extends BaseRequest = BaseRequest>(
+    url: string,
+    data?: D,
+    config?: AxiosRequestConfig
+  ): Promise<BaseResponse<T>> {
+    const response = await this.instance.post<BaseResponse<T>>(url, data, config);
     return response.data;
   }
 
-  public async put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
-    const response = await this.instance.put<T>(url, data, config);
+  /**
+   * 发送 PUT 请求
+   * @param url - 请求地址
+   * @param data - 请求数据
+   * @param config - 请求配置
+   * @returns 响应数据
+   */
+  public async put<T, D extends BaseRequest = BaseRequest>(
+    url: string,
+    data?: D,
+    config?: AxiosRequestConfig
+  ): Promise<BaseResponse<T>> {
+    const response = await this.instance.put<BaseResponse<T>>(url, data, config);
     return response.data;
   }
 
-  public async delete<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    const response = await this.instance.delete<T>(url, config);
+  /**
+   * 发送 DELETE 请求
+   * @param url - 请求地址
+   * @param config - 请求配置
+   * @returns 响应数据
+   */
+  public async delete<T>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<BaseResponse<T>> {
+    const response = await this.instance.delete<BaseResponse<T>>(url, config);
     return response.data;
   }
 
-  public async patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
-    const response = await this.instance.patch<T>(url, data, config);
+  /**
+   * 发送 PATCH 请求
+   * @param url - 请求地址
+   * @param data - 请求数据
+   * @param config - 请求配置
+   * @returns 响应数据
+   */
+  public async patch<T, D extends BaseRequest = BaseRequest>(
+    url: string,
+    data?: D,
+    config?: AxiosRequestConfig
+  ): Promise<BaseResponse<T>> {
+    const response = await this.instance.patch<BaseResponse<T>>(url, data, config);
     return response.data;
   }
 }

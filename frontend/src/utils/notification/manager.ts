@@ -1,4 +1,6 @@
-import { NotificationOptions, NotificationSeverity } from './types';
+import { errorLogger } from '../error/errorLogger';
+
+import type { NotificationOptions, NotificationType } from './types';
 
 export class NotificationManager {
   private static instance: NotificationManager;
@@ -21,18 +23,21 @@ export class NotificationManager {
     if (this.notificationHandler) {
       this.notificationHandler(options);
     } else {
-      console.warn('No notification handler set');
+      errorLogger.log(new Error('No notification handler set'), {
+        level: 'warning',
+        context: { options }
+      });
     }
   }
 
-  public getNotificationType(severity: NotificationSeverity): NotificationOptions['type'] {
+  public getNotificationType(severity: NotificationType): NotificationOptions['type'] {
     switch (severity) {
-      case NotificationSeverity.CRITICAL:
-      case NotificationSeverity.ERROR:
+      case 'critical':
+      case 'error':
         return 'error';
-      case NotificationSeverity.WARNING:
+      case 'warning':
         return 'warning';
-      case NotificationSeverity.INFO:
+      case 'info':
         return 'info';
       default:
         return 'info';

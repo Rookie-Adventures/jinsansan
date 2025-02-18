@@ -1,11 +1,19 @@
-import type { AxiosRequestConfig, AxiosResponse } from 'axios';
+/**
+ * HTTP 相关类型定义
+ * @packageDocumentation
+ */
 
-import { Severity } from '../../types/severity';
+import type { AxiosRequestConfig } from 'axios';
+
+import type { Severity } from '../../types/severity';
+
+import type { HttpError } from './error/types';
 
 /**
- * HTTP 请求配置接口
+ * HTTP 请求配置类型
+ * @description 扩展 Axios 请求配置，添加自定义配置选项
  */
-export interface HttpRequestConfig extends AxiosRequestConfig {
+export type HttpRequestConfig = AxiosRequestConfig & {
   /** 是否启用重试机制 */
   retry?: boolean;
   /** 重试次数 */
@@ -30,19 +38,19 @@ export interface HttpRequestConfig extends AxiosRequestConfig {
     /** 优先级（数字越大优先级越高） */
     priority: number;
   };
-}
+};
 
 /**
- * 抽象请求方法类
- * 定义了 HTTP 请求的基本接口
+ * HTTP 请求方法类型
+ * @description 定义了 HTTP 请求的基本接口
  */
-export abstract class RequestMethod {
+export type RequestMethod = {
   /**
    * GET 请求
    * @param url - 请求地址
    * @param config - 请求配置
    */
-  abstract get<T>(url: string, config?: HttpRequestConfig): Promise<T>;
+  get<T>(url: string, config?: HttpRequestConfig): Promise<T>;
 
   /**
    * POST 请求
@@ -50,7 +58,7 @@ export abstract class RequestMethod {
    * @param data - 请求数据
    * @param config - 请求配置
    */
-  abstract post<T>(url: string, data?: unknown, config?: HttpRequestConfig): Promise<T>;
+  post<T>(url: string, data?: unknown, config?: HttpRequestConfig): Promise<T>;
 
   /**
    * PUT 请求
@@ -58,56 +66,21 @@ export abstract class RequestMethod {
    * @param data - 请求数据
    * @param config - 请求配置
    */
-  abstract put<T>(url: string, data?: unknown, config?: HttpRequestConfig): Promise<T>;
+  put<T>(url: string, data?: unknown, config?: HttpRequestConfig): Promise<T>;
 
   /**
    * DELETE 请求
    * @param url - 请求地址
    * @param config - 请求配置
    */
-  abstract delete<T>(url: string, config?: HttpRequestConfig): Promise<T>;
-}
+  delete<T>(url: string, config?: HttpRequestConfig): Promise<T>;
+};
 
 /**
- * 错误严重程度枚举
+ * 错误严重程度类型
  * @description 统一的错误级别定义，用于整个应用的错误处理系统
- * @remarks
- * - INFO: 信息级别，用于展示提示信息
- * - WARNING: 警告级别，用于展示警告信息
- * - ERROR: 错误级别，用于展示错误信息
- * - CRITICAL: 严重错误级别，用于展示严重错误信息
- * @example
- * ```typescript
- * const error: HttpError = {
- *   severity: ErrorSeverity.ERROR,
- *   message: '请求失败'
- * };
- * ```
  */
-export enum ErrorSeverity {
-  /** 信息级别 - 用于展示提示信息 */
-  INFO = 'info',
-  /** 警告级别 - 用于展示警告信息 */
-  WARNING = 'warning',
-  /** 错误级别 - 用于展示错误信息 */
-  ERROR = 'error',
-  /** 严重错误级别 - 用于展示严重错误信息 */
-  CRITICAL = 'critical',
-}
+export type ErrorSeverity = Severity;
 
-/**
- * HTTP 错误接口
- * @description 扩展了标准 Error 接口，添加了 HTTP 相关的错误信息
- */
-export interface HttpError extends Error {
-  /** HTTP 状态码 */
-  status?: number;
-  /** 错误代码 */
-  code?: string;
-  /** 错误严重程度 */
-  severity?: Severity;
-  /** 是否为 Axios 错误 */
-  isAxiosError?: boolean;
-  /** 原始响应对象 */
-  response?: AxiosResponse;
-}
+// Re-export HttpError type from error/types
+export type { HttpError };

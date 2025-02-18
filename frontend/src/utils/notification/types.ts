@@ -1,12 +1,24 @@
-import { ErrorSeverity } from '../http/types';
+/**
+ * 通知系统类型定义
+ * @packageDocumentation
+ */
 
-export type NotificationType = 'success' | 'error' | 'warning' | 'info';
+import type { Severity } from '../../types/severity';
 
-export type NotificationSeverity = ErrorSeverity;
-
-export interface NotificationOptions {
-  type: NotificationType;
+/**
+ * 通知选项类型
+ * @description 定义通知的配置选项
+ */
+export type NotificationOptions = {
+  /** 通知类型 */
+  type: Severity;
+  /** 通知消息 */
   message: string;
+  /** 通知描述 */
   description?: string;
+  /** 通知持续时间（毫秒） */
   duration?: number;
-}
+};
+
+// Re-export Severity type for convenience
+export type { Severity as NotificationType };
