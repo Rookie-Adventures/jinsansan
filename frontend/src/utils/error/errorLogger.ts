@@ -1,7 +1,10 @@
+import { ErrorSeverity } from '../http/types';
+
 /**
  * 日志级别
+ * @description 使用统一的错误级别定义，并扩展开发环境特有的级别
  */
-export type LogLevel = 'debug' | 'info' | 'warn' | 'error' | 'critical';
+export type LogLevel = ErrorSeverity | 'debug' | 'warn';
 
 /**
  * 日志数据接口
@@ -34,24 +37,26 @@ interface LogOutput {
 
 /**
  * 开发环境日志输出
+ * @description 仅在开发环境下使用 console 输出日志
  */
 class DevLogOutput implements LogOutput {
-  // eslint-disable-next-line no-console
+  /* eslint-disable no-console -- 开发环境需要使用 console 进行日志输出 */
   debug(message: string, ...args: unknown[]): void {
     console.debug(message, ...args);
   }
-  // eslint-disable-next-line no-console
+
   info(message: string, ...args: unknown[]): void {
     console.info(message, ...args);
   }
-  // eslint-disable-next-line no-console
+
   warn(message: string, ...args: unknown[]): void {
     console.warn(message, ...args);
   }
-  // eslint-disable-next-line no-console
+
   error(message: string, ...args: unknown[]): void {
     console.error(message, ...args);
   }
+  /* eslint-enable no-console */
 }
 
 /**
@@ -120,14 +125,15 @@ class ErrorLogger {
       case 'debug':
         this.logOutput.debug(message, { level, ...context });
         break;
-      case 'info':
+      case ErrorSeverity.INFO:
         this.logOutput.info(message, { level, ...context });
         break;
       case 'warn':
+      case ErrorSeverity.WARNING:
         this.logOutput.warn(message, { level, ...context });
         break;
-      case 'error':
-      case 'critical':
+      case ErrorSeverity.ERROR:
+      case ErrorSeverity.CRITICAL:
         this.logOutput.error(message, { level, ...context });
         break;
     }

@@ -1,17 +1,24 @@
 import { vi, beforeEach, afterEach, describe, test, expect } from 'vitest';
 
+import { errorLogger } from '../../../utils/error/errorLogger';
 import { UserAnalytics, UserEventType } from '../UserAnalytics';
+
+// Mock fetch
+const fetchMock = vi.fn();
+global.fetch = fetchMock;
+
+// Mock errorLogger
+vi.mock('../../../utils/error/errorLogger', () => ({
+  errorLogger: {
+    log: vi.fn(),
+  },
+}));
 
 describe('UserAnalytics', () => {
   let analytics: UserAnalytics;
-  let fetchMock: ReturnType<typeof vi.fn>;
   let dateNowMock: ReturnType<typeof vi.fn<[], number>>;
 
   beforeAll(() => {
-    // 模拟 fetch
-    fetchMock = vi.fn().mockResolvedValue(new Response(null, { status: 200 }));
-    global.fetch = fetchMock as unknown as typeof fetch;
-
     // 模拟 Date.now
     dateNowMock = vi.fn(() => 1000);
     vi.spyOn(Date, 'now').mockImplementation(() => 1000);
@@ -54,6 +61,7 @@ describe('UserAnalytics', () => {
 
   afterEach(() => {
     UserAnalytics.resetInstance();
+    vi.clearAllMocks();
   });
 
   describe('实例管理', () => {
@@ -70,7 +78,8 @@ describe('UserAnalytics', () => {
       // 触发事件并刷新以验证新配置
       instance.trackCustomEvent('test', {});
       return instance.flush().then(() => {
-        expect(fetchMock).toHaveBeenCalledWith('/new-endpoint', expect.any(Object));
+        const result = expect(fetchMock).toHaveBeenCalledWith('/new-endpoint', expect.any(Object));
+        return result;
       });
     });
   });
@@ -194,39 +203,99 @@ describe('UserAnalytics', () => {
     });
 
     test('应该批量处理事件', async () => {
+      // 第一批次测试
       analytics.trackCustomEvent('event1', {});
       analytics.trackCustomEvent('event2', {});
-      analytics.trackCustomEvent('event3', {});
-
+      
       await analytics.flush();
-
-      expect(fetchMock).toHaveBeenCalledTimes(2);
+      
+      expect(fetchMock).toHaveBeenCalledTimes(1);
       const firstCall = JSON.parse(fetchMock.mock.calls[0][1].body);
-      const secondCall = JSON.parse(fetchMock.mock.calls[1][1].body);
-
       expect(firstCall).toHaveLength(2);
+      expect(firstCall[0].data.name).toBe('event1');
+      expect(firstCall[1].data.name).toBe('event2');
+
+      // 第二批次测试
+      fetchMock.mockClear();
+      analytics.trackCustomEvent('event3', {});
+      
+      await analytics.flush();
+      
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      const secondCall = JSON.parse(fetchMock.mock.calls[0][1].body);
       expect(secondCall).toHaveLength(1);
+      expect(secondCall[0].data.name).toBe('event3');
     });
   });
 
   describe('错误处理', () => {
-    test('应该处理发送失败的情况', async () => {
-      fetchMock.mockRejectedValueOnce(new Error('Network error'));
-
-      analytics.trackCustomEvent('test', {});
-      await analytics.flush();
-
-      expect(analytics.getEvents()).toHaveLength(1);
-      expect(fetchMock).toHaveBeenCalledTimes(1);
+    beforeEach(() => {
+      // 重置 fetchMock 以确保每个测试用例都有干净的环境
+      fetchMock.mockReset();
+      vi.clearAllMocks();
     });
 
-    test('应该处理服务器错误响应', async () => {
-      fetchMock.mockResolvedValueOnce(new Response(null, { status: 500 }));
-
-      analytics.trackCustomEvent('test', {});
+    it('应该在网络错误时将事件返回队列', async () => {
+      // 设置 mock 在第一次调用时抛出网络错误
+      fetchMock.mockRejectedValueOnce(new Error('Network error'));
+      
+      const analytics = UserAnalytics.getInstance();
+      analytics.trackCustomEvent('test', { value: 1 });
+      
       await analytics.flush();
-
+      
+      // 验证事件被返回到队列
       expect(analytics.getEvents()).toHaveLength(1);
+      // 验证 fetch 只被调用一次
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      // 验证错误被正确记录
+      expect(errorLogger.log).toHaveBeenCalledWith(
+        expect.any(Error),
+        expect.objectContaining({
+          level: 'error',
+          context: expect.any(Object)
+        })
+      );
+    });
+
+    it('应该在服务器错误响应时将事件返回队列', async () => {
+      // 设置 mock 返回 500 错误响应
+      fetchMock.mockResolvedValueOnce(new Response(null, { status: 500 }));
+      
+      const analytics = UserAnalytics.getInstance();
+      analytics.trackCustomEvent('test', { value: 1 });
+      
+      await analytics.flush();
+      
+      // 验证事件被返回到队列
+      expect(analytics.getEvents()).toHaveLength(1);
+      // 验证 fetch 只被调用一次
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      // 验证错误被正确记录
+      expect(errorLogger.log).toHaveBeenCalledWith(
+        expect.any(Error),
+        expect.objectContaining({
+          level: 'error',
+          context: expect.any(Object)
+        })
+      );
+    });
+
+    it('应该在批处理错误时停止处理后续批次', async () => {
+      // 设置 mock 在第一次调用时返回错误
+      fetchMock.mockResolvedValueOnce(new Response(null, { status: 500 }));
+      
+      const analytics = UserAnalytics.getInstance();
+      // 添加多个事件以触发批处理
+      analytics.trackCustomEvent('test1', { value: 1 });
+      analytics.trackCustomEvent('test2', { value: 2 });
+      analytics.trackCustomEvent('test3', { value: 3 });
+      
+      await analytics.flush();
+      
+      // 验证所有事件都在队列中
+      expect(analytics.getEvents()).toHaveLength(3);
+      // 验证 fetch 只被调用一次（第一个批次失败后停止）
       expect(fetchMock).toHaveBeenCalledTimes(1);
     });
   });

@@ -1,26 +1,27 @@
-import { errorLogger } from '@/utils/error/errorLogger';
+import { ErrorSeverity } from '../http/types';
 
 import { encryptionManager } from './encryption';
+
+import { errorLogger } from '@/utils/error/errorLogger';
+
+/**
+ * 审计日志级别
+ * @description 基于 ErrorSeverity 的审计日志级别
+ */
+export enum AuditLogLevel {
+  INFO = ErrorSeverity.INFO,
+  WARNING = ErrorSeverity.WARNING,
+  ERROR = ErrorSeverity.ERROR,
+  CRITICAL = ErrorSeverity.CRITICAL
+}
 
 /**
  * 审计日志类型
  */
 export enum AuditLogType {
-  AUTH = 'auth',
-  ACCESS = 'access',
-  DATA = 'data',
   SECURITY = 'security',
-  SYSTEM = 'system',
-}
-
-/**
- * 审计日志级别
- */
-export enum AuditLogLevel {
-  INFO = 'info',
-  WARN = 'warn',
-  ERROR = 'error',
-  CRITICAL = 'critical',
+  OPERATION = 'operation',
+  SYSTEM = 'system'
 }
 
 /**
@@ -192,7 +193,7 @@ export class AuditLogManager {
       localStorage.setItem('failedAuditLogs', JSON.stringify(failedLogs));
     } catch (error) {
       errorLogger.log(error instanceof Error ? error : new Error('Failed to store failed log'), {
-        level: 'error',
+        level: ErrorSeverity.ERROR,
         context: { log },
       });
     }
@@ -215,12 +216,12 @@ export class AuditLogManager {
       };
 
       errorLogger.log(new Error(`Security Alert: ${log.action} on ${log.resource}`), {
-        level: 'error',
+        level: ErrorSeverity.ERROR,
         context: alertData,
       });
     } catch (error) {
       errorLogger.log(error instanceof Error ? error : new Error('Failed to trigger alert'), {
-        level: 'error',
+        level: ErrorSeverity.ERROR,
         context: { log },
       });
     }
@@ -275,7 +276,7 @@ export class AuditLogManager {
 
   private async handleError(error: Error, context: Record<string, unknown>): Promise<void> {
     errorLogger.log(error, {
-      level: 'error',
+      level: ErrorSeverity.ERROR,
       context: {
         ...context,
         timestamp: Date.now(),

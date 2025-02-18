@@ -1,7 +1,10 @@
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-import { NotificationSeverity } from '../notification/types';
+import { Severity } from '../../types/severity';
 
+/**
+ * HTTP 请求配置接口
+ */
 export interface HttpRequestConfig extends AxiosRequestConfig {
   /** 是否启用重试机制 */
   retry?: boolean;
@@ -67,7 +70,19 @@ export abstract class RequestMethod {
 
 /**
  * 错误严重程度枚举
- * 用于标识不同级别的错误，影响错误处理和展示方式
+ * @description 统一的错误级别定义，用于整个应用的错误处理系统
+ * @remarks
+ * - INFO: 信息级别，用于展示提示信息
+ * - WARNING: 警告级别，用于展示警告信息
+ * - ERROR: 错误级别，用于展示错误信息
+ * - CRITICAL: 严重错误级别，用于展示严重错误信息
+ * @example
+ * ```typescript
+ * const error: HttpError = {
+ *   severity: ErrorSeverity.ERROR,
+ *   message: '请求失败'
+ * };
+ * ```
  */
 export enum ErrorSeverity {
   /** 信息级别 - 用于展示提示信息 */
@@ -82,7 +97,7 @@ export enum ErrorSeverity {
 
 /**
  * HTTP 错误接口
- * 扩展了标准 Error 接口，添加了 HTTP 相关的错误信息
+ * @description 扩展了标准 Error 接口，添加了 HTTP 相关的错误信息
  */
 export interface HttpError extends Error {
   /** HTTP 状态码 */
@@ -90,7 +105,7 @@ export interface HttpError extends Error {
   /** 错误代码 */
   code?: string;
   /** 错误严重程度 */
-  severity?: NotificationSeverity;
+  severity?: Severity;
   /** 是否为 Axios 错误 */
   isAxiosError?: boolean;
   /** 原始响应对象 */

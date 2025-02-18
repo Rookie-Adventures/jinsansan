@@ -1,3 +1,5 @@
+import { errorLogger } from '../../utils/error/errorLogger';
+
 /**
  * 用户行为事件类型
  */
@@ -10,12 +12,24 @@ export enum UserEventType {
 }
 
 /**
+ * 分析数据值类型
+ */
+export type AnalyticsValue = string | number | boolean | null | undefined | {
+  [key: string]: AnalyticsValue;
+} | AnalyticsValue[];
+
+/**
+ * 分析数据记录类型
+ */
+export type AnalyticsData = Record<string, AnalyticsValue>;
+
+/**
  * 用户行为事件接口
  */
 export interface UserEvent {
   type: UserEventType;
   timestamp: number;
-  data: Record<string, any>;
+  data: AnalyticsData;
   sessionId: string;
   userId?: string;
 }
@@ -125,7 +139,7 @@ export class UserAnalytics {
   /**
    * 跟踪错误
    */
-  public trackError(error: Error, context?: Record<string, any>): void {
+  public trackError(error: Error, context?: AnalyticsData): void {
     this.track(UserEventType.ERROR, {
       name: error.name,
       message: error.message,
@@ -137,7 +151,7 @@ export class UserAnalytics {
   /**
    * 跟踪自定义事件
    */
-  public trackCustomEvent(name: string, data: Record<string, any>): void {
+  public trackCustomEvent(name: string, data: AnalyticsData): void {
     this.track(UserEventType.CUSTOM, {
       name,
       ...data,
@@ -147,7 +161,7 @@ export class UserAnalytics {
   /**
    * 跟踪事件
    */
-  private track(type: UserEventType, data: Record<string, any>): void {
+  private track(type: UserEventType, data: AnalyticsData): void {
     // 检查采样率
     if (Math.random() > this.config.sampleRate) {
       return;
@@ -176,6 +190,34 @@ export class UserAnalytics {
   }
 
   /**
+   * 发送单个批次的事件
+   * @returns 是否发送成功
+   */
+  private async sendBatch(events: UserEvent[]): Promise<boolean> {
+    try {
+      const response = await fetch(this.config.endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(events),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Analytics tracking failed: ${response.status}`);
+      }
+
+      return true;
+    } catch (error) {
+      errorLogger.log(error instanceof Error ? error : new Error('Analytics tracking failed'), {
+        level: 'error',
+        context: { events },
+      });
+      return false;
+    }
+  }
+
+  /**
    * 刷新事件队列
    */
   public async flush(): Promise<void> {
@@ -183,31 +225,27 @@ export class UserAnalytics {
       return;
     }
 
-    let currentBatch: UserEvent[] = [];
+    this.isTracking = true;
 
     try {
-      this.isTracking = true;
-
-      // 处理所有事件，每次处理 batchSize 个
-      while (this.events.length > 0) {
-        currentBatch = this.events.splice(0, this.config.batchSize);
-
-        const response = await fetch(this.config.endpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(currentBatch),
-        });
-
-        if (!response.ok) {
-          throw new Error(`Analytics tracking failed: ${response.status}`);
-        }
+      // 获取当前批次
+      const currentBatch = this.events.splice(0, this.config.batchSize);
+      
+      // 发送当前批次
+      const success = await this.sendBatch(currentBatch);
+      
+      if (!success) {
+        // 发送失败时，将事件放回队列头部并停止处理
+        this.events.unshift(...currentBatch);
+        this.isTracking = false;
+        return;
       }
-    } catch (error) {
-      // 如果发送失败，将事件放回队列
-      this.events.unshift(...currentBatch);
-      console.error('Analytics tracking failed:', error);
+
+      // 只有在生产环境且成功发送且还有更多事件时，才继续处理
+      if (process.env.NODE_ENV !== 'test' && this.events.length > 0) {
+        this.isTracking = false;
+        await this.flush();
+      }
     } finally {
       this.isTracking = false;
     }

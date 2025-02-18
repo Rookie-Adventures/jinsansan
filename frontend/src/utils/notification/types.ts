@@ -1,11 +1,8 @@
+import { ErrorSeverity } from '../http/types';
+
 export type NotificationType = 'success' | 'error' | 'warning' | 'info';
 
-export enum NotificationSeverity {
-  INFO = 'info',
-  WARNING = 'warning',
-  ERROR = 'error',
-  CRITICAL = 'critical',
-}
+export type NotificationSeverity = ErrorSeverity;
 
 export interface NotificationOptions {
   type: NotificationType;

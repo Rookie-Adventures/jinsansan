@@ -90,7 +90,7 @@ export interface CustomMetrics {
   /** 指标值 */
   value: number;
   /** 标签 */
-  tags?: Record<string, any>;
+  tags?: Record<string, string | number | boolean | null>;
 }
 
 /**
@@ -129,6 +129,8 @@ export interface MonitorConfig {
 
 /**
  * 告警通知类型
+ * - 'trigger' 触发告警
+ * - 'resolve' 告警恢复
  */
 export type AlertNotificationType = 'trigger' | 'resolve';
 
@@ -144,7 +146,26 @@ export interface AlertNotification {
   value: number;
   /** 时间戳 */
   timestamp: number;
-  /** 邮件接收人 */
+  /** 通知配置 */
+  config: AlertNotificationConfig;
+  /** 告警消息 */
+  message?: string;
+  /** 告警详情 */
+  details?: {
+    /** 持续时间（毫秒） */
+    duration?: number;
+    /** 上一次告警值 */
+    previousValue?: number;
+    /** 自定义元数据 */
+    metadata?: Record<string, unknown>;
+  };
+}
+
+/**
+ * 告警通知配置
+ */
+export interface AlertNotificationConfig {
+  /** 邮件接收人列表 */
   email?: string[];
   /** Webhook URL */
   webhook?: string;
@@ -181,11 +202,7 @@ export interface AlertRule {
   /** 是否启用 */
   enabled: boolean;
   /** 通知配置 */
-  notification: {
-    email?: string[];
-    webhook?: string;
-    slack?: string;
-  };
+  notification: AlertNotificationConfig;
 }
 
 /**
@@ -230,9 +247,27 @@ export interface Alert {
   status: AlertStatus;
 }
 
+/**
+ * 告警条件操作符
+ * - '>' 大于
+ * - '<' 小于
+ * - '>=' 大于等于
+ * - '<=' 小于等于
+ * - '==' 等于
+ * - '!=' 不等于
+ */
 export type AlertOperator = '>' | '<' | '>=' | '<=' | '==' | '!=';
 
+/**
+ * 告警条件配置
+ */
 export interface AlertCondition {
+  /** 比较操作符 */
   operator: AlertOperator;
+  /** 阈值 */
   value: number;
+  /** 持续时间（毫秒），可选 */
+  duration?: number;
+  /** 是否需要连续满足条件，默认为 true */
+  consecutive?: boolean;
 }

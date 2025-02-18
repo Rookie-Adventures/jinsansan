@@ -28,7 +28,11 @@ export class PerformanceMonitor {
     return duration;
   }
 
-  public recordMetric(name: string, value: number, tags: Record<string, any> = {}): void {
+  public recordMetric(
+    name: string,
+    value: number,
+    tags: Record<string, string | number | boolean | null> = {}
+  ): void {
     try {
       if (!name) {
         throw new Error('Invalid metric name');
