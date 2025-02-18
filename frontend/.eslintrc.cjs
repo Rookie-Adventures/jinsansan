@@ -11,7 +11,9 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'plugin:promise/recommended',
-    'plugin:testing-library/react'
+    'plugin:testing-library/react',
+    'plugin:import/recommended',
+    'plugin:import/typescript'
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -29,12 +31,17 @@ module.exports = {
     '@typescript-eslint',
     'unused-imports',
     'promise',
-    'testing-library'
+    'testing-library',
+    'import'
   ],
   settings: {
     react: {
       version: 'detect',
     },
+    'import/resolver': {
+      typescript: true,
+      node: true
+    }
   },
   rules: {
     // 基础规则
@@ -45,28 +52,43 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'warn',
     '@typescript-eslint/no-unused-vars': 'off', // 使用 unused-imports 插件替代
+    '@typescript-eslint/explicit-module-boundary-types': 'warn',
+    '@typescript-eslint/no-non-null-assertion': 'error',
+    '@typescript-eslint/no-unnecessary-type-assertion': 'error',
     
     // React 规则
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
+    'react/display-name': 'warn',
+    'react/jsx-no-useless-fragment': 'warn',
+    
+    // 导入规则
+    'import/order': ['error', {
+      'groups': ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+      'newlines-between': 'always',
+      'alphabetize': { 'order': 'asc' }
+    }],
+    'import/no-duplicates': 'error',
+    'import/no-unresolved': 'error',
     
     // 未使用的导入
     'unused-imports/no-unused-imports': 'error',
     'unused-imports/no-unused-vars': [
       'warn',
       {
-        vars: 'all',
-        varsIgnorePattern: '^_',
-        args: 'after-used',
-        argsIgnorePattern: '^_',
-      },
+        'vars': 'all',
+        'varsIgnorePattern': '^_',
+        'args': 'after-used',
+        'argsIgnorePattern': '^_'
+      }
     ],
     
     // Promise 规则
     'promise/always-return': 'error',
     'promise/no-return-wrap': 'error',
+    'promise/catch-or-return': 'error',
 
     // Testing Library 规则
     'testing-library/await-async-queries': 'error',
@@ -83,9 +105,9 @@ module.exports = {
       files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
       extends: ['plugin:testing-library/react'],
       rules: {
-        '@typescript-eslint/no-explicit-any': 'off', // 在测试文件中允许使用 any
-        'no-console': 'off', // 在测试文件中允许使用 console
-      },
+        '@typescript-eslint/no-explicit-any': 'off',
+        'no-console': 'off'
+      }
     },
     {
       files: ['vite.config.ts', 'vitest.config.ts'],
@@ -93,5 +115,5 @@ module.exports = {
         node: true
       }
     }
-  ],
+  ]
 }; 
