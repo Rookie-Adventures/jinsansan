@@ -1,10 +1,12 @@
 /** @jest-environment jsdom */
 
-import type { AlertRule } from '@/infrastructure/monitoring/types';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+import type { AlertRule } from '@/infrastructure/monitoring/types';
+
 import { AlertRuleForm } from '../AlertRuleForm';
 
 describe('AlertRuleForm', () => {

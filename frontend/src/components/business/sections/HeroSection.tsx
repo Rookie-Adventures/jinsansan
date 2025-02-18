@@ -1,7 +1,7 @@
-import React from 'react';
+import { AutoAwesome, Speed, CloudDone } from '@mui/icons-material';
 import { Box, Typography, Button, Grid, useTheme, useMediaQuery, Container } from '@mui/material';
 import { motion } from 'framer-motion';
-import { AutoAwesome, Speed, CloudDone } from '@mui/icons-material';
+import React from 'react';
 
 const HeroSection: React.FC = () => {
   const theme = useTheme();

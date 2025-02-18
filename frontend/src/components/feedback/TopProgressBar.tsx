@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
 import { LinearProgress, Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { useEffect, useState } from 'react';
 
 const StyledProgressBar = styled(LinearProgress)(({ theme }) => ({
   position: 'fixed',

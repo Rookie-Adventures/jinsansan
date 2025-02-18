@@ -1,10 +1,11 @@
-import React from 'react';
-import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { renderHook } from '@testing-library/react';
+import React from 'react';
 import { useLocation, useNavigationType, MemoryRouter } from 'react-router-dom';
 import type { NavigationType } from 'react-router-dom';
-import { routerAnalytics, useRouteAnalytics } from '../analytics';
+import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
+
 import { errorLogger } from '../../error/errorLogger';
+import { routerAnalytics, useRouteAnalytics } from '../analytics';
 
 // Mock hooks
 vi.mock('react-router-dom', async () => {

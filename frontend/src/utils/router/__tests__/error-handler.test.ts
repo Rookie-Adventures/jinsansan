@@ -1,7 +1,9 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { routerErrorHandler } from '../error-handler';
-import { errorLogger } from '@/utils/error/errorLogger';
+
 import { ErrorLevel } from '@/types/error';
+import { errorLogger } from '@/utils/error/errorLogger';
+
+import { routerErrorHandler } from '../error-handler';
 
 // Mock errorLogger
 vi.mock('@/utils/error/errorLogger', () => ({

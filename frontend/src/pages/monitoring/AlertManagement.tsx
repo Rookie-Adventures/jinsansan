@@ -1,9 +1,10 @@
-import { AlertManager } from '@/infrastructure/monitoring/AlertManager';
-import type { AlertRule } from '@/infrastructure/monitoring/types';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material';
 import { Button, IconButton, List, ListItem, ListItemText, Switch } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+
+import { AlertManager } from '@/infrastructure/monitoring/AlertManager';
+import type { AlertRule } from '@/infrastructure/monitoring/types';
 
 export const AlertManagement: React.FC = () => {
   const [rules, setRules] = useState<AlertRule[]>([]);

@@ -10,9 +10,11 @@ vi.mock('@/utils/http', () => ({
 
 import { renderHook } from '@testing-library/react';
 import { vi } from 'vitest';
-import type { HttpRequestConfig } from '@/utils/http/types';
-import { useHttp } from '../useHttp';
+
 import { http } from '@/utils/http';
+import type { HttpRequestConfig } from '@/utils/http/types';
+
+import { useHttp } from '../useHttp';
 
 describe('useHttp', () => {
   beforeEach(() => {

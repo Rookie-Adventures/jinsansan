@@ -1,6 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { errorMiddleware } from '../error';
+
 import Logger from '@/utils/logger';
+
+import { errorMiddleware } from '../error';
 
 vi.mock('@/utils/logger', () => ({
   default: {

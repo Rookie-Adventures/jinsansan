@@ -1,4 +1,5 @@
 import { describe, expect, vi, test } from 'vitest';
+
 import { authManager } from '../auth';
 
 describe('AuthManager', () => {

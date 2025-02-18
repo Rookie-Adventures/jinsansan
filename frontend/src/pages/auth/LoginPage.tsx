@@ -1,7 +1,8 @@
-import AuthPage from '@/components/auth/AuthPage';
-import LoginForm from '@/components/auth/LoginForm';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import AuthPage from '@/components/auth/AuthPage';
+import LoginForm from '@/components/auth/LoginForm';
 import { useAuth } from '@/hooks/auth';
 
 const LoginPage: React.FC = () => {

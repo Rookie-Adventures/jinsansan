@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { createTheme, defaultTheme, darkTheme } from './index';
+
 import type { CustomTheme, CustomThemeOptions } from './types';
+
+import { createTheme, defaultTheme, darkTheme } from './index';
 
 describe('Theme', () => {
   describe('createTheme', () => {

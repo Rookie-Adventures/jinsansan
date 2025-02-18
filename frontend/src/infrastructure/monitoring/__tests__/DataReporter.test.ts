@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { errorLogger } from '../../../utils/errorLogger';
 import { PerformanceMonitor } from '../PerformanceMonitor';
 import { RouterAnalytics } from '../RouterAnalytics';

@@ -1,4 +1,5 @@
 import { Logger } from '../logging/Logger';
+
 import { FileValidationOptions, FileValidationResult, FileError } from './types';
 
 export class FileManager {

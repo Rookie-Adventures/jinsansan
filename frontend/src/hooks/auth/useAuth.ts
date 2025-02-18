@@ -1,6 +1,6 @@
+import type { AxiosError } from 'axios';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { AxiosError } from 'axios';
 
 import { useAppDispatch, useAppSelector } from '@/store';
 import { clearAuth, getCurrentUser, login, logout, register } from '@/store/slices/authSlice';

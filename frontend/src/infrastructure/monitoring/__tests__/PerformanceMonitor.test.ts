@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { PerformanceMonitor } from '../PerformanceMonitor';
+
 import { errorLogger } from '../../../utils/errorLogger';
+import { PerformanceMonitor } from '../PerformanceMonitor';
 
 // Mock errorLogger
 vi.mock('../../../utils/errorLogger', () => ({

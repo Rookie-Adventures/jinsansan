@@ -1,7 +1,8 @@
 import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import { useForm } from '../useForm';
 import * as yup from 'yup';
+
+import { useForm } from '../useForm';
 
 interface TestFormData {
   username: string;

@@ -1,10 +1,12 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
-import { vi } from 'vitest';
-import { useRequest } from '../useRequest';
-import { useHttp } from '@/hooks/http/useHttp';
-import { useCache } from '@/hooks/http/useCache';
 import type { AxiosError } from 'axios';
 import { AxiosHeaders } from 'axios';
+import { vi } from 'vitest';
+
+import { useCache } from '@/hooks/http/useCache';
+import { useHttp } from '@/hooks/http/useHttp';
+
+import { useRequest } from '../useRequest';
 
 // Mock hooks
 vi.mock('@/hooks/http/useHttp', () => ({

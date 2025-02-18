@@ -1,6 +1,8 @@
 import { renderHook, act } from '@testing-library/react';
-import { useAuthForm } from '../useAuthForm';
+
 import type { LoginFormData, RegisterFormData } from '@/types/auth';
+
+import { useAuthForm } from '../useAuthForm';
 
 describe('useAuthForm', () => {
   describe('基础功能', () => {

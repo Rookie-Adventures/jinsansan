@@ -1,11 +1,11 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { ThemeProvider, createTheme , AlertColor } from '@mui/material';
+import { configureStore } from '@reduxjs/toolkit';
 import { render, screen, act } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
-import { ThemeProvider, createTheme } from '@mui/material';
-import { AlertColor } from '@mui/material';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 import { LoadingBar } from '../LoadingBar';
+
 import appReducer from '@/store/slices/appSlice';
 
 const createTestStore = (preloadedState = {}) => {
@@ -69,14 +69,16 @@ describe('LoadingBar', () => {
     });
 
     const progressBar = screen.getByRole('progressbar');
+    
+    // 初始值应该为 0
     expect(progressBar.getAttribute('aria-valuenow')).toBe('0');
 
-    // 等待一个 tick 让 useEffect 执行
+    // 等待组件初始化
     await act(async () => {
-      await vi.advanceTimersByTimeAsync(0);
+      await vi.advanceTimersByTimeAsync(100);
     });
 
-    // 前进 500ms 触发进度更新
+    // 等待第一次进度更新
     await act(async () => {
       await vi.advanceTimersByTimeAsync(500);
     });
@@ -84,6 +86,15 @@ describe('LoadingBar', () => {
     const newValue = Number(progressBar.getAttribute('aria-valuenow'));
     expect(newValue).toBeGreaterThan(0);
     expect(newValue).toBeLessThanOrEqual(90);
+
+    // 验证进度会继续增加
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(1000);
+    });
+
+    const finalValue = Number(progressBar.getAttribute('aria-valuenow'));
+    expect(finalValue).toBeGreaterThan(newValue);
+    expect(finalValue).toBeLessThanOrEqual(90);
   });
 
   it('加载完成后应该显示 100% 并淡出', async () => {

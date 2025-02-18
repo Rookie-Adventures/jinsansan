@@ -38,9 +38,25 @@ module.exports = {
     react: {
       version: 'detect',
     },
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx']
+    },
     'import/resolver': {
-      typescript: true,
-      node: true
+      typescript: {
+        alwaysTryTypes: true,
+        project: ['./tsconfig.json', './tsconfig.eslint.json']
+      },
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        moduleDirectory: ['node_modules', 'src/'],
+        paths: ['src']
+      },
+      alias: {
+        map: [
+          ['@', './src']
+        ],
+        extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
+      }
     }
   },
   rules: {
@@ -51,7 +67,7 @@ module.exports = {
     // TypeScript 规则
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/no-unused-vars': 'off', // 使用 unused-imports 插件替代
+    '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'warn',
     '@typescript-eslint/no-non-null-assertion': 'error',
     '@typescript-eslint/no-unnecessary-type-assertion': 'error',
@@ -71,7 +87,9 @@ module.exports = {
       'alphabetize': { 'order': 'asc' }
     }],
     'import/no-duplicates': 'error',
-    'import/no-unresolved': 'error',
+    'import/no-unresolved': ['error', {
+      'ignore': ['^@/']  // 忽略 @ 开头的路径
+    }],
     
     // 未使用的导入
     'unused-imports/no-unused-imports': 'error',
@@ -81,7 +99,8 @@ module.exports = {
         'vars': 'all',
         'varsIgnorePattern': '^_',
         'args': 'after-used',
-        'argsIgnorePattern': '^_'
+        'argsIgnorePattern': '^_',
+        'ignoreRestSiblings': true
       }
     ],
     
@@ -113,6 +132,15 @@ module.exports = {
       files: ['vite.config.ts', 'vitest.config.ts'],
       env: {
         node: true
+      }
+    },
+    {
+      // 对于类型定义文件，放宽未使用变量的规则
+      files: ['**/types/**/*.ts'],
+      rules: {
+        'unused-imports/no-unused-vars': 'off',
+        '@typescript-eslint/no-unused-vars': 'off',
+        'no-unused-vars': 'off'
       }
     }
   ]

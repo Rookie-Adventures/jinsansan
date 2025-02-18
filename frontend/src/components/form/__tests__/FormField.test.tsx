@@ -1,10 +1,11 @@
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
-import { FormField } from '../FormField';
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import { useForm, FormProvider } from 'react-hook-form';
 import type { Control } from 'react-hook-form';
+import { describe, it, expect, vi } from 'vitest';
+import * as yup from 'yup';
+
+import { FormField } from '../FormField';
 
 // 创建一个包装组件来测试 FormField
 interface TestFormData {

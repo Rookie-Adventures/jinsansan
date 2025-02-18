@@ -1,8 +1,11 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import { vi } from 'vitest';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
-import { GuestGuard } from '../GuestGuard';
+import { vi } from 'vitest';
+
 import { useAuth } from '@/hooks/auth';
+
+import { GuestGuard } from '../GuestGuard';
+
 
 // Mock hooks
 vi.mock('react-router-dom', async () => {

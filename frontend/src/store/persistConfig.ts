@@ -1,6 +1,7 @@
 import type { PersistConfig } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
 import { createTransform } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+
 import { RootState } from './types';
 
 // 转换函数

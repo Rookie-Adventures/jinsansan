@@ -1,6 +1,7 @@
-import { vi, expect, describe, it, beforeEach, afterEach } from 'vitest';
-import { retry, createRetry } from '../retry';
 import { AxiosError } from 'axios';
+import { vi, expect, describe, it, beforeEach, afterEach } from 'vitest';
+
+import { retry, createRetry } from '../retry';
 
 describe('retry', () => {
   beforeEach(() => {

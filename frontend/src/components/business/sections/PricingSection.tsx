@@ -1,4 +1,4 @@
-import React from 'react';
+import { Check } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -13,7 +13,7 @@ import {
   Container,
 } from '@mui/material';
 import { motion } from 'framer-motion';
-import { Check } from '@mui/icons-material';
+import React from 'react';
 
 const tiers = [
   {

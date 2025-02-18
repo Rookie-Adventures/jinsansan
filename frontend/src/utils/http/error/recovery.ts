@@ -1,6 +1,8 @@
-import { HttpError } from './types';
-import { Logger } from '@/infrastructure/logging/Logger';
 import type { AxiosRequestConfig } from 'axios';
+
+import { Logger } from '@/infrastructure/logging/Logger';
+
+import { HttpError } from './types';
 
 interface ExtendedHttpError extends HttpError {
   config?: AxiosRequestConfig & { retryCount?: number };

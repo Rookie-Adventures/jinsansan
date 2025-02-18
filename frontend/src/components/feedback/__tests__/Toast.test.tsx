@@ -1,11 +1,12 @@
-import { describe, it, expect } from 'vitest';
+import { ThemeProvider, createTheme, AlertColor } from '@mui/material';
+import { configureStore } from '@reduxjs/toolkit';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
-import { ThemeProvider, createTheme, AlertColor } from '@mui/material';
+import { describe, it, expect } from 'vitest';
+
+import appReducer from '@/store/slices/appSlice';
 
 import { Toast } from '../Toast';
-import appReducer from '@/store/slices/appSlice';
 
 const createTestStore = (preloadedState = {}) => {
   return configureStore({

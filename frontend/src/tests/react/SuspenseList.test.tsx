@@ -1,5 +1,5 @@
-import React, { Suspense, startTransition } from 'react';
 import { render, screen, waitFor, act } from '@testing-library/react';
+import React, { Suspense, startTransition } from 'react';
 import '@testing-library/jest-dom';
 
 // 创建一个包装了 Promise 的资源

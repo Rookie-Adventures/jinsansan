@@ -1,18 +1,19 @@
 // Mock errorLogger
-vi.mock('@/utils/http/error/logger', () => ({
+vi.mock('../../../utils/http/error/logger', () => ({
   errorLogger: {
     log: vi.fn(),
   },
 }));
 
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { vi } from 'vitest';
-import ErrorBoundary from '../index';
-import { HttpErrorType } from '@/utils/http/error/types';
-import { errorLogger } from '@/utils/http/error/logger';
 
-// 修改 mockErrorLogger 定义
-const mockErrorLogger = errorLogger as { log: (...args: any[]) => void };
+import { errorLogger } from '../../../utils/http/error/logger';
+import { HttpErrorType } from '../../../utils/http/error/types';
+import { ErrorBoundary } from '../index';
+
+// 使用更具体的类型定义
+const mockErrorLogger = errorLogger as { log: (error: { type: HttpErrorType; message: string; data?: unknown }) => void };
 
 describe('ErrorBoundary', () => {
   const ErrorChild = () => {
@@ -24,31 +25,31 @@ describe('ErrorBoundary', () => {
   });
 
   it('should render children when no error occurs', () => {
-    const { getByText } = render(
+    render(
       <ErrorBoundary>
         <div>Test content</div>
       </ErrorBoundary>
     );
-    expect(getByText('Test content')).toBeInTheDocument();
+    expect(screen.getByText('Test content')).toBeInTheDocument();
   });
 
   it('should render fallback UI when error occurs', () => {
-    const { getByText } = render(
+    render(
       <ErrorBoundary>
         <ErrorChild />
       </ErrorBoundary>
     );
-    expect(getByText('出错了')).toBeInTheDocument();
-    expect(getByText('Test error')).toBeInTheDocument();
+    expect(screen.getByText('出错了')).toBeInTheDocument();
+    expect(screen.getByText('Test error')).toBeInTheDocument();
   });
 
   it('should render default fallback when no custom fallback provided', () => {
-    const { getByText } = render(
+    render(
       <ErrorBoundary>
         <ErrorChild />
       </ErrorBoundary>
     );
-    expect(getByText('重试')).toBeInTheDocument();
+    expect(screen.getByText('重试')).toBeInTheDocument();
   });
 
   it('should log error when error occurs', () => {
@@ -67,12 +68,12 @@ describe('ErrorBoundary', () => {
 
   it('should call onReset when retry button clicked', () => {
     const onReset = vi.fn();
-    const { getByText } = render(
+    render(
       <ErrorBoundary onReset={onReset}>
         <ErrorChild />
       </ErrorBoundary>
     );
-    fireEvent.click(getByText('重试'));
+    fireEvent.click(screen.getByText('重试'));
     expect(onReset).toHaveBeenCalled();
   });
 
@@ -85,21 +86,19 @@ describe('ErrorBoundary', () => {
       return <div>Recovered</div>;
     };
 
-    const { getByText } = render(
+    render(
       <ErrorBoundary>
         <TestComponent />
       </ErrorBoundary>
     );
 
-    expect(getByText('出错了')).toBeInTheDocument();
+    expect(screen.getByText('出错了')).toBeInTheDocument();
 
     // 修改状态，使组件不再抛出错误
     shouldError = false;
 
     // 点击重试按钮
-    await act(async () => {
-      fireEvent.click(getByText('重试'));
-    });
+    fireEvent.click(screen.getByText('重试'));
 
     // 验证组件已恢复
     expect(screen.getByText('Recovered')).toBeInTheDocument();

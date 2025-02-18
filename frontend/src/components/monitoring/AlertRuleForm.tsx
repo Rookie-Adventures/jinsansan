@@ -1,9 +1,3 @@
-import type {
-  AlertRule,
-  AlertRuleType,
-  AlertSeverity,
-  MetricType,
-} from '@/infrastructure/monitoring/types';
 import {
   Box,
   Button,
@@ -20,6 +14,14 @@ import {
   Typography,
 } from '@mui/material';
 import React from 'react';
+
+import type {
+  AlertRule,
+  AlertRuleType,
+  AlertSeverity,
+  MetricType,
+} from '@/infrastructure/monitoring/types';
+
 import { sanitizeInput } from '../../utils/security';
 
 // 创建带有测试ID的自定义组件

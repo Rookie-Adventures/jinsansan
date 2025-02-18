@@ -1,4 +1,5 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
+
 import { toError, getErrorMessage, toLogData } from '../errorUtils';
 
 describe('errorUtils', () => {

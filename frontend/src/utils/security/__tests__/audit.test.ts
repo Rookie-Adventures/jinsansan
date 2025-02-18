@@ -1,8 +1,10 @@
 /**
  * @jest-environment jsdom
  */
-import { errorLogger } from '@/utils/error/errorLogger';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+
+import { errorLogger } from '@/utils/error/errorLogger';
+
 import { AuditLogLevel, auditLogManager, AuditLogType } from '../audit';
 
 // Mock errorLogger

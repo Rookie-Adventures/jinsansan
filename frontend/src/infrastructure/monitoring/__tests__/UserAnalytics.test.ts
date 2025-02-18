@@ -1,5 +1,6 @@
-import { UserAnalytics, UserEventType } from '../UserAnalytics';
 import { vi, beforeEach, afterEach, describe, test, expect } from 'vitest';
+
+import { UserAnalytics, UserEventType } from '../UserAnalytics';
 
 describe('UserAnalytics', () => {
   let analytics: UserAnalytics;
@@ -12,7 +13,7 @@ describe('UserAnalytics', () => {
     global.fetch = fetchMock as unknown as typeof fetch;
 
     // 模拟 Date.now
-    dateNowMock = vi.fn(() => 1000) as ReturnType<typeof vi.fn<[], number>>;
+    dateNowMock = vi.fn(() => 1000);
     vi.spyOn(Date, 'now').mockImplementation(() => 1000);
 
     // 模拟 document 属性

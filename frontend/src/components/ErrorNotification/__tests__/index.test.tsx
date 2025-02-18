@@ -1,11 +1,12 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
+
+import { errorRecoveryManager } from '../../../utils/http/error/recovery';
+import { HttpError, HttpErrorType } from '../../../utils/http/error/types';
 import { ErrorNotification } from '../index';
-import { HttpError, HttpErrorType } from '@/utils/http/error/types';
-import { errorRecoveryManager } from '@/utils/http/error/recovery';
 
 // Mock errorRecoveryManager
-vi.mock('@/utils/http/error/recovery', () => ({
+vi.mock('../../../utils/http/error/recovery', () => ({
   errorRecoveryManager: {
     attemptRecovery: vi.fn(),
   },
@@ -30,8 +31,8 @@ describe('ErrorNotification', () => {
 
   describe('基础渲染', () => {
     it('当没有错误时不应该渲染任何内容', () => {
-      const { container } = render(<ErrorNotification error={null} onClose={mockOnClose} />);
-      expect(container).toBeEmptyDOMElement();
+      render(<ErrorNotification error={null} onClose={mockOnClose} />);
+      expect(screen.queryByRole('alert')).not.toBeInTheDocument();
     });
 
     it('应该正确渲染网络错误', () => {
@@ -90,8 +91,12 @@ describe('ErrorNotification', () => {
       expect(retryButton).toBeDisabled();
       expect(screen.getByText('处理中...')).toBeInTheDocument();
 
+      // 分开验证恢复尝试和关闭操作
       await waitFor(() => {
         expect(errorRecoveryManager.attemptRecovery).toHaveBeenCalledWith(error);
+      });
+
+      await waitFor(() => {
         expect(mockOnClose).toHaveBeenCalled();
       });
     });
@@ -109,12 +114,17 @@ describe('ErrorNotification', () => {
       const retryButton = screen.getByText('重试');
       fireEvent.click(retryButton);
 
+      // 分开验证恢复尝试和按钮状态
       await waitFor(() => {
         expect(errorRecoveryManager.attemptRecovery).toHaveBeenCalledWith(error);
-        expect(mockOnClose).not.toHaveBeenCalled();
-        expect(retryButton).not.toBeDisabled();
-        expect(screen.getByText('重试')).toBeInTheDocument();
       });
+
+      await waitFor(() => {
+        expect(mockOnClose).not.toHaveBeenCalled();
+      });
+
+      expect(retryButton).not.toBeDisabled();
+      expect(screen.getByText('重试')).toBeInTheDocument();
     });
 
     it('应该正确处理刷新页面操作', () => {
@@ -151,8 +161,7 @@ describe('ErrorNotification', () => {
 
       render(<ErrorNotification error={error} onClose={mockOnClose} />);
 
-      const alert = screen.getByRole('alert');
-      expect(alert.parentElement).toHaveAttribute('data-auto-hide-duration', 'false');
+      expect(screen.getByRole('alert')).toHaveAttribute('data-auto-hide-duration', 'false');
     });
 
     it('警告信息应该自动关闭', () => {
@@ -163,8 +172,7 @@ describe('ErrorNotification', () => {
 
       render(<ErrorNotification error={error} onClose={mockOnClose} />);
 
-      const alert = screen.getByRole('alert');
-      expect(alert.parentElement).toHaveAttribute('data-auto-hide-duration', '6000');
+      expect(screen.getByRole('alert')).toHaveAttribute('data-auto-hide-duration', '6000');
     });
   });
 

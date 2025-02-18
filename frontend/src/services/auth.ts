@@ -1,6 +1,7 @@
+import { AxiosHeaders } from 'axios';
+
 import type { LoginFormData, RegisterFormData, User } from '@/types/auth';
 import request from '@/utils/request';
-import { AxiosHeaders } from 'axios';
 
 export interface LoginResponse {
   token: string;

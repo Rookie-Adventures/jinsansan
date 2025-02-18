@@ -1,5 +1,7 @@
-import { RegisterFormData } from '@/types/auth';
 import React from 'react';
+
+import { RegisterFormData } from '@/types/auth';
+
 import AuthForm from './AuthForm';
 
 interface RegisterFormProps {

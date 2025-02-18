@@ -1,6 +1,7 @@
-import Logger from '@/utils/logger';
 import { Middleware } from '@reduxjs/toolkit';
 import type { AnyAction } from 'redux';
+
+import Logger from '@/utils/logger';
 
 export const performanceMiddleware: Middleware = () => next => action => {
   if (process.env.NODE_ENV !== 'production') {

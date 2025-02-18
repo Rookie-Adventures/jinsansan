@@ -1,10 +1,11 @@
-import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@mui/material/styles';
 import { useMediaQuery } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import { render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
 
-import HeroSection from '../HeroSection';
 import { createTheme } from '@/theme';
+
+import HeroSection from '../HeroSection';
 
 // Mock useMediaQuery
 vi.mock('@mui/material', async () => {

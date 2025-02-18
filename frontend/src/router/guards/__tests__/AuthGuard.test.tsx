@@ -1,9 +1,12 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import { vi } from 'vitest';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
-import { AuthGuard } from '../AuthGuard';
+import { vi } from 'vitest';
+
+
 import { useAuth } from '@/hooks/auth';
 import Logger from '@/utils/logger';
+
+import { AuthGuard } from '../AuthGuard';
 
 // Mock hooks and utilities
 vi.mock('react-router-dom', async () => {

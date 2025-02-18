@@ -10,7 +10,7 @@ export interface RequestConfig extends InternalAxiosRequestConfig {
   retry?: boolean;
   retryTimes?: number;
   retryDelay?: number;
-  shouldRetry?: (error: AxiosError) => boolean;
+  shouldRetry?: (_error: AxiosError) => boolean;
 }
 
 // 创建 axios 实例
@@ -55,11 +55,19 @@ request.interceptors.response.use(
 
     // 处理业务错误
     if (data.code !== 200) {
-      const error = HttpErrorFactory.create({
-        message: data.message || '请求失败',
-        code: data.code.toString(),
-        data: data,
-      } as any);
+      const error = new AxiosError(
+        data.message || '请求失败',
+        data.code.toString(),
+        undefined,
+        undefined,
+        {
+          data: data,
+          status: data.code,
+          statusText: data.message || '请求失败',
+          headers: response.headers,
+          config: response.config,
+        } as AxiosResponse
+      );
       return Promise.reject(error);
     }
 

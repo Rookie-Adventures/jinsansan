@@ -1,6 +1,8 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { performanceMiddleware } from '../performance';
+
 import Logger from '@/utils/logger';
+
+import { performanceMiddleware } from '../performance';
 
 vi.mock('@/utils/logger');
 

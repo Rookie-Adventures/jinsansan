@@ -1,4 +1,5 @@
 import { errorLogger } from '@/utils/error/errorLogger';
+
 import { encryptionManager } from './encryption';
 
 export interface AuthEvent {

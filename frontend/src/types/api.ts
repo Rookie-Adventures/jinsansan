@@ -1,6 +1,7 @@
 import type { AxiosRequestConfig } from 'axios';
-import type { ProgressInfo } from '@/utils/http/progress-monitor';
+
 import type { HttpError } from '@/utils/http/error/types';
+import type { ProgressInfo } from '@/utils/http/progress-monitor';
 
 /**
  * API 响应的基础接口

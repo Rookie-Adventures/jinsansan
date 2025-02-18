@@ -1,11 +1,11 @@
 import React, { Suspense } from 'react';
 import { createBrowserRouter, useRouteError } from 'react-router-dom';
 
-import MainLayout from '@/components/common/layout/MainLayout';
 import Loading from '@/components/common/Loading';
+import MainLayout from '@/components/common/layout/MainLayout';
 import { AuthGuard, GuestGuard } from '@/router/guards';
-import { routerErrorHandler } from '@/utils/router/error-handler';
 import { useRouteAnalytics } from '@/utils/router/analytics';
+import { routerErrorHandler } from '@/utils/router/error-handler';
 
 const HomePage = React.lazy(() => import('@/pages/HomePage'));
 const LoginPage = React.lazy(() => import('@/pages/auth/LoginPage'));

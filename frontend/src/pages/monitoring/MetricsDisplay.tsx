@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
 import { Grid, Card, CardContent, Typography, Box } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+
 import { PerformanceMonitor } from '@/infrastructure/monitoring/PerformanceMonitor';
 import type { PerformanceMetric, MetricData, MetricType } from '@/infrastructure/monitoring/types';
 

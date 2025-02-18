@@ -1,7 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+
+import type { HttpClient } from '@/types/http';
+
 import { AuthService } from '../authService';
 import { tokenService } from '../tokenService';
-import type { HttpClient } from '@/types/http';
 
 // Mock tokenService
 vi.mock('../tokenService', () => ({

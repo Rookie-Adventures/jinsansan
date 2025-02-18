@@ -6,6 +6,7 @@ import { useAuth, useAuthForm } from '@/hooks/auth';
 import type { LoginFormData, RegisterFormData } from '@/types/auth';
 import { validateLoginForm, validateRegisterForm } from '@/utils/auth/validation';
 import Logger from '@/utils/logger';
+
 import AuthCard from './AuthCard';
 
 type AuthType = 'login' | 'register';

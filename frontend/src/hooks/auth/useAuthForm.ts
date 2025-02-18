@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+
 import type { LoginFormData, RegisterFormData } from '@/types/auth';
 
 interface UseAuthFormOptions<T extends LoginFormData | RegisterFormData> {

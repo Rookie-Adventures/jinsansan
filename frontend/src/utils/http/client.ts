@@ -1,7 +1,9 @@
+import type { AxiosRequestHeaders } from 'axios';
+
 import request from '../request';
+
 import type { HttpRequestConfig } from './types';
 import { RequestMethod } from './types';
-import type { AxiosRequestHeaders } from 'axios';
 
 class HttpClient implements RequestMethod {
   async get<T = any>(url: string, config?: HttpRequestConfig): Promise<T> {

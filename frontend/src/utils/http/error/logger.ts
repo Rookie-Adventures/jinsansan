@@ -1,5 +1,6 @@
-import { HttpError } from './types';
 import Logger from '@/utils/logger';
+
+import { HttpError } from './types';
 
 export const errorLogger = {
   log: (error: HttpError): void => {

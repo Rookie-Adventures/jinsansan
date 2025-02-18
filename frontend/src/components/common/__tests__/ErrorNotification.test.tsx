@@ -1,5 +1,6 @@
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import { vi, describe, beforeEach, afterEach, it, expect } from 'vitest';
+
 import ErrorNotification from '../ErrorNotification';
 
 describe('ErrorNotification', () => {

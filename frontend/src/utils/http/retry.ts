@@ -1,5 +1,7 @@
 import type { AxiosError } from 'axios';
 
+import { errorLogger } from '@/utils/error/errorLogger';
+
 export interface RetryConfig {
   enable?: boolean;
   times: number;
@@ -67,7 +69,14 @@ export async function retry<T>(fn: () => Promise<T>, config?: Partial<RetryConfi
         try {
           retryConfig.onRetry(error, attempt + 1);
         } catch (callbackError) {
-          console.error('Error in retry callback:', callbackError);
+          errorLogger.log(callbackError instanceof Error ? callbackError : new Error(String(callbackError)), {
+            level: 'error',
+            context: {
+              source: 'RetryCallback',
+              attempt: attempt + 1,
+              timestamp: Date.now()
+            }
+          });
         }
       }
 
@@ -80,6 +89,6 @@ export async function retry<T>(fn: () => Promise<T>, config?: Partial<RetryConfi
   throw lastError;
 }
 
-export const createRetry = (config?: Partial<RetryConfig>) => {
-  return <T>(fn: () => Promise<T>) => retry(fn, config);
+export const createRetry = (config?: Partial<RetryConfig>): (<T>(fn: () => Promise<T>) => Promise<T>) => {
+  return <T>(fn: () => Promise<T>): Promise<T> => retry(fn, config);
 };

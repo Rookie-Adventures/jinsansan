@@ -1,5 +1,6 @@
-import { errorLogger } from '@/utils/error/errorLogger';
 import CryptoJS from 'crypto-js';
+
+import { errorLogger } from '@/utils/error/errorLogger';
 
 /**
  * 加密配置接口

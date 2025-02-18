@@ -1,10 +1,13 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { describe, expect, test, vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
-import AuthPage from '../AuthPage';
-import type { LoginFormData, RegisterFormData } from '@/types/auth';
+import { describe, expect, test, vi } from 'vitest';
+
+
 import { useAuth, useAuthForm } from '@/hooks/auth';
+import type { LoginFormData, RegisterFormData } from '@/types/auth';
 import { validateLoginForm, validateRegisterForm } from '@/utils/auth/validation';
+
+import AuthPage from '../AuthPage';
 import LoginForm from '../LoginForm';
 import RegisterForm from '../RegisterForm';
 

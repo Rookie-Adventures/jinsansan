@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { RouterAnalytics } from '../RouterAnalytics';
+
 import { PerformanceMonitor } from '../PerformanceMonitor';
+import { RouterAnalytics } from '../RouterAnalytics';
 
 // Mock PerformanceMonitor
 vi.mock('../PerformanceMonitor', () => ({

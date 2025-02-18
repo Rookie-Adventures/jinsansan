@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { validateLoginForm, validateRegisterForm } from '../validation';
+
 import type { LoginFormData, RegisterFormData } from '@/types/auth';
+
+import { validateLoginForm, validateRegisterForm } from '../validation';
 
 describe('validateLoginForm', () => {
   it('应该在表单数据有效时返回 isValid: true', () => {

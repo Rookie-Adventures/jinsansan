@@ -1,5 +1,7 @@
-import { LoginFormData } from '@/types/auth';
 import React from 'react';
+
+import { LoginFormData } from '@/types/auth';
+
 import AuthForm from './AuthForm';
 
 interface LoginFormProps {

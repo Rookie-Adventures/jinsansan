@@ -1,4 +1,5 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
+
 import { errorLogger } from '../errorLogger';
 import type { LogContext, LogLevel } from '../errorLogger';
 

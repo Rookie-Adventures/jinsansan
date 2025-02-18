@@ -1,8 +1,9 @@
+import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { HttpClient } from '../HttpClient';
+
 import { Logger } from '../../logging/Logger';
 import { PerformanceMonitor } from '../../monitoring/PerformanceMonitor';
-import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import { HttpClient } from '../HttpClient';
 
 // Mock axios
 vi.mock('axios', async () => {

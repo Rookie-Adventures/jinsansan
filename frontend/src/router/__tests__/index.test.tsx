@@ -1,6 +1,6 @@
+import { render, screen, waitFor } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { RouterProvider, createMemoryRouter, Navigate } from 'react-router-dom';
 import { Provider, useSelector } from 'react-redux';

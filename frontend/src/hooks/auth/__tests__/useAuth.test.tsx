@@ -1,15 +1,17 @@
-import { renderHook, act } from '@testing-library/react';
-import { vi } from 'vitest';
-import { Provider } from 'react-redux';
 import { configureStore, createAsyncThunk } from '@reduxjs/toolkit';
+import { renderHook, act } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
-import { useAuth } from '../useAuth';
+import { vi } from 'vitest';
+
+import type { LoginResponse } from '@/services/auth';
 import authReducer, { login, register, logout } from '@/store/slices/authSlice';
+import type { RegisterFormData } from '@/types/auth';
+import { errorLogger } from '@/utils/errorLogger';
 import { HttpErrorFactory } from '@/utils/http/error/factory';
 import { HttpError, HttpErrorType } from '@/utils/http/error/types';
-import { errorLogger } from '@/utils/errorLogger';
-import type { RegisterFormData } from '@/types/auth';
-import type { LoginResponse } from '@/services/auth';
+
+import { useAuth } from '../useAuth';
 
 // Mock redux store
 const createTestStore = (initialState = {}) => {

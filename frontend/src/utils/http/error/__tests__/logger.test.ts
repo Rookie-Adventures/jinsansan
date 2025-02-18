@@ -1,7 +1,9 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
+
+import Logger from '@/utils/logger';
+
 import { errorLogger } from '../logger';
 import { HttpError, HttpErrorType } from '../types';
-import Logger from '@/utils/logger';
 
 // Mock Logger
 vi.mock('@/utils/logger', () => ({

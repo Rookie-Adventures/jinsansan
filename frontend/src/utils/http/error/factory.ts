@@ -1,4 +1,5 @@
 import { AxiosError } from 'axios';
+
 import { HttpError, HttpErrorType } from './types';
 
 export const HttpErrorFactory = {

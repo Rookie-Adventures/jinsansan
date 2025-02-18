@@ -1,4 +1,5 @@
-import React from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import {
   Box,
   Paper,
@@ -13,8 +14,8 @@ import {
   Chip,
   Tooltip,
 } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import React from 'react';
+
 import type { AlertRule, AlertSeverity } from '@/infrastructure/monitoring/types';
 
 interface AlertRuleListProps {

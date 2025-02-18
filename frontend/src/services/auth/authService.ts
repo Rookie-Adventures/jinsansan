@@ -1,6 +1,7 @@
 import { LoginFormData, RegisterFormData, User } from '@/types/auth';
-import { tokenService } from './tokenService';
 import type { HttpClient } from '@/types/http';
+
+import { tokenService } from './tokenService';
 
 export interface LoginResponse {
   user: User;

@@ -1,6 +1,6 @@
 import { render, screen, act } from '@testing-library/react';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
-import { MetricsDisplay } from './MetricsDisplay';
+
 import { PerformanceMonitor } from '@/infrastructure/monitoring/PerformanceMonitor';
 import type {
   PerformanceMetric,
@@ -8,6 +8,8 @@ import type {
   CustomMetrics,
   ApiCallMetrics,
 } from '@/infrastructure/monitoring/types';
+
+import { MetricsDisplay } from './MetricsDisplay';
 
 // Mock PerformanceMonitor
 vi.mock('@/infrastructure/monitoring/PerformanceMonitor');

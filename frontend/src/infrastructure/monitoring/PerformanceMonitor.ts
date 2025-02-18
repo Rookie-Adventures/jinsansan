@@ -1,4 +1,5 @@
 import { errorLogger } from '../../utils/errorLogger';
+
 import { PerformanceMetric } from './types';
 
 export class PerformanceMonitor {

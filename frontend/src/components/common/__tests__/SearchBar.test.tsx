@@ -1,7 +1,8 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { SearchBar } from '../SearchBar';
+
 import type { SearchResult } from '../../../infrastructure/search/SearchService';
+import { SearchBar } from '../SearchBar';
 
 // 测试配置
 const TEST_TIMEOUT = 1000;

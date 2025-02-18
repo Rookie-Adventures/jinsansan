@@ -1,13 +1,16 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { vi } from 'vitest';
-import { Provider } from 'react-redux';
+import { useMediaQuery } from '@mui/material';
 import { configureStore } from '@reduxjs/toolkit';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
-import Navbar from '../Navbar';
-import appReducer from '../../../../store/slices/appSlice';
+import { vi } from 'vitest';
+
 import { useAuth } from '@/hooks/auth';
 import { errorLogger } from '@/utils/http/error/logger';
-import { useMediaQuery } from '@mui/material';
+
+import appReducer from '../../../../store/slices/appSlice';
+import Navbar from '../Navbar';
+
 
 // Mock useAuth hook
 vi.mock('@/hooks/auth', () => ({

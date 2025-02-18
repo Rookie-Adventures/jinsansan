@@ -1,9 +1,12 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
-import RegisterPage from '../RegisterPage';
+import { describe, expect, it, vi } from 'vitest';
+
+
 import { useAuth } from '@/hooks/auth';
 import type { User } from '@/types/auth';
+
+import RegisterPage from '../RegisterPage';
 
 // Mock hooks
 vi.mock('react-router-dom', async () => {

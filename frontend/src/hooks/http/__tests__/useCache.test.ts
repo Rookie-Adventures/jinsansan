@@ -1,7 +1,9 @@
 import { renderHook, act } from '@testing-library/react';
 import { vi } from 'vitest';
-import { useCache } from '../useCache';
+
 import { requestManager } from '@/utils/http';
+
+import { useCache } from '../useCache';
 
 // Mock requestManager
 vi.mock('@/utils/http', () => ({

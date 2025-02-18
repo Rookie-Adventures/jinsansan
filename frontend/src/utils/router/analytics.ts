@@ -1,6 +1,7 @@
-import { errorLogger } from '@/utils/error/errorLogger';
 import { useEffect } from 'react';
 import { useLocation, useNavigationType } from 'react-router-dom';
+
+import { errorLogger } from '@/utils/error/errorLogger';
 
 // 获取基础 URL
 const getBaseUrl = () => {

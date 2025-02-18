@@ -1,12 +1,12 @@
-import React from 'react';
-import { Box, Container, Grid, Typography, Card, useTheme, useMediaQuery } from '@mui/material';
-import { motion } from 'framer-motion';
 import {
   AutoMode as StreamIcon,
   Psychology as ContextIcon,
   Apps as ModelsIcon,
   Security as SecurityIcon,
 } from '@mui/icons-material';
+import { Box, Container, Grid, Typography, Card, useTheme, useMediaQuery } from '@mui/material';
+import { motion } from 'framer-motion';
+import React from 'react';
 
 const features = [
   {

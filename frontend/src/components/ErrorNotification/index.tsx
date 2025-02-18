@@ -1,5 +1,5 @@
 import { Alert, AlertTitle, Button, Snackbar, Stack } from '@mui/material';
-import React from 'react';
+import { useState } from 'react';
 
 import { errorRecoveryManager } from '@/utils/http/error/recovery';
 import type { HttpError } from '@/utils/http/error/types';
@@ -65,7 +65,7 @@ const errorMessages: Record<ErrorMessageKey, ErrorConfig> = {
 };
 
 export const ErrorNotification: React.FC<ErrorNotificationProps> = ({ error, onClose }) => {
-  const [isRecovering, setIsRecovering] = React.useState(false);
+  const [isRecovering, setIsRecovering] = useState(false);
 
   if (!error) return null;
 
@@ -95,15 +95,15 @@ export const ErrorNotification: React.FC<ErrorNotificationProps> = ({ error, onC
       autoHideDuration={config.autoHideDuration === null ? undefined : config.autoHideDuration}
       onClose={onClose}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      data-auto-hide-duration={
-        config.autoHideDuration === null ? 'false' : config.autoHideDuration.toString()
-      }
     >
       <Alert
         onClose={onClose}
         severity={config.severity}
         variant="filled"
         sx={{ width: '100%', maxWidth: 400 }}
+        data-auto-hide-duration={
+          config.autoHideDuration === null ? 'false' : config.autoHideDuration.toString()
+        }
       >
         <AlertTitle>{config.title}</AlertTitle>
         <Stack spacing={1}>

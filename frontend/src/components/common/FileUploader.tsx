@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Box, Button, Typography } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { Box, Button, Typography } from '@mui/material';
+import React, { useState } from 'react';
 
 interface FileUploaderProps {
   onUploadComplete?: (file: File) => void;

@@ -1,5 +1,6 @@
-import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { AxiosError } from 'axios';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
+
 import { HttpErrorFactory } from '../factory';
 import { HttpError, HttpErrorType } from '../types';
 

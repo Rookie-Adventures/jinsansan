@@ -1,5 +1,7 @@
-import Logger from '@/utils/logger';
 import { Middleware } from '@reduxjs/toolkit';
+
+import Logger from '@/utils/logger';
+
 import { showToast } from '../slices/appSlice';
 import { isErrorAction } from '../types/actions';
 

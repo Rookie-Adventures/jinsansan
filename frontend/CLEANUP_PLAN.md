@@ -194,20 +194,25 @@
 ## 进度记录
 
 ### Week 1
-- [ ] Day 1: 类型定义清理 (Part 1)
+- [x] Day 1: 类型定义清理 (Part 1)
       - 使用 TypeScript compiler API 分析类型使用情况
       - 创建类型依赖关系图
       - 标记可能需要删除的类型定义
 
-- [ ] Day 2: 类型定义清理 (Part 2)
+- [x] Day 2: 类型定义清理 (Part 2)
       - 清理未使用的枚举值（types/error.ts, types/http.ts）
       - 清理未使用的接口定义
       - 清理测试文件中的未使用变量
 
-- [ ] Day 3: 测试代码优化
-      - 替换 container.querySelector 为 screen.getByText
-      - 优化 waitFor 的使用
-      - 减少不必要的 act 包装
+- [x] Day 3: 测试代码优化
+      - 替换 container.querySelector 为 screen.getByText ✓
+      - 优化 waitFor 的使用 ✓
+        - 分离多个断言为独立的 waitFor 调用
+        - 移除不必要的异步等待
+      - 减少不必要的 act 包装 ✓
+      - 完成文件：
+        - ErrorBoundary.test.tsx
+        - ErrorNotification/index.test.tsx
 
 - [ ] Day 4: React Hooks 优化
       - 检查并修复 useEffect 依赖
@@ -312,6 +317,30 @@ interface Config {
    - 确保注释格式统一
    - 确保使用统一的注释标记
 
+## 测试代码优化最佳实践
+
+### 1. 查询方法使用规范
+- [x] 优先使用 `screen` 查询方法而不是解构
+- [x] 使用语义化的查询方法（getByRole, getByText 等）
+- [x] 避免直接访问 DOM 节点
+- [x] 使用 `queryBy*` 验证元素不存在
+
+### 2. 异步测试规范
+- [x] 避免在 `waitFor` 中包含多个断言
+- [x] 移除不必要的 `act` 包装
+- [x] 正确使用 `async/await` 处理异步操作
+- [x] 合理设置异步超时时间
+
+### 3. 路径导入规范
+- [x] 使用相对路径替代路径别名（在测试文件中）
+- [x] 保持导入顺序一致性
+- [x] 避免循环依赖
+
+### 4. Mock 使用规范
+- [x] 使用相对路径进行模块 mock
+- [x] 在 beforeEach 中重置 mock
+- [x] 明确 mock 的返回类型
+
 ## 注意事项
 
 1. 每次修改前确保有完整测试覆盖
@@ -323,20 +352,25 @@ interface Config {
 ## 进度记录
 
 ### Week 1
-- [ ] Day 1: 类型定义清理 (Part 1)
+- [x] Day 1: 类型定义清理 (Part 1)
       - 使用 TypeScript compiler API 分析类型使用情况
       - 创建类型依赖关系图
       - 标记可能需要删除的类型定义
 
-- [ ] Day 2: 类型定义清理 (Part 2)
+- [x] Day 2: 类型定义清理 (Part 2)
       - 清理未使用的枚举值（types/error.ts, types/http.ts）
       - 清理未使用的接口定义
       - 清理测试文件中的未使用变量
 
-- [ ] Day 3: 测试代码优化
-      - 替换 container.querySelector 为 screen.getByText
-      - 优化 waitFor 的使用
-      - 减少不必要的 act 包装
+- [x] Day 3: 测试代码优化
+      - 替换 container.querySelector 为 screen.getByText ✓
+      - 优化 waitFor 的使用 ✓
+        - 分离多个断言为独立的 waitFor 调用
+        - 移除不必要的异步等待
+      - 减少不必要的 act 包装 ✓
+      - 完成文件：
+        - ErrorBoundary.test.tsx
+        - ErrorNotification/index.test.tsx
 
 - [ ] Day 4: React Hooks 优化
       - 检查并修复 useEffect 依赖

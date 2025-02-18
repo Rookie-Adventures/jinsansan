@@ -1,13 +1,14 @@
-import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
-import { Provider } from 'react-redux';
-import { vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
 import mediaQuery from 'css-mediaquery';
+import { Provider } from 'react-redux';
+import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
+
+import { store } from '@/store';
+import { createTheme } from '@/theme';
 
 import HomePage from '../HomePage';
-import { createTheme } from '@/theme';
-import { store } from '@/store';
 
 // Mock 子组件
 vi.mock('@/components/common/layout/Navbar', () => ({

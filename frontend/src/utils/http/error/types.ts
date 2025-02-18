@@ -11,7 +11,7 @@ export enum HttpErrorType {
 export class HttpError extends Error {
   code: string;
   status?: number;
-  data?: any;
+  data?: unknown;
   isAxiosError?: boolean;
   type: HttpErrorType;
 
@@ -20,7 +20,7 @@ export class HttpError extends Error {
     message: string;
     code?: string;
     status?: number;
-    data?: any;
+    data?: unknown;
     isAxiosError?: boolean;
   }) {
     super(params.message);
@@ -36,7 +36,7 @@ export class HttpError extends Error {
 export interface ErrorResponse {
   code: string;
   message: string;
-  data?: any;
+  data?: unknown;
 }
 
 export type ErrorFactory = (error: AxiosError | Error) => HttpError;

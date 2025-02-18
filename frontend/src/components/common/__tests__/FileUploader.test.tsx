@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { FileUploader } from '../FileUploader';
 import { vi, describe, it, expect } from 'vitest';
+
+import { FileUploader } from '../FileUploader';
 
 // 测试配置
 const TEST_FILE_CONTENT = 'test content';
