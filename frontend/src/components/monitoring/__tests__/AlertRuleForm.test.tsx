@@ -2,12 +2,11 @@
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { AlertRule } from '@/infrastructure/monitoring/types';
-
 import { AlertRuleForm } from '../AlertRuleForm';
+
+import type { AlertRule } from '@/infrastructure/monitoring/types';
 
 describe('AlertRuleForm', () => {
   const mockOnSubmit = vi.fn();
@@ -70,45 +69,35 @@ describe('AlertRuleForm', () => {
   // 表单验证测试
   describe('表单验证', () => {
     it('validates required fields', async () => {
-      const { getByRole, findByText } = render(
-        <AlertRuleForm onSubmit={mockOnSubmit} onCancel={() => {}} />
-      );
+      render(<AlertRuleForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
 
       // 触发表单提交
-      fireEvent.submit(getByRole('form'));
+      fireEvent.submit(screen.getByRole('form'));
 
       // 等待错误消息出现
-      const nameError = await findByText('规则名称不能为空');
-      expect(nameError).toBeInTheDocument();
+      expect(await screen.findByText('规则名称不能为空')).toBeInTheDocument();
     });
 
     it('validates threshold values', async () => {
-      const { getByRole, getByLabelText, findByText } = render(
-        <AlertRuleForm onSubmit={mockOnSubmit} onCancel={() => {}} />
-      );
+      render(<AlertRuleForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
 
       // 输入无效的阈值
-      fireEvent.change(getByLabelText('阈值'), { target: { value: '-1' } });
+      fireEvent.change(screen.getByLabelText('阈值'), { target: { value: '-1' } });
 
       // 触发表单提交
-      fireEvent.submit(getByRole('form'));
+      fireEvent.submit(screen.getByRole('form'));
 
-      // 修改期望：查找包含正确的错误提示文本
-      const thresholdError = await findByText('阈值不能为负数');
-      expect(thresholdError).toBeInTheDocument();
+      // 等待错误消息出现
+      expect(await screen.findByText('阈值不能为负数')).toBeInTheDocument();
     });
 
-    test('validates email format', async () => {
-      const { getByLabelText, getByRole } = render(
-        <AlertRuleForm onSubmit={vi.fn()} onCancel={vi.fn()} />
-      );
+    it('validates email format', async () => {
+      render(<AlertRuleForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
 
       // 输入必填字段
-      await act(async () => {
-        await user.type(getByLabelText('规则名称'), 'Test Rule');
-        await user.type(getByLabelText('通知邮箱'), 'invalid-email');
-        await user.click(getByRole('button', { name: '保存' }));
-      });
+      await user.type(screen.getByLabelText('规则名称'), 'Test Rule');
+      await user.type(screen.getByLabelText('通知邮箱'), 'invalid-email');
+      await user.click(screen.getByRole('button', { name: '保存' }));
 
       // 等待验证完成
       await waitFor(() => {
@@ -120,13 +109,10 @@ describe('AlertRuleForm', () => {
   // 安全性测试
   describe('安全性', () => {
     it('should safely handle potentially malicious input', async () => {
-      const mockOnSubmit = vi.fn();
-      render(<AlertRuleForm onSubmit={mockOnSubmit} onCancel={vi.fn()} />);
+      render(<AlertRuleForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
 
-      const nameInput = screen.getByLabelText('规则名称');
       const maliciousInput = '<script>alert("xss")</script>';
-
-      await user.type(nameInput, maliciousInput);
+      await user.type(screen.getByLabelText('规则名称'), maliciousInput);
       await user.click(screen.getByRole('button', { name: '保存' }));
 
       // 验证提交的数据是否被正确转义

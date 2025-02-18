@@ -1,23 +1,36 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box, Button, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
-import React from 'react';
+import type { ChangeEvent, FC, FormEvent } from 'react';
 
 import { LoginFormData, RegisterFormData } from '@/types/auth';
 
 type FormType = 'login' | 'register';
 type FormData = LoginFormData | RegisterFormData;
 
+/**
+ * 认证表单属性接口
+ */
 interface AuthFormProps {
+  /** 表单类型：登录或注册 */
   type: FormType;
+  /** 表单数据 */
   formData: FormData;
+  /** 是否显示密码 */
   showPassword: boolean;
+  /** 是否禁用表单 */
   disabled?: boolean;
-  onSubmit: (e: React.FormEvent) => void;
+  /** 表单提交处理函数 */
+  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  /** 表单数据变更处理函数 */
   onFormChange: (data: Partial<FormData>) => void;
+  /** 密码显示切换处理函数 */
   onTogglePassword: () => void;
 }
 
-const FormHeader: React.FC<{ type: FormType }> = ({ type }) => (
+/**
+ * 表单头部组件
+ */
+const FormHeader: FC<{ type: FormType }> = ({ type }) => (
   <>
     <Typography variant="h4" component="h1" gutterBottom align="center">
       {type === 'login' ? '登录' : '注册'}
@@ -28,14 +41,35 @@ const FormHeader: React.FC<{ type: FormType }> = ({ type }) => (
   </>
 );
 
-const PasswordField: React.FC<{
+/**
+ * 密码输入字段组件属性接口
+ */
+interface PasswordFieldProps {
+  /** 字段标签 */
   label: string;
+  /** 字段值 */
   value: string;
+  /** 是否显示密码 */
   showPassword: boolean;
+  /** 是否禁用 */
   disabled?: boolean;
+  /** 值变更处理函数 */
   onChange: (value: string) => void;
+  /** 密码显示切换处理函数 */
   onTogglePassword: () => void;
-}> = ({ label, value, showPassword, disabled, onChange, onTogglePassword }) => (
+}
+
+/**
+ * 密码输入字段组件
+ */
+const PasswordField: FC<PasswordFieldProps> = ({
+  label,
+  value,
+  showPassword,
+  disabled,
+  onChange,
+  onTogglePassword,
+}) => (
   <TextField
     fullWidth
     label={label}
@@ -44,7 +78,7 @@ const PasswordField: React.FC<{
     margin="normal"
     value={value}
     disabled={disabled}
-    onChange={e => onChange(e.target.value)}
+    onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
     InputProps={{
       endAdornment: (
         <InputAdornment position="end">
@@ -63,7 +97,11 @@ const PasswordField: React.FC<{
   />
 );
 
-const AuthForm: React.FC<AuthFormProps> = ({
+/**
+ * 认证表单组件
+ * 用于处理用户登录和注册
+ */
+const AuthForm: FC<AuthFormProps> = ({
   type,
   formData,
   showPassword,
@@ -72,7 +110,14 @@ const AuthForm: React.FC<AuthFormProps> = ({
   onFormChange,
   onTogglePassword,
 }) => (
-  <Box component="form" onSubmit={onSubmit} data-testid="auth-form">
+  <Box 
+    component="form" 
+    onSubmit={(e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      onSubmit(e);
+    }} 
+    data-testid="auth-form"
+  >
     <FormHeader type={type} />
 
     <TextField
@@ -82,7 +127,9 @@ const AuthForm: React.FC<AuthFormProps> = ({
       margin="normal"
       value={formData.username}
       disabled={disabled}
-      onChange={e => onFormChange({ username: e.target.value })}
+      onChange={(e: ChangeEvent<HTMLInputElement>) => 
+        onFormChange({ username: e.target.value })
+      }
     />
 
     {type === 'register' && (
@@ -94,7 +141,9 @@ const AuthForm: React.FC<AuthFormProps> = ({
         margin="normal"
         value={(formData as RegisterFormData).email}
         disabled={disabled}
-        onChange={e => onFormChange({ email: e.target.value })}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => 
+          onFormChange({ email: e.target.value })
+        }
       />
     )}
 
@@ -103,7 +152,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
       value={formData.password}
       showPassword={showPassword}
       disabled={disabled}
-      onChange={value => onFormChange({ password: value })}
+      onChange={(value: string) => onFormChange({ password: value })}
       onTogglePassword={onTogglePassword}
     />
 
@@ -113,7 +162,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
         value={(formData as RegisterFormData).confirmPassword || ''}
         showPassword={showPassword}
         disabled={disabled}
-        onChange={value => onFormChange({ confirmPassword: value })}
+        onChange={(value: string) => onFormChange({ confirmPassword: value })}
         onTogglePassword={onTogglePassword}
       />
     )}

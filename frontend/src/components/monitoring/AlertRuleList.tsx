@@ -14,14 +14,19 @@ import {
   Chip,
   Tooltip,
 } from '@mui/material';
-import React from 'react';
+import { type FC } from 'react';
 
 import type { AlertRule, AlertSeverity } from '@/infrastructure/monitoring/types';
 
+/** 告警规则列表组件的属性 */
 interface AlertRuleListProps {
+  /** 告警规则列表 */
   rules: AlertRule[];
+  /** 编辑规则的回调函数 */
   onEdit: (rule: AlertRule) => void;
+  /** 删除规则的回调函数 */
   onDelete: (ruleId: string) => void;
+  /** 切换规则启用状态的回调函数 */
   onToggle: (ruleId: string, enabled: boolean) => void;
 }
 
@@ -32,7 +37,11 @@ const severityColors: Record<AlertSeverity, 'default' | 'info' | 'warning' | 'er
   critical: 'error',
 };
 
-export const AlertRuleList: React.FC<AlertRuleListProps> = ({
+/**
+ * 告警规则列表组件
+ * 展示告警规则列表，并提供编辑、删除、启用/禁用等操作
+ */
+export const AlertRuleList: FC<AlertRuleListProps> = ({
   rules,
   onEdit,
   onDelete,

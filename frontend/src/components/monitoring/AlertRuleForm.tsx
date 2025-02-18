@@ -13,7 +13,8 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React from 'react';
+import type { ChangeEvent, FC, FormEvent } from 'react';
+import { useCallback, useState } from 'react';
 
 import type {
   AlertRule,
@@ -21,8 +22,7 @@ import type {
   AlertSeverity,
   MetricType,
 } from '@/infrastructure/monitoring/types';
-
-import { sanitizeInput } from '../../utils/security';
+import { sanitizeInput } from '@/utils/security';
 
 // 创建带有测试ID的自定义组件
 const StyledFormHelperText = styled(FormHelperText, {
@@ -36,8 +36,11 @@ const StyledFormHelperText = styled(FormHelperText, {
 type AlertRuleFormData = Required<Omit<AlertRule, 'id'>>;
 
 interface AlertRuleFormProps {
+  /** 要编辑的规则，如果是新建则为 undefined */
   rule?: AlertRule;
+  /** 表单提交回调 */
   onSubmit: (rule: AlertRuleFormData) => void;
+  /** 取消编辑回调 */
   onCancel: () => void;
 }
 
@@ -56,8 +59,15 @@ const SEVERITIES: AlertSeverity[] = ['info', 'warning', 'error', 'critical'];
 type AlertOperator = '>' | '<' | '>=' | '<=' | '==' | '!=';
 const OPERATORS: AlertOperator[] = ['>', '<', '>=', '<=', '==', '!='];
 
-export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({ rule, onSubmit, onCancel }) => {
-  const [formData, setFormData] = React.useState<AlertRuleFormData>({
+/**
+ * 告警规则表单组件
+ * 用于创建或编辑告警规则
+ * @param rule - 要编辑的规则，如果是新建则为 undefined
+ * @param onSubmit - 表单提交回调
+ * @param onCancel - 取消编辑回调
+ */
+export const AlertRuleForm: FC<AlertRuleFormProps> = ({ rule, onSubmit, onCancel }) => {
+  const [formData, setFormData] = useState<AlertRuleFormData>(() => ({
     name: sanitizeInput(rule?.name || ''),
     type: rule?.type || 'threshold',
     metric: (rule?.metric as MetricType) || 'page_load',
@@ -65,21 +75,15 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({ rule, onSubmit, on
     severity: rule?.severity || 'warning',
     enabled: rule?.enabled ?? true,
     notification: rule?.notification || { email: [] },
-  });
+  }));
 
-  const [errors, setErrors] = React.useState<Record<string, string>>({});
-  const [touched, setTouched] = React.useState<Record<string, boolean>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const validateEmail = (email: string): boolean => {
+  const validateEmail = useCallback((email: string): boolean => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
+  }, []);
 
-  const handleBlur = (field: string) => {
-    setTouched(prev => ({ ...prev, [field]: true }));
-    validateField(field);
-  };
-
-  const validateField = (field: string) => {
+  const validateField = useCallback((field: string) => {
     let error = '';
 
     switch (field) {
@@ -95,7 +99,7 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({ rule, onSubmit, on
         break;
       case 'email':
         if (formData.notification.email?.length) {
-          const invalidEmails = formData.notification.email.filter(email => !validateEmail(email));
+          const invalidEmails = formData.notification.email.filter((email: string) => !validateEmail(email));
           if (invalidEmails.length > 0) {
             error = '邮箱格式不正确';
           }
@@ -109,21 +113,20 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({ rule, onSubmit, on
     }));
 
     return !error;
-  };
+  }, [formData, validateEmail]);
 
-  const validateForm = (): boolean => {
+  const handleBlur = useCallback((field: string) => {
+    validateField(field);
+  }, [validateField]);
+
+  const validateForm = useCallback((): boolean => {
     const fields = ['name', 'threshold', 'email'];
     const validations = fields.map(field => validateField(field));
     return validations.every(Boolean);
-  };
+  }, [validateField]);
 
-  const handleSubmit = (e: React.FormEvent): void => {
+  const handleSubmit = useCallback((e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    setTouched({
-      name: true,
-      threshold: true,
-      email: true,
-    });
 
     const isValid = validateForm();
     if (isValid) {
@@ -132,14 +135,14 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({ rule, onSubmit, on
         name: sanitizeInput(formData.name),
         notification: {
           ...formData.notification,
-          email: formData.notification.email?.map(email => sanitizeInput(email)) || [],
+          email: formData.notification.email?.map((email: string) => sanitizeInput(email)) || [],
         },
       };
       onSubmit(sanitizedData);
     }
-  };
+  }, [formData, validateForm, onSubmit]);
 
-  const handleThresholdChange = (value: number) => {
+  const handleThresholdChange = useCallback((value: number) => {
     setFormData(prev => ({
       ...prev,
       condition: {
@@ -147,29 +150,10 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({ rule, onSubmit, on
         value,
       },
     }));
+    validateField('threshold');
+  }, [validateField]);
 
-    setTouched(prev => ({ ...prev, threshold: true }));
-  };
-
-  // 使用 useEffect 监听值的变化
-  React.useEffect(() => {
-    if (touched.threshold) {
-      if (formData.condition.value < 0) {
-        setErrors(prev => ({
-          ...prev,
-          threshold: '阈值不能为负数',
-        }));
-      } else {
-        setErrors(prev => {
-          const newErrors = { ...prev };
-          delete newErrors.threshold;
-          return newErrors;
-        });
-      }
-    }
-  }, [formData.condition.value, touched.threshold]);
-
-  const handleChange = <K extends keyof AlertRuleFormData>(
+  const handleChange = useCallback(<K extends keyof AlertRuleFormData>(
     field: K,
     value: AlertRuleFormData[K]
   ): void => {
@@ -177,17 +161,21 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({ rule, onSubmit, on
       ...prev,
       [field]: value,
     }));
-  };
+    // 对特定字段进行即时验证
+    if (field === 'name' || field === 'condition' || (field === 'notification' && 'email' in (value as object))) {
+      validateField(field === 'condition' ? 'threshold' : field === 'notification' ? 'email' : field);
+    }
+  }, [validateField]);
 
   // 修改阈值输入部分的渲染
-  const renderThresholdField = () => (
+  const renderThresholdField = useCallback(() => (
     <FormControl fullWidth error={!!errors.threshold}>
       <InputLabel>阈值</InputLabel>
       <TextField
         fullWidth
         type="number"
         value={formData.condition.value}
-        onChange={e => handleThresholdChange(Number(e.target.value))}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => handleThresholdChange(Number(e.target.value))}
         onBlur={() => handleBlur('threshold')}
         error={!!errors.threshold}
         inputProps={{
@@ -199,20 +187,17 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({ rule, onSubmit, on
         {errors.threshold || '\u200B'}
       </StyledFormHelperText>
     </FormControl>
-  );
+  ), [errors.threshold, formData.condition.value, handleBlur, handleThresholdChange]);
 
   // 修改名称输入部分的渲染
-  const renderNameField = () => (
+  const renderNameField = useCallback(() => (
     <FormControl fullWidth error={!!errors.name}>
       <TextField
         fullWidth
         label="规则名称"
         value={formData.name}
-        onChange={e => {
-          handleChange('name', e.target.value);
-          validateField('name');
-        }}
-        onBlur={() => validateField('name')}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange('name', e.target.value)}
+        onBlur={() => handleBlur('name')}
         error={!!errors.name}
         required
         inputProps={{
@@ -223,11 +208,7 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({ rule, onSubmit, on
         {errors.name || '\u200B'}
       </StyledFormHelperText>
     </FormControl>
-  );
-
-  React.useEffect(() => {
-    console.log('Errors state updated:', errors);
-  }, [errors]);
+  ), [errors.name, formData.name, handleBlur, handleChange]);
 
   return (
     <Box
@@ -235,11 +216,11 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({ rule, onSubmit, on
       onSubmit={handleSubmit}
       sx={{ width: '100%', maxWidth: 600 }}
       role="form"
-      aria-label="告警规则表单"
+      aria-label={rule ? '编辑告警规则' : '新建告警规则'}
     >
       <Stack spacing={3}>
         <Typography variant="h6" gutterBottom>
-          {rule ? '编辑告警规则' : '新建告警规则'}
+          {rule ? `编辑告警规则: ${rule.name}` : '新建告警规则'}
         </Typography>
 
         {renderNameField()}
@@ -249,11 +230,8 @@ export const AlertRuleForm: React.FC<AlertRuleFormProps> = ({ rule, onSubmit, on
           <Select
             labelId="rule-type-label"
             value={formData.type}
+            onChange={(e) => handleChange('type', e.target.value as AlertRuleType)}
             label="规则类型"
-            onChange={e => handleChange('type', e.target.value as AlertRuleType)}
-            inputProps={{
-              'aria-label': '规则类型',
-            }}
           >
             {RULE_TYPES.map(type => (
               <MenuItem key={type} value={type}>
