@@ -1,6 +1,6 @@
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { Box, Button, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { type FC, useState, type ChangeEvent } from 'react';
 
 interface FileUploaderProps {
   onUploadComplete?: (file: File) => void;
@@ -8,14 +8,14 @@ interface FileUploaderProps {
   maxFileSize?: number; // 最大文件大小（字节）
 }
 
-export const FileUploader: React.FC<FileUploaderProps> = ({
+export const FileUploader: FC<FileUploaderProps> = ({
   onUploadComplete,
   onError,
   maxFileSize = 5 * 1024 * 1024, // 默认 5MB
 }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       if (maxFileSize && file.size > maxFileSize) {

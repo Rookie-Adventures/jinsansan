@@ -1,12 +1,7 @@
-import type { LoginFormData, RegisterFormData, User } from '@/types/auth';
+import type { LoginFormData, RegisterFormData, LoginResponse } from '@/types/auth';
 import type { HttpClient } from '@/types/http';
 
 import { tokenService } from './tokenService';
-
-export interface LoginResponse {
-  user: User;
-  token: string;
-}
 
 export class AuthService {
   private baseUrl = '/api/auth';
@@ -49,12 +44,12 @@ export class AuthService {
   /**
    * 获取当前用户信息
    */
-  public async getCurrentUser(): Promise<User> {
+  public async getCurrentUser(): Promise<LoginResponse['user']> {
     const token = tokenService.getToken();
     if (!token) {
       throw new Error('No token found');
     }
-    return await this.http.get<User>(`${this.baseUrl}/me`);
+    return await this.http.get<LoginResponse['user']>(`${this.baseUrl}/me`);
   }
 
   /**

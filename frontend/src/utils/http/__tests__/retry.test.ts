@@ -47,7 +47,15 @@ describe('retry', () => {
 
     const promise = retry(fn, { times: 3, delay: 1000 });
     await vi.runAllTimersAsync();
-    await expect(promise).rejects.toBe(error3);
+    
+    try {
+      await promise;
+      // 如果没有抛出错误，测试应该失败
+      expect('Promise should have rejected').toBe(false);
+    } catch (error) {
+      expect(error).toBe(error3);
+    }
+    
     expect(fn).toHaveBeenCalledTimes(3);
   });
 

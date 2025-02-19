@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import { FC, ReactNode, Suspense, lazy } from 'react';
 import { createBrowserRouter, useRouteError } from 'react-router-dom';
 
 import Loading from '@/components/common/Loading';
@@ -7,15 +7,15 @@ import { AuthGuard, GuestGuard } from '@/router/guards';
 import { useRouteAnalytics } from '@/utils/router/analytics';
 import { routerErrorHandler } from '@/utils/router/error-handler';
 
-const HomePage = React.lazy(() => import('@/pages/HomePage'));
-const LoginPage = React.lazy(() => import('@/pages/auth/LoginPage'));
-const RegisterPage = React.lazy(() => import('@/pages/auth/RegisterPage'));
-const ErrorPage = React.lazy(() => import('@/pages/ErrorPage'));
+const HomePage = lazy(() => import('@/pages/HomePage'));
+const LoginPage = lazy(() => import('@/pages/auth/LoginPage'));
+const RegisterPage = lazy(() => import('@/pages/auth/RegisterPage'));
+const ErrorPage = lazy(() => import('@/pages/ErrorPage'));
 
 // 路由分析包装器
-const AnalyticsWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const AnalyticsWrapper: FC<{ children: ReactNode }> = ({ children }) => {
   useRouteAnalytics();
-  return <>{children}</>;
+  return children;
 };
 
 // 错误边界包装器

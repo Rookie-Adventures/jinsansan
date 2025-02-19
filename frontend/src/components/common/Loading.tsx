@@ -1,7 +1,7 @@
 import { Box, CircularProgress } from '@mui/material';
-import React from 'react';
+import { type FC } from 'react';
 
-const Loading: React.FC = () => (
+const Loading: FC = () => (
   <Box
     sx={{
       display: 'flex',

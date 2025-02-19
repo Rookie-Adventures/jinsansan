@@ -1,3 +1,5 @@
+import type { User } from './user';
+
 export interface LoginFormData {
   username: string;
   password: string;
@@ -8,11 +10,12 @@ export interface RegisterFormData extends LoginFormData {
   confirmPassword: string;
 }
 
-export interface User {
-  id: number;
-  username: string;
-  email: string;
-  permissions: string[];
+/**
+ * 登录响应接口
+ */
+export interface LoginResponse {
+  user: User;
+  token: string;
 }
 
 export interface AuthResponse {

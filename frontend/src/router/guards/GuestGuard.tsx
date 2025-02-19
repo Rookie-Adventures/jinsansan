@@ -1,17 +1,17 @@
-import React from 'react';
+import { FC, ReactNode, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '@/hooks/auth';
 
 interface GuestGuardProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
-export const GuestGuard: React.FC<GuestGuardProps> = ({ children }) => {
+export const GuestGuard: FC<GuestGuardProps> = ({ children }) => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isAuthenticated) {
       navigate('/');
     }
@@ -21,5 +21,5 @@ export const GuestGuard: React.FC<GuestGuardProps> = ({ children }) => {
     return null;
   }
 
-  return <>{children}</>;
+  return children;
 };

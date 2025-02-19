@@ -1,4 +1,4 @@
-import React from 'react';
+import type { FC, FormEvent } from 'react';
 
 import { RegisterFormData } from '@/types/auth';
 
@@ -8,7 +8,7 @@ interface RegisterFormProps {
   formData?: RegisterFormData;
   showPassword?: boolean;
   disabled?: boolean;
-  onSubmit?: (e: React.FormEvent) => void;
+  onSubmit?: (e: FormEvent) => void;
   onFormChange?: (data: Partial<RegisterFormData>) => void;
   onTogglePassword?: () => void;
 }
@@ -27,7 +27,7 @@ const defaultProps: Required<RegisterFormProps> = {
   onTogglePassword: () => {},
 };
 
-const RegisterForm: React.FC<RegisterFormProps> = props => {
+const RegisterForm: FC<RegisterFormProps> = props => {
   const finalProps = { ...defaultProps, ...props };
   return (
     <AuthForm

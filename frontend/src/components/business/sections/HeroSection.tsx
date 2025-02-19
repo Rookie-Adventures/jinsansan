@@ -1,9 +1,10 @@
 import { AutoAwesome, Speed, CloudDone } from '@mui/icons-material';
 import { Box, Typography, Button, Grid, useTheme, useMediaQuery, Container } from '@mui/material';
 import { motion } from 'framer-motion';
-import React from 'react';
 
-const HeroSection: React.FC = () => {
+import type { FC } from 'react';
+
+const HeroSection: FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 

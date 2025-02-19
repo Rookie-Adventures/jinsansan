@@ -6,7 +6,8 @@ import {
 } from '@mui/icons-material';
 import { Box, Container, Grid, Typography, Card, useTheme, useMediaQuery } from '@mui/material';
 import { motion } from 'framer-motion';
-import React from 'react';
+
+import type { FC } from 'react';
 
 const features = [
   {
@@ -35,7 +36,7 @@ const features = [
   },
 ];
 
-const FeatureSection: React.FC = () => {
+const FeatureSection: FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 

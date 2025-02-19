@@ -1,5 +1,5 @@
 import { Button, Container, Typography, Box } from '@mui/material';
-import React from 'react';
+import { Component, type ReactNode, type ErrorInfo, type FC } from 'react';
 
 import type { HttpError } from '@/utils/http/error/types';
 
@@ -7,8 +7,8 @@ import { errorLogger } from '@/utils/http/error/logger';
 import { HttpErrorType } from '@/utils/http/error/types';
 
 interface Props {
-  children: React.ReactNode;
-  fallback?: React.ReactNode;
+  children: ReactNode;
+  fallback?: ReactNode;
   onReset?: () => void;
 }
 
@@ -17,7 +17,7 @@ interface State {
   error: Error | null;
 }
 
-const ErrorFallback: React.FC<{ error: Error | null; onReset: () => void }> = ({
+const ErrorFallback: FC<{ error: Error | null; onReset: () => void }> = ({
   error,
   onReset,
 }) => (
@@ -45,7 +45,7 @@ const ErrorFallback: React.FC<{ error: Error | null; onReset: () => void }> = ({
   </Container>
 );
 
-export class ErrorBoundary extends React.Component<Props, State> {
+export class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { hasError: false, error: null };
@@ -55,7 +55,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     // 记录错误日志
     errorLogger.log({
       type: HttpErrorType.REACT_ERROR,

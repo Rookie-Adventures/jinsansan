@@ -1,4 +1,32 @@
+import { Logger } from '@/infrastructure/logging/Logger';
+
 import { PerformanceMetrics } from './types';
+
+/**
+ * 性能统计数据接口
+ */
+interface PerformanceStats {
+  avgResponseTime: number;
+  p95ResponseTime: number;
+  p99ResponseTime: number;
+  errorRates: Record<string, number>;
+  resourceUsage: Record<string, number>;
+  customMetrics: Record<string, number>;
+}
+
+/**
+ * 性能趋势数据接口
+ */
+interface PerformanceTrends {
+  responseTime: {
+    trend: 'improving' | 'stable' | 'degrading';
+    current: number;
+  };
+  errorRate: {
+    trend: 'improving' | 'stable' | 'degrading';
+    current: number;
+  };
+}
 
 export class PerformanceMonitor {
   private static instance: PerformanceMonitor;
@@ -6,8 +34,12 @@ export class PerformanceMonitor {
   private readonly maxSampleSize: number = 100;
   private readonly reportingInterval: number = 60000; // 1分钟
   private reportingTimer: NodeJS.Timeout | null = null;
+  private logger: Logger;
+  private enableReporting: boolean;
 
   private constructor() {
+    this.logger = Logger.getInstance();
+    this.enableReporting = process.env.NODE_ENV !== 'production';
     this.metrics = {
       requestTimes: new Map(),
       responseTimes: [],
@@ -67,7 +99,7 @@ export class PerformanceMonitor {
   }
 
   // 获取性能统计
-  public getPerformanceStats(): any {
+  public getPerformanceStats(): PerformanceStats {
     const responseTimes = this.metrics.responseTimes;
     const totalRequests = responseTimes.length;
 
@@ -119,10 +151,15 @@ export class PerformanceMonitor {
 
     this.reportingTimer = setInterval(() => {
       const stats = this.getPerformanceStats();
-      console.log('Performance Report:', stats);
+      
+      if (this.enableReporting) {
+        this.logger.debug('Performance Report:', { stats });
+      }
 
-      // 可以在这里添加将性能数据发送到监控系统的逻辑
-      this.sendToMonitoringSystem(stats);
+      // 只在生产环境发送到监控系统
+      if (process.env.NODE_ENV === 'production') {
+        void this.sendToMonitoringSystem(stats);
+      }
     }, this.reportingInterval);
   }
 
@@ -134,11 +171,14 @@ export class PerformanceMonitor {
     }
   }
 
+  // 添加控制方法
+  public setReporting(enable: boolean): void {
+    this.enableReporting = enable;
+  }
+
   // 发送数据到监控系统
-  private async sendToMonitoringSystem(stats: any): Promise<void> {
+  private async sendToMonitoringSystem(stats: PerformanceStats): Promise<void> {
     try {
-      // 这里可以实现将数据发送到实际的监控系统的逻辑
-      // 例如：
       await fetch('/api/monitoring/metrics', {
         method: 'POST',
         headers: {
@@ -147,7 +187,7 @@ export class PerformanceMonitor {
         body: JSON.stringify(stats),
       });
     } catch (error) {
-      console.error('Failed to send metrics to monitoring system:', error);
+      this.logger.error('Failed to send metrics to monitoring system:', { error });
     }
   }
 
@@ -187,7 +227,7 @@ export class PerformanceMonitor {
   }
 
   // 分析性能趋势
-  public analyzeTrends(): any {
+  public analyzeTrends(): PerformanceTrends {
     const stats = this.getPerformanceStats();
     const trends = {
       responseTime: {

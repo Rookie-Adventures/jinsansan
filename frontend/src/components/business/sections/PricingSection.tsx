@@ -13,7 +13,8 @@ import {
   Container,
 } from '@mui/material';
 import { motion } from 'framer-motion';
-import React from 'react';
+
+import type { FC } from 'react';
 
 const tiers = [
   {
@@ -40,7 +41,7 @@ const tiers = [
   },
 ];
 
-const PricingSection: React.FC = () => {
+const PricingSection: FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 

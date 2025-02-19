@@ -1,4 +1,4 @@
-import React from 'react';
+import type { FC, FormEvent } from 'react';
 
 import { LoginFormData } from '@/types/auth';
 
@@ -8,7 +8,7 @@ interface LoginFormProps {
   formData?: LoginFormData;
   showPassword?: boolean;
   disabled?: boolean;
-  onSubmit?: (e: React.FormEvent) => void;
+  onSubmit?: (e: FormEvent) => void;
   onFormChange?: (data: Partial<LoginFormData>) => void;
   onTogglePassword?: () => void;
 }
@@ -22,7 +22,7 @@ const defaultProps: Required<LoginFormProps> = {
   onTogglePassword: () => {},
 };
 
-const LoginForm: React.FC<LoginFormProps> = props => {
+const LoginForm: FC<LoginFormProps> = props => {
   const finalProps = { ...defaultProps, ...props };
   return (
     <AuthForm

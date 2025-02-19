@@ -1,5 +1,5 @@
 import { Alert, Box, CircularProgress, Snackbar } from '@mui/material';
-import React from 'react';
+import { useState, type FC, type ReactElement, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import type { LoginFormData, RegisterFormData } from '@/types/auth';
@@ -18,28 +18,28 @@ interface AuthFormComponentProps {
   formData: FormData;
   showPassword: boolean;
   disabled?: boolean;
-  onSubmit: (e: React.FormEvent) => void;
+  onSubmit: (e: FormEvent) => void;
   onFormChange: (data: Partial<FormData>) => void;
   onTogglePassword: () => void;
 }
 
 interface AuthPageProps {
   type: AuthType;
-  children: React.ReactElement<AuthFormComponentProps>;
+  children: ReactElement<AuthFormComponentProps>;
   initialData: FormData;
 }
 
-const AuthPage: React.FC<AuthPageProps> = ({ type, children, initialData }) => {
+const AuthPage: FC<AuthPageProps> = ({ type, children, initialData }) => {
   const navigate = useNavigate();
   const { login, register, loading } = useAuth();
   const { formData, showPassword, handleFormChange, togglePasswordVisibility } = useAuthForm({
     initialData,
   });
 
-  const [showError, setShowError] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState('');
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setShowError(false);
 
@@ -50,7 +50,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ type, children, initialData }) => {
         : validateRegisterForm(formData as RegisterFormData);
 
     if (!validationResult.isValid) {
-      setErrorMessage(validationResult.errorMessage!);
+      setErrorMessage(validationResult.errorMessage || '验证失败');
       setShowError(true);
       return;
     }
@@ -81,14 +81,18 @@ const AuthPage: React.FC<AuthPageProps> = ({ type, children, initialData }) => {
     setShowError(false);
   };
 
-  const childrenWithProps = React.cloneElement(children, {
-    formData,
-    showPassword,
-    onSubmit: handleSubmit,
-    onFormChange: handleFormChange,
-    onTogglePassword: togglePasswordVisibility,
-    disabled: loading,
-  } as AuthFormComponentProps);
+  const childrenWithProps = children && {
+    ...children,
+    props: {
+      ...children.props,
+      formData,
+      showPassword,
+      onSubmit: handleSubmit,
+      onFormChange: handleFormChange,
+      onTogglePassword: togglePasswordVisibility,
+      disabled: loading,
+    },
+  } as ReactElement<AuthFormComponentProps>;
 
   return (
     <>

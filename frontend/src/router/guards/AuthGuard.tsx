@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { FC, ReactNode, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Loading from '@/components/common/Loading';
@@ -6,13 +6,13 @@ import { useAuth } from '@/hooks/auth';
 import Logger from '@/utils/logger';
 
 interface AuthGuardProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
-export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
+export const AuthGuard: FC<AuthGuardProps> = ({ children }) => {
   const navigate = useNavigate();
   const { isAuthenticated, token, getCurrentUser } = useAuth();
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const verifyAuth = async () => {
@@ -40,5 +40,5 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
     return null;
   }
 
-  return <>{children}</>;
+  return children;
 };

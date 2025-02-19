@@ -1,13 +1,14 @@
 import { Card, CardContent, Link, Box } from '@mui/material';
-import React from 'react';
+
+import type { FC, ReactNode } from 'react';
 
 interface AuthCardProps {
-  children: React.ReactNode;
+  children: ReactNode;
   onToLogin?: () => void;
   onToRegister?: () => void;
 }
 
-const AuthCard: React.FC<AuthCardProps> = ({ children, onToLogin, onToRegister }) => {
+const AuthCard: FC<AuthCardProps> = ({ children, onToLogin, onToRegister }) => {
   return (
     <Box
       display="flex"

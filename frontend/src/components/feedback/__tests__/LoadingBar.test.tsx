@@ -73,12 +73,7 @@ describe('LoadingBar', () => {
     // 初始值应该为 0
     expect(progressBar.getAttribute('aria-valuenow')).toBe('0');
 
-    // 等待组件初始化
-    await act(async () => {
-      await vi.advanceTimersByTimeAsync(100);
-    });
-
-    // 等待第一次进度更新
+    // 等待第一次进度更新（500ms 是更新间隔）
     await act(async () => {
       await vi.advanceTimersByTimeAsync(500);
     });
@@ -89,7 +84,7 @@ describe('LoadingBar', () => {
 
     // 验证进度会继续增加
     await act(async () => {
-      await vi.advanceTimersByTimeAsync(1000);
+      await vi.advanceTimersByTimeAsync(500);
     });
 
     const finalValue = Number(progressBar.getAttribute('aria-valuenow'));

@@ -1,6 +1,7 @@
 import { http, HttpResponse } from 'msw';
 
 import type { ApiResponse } from '@/types/api';
+import type { LoginResponse } from '@/types/auth';
 
 interface LoginRequest {
   username: string;
@@ -9,17 +10,13 @@ interface LoginRequest {
 
 interface RegisterRequest extends LoginRequest {
   email: string;
+  confirmPassword: string;
 }
 
 interface User {
   id: number;
   username: string;
   email: string;
-}
-
-interface LoginResponse {
-  token: string;
-  user: User;
 }
 
 // 模拟用户存储

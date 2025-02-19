@@ -1,10 +1,10 @@
 import { Box } from '@mui/material';
-import React from 'react';
+import { type FC } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import Navbar from './Navbar';
 
-const MainLayout: React.FC = () => {
+const MainLayout: FC = () => {
   return (
     <Box
       sx={{
