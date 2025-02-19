@@ -19,11 +19,22 @@ interface AuthFormProps {
   showPassword: boolean;
   /** 是否禁用表单 */
   disabled?: boolean;
-  /** 表单提交处理函数 */
+  /** 
+   * 表单提交处理函数
+   * @param e 表单提交事件
+   * @remarks 在 LoginForm 和 RegisterForm 中实现具体的提交逻辑
+   */
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
-  /** 表单数据变更处理函数 */
-  onFormChange: (data: Partial<FormData>) => void;
-  /** 密码显示切换处理函数 */
+  /** 
+   * 表单数据变更处理函数
+   * @param formData 变更的表单数据部分
+   * @remarks 用于实现受控组件模式，在父组件中跟踪表单状态
+   */
+  onFormChange: (formData: Partial<FormData>) => void;
+  /** 
+   * 密码显示切换处理函数
+   * @remarks 控制密码字段的显示/隐藏状态
+   */
   onTogglePassword: () => void;
 }
 
@@ -53,7 +64,11 @@ interface PasswordFieldProps {
   showPassword: boolean;
   /** 是否禁用 */
   disabled?: boolean;
-  /** 值变更处理函数 */
+  /** 
+   * 值变更处理函数
+   * @param value 新的密码值
+   * @remarks 用于更新父组件中的密码状态
+   */
   onChange: (value: string) => void;
   /** 密码显示切换处理函数 */
   onTogglePassword: () => void;
@@ -112,9 +127,9 @@ const AuthForm: FC<AuthFormProps> = ({
 }) => (
   <Box
     component="form"
-    onSubmit={(_e: FormEvent<HTMLFormElement>) => {
-      _e.preventDefault();
-      onSubmit(_e);
+    onSubmit={(_event: FormEvent<HTMLFormElement>) => {
+      _event.preventDefault();
+      onSubmit(_event);
     }}
     data-testid="auth-form"
   >
@@ -127,7 +142,7 @@ const AuthForm: FC<AuthFormProps> = ({
       margin="normal"
       value={formData.username}
       disabled={disabled}
-      onChange={(e: ChangeEvent<HTMLInputElement>) => onFormChange({ username: e.target.value })}
+      onChange={(_e: ChangeEvent<HTMLInputElement>) => onFormChange({ username: _e.target.value })}
     />
 
     {type === 'register' && (
@@ -139,7 +154,7 @@ const AuthForm: FC<AuthFormProps> = ({
         margin="normal"
         value={(formData as RegisterFormData).email}
         disabled={disabled}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => onFormChange({ email: e.target.value })}
+        onChange={(_e: ChangeEvent<HTMLInputElement>) => onFormChange({ email: _e.target.value })}
       />
     )}
 
@@ -148,7 +163,7 @@ const AuthForm: FC<AuthFormProps> = ({
       value={formData.password}
       showPassword={showPassword}
       disabled={disabled}
-      onChange={(value: string) => onFormChange({ password: value })}
+      onChange={(_value: string) => onFormChange({ password: _value })}
       onTogglePassword={onTogglePassword}
     />
 
@@ -158,7 +173,7 @@ const AuthForm: FC<AuthFormProps> = ({
         value={(formData as RegisterFormData).confirmPassword || ''}
         showPassword={showPassword}
         disabled={disabled}
-        onChange={(value: string) => onFormChange({ confirmPassword: value })}
+        onChange={(_value: string) => onFormChange({ confirmPassword: _value })}
         onTogglePassword={onTogglePassword}
       />
     )}

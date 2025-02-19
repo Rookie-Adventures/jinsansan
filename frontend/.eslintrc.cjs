@@ -67,7 +67,13 @@ module.exports = {
     // TypeScript 规则
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['warn', {
+      'vars': 'all',
+      'varsIgnorePattern': '^_',
+      'args': 'after-used',
+      'argsIgnorePattern': '^_',
+      'ignoreRestSiblings': true
+    }],
     '@typescript-eslint/explicit-module-boundary-types': 'warn',
     '@typescript-eslint/no-non-null-assertion': 'error',
     '@typescript-eslint/no-unnecessary-type-assertion': 'error',
@@ -82,9 +88,36 @@ module.exports = {
     
     // 导入规则
     'import/order': ['error', {
-      'groups': ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+      'groups': [
+        'builtin',
+        'external',
+        'type',
+        'internal',
+        'parent',
+        'sibling',
+        'index'
+      ],
+      'pathGroups': [
+        {
+          'pattern': '@/**',
+          'group': 'internal',
+          'position': 'before'
+        },
+        {
+          'pattern': '@/**/*.types',
+          'group': 'type',
+          'position': 'before'
+        },
+        {
+          'pattern': '@/types/**',
+          'group': 'type',
+          'position': 'before'
+        }
+      ],
+      'pathGroupsExcludedImportTypes': ['type'],
       'newlines-between': 'always',
-      'alphabetize': { 'order': 'asc' }
+      'alphabetize': { 'order': 'asc' },
+      'warnOnUnassignedImports': true
     }],
     'import/no-duplicates': 'error',
     'import/no-unresolved': ['error', {

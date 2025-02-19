@@ -1,5 +1,7 @@
 import { AxiosProgressEvent } from 'axios';
 
+import type { ApiResponse } from '@/types/api';
+
 import { http } from '../http/HttpClient';
 
 export interface UploadOptions {
@@ -28,8 +30,13 @@ export interface DownloadParams {
   columns?: string[];
 }
 
+export interface UploadResponse {
+  success: boolean;
+  message: string;
+}
+
 export interface FileService {
-  uploadCSV(file: File, options?: UploadOptions): Promise<{ success: boolean; message: string }>;
+  uploadCSV(file: File, options?: UploadOptions): Promise<UploadResponse>;
   downloadCSV(params: DownloadParams): Promise<Blob>;
   parseCSV<T extends Record<string, unknown>>(content: string): Promise<T[]>;
   generateCSV<T extends Record<string, unknown>>(data: T[]): Promise<string>;
@@ -39,11 +46,11 @@ export class FileServiceImpl implements FileService {
   async uploadCSV(
     file: File,
     options?: UploadOptions
-  ): Promise<{ success: boolean; message: string }> {
+  ): Promise<UploadResponse> {
     const formData = new FormData();
     formData.append('file', file);
 
-    return http.post('/api/files/upload/csv', formData, {
+    const response = await http.post<ApiResponse<UploadResponse>>('/api/files/upload/csv', formData as unknown as Record<string, string>, {
       headers: {
         ...options?.headers,
         'Content-Type': 'multipart/form-data',
@@ -55,12 +62,14 @@ export class FileServiceImpl implements FileService {
         }
       },
     });
+
+    return response.data.data;
   }
 
   async downloadCSV(params: DownloadParams): Promise<Blob> {
-    const response = await http.get('/api/files/download/csv', {
+    const response = await http.get<ArrayBuffer>('/api/files/download/csv', {
       params,
-      responseType: 'blob',
+      responseType: 'arraybuffer',
     });
 
     const blob = new Blob([response.data], { type: 'text/csv' });

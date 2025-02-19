@@ -3,12 +3,13 @@
  * @packageDocumentation
  */
 
+import { errorLogger } from '@/utils/error/errorLogger';
+
 import type { Severity } from '../../types/severity';
 import { SeverityLevel } from '../../types/severity';
 
 import { encryptionManager } from './encryption';
 
-import { errorLogger } from '@/utils/error/errorLogger';
 
 /**
  * 审计日志级别类型

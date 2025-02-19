@@ -4,14 +4,12 @@ import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { vi } from 'vitest';
 
-import type { LoginResponse } from '@/services/auth';
+import { useAuth } from '../useAuth';
+
 import authReducer, { login, register, logout } from '@/store/slices/authSlice';
-import type { RegisterFormData } from '@/types/auth';
 import { errorLogger } from '@/utils/errorLogger';
 import { HttpErrorFactory } from '@/utils/http/error/factory';
 import { HttpError, HttpErrorType } from '@/utils/http/error/types';
-
-import { useAuth } from '../useAuth';
 
 // Mock redux store
 const createTestStore = (initialState = {}) => {
@@ -229,8 +227,8 @@ describe('useAuth', () => {
             username: 'testuser',
             password: 'wrong-password',
           });
-        } catch (error) {
-          expect(error).toBe(mockError);
+        } catch (_error) {
+          expect(_error).toBe(mockError);
         }
       });
 
@@ -264,14 +262,12 @@ describe('useAuth', () => {
         data: { reason: 'Username taken' },
       });
 
-      const mockRegisterAction = createAsyncThunk(
-        'auth/register',
-        async (_data: RegisterFormData): Promise<LoginResponse> => {
-          throw mockError;
-        }
-      );
-
-      vi.mocked(register).mockImplementation(mockRegisterAction);
+      // 直接使用 vi.mocked(register) 来模拟返回一个失败的 Promise
+      vi.mocked(register).mockImplementation(() => ({
+        type: 'auth/register/rejected',
+        payload: mockError,
+        unwrap: () => Promise.reject(mockError),
+      } as any));
 
       const { result } = renderHook(() => useAuth(), { wrapper });
 
@@ -283,8 +279,9 @@ describe('useAuth', () => {
             email: 'test@example.com',
             confirmPassword: 'password123',
           });
-        } catch (error) {
-          // 预期的错误
+        } catch (_error) {
+          // 验证捕获到的错误是预期的错误
+          expect(_error).toBe(mockError);
         }
       });
 

@@ -1,8 +1,8 @@
 import type { AxiosRequestConfig } from 'axios';
 
-import { Logger } from '@/infrastructure/logging/Logger';
-
 import { HttpError } from './types';
+
+import { Logger } from '@/infrastructure/logging/Logger';
 
 interface ExtendedHttpError extends HttpError {
   config?: AxiosRequestConfig & { retryCount?: number };
@@ -36,7 +36,10 @@ export class ErrorRecoveryManager {
         default:
           return false;
       }
-    } catch (e) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, unused-imports/no-unused-vars -- 有意忽略恢复过程中的错误，只记录原始错误
+    } catch (_e) {
+      // _e 是恢复过程中可能发生的错误，我们有意忽略它
+      // 因为在恢复失败时，更重要的是记录原始错误，而不是恢复过程中的具体错误
       this.logger.error('Recovery attempt failed', { originalError: error });
       return false;
     }

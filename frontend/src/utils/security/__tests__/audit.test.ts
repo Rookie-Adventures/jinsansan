@@ -3,9 +3,10 @@
  */
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
+import { errorLogger } from '@/utils/error/errorLogger';
+
 import { AuditLogManager, AuditLogType, AuditLogLevels } from '../audit';
 
-import { errorLogger } from '@/utils/error/errorLogger';
 
 // Mock errorLogger
 vi.mock('@/utils/error/errorLogger');

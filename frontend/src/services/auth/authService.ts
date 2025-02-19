@@ -1,4 +1,4 @@
-import { LoginFormData, RegisterFormData, User } from '@/types/auth';
+import type { LoginFormData, RegisterFormData, User } from '@/types/auth';
 import type { HttpClient } from '@/types/http';
 
 import { tokenService } from './tokenService';
@@ -68,12 +68,17 @@ export class AuthService {
 
   /**
    * 验证 token 是否有效
+   * @param token JWT token
+   * @returns 如果 token 有效返回 true，否则返回 false
+   * @remarks 此方法只关注验证结果，不关注具体的错误原因
    */
   public async validateToken(token: string): Promise<boolean> {
     try {
       await this.http.post(`${this.baseUrl}/validate-token`, { token });
       return true;
-    } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, unused-imports/no-unused-vars
+    } catch (_error) {
+      // _error 变量在这里被有意忽略，因为我们只关心验证失败的结果，不需要具体错误信息
       return false;
     }
   }

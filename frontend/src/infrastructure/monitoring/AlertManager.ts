@@ -2,11 +2,16 @@ import { errorLogger } from '../../utils/errorLogger';
 
 import type { Alert, AlertNotification, AlertRule } from './types';
 
+/**
+ * 告警管理器
+ * 负责告警规则的管理、告警状态的维护和告警通知的分发
+ */
 export class AlertManager {
   private static instance: AlertManager;
   private rules: Map<string, AlertRule> = new Map();
   private activeAlerts: Map<string, Alert> = new Map();
   private alertHistory: Alert[] = [];
+  /** 通知处理器列表，每个处理器接收 AlertNotification 对象并进行相应处理 */
   private notificationHandlers: ((notification: AlertNotification) => void)[] = [];
   private historyLimit: number = 1000;
   private metricTimestamps: Map<string, number[]> = new Map();
@@ -147,27 +152,56 @@ export class AlertManager {
     this.trimHistory();
   }
 
+  /**
+   * 设置告警通知处理器
+   * @param handler 通知处理器函数，接收 AlertNotification 对象作为参数
+   * notification 包含：
+   * - type: 通知类型（触发/解除）
+   * - rule: 触发告警的规则
+   * - value: 告警值
+   * - timestamp: 时间戳
+   * - config: 通知配置（邮件/webhook/slack）
+   * - message: 告警消息
+   * - details: 可选的告警详情
+   */
   public setNotificationHandler(handler: (notification: AlertNotification) => void): void {
     // 设置单个通知处理器,替换所有现有处理器
     this.notificationHandlers = [handler];
   }
 
+  /**
+   * 添加告警通知处理器
+   * @param handler 通知处理器函数，接收 AlertNotification 对象作为参数
+   * notification 对象包含告警的完整信息，用于实现不同的通知方式
+   */
   public addNotificationHandler(handler: (notification: AlertNotification) => void): void {
     // 添加新的通知处理器到处理器列表
     this.notificationHandlers.push(handler);
   }
 
+  /**
+   * 移除指定的告警通知处理器
+   * @param handler 要移除的通知处理器函数
+   */
   public removeNotificationHandler(handler: (notification: AlertNotification) => void): void {
     // 从处理器列表中移除指定的处理器
     this.notificationHandlers = this.notificationHandlers.filter(h => h !== handler);
   }
 
+  /**
+   * 发送告警通知
+   * @param type 通知类型（触发/解除）
+   * @param rule 触发告警的规则
+   * @param value 告警值
+   * @param timestamp 时间戳
+   */
   private notifyAlert(
     type: 'trigger' | 'resolve',
     rule: AlertRule,
     value: number,
     timestamp: number
   ): void {
+    // 构造告警通知对象
     const notification: AlertNotification = {
       type,
       rule,
@@ -177,6 +211,7 @@ export class AlertManager {
       message: `${rule.metric} ${type === 'trigger' ? 'exceeded' : 'returned to normal'} threshold: ${value} ${rule.condition.operator} ${rule.condition.value}`,
     };
     
+    // 分发通知到所有处理器
     if (this.notificationHandlers.length > 0) {
       this.notificationHandlers.forEach(handler => {
         try {
