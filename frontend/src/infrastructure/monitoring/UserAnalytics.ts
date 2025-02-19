@@ -2,12 +2,23 @@ import { errorLogger } from '../../utils/error/errorLogger';
 
 /**
  * 用户行为事件类型
+ * 这些常量在 track() 方法中被用作事件类型标识符
+ * @see trackPageView - 使用 PAGE_VIEW
+ * @see trackClick - 使用 CLICK
+ * @see trackFormSubmit - 使用 FORM_SUBMIT
+ * @see trackError - 使用 ERROR
+ * @see trackCustomEvent - 使用 CUSTOM
  */
 export enum UserEventType {
+  /** 页面访问事件 @see trackPageView */
   PAGE_VIEW = 'page_view',
+  /** 点击事件 @see trackClick */
   CLICK = 'click',
+  /** 表单提交事件 @see trackFormSubmit */
   FORM_SUBMIT = 'form_submit',
+  /** 错误事件 @see trackError */
   ERROR = 'error',
+  /** 自定义事件 @see trackCustomEvent */
   CUSTOM = 'custom',
 }
 

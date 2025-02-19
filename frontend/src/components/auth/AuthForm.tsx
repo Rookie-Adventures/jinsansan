@@ -112,9 +112,9 @@ const AuthForm: FC<AuthFormProps> = ({
 }) => (
   <Box
     component="form"
-    onSubmit={(e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      onSubmit(e);
+    onSubmit={(_e: FormEvent<HTMLFormElement>) => {
+      _e.preventDefault();
+      onSubmit(_e);
     }}
     data-testid="auth-form"
   >

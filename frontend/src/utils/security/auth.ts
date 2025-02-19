@@ -1,13 +1,7 @@
-import { errorLogger } from '@/utils/error/errorLogger';
-
 import { encryptionManager } from './encryption';
 
-export interface AuthEvent {
-  action: string;
-  status: 'success' | 'failure';
-  timestamp: number;
-  details?: Record<string, unknown>;
-}
+import type { AuthEvent } from '@/types/security/auth';
+import { errorLogger } from '@/utils/error/errorLogger';
 
 /**
  * 身份认证管理器

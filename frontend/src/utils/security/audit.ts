@@ -13,6 +13,12 @@ import { errorLogger } from '@/utils/error/errorLogger';
 /**
  * 审计日志级别类型
  * @description 基于 Severity 的审计日志级别
+ * @remarks
+ * 这是一个类型别名，用于在审计日志上下文中提供更具语义化的类型名称。
+ * 虽然底层使用的是 Severity 类型，但这个别名帮助我们：
+ * 1. 在审计日志相关代码中提供更清晰的语义
+ * 2. 保持与现有代码和文档的兼容性
+ * 3. 为将来可能的审计日志级别扩展提供灵活性
  */
 export type AuditLogLevel = Severity;
 
@@ -32,37 +38,35 @@ export enum AuditLogType {
 }
 
 /**
- * 审计日志接口
+ * 审计日志基础接口
  */
-interface AuditLog {
-  id: string;
-  timestamp: number;
+interface BaseAuditData {
   type: AuditLogType;
-  level: AuditLogLevel;
-  userId?: string;
+  level: Severity;
   action: string;
   resource: string;
   details: Record<string, unknown>;
-  ip?: string;
-  userAgent?: string;
   status: 'success' | 'failure';
   errorMessage?: string;
-  [key: string]: unknown; // 添加索引签名
+  [key: string]: unknown;
+}
+
+/**
+ * 审计日志接口
+ */
+interface AuditLog extends BaseAuditData {
+  id: string;
+  timestamp: number;
+  userId?: string;
+  ip?: string;
+  userAgent?: string;
 }
 
 /**
  * 告警数据接口
  */
-interface AlertData {
-  type: AuditLogType;
-  level: AuditLogLevel;
-  action: string;
-  resource: string;
+interface AlertData extends BaseAuditData {
   timestamp: string;
-  details: Record<string, unknown>;
-  status: string;
-  errorMessage?: string;
-  [key: string]: unknown; // 添加索引签名
 }
 
 /**
@@ -90,7 +94,7 @@ export class AuditLogManager {
    */
   async log(
     type: AuditLogType,
-    level: AuditLogLevel,
+    level: Severity,
     action: string,
     resource: string,
     details: Record<string, unknown>,
@@ -116,7 +120,7 @@ export class AuditLogManager {
       this.addLog(log);
       await this.sendToServer(log);
 
-      if (level === AuditLogLevels.ERROR || level === AuditLogLevels.CRITICAL) {
+      if (level === SeverityLevel.ERROR || level === SeverityLevel.CRITICAL) {
         this.triggerAlert(log);
       }
     } catch (error) {
@@ -265,7 +269,7 @@ export class AuditLogManager {
   /**
    * 获取指定级别的日志
    */
-  getLogsByLevel(level: AuditLogLevel): AuditLog[] {
+  getLogsByLevel(level: Severity): AuditLog[] {
     return this.logs.filter(log => log.level === level).sort((a, b) => b.timestamp - a.timestamp);
   }
 

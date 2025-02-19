@@ -7,10 +7,10 @@ import type { Severity } from '../../types/severity';
 import { SeverityLevel } from '../../types/severity';
 
 /**
- * 日志级别
+ * 错误日志级别
  * @description 使用统一的错误级别定义，并扩展开发环境特有的级别
  */
-export type LogLevel = Severity | 'debug' | 'warn';
+export type ErrorLogLevel = Severity | 'debug' | 'warn';
 
 /**
  * 日志数据接口
@@ -22,7 +22,7 @@ interface LogData {
   /** 错误堆栈信息 */
   stack?: string;
   /** 日志级别 */
-  level: LogLevel;
+  level: ErrorLogLevel;
   /** 时间戳 */
   timestamp: number;
   /** 上下文信息 */
@@ -35,7 +35,7 @@ interface LogData {
  */
 export interface LogContext {
   /** 日志级别 */
-  level: LogLevel;
+  level: ErrorLogLevel;
   /** 上下文信息 */
   context?: Record<string, unknown>;
 }

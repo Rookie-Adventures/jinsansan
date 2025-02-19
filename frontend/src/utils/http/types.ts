@@ -76,11 +76,8 @@ export type RequestMethod = {
   delete<T>(url: string, config?: HttpRequestConfig): Promise<T>;
 };
 
-/**
- * 错误严重程度类型
- * @description 统一的错误级别定义，用于整个应用的错误处理系统
- */
-export type ErrorSeverity = Severity;
-
 // Re-export HttpError type from error/types
 export type { HttpError };
+
+// Re-export Severity type for HTTP error handling
+export type { Severity };

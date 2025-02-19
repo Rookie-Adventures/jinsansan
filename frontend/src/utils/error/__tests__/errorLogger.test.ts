@@ -1,7 +1,7 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 import { errorLogger } from '../errorLogger';
-import type { LogContext, LogLevel } from '../errorLogger';
+import type { LogContext, ErrorLogLevel } from '../errorLogger';
 
 describe('ErrorLogger', () => {
   const originalEnv = process.env.NODE_ENV;
@@ -64,35 +64,35 @@ describe('ErrorLogger', () => {
 
     it('应该在开发环境下输出调试日志', async () => {
       const error = new Error('调试错误');
-      const context = { level: 'debug' as LogLevel };
+      const context = { level: 'debug' as ErrorLogLevel };
       await errorLogger.log(error, context);
       expect(console.debug).toHaveBeenCalledWith(error.message, context);
     });
 
     it('应该在开发环境下输出信息日志', async () => {
       const error = new Error('信息错误');
-      const context = { level: 'info' as LogLevel };
+      const context = { level: 'info' as ErrorLogLevel };
       await errorLogger.log(error, context);
       expect(console.info).toHaveBeenCalledWith(error.message, context);
     });
 
     it('应该在开发环境下输出警告日志', async () => {
       const error = new Error('警告错误');
-      const context = { level: 'warn' as LogLevel };
+      const context = { level: 'warn' as ErrorLogLevel };
       await errorLogger.log(error, context);
       expect(console.warn).toHaveBeenCalledWith(error.message, context);
     });
 
     it('应该在开发环境下输出错误日志', async () => {
       const error = new Error('严重错误');
-      const context = { level: 'error' as LogLevel };
+      const context = { level: 'error' as ErrorLogLevel };
       await errorLogger.log(error, context);
       expect(console.error).toHaveBeenCalledWith(error.message, context);
     });
 
     it('应该在开发环境下输出严重错误日志', async () => {
       const error = new Error('严重错误');
-      const context = { level: 'critical' as LogLevel };
+      const context = { level: 'critical' as ErrorLogLevel };
       await errorLogger.log(error, context);
       expect(console.error).toHaveBeenCalledWith(error.message, context);
     });

@@ -148,14 +148,17 @@ export class AlertManager {
   }
 
   public setNotificationHandler(handler: (notification: AlertNotification) => void): void {
+    // 设置单个通知处理器,替换所有现有处理器
     this.notificationHandlers = [handler];
   }
 
   public addNotificationHandler(handler: (notification: AlertNotification) => void): void {
+    // 添加新的通知处理器到处理器列表
     this.notificationHandlers.push(handler);
   }
 
   public removeNotificationHandler(handler: (notification: AlertNotification) => void): void {
+    // 从处理器列表中移除指定的处理器
     this.notificationHandlers = this.notificationHandlers.filter(h => h !== handler);
   }
 
@@ -170,7 +173,10 @@ export class AlertManager {
       rule,
       value,
       timestamp,
+      config: rule.notification,
+      message: `${rule.metric} ${type === 'trigger' ? 'exceeded' : 'returned to normal'} threshold: ${value} ${rule.condition.operator} ${rule.condition.value}`,
     };
+    
     if (this.notificationHandlers.length > 0) {
       this.notificationHandlers.forEach(handler => {
         try {
