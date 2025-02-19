@@ -1,23 +1,23 @@
 import { Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material';
 import { Button, IconButton, List, ListItem, ListItemText, Switch } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import type { AlertRule } from '@/infrastructure/monitoring/types';
 
 import { AlertManager } from '@/infrastructure/monitoring/AlertManager';
 
-export const AlertManagement: React.FC = () => {
+export const AlertManagement: FC = () => {
   const [rules, setRules] = useState<AlertRule[]>([]);
   const alertManager = AlertManager.getInstance();
 
   useEffect(() => {
+    const loadRules = () => {
+      setRules(alertManager.getRules());
+    };
+    
     loadRules();
-  }, []);
-
-  const loadRules = () => {
-    setRules(alertManager.getRules());
-  };
+  }, [alertManager]);
 
   const handleAddRule = (rule: Omit<AlertRule, 'id'>) => {
     const newRule: AlertRule = {
@@ -25,17 +25,17 @@ export const AlertManagement: React.FC = () => {
       id: uuidv4(),
     };
     alertManager.addRule(newRule);
-    loadRules();
+    setRules(alertManager.getRules());
   };
 
   const handleUpdateRule = (rule: AlertRule) => {
     alertManager.updateRule(rule);
-    loadRules();
+    setRules(alertManager.getRules());
   };
 
   const handleDeleteRule = (ruleId: string) => {
     alertManager.deleteRule(ruleId);
-    loadRules();
+    setRules(alertManager.getRules());
   };
 
   const handleEnableRule = (ruleId: string, enabled: boolean) => {
@@ -43,7 +43,7 @@ export const AlertManagement: React.FC = () => {
     if (rule) {
       const updatedRule = { ...rule, enabled };
       alertManager.updateRule(updatedRule);
-      loadRules();
+      setRules(alertManager.getRules());
     }
   };
 

@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react';
-import React from 'react';
+import { type FC, type ReactNode } from 'react';
 import { useLocation, useNavigationType, MemoryRouter } from 'react-router-dom';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 
@@ -18,8 +18,8 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
-// Mock errorLogger
-vi.mock('@/utils/error/errorLogger', () => ({
+// Mock error logger
+vi.mock('../../error/errorLogger', () => ({
   errorLogger: {
     log: vi.fn(),
   },
@@ -137,7 +137,7 @@ describe('RouterAnalytics', () => {
   });
 
   describe('Hook 使用', () => {
-    const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+    const Wrapper: FC<{ children: ReactNode }> = ({ children }) => (
       <MemoryRouter>{children}</MemoryRouter>
     );
 

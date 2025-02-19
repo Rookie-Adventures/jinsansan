@@ -1,20 +1,21 @@
 import { Grid, Card, CardContent, Typography, Box } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import { type FC, useState, useEffect } from 'react';
 
 import type { PerformanceMetric, MetricData, MetricType } from '@/infrastructure/monitoring/types';
 
 import { PerformanceMonitor } from '@/infrastructure/monitoring/PerformanceMonitor';
 
-export const MetricsDisplay: React.FC = () => {
+export const MetricsDisplay: FC = () => {
   const [metrics, setMetrics] = useState<PerformanceMetric[]>([]);
   const performanceMonitor = PerformanceMonitor.getInstance();
 
-  const updateMetrics = () => {
-    const currentMetrics = performanceMonitor.getMetrics();
-    setMetrics(currentMetrics);
-  };
-
   useEffect(() => {
+    // 将 updateMetrics 移到 useEffect 内部，避免依赖问题
+    const updateMetrics = () => {
+      const currentMetrics = performanceMonitor.getMetrics();
+      setMetrics(currentMetrics);
+    };
+
     // 初始加载
     updateMetrics();
 
@@ -23,7 +24,7 @@ export const MetricsDisplay: React.FC = () => {
 
     // 清理函数
     return () => clearInterval(intervalId);
-  }, []);
+  }, [performanceMonitor]);
 
   const getMetricValue = (data: MetricData): string => {
     if ('value' in data) {

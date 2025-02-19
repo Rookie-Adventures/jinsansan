@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import { type FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import AuthPage from '@/components/auth/AuthPage';
 import LoginForm from '@/components/auth/LoginForm';
 import { useAuth } from '@/hooks/auth';
 
-const LoginPage: React.FC = () => {
+const LoginPage: FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 

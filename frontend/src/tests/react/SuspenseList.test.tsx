@@ -1,6 +1,8 @@
-import { render, screen, waitFor, act } from '@testing-library/react';
-import React, { Suspense, startTransition } from 'react';
 import '@testing-library/jest-dom';
+import { render, screen, waitFor } from '@testing-library/react';
+import { Component, Suspense, startTransition, useState, useEffect } from 'react';
+
+import type { ReactNode } from 'react';
 
 // 创建一个包装了 Promise 的资源
 const createResource = (name: string, delay: number) => {
@@ -19,11 +21,10 @@ const createResource = (name: string, delay: number) => {
           }, delay);
         });
         throw promise;
+      } else if (status === 'error') {
+        throw result;
       }
-      if (status === 'success') {
-        return result;
-      }
-      throw promise;
+      return result;
     },
     reset() {
       status = 'pending';
@@ -34,15 +35,15 @@ const createResource = (name: string, delay: number) => {
 // 模拟异步组件
 const createAsyncComponent = (name: string, delay: number) => {
   const resource = createResource(name, delay);
-  return function Component() {
+  return function AsyncComponent() {
     const data = resource.read();
     return <div data-testid={`component-${name}`}>{data}</div>;
   };
 };
 
 // 正确的错误边界实现
-class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
-  constructor(props: { children: React.ReactNode }) {
+class ErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
+  constructor(props: { children: ReactNode }) {
     super(props);
     this.state = { hasError: false };
   }
@@ -87,10 +88,18 @@ describe('Suspense Component Group', () => {
     expect(screen.getByText('Loading B...')).toBeInTheDocument();
     expect(screen.getByText('Loading C...')).toBeInTheDocument();
 
-    // 等待所有组件加载完成
+    // 等待组件 A 加载完成
     await waitFor(() => {
       expect(screen.getByTestId('component-A')).toBeInTheDocument();
+    }, extendedWaitForOptions);
+
+    // 等待组件 B 加载完成
+    await waitFor(() => {
       expect(screen.getByTestId('component-B')).toBeInTheDocument();
+    }, extendedWaitForOptions);
+
+    // 等待组件 C 加载完成
+    await waitFor(() => {
       expect(screen.getByTestId('component-C')).toBeInTheDocument();
     }, extendedWaitForOptions);
 
@@ -121,18 +130,15 @@ describe('Suspense Component Group', () => {
       return <div data-testid="component-C">{data}</div>;
     };
 
-    // 使用 act 包装渲染过程
-    act(() => {
-      render(
-        <Suspense fallback={<div>Loading outer...</div>}>
-          <div>
-            <AsyncComponent1 />
-            <AsyncComponent2 />
-            <AsyncComponent3 />
-          </div>
-        </Suspense>
-      );
-    });
+    render(
+      <Suspense fallback={<div>Loading outer...</div>}>
+        <div>
+          <AsyncComponent1 />
+          <AsyncComponent2 />
+          <AsyncComponent3 />
+        </div>
+      </Suspense>
+    );
 
     // 验证初始加载状态
     expect(screen.getByText('Loading outer...')).toBeInTheDocument();
@@ -184,17 +190,14 @@ describe('Suspense Component Group', () => {
     };
 
     const TestComponent = () => {
-      const [show, setShow] = React.useState(false);
+      const [show, setShow] = useState(false);
 
-      React.useEffect(() => {
+      useEffect(() => {
         // 重置资源状态
         resource.reset();
 
-        // 使用 act 包装 startTransition
-        act(() => {
-          startTransition(() => {
-            setShow(true);
-          });
+        startTransition(() => {
+          setShow(true);
         });
       }, []);
 

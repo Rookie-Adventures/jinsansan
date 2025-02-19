@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import { type FC, type ReactNode, createContext, useContext, useState, useCallback } from 'react';
 
 import type { HttpError } from '@/utils/http';
 
@@ -12,7 +12,7 @@ interface ErrorContextType {
 
 const ErrorContext = createContext<ErrorContextType | undefined>(undefined);
 
-export const ErrorProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ErrorProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [error, setError] = useState<HttpError | null>(null);
 
   const clearError = useCallback(() => {

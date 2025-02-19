@@ -1,5 +1,5 @@
 import debounce from 'lodash/debounce';
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState, useRef, useEffect } from 'react';
 
 import { Logger } from '../../infrastructure/logging/Logger';
 import {
@@ -16,41 +16,51 @@ interface SearchBarProps<T> {
   debounceTime?: number;
 }
 
-export function SearchBar<T>({
+export const SearchBar = <T,>({
   onSearchResult,
   onError,
   placeholder = '搜索...',
   debounceTime = 300,
-}: SearchBarProps<T>) {
+}: SearchBarProps<T>): JSX.Element => {
   const [keyword, setKeyword] = useState('');
-  const searchService: SearchService = new SearchServiceImpl();
-  const logger = Logger.getInstance();
+  const searchService = useRef<SearchService>(new SearchServiceImpl());
+  const logger = useRef(Logger.getInstance());
 
-  const debouncedSearch = useCallback(
-    debounce(async (searchKeyword: string) => {
-      if (!searchKeyword.trim()) return;
+  const search = useCallback(async (searchKeyword: string) => {
+    if (!searchKeyword.trim()) return;
 
-      try {
-        const params: SearchParams = {
-          keyword: searchKeyword,
-          page: 1,
-          pageSize: 10,
-        };
+    try {
+      const params: SearchParams = {
+        keyword: searchKeyword,
+        page: 1,
+        pageSize: 10,
+      };
 
-        const searchResult = await searchService.search<T>(params);
-        onSearchResult(searchResult.items);
-      } catch (error) {
-        logger.error('Search failed:', toLogData(error));
-        onError?.(toError(error));
-      }
-    }, debounceTime),
-    [onSearchResult, onError]
+      const searchResult = await searchService.current.search<T>(params);
+      onSearchResult(searchResult.items);
+    } catch (error) {
+      logger.current.error('Search failed:', toLogData(error));
+      onError?.(toError(error));
+    }
+  }, [onSearchResult, onError]);
+
+  const debouncedSearch = useRef(
+    debounce((value: string) => {
+      search(value);
+    }, debounceTime)
   );
+
+  useEffect(() => {
+    // 更新 debounce 时间
+    debouncedSearch.current = debounce((value: string) => {
+      search(value);
+    }, debounceTime);
+  }, [debounceTime, search]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setKeyword(value);
-    debouncedSearch(value);
+    debouncedSearch.current(value);
   };
 
   return (
@@ -58,4 +68,4 @@ export function SearchBar<T>({
       <input type="text" value={keyword} onChange={handleInputChange} placeholder={placeholder} />
     </div>
   );
-}
+};
