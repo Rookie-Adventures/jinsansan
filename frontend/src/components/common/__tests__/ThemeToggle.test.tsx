@@ -1,11 +1,12 @@
-import type { AlertColor } from '@mui/material';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { describe, it, expect } from 'vitest';
 
-import appReducer, { AppState } from '../../../store/slices/appSlice';
 import type { RootState } from '../../../store/types';
+import type { AlertColor } from '@mui/material';
+
+import appReducer, { AppState } from '../../../store/slices/appSlice';
 import { ThemeToggle } from '../ThemeToggle';
 
 // 测试配置

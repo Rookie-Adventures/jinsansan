@@ -4,12 +4,13 @@ import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { vi } from 'vitest';
 
-import { useAuth } from '../useAuth';
 
 import authReducer, { login, register, logout } from '@/store/slices/authSlice';
 import { errorLogger } from '@/utils/errorLogger';
 import { HttpErrorFactory } from '@/utils/http/error/factory';
 import { HttpError, HttpErrorType } from '@/utils/http/error/types';
+
+import { useAuth } from '../useAuth';
 
 // Mock redux store
 const createTestStore = (initialState = {}) => {

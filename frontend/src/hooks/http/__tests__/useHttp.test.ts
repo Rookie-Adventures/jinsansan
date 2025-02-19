@@ -11,8 +11,9 @@ vi.mock('@/utils/http', () => ({
 import { renderHook } from '@testing-library/react';
 import { vi } from 'vitest';
 
-import { http } from '@/utils/http';
 import type { HttpRequestConfig } from '@/utils/http/types';
+
+import { http } from '@/utils/http';
 
 import { useHttp } from '../useHttp';
 

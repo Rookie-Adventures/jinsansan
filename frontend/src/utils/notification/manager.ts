@@ -1,6 +1,7 @@
+import type { NotificationOptions, NotificationType } from './types';
+
 import { errorLogger } from '../error/errorLogger';
 
-import type { NotificationOptions, NotificationType } from './types';
 
 export class NotificationManager {
   private static instance: NotificationManager;

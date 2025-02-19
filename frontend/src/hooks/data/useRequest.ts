@@ -1,9 +1,11 @@
-import type { AxiosError } from 'axios';
 import { useCallback, useState } from 'react';
+
+import type { HttpRequestConfig } from '@/utils/http/types';
+import type { AxiosError } from 'axios';
 
 import { useCache } from '@/hooks/http/useCache';
 import { useHttp } from '@/hooks/http/useHttp';
-import type { HttpRequestConfig } from '@/utils/http/types';
+
 
 interface ApiResponse<T> {
   code: number;

@@ -3,9 +3,10 @@
  * @packageDocumentation
  */
 
+import type { Severity } from '../../types/severity';
+
 import { errorLogger } from '@/utils/error/errorLogger';
 
-import type { Severity } from '../../types/severity';
 import { SeverityLevel } from '../../types/severity';
 
 import { encryptionManager } from './encryption';

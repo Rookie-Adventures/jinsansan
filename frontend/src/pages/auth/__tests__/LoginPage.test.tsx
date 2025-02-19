@@ -2,8 +2,9 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import { describe, expect, it, vi } from 'vitest';
 
-import { useAuth } from '@/hooks/auth';
 import type { User } from '@/types/auth';
+
+import { useAuth } from '@/hooks/auth';
 
 import LoginPage from '../LoginPage';
 

@@ -2,8 +2,9 @@ import { Alert, Box, CircularProgress, Snackbar } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useAuth, useAuthForm } from '@/hooks/auth';
 import type { LoginFormData, RegisterFormData } from '@/types/auth';
+
+import { useAuth, useAuthForm } from '@/hooks/auth';
 import { validateLoginForm, validateRegisterForm } from '@/utils/auth/validation';
 import Logger from '@/utils/logger';
 

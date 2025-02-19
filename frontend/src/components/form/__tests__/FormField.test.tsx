@@ -1,9 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { useForm, FormProvider } from 'react-hook-form';
-import type { Control } from 'react-hook-form';
 import { describe, it, expect, vi } from 'vitest';
 import * as yup from 'yup';
+
+import type { Control } from 'react-hook-form';
 
 import { FormField } from '../FormField';
 

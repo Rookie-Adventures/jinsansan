@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
-import { authApi, type LoginResponse } from '@/services/auth';
 import type { LoginFormData, RegisterFormData, AuthState } from '@/types/auth';
+
+import { authApi, type LoginResponse } from '@/services/auth';
 
 export type { AuthState };
 

@@ -1,7 +1,7 @@
-import type { compose } from '@reduxjs/toolkit';
 
 import type { AppState } from './slices/appSlice';
 import type { AuthState } from './slices/authSlice';
+import type { compose } from '@reduxjs/toolkit';
 
 export interface RootState {
   app: AppState;

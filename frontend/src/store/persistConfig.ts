@@ -1,6 +1,7 @@
-import type { PersistConfig } from 'redux-persist';
 import { createTransform } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+
+import type { PersistConfig } from 'redux-persist';
 
 import { RootState } from './types';
 

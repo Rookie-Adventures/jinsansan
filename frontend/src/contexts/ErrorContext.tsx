@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 
-import { ErrorNotification } from '@/components/ErrorNotification';
 import type { HttpError } from '@/utils/http';
+
+import { ErrorNotification } from '@/components/ErrorNotification';
 
 interface ErrorContextType {
   error: HttpError | null;

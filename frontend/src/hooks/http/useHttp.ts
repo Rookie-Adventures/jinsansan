@@ -1,7 +1,8 @@
 import { useCallback } from 'react';
 
-import { http } from '@/utils/http';
 import type { HttpRequestConfig } from '@/utils/http/types';
+
+import { http } from '@/utils/http';
 
 type RequestConfig = Omit<HttpRequestConfig, 'url' | 'method'>;
 type RequestConfigWithoutData = Omit<HttpRequestConfig, 'url' | 'method' | 'data'>;

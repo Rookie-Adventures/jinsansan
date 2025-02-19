@@ -3,11 +3,11 @@
  * @packageDocumentation
  */
 
+import type { HttpError } from './error/types';
+import type { Severity } from '../../types/severity';
 import type { AxiosRequestConfig } from 'axios';
 
-import type { Severity } from '../../types/severity';
 
-import type { HttpError } from './error/types';
 
 /**
  * HTTP 请求配置类型

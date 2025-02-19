@@ -1,6 +1,7 @@
 import { AxiosHeaders } from 'axios';
 
 import type { LoginFormData, RegisterFormData, User } from '@/types/auth';
+
 import request from '@/utils/request';
 
 export interface LoginResponse {

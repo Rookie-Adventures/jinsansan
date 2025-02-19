@@ -1,8 +1,8 @@
+import type { HttpRequestConfig } from './types';
 import type { AxiosRequestHeaders } from 'axios';
 
 import request from '../request';
 
-import type { HttpRequestConfig } from './types';
 import { RequestMethod } from './types';
 
 class HttpClient implements RequestMethod {

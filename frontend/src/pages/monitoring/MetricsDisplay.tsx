@@ -1,8 +1,9 @@
 import { Grid, Card, CardContent, Typography, Box } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 
-import { PerformanceMonitor } from '@/infrastructure/monitoring/PerformanceMonitor';
 import type { PerformanceMetric, MetricData, MetricType } from '@/infrastructure/monitoring/types';
+
+import { PerformanceMonitor } from '@/infrastructure/monitoring/PerformanceMonitor';
 
 export const MetricsDisplay: React.FC = () => {
   const [metrics, setMetrics] = useState<PerformanceMetric[]>([]);

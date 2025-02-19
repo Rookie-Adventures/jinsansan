@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { AlertManager } from '../AlertManager';
 import type { AlertRule } from '../types';
+
+import { AlertManager } from '../AlertManager';
 
 describe('AlertManager', () => {
   let alertManager: AlertManager;

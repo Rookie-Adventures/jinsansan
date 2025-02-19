@@ -4,6 +4,7 @@
  */
 
 import type { Severity } from '../../types/severity';
+
 import { SeverityLevel } from '../../types/severity';
 
 /**

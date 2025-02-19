@@ -1,7 +1,8 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 
-import { errorLogger } from '../errorLogger';
 import type { LogContext, ErrorLogLevel } from '../errorLogger';
+
+import { errorLogger } from '../errorLogger';
 
 describe('ErrorLogger', () => {
   const originalEnv = process.env.NODE_ENV;

@@ -1,7 +1,8 @@
 import { useSelector } from 'react-redux';
-import type { TypedUseSelectorHook } from 'react-redux';
 
 import type { RootState } from '@/store';
+import type { TypedUseSelectorHook } from 'react-redux';
+
 
 /**
  * 类型安全的selector hook

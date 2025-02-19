@@ -1,8 +1,9 @@
 import { renderHook } from '@testing-library/react';
 import React from 'react';
 import { useLocation, useNavigationType, MemoryRouter } from 'react-router-dom';
-import type { NavigationType } from 'react-router-dom';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
+
+import type { NavigationType } from 'react-router-dom';
 
 import { errorLogger } from '../../error/errorLogger';
 import { routerAnalytics, useRouteAnalytics } from '../analytics';

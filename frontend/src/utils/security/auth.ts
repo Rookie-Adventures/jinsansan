@@ -1,7 +1,9 @@
-import { encryptionManager } from './encryption';
 
 import type { AuthEvent } from '@/types/security/auth';
+
 import { errorLogger } from '@/utils/error/errorLogger';
+
+import { encryptionManager } from './encryption';
 
 /**
  * 身份认证管理器

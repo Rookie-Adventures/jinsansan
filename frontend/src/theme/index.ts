@@ -1,4 +1,5 @@
 import { createTheme as createMuiTheme } from '@mui/material/styles';
+
 import type { ThemeOptions } from '@mui/material/styles';
 
 export const defaultTheme: ThemeOptions = {

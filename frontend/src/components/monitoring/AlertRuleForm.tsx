@@ -13,7 +13,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import type { ChangeEvent, FC, FormEvent } from 'react';
 import { useCallback, useState } from 'react';
 
 import type {
@@ -22,6 +21,8 @@ import type {
   AlertSeverity,
   MetricType,
 } from '@/infrastructure/monitoring/types';
+import type { ChangeEvent, FC, FormEvent } from 'react';
+
 import { sanitizeInput } from '@/utils/security';
 
 // 创建带有测试ID的自定义组件

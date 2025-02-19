@@ -1,8 +1,9 @@
 import { Alert, AlertTitle, Button, Snackbar, Stack } from '@mui/material';
 import { useState } from 'react';
 
-import { errorRecoveryManager } from '@/utils/http/error/recovery';
 import type { HttpError } from '@/utils/http/error/types';
+
+import { errorRecoveryManager } from '@/utils/http/error/recovery';
 import { HttpErrorType } from '@/utils/http/error/types';
 
 interface ErrorNotificationProps {

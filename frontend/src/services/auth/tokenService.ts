@@ -1,3 +1,9 @@
+export interface TokenPayload {
+  exp: number;
+  sub: string;
+  [key: string]: unknown;
+}
+
 export class TokenService {
   private readonly TOKEN_KEY = 'auth_token';
 
@@ -13,11 +19,7 @@ export class TokenService {
    * @param token JWT token
    */
   public setToken(token: string): void {
-    try {
-      localStorage.setItem(this.TOKEN_KEY, token);
-    } catch (error) {
-      throw error;
-    }
+    localStorage.setItem(this.TOKEN_KEY, token);
   }
 
   /**
@@ -37,8 +39,9 @@ export class TokenService {
   /**
    * 解析 token
    * @param token JWT token
+   * @returns TokenPayload 解析后的 token 载荷
    */
-  public parseToken(token: string): any {
+  public parseToken(token: string): TokenPayload {
     if (!token || typeof token !== 'string') {
       throw new Error('Invalid token format');
     }

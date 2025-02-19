@@ -1,9 +1,10 @@
-import type { AlertColor } from '@mui/material';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { vi, describe, it, expect } from 'vitest';
+
+import type { AlertColor } from '@mui/material';
 
 import appReducer, { AppState } from '../../../../store/slices/appSlice';
 import MainLayout from '../MainLayout';

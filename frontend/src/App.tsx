@@ -2,10 +2,11 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
 
+import type { RootState } from '@/store';
+
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { ErrorNotification } from '@/components/ErrorNotification';
 import { router } from '@/router';
-import type { RootState } from '@/store';
 import { clearError } from '@/store/slices/error';
 import { createTheme } from '@/theme';
 

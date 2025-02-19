@@ -1,10 +1,11 @@
-import type { Transform, PersistedState } from 'redux-persist/es/types';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import storage from 'redux-persist/lib/storage';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-import { persistConfig } from './persistConfig';
 import type { RootState } from './types';
+import type { Transform, PersistedState } from 'redux-persist/es/types';
+
+import { persistConfig } from './persistConfig';
 
 // Mock storage
 vi.mock('redux-persist/lib/storage', () => ({

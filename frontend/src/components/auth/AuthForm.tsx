@@ -1,5 +1,6 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box, Button, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+
 import type { ChangeEvent, FC, FormEvent } from 'react';
 
 import { LoginFormData, RegisterFormData } from '@/types/auth';

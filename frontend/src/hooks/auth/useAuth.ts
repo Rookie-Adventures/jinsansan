@@ -1,10 +1,11 @@
-import type { AxiosError } from 'axios';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import type { LoginFormData, RegisterFormData } from '@/types/auth';
+import type { AxiosError } from 'axios';
+
 import { useAppDispatch, useAppSelector } from '@/store';
 import { clearAuth, getCurrentUser, login, logout, register } from '@/store/slices/authSlice';
-import type { LoginFormData, RegisterFormData } from '@/types/auth';
 import { errorLogger } from '@/utils/errorLogger';
 import { HttpErrorFactory } from '@/utils/http/error/factory';
 import { HttpError, HttpErrorType } from '@/utils/http/error/types';

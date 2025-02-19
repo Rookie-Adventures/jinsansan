@@ -1,9 +1,10 @@
 import { Button, Container, Typography, Box } from '@mui/material';
 import React from 'react';
 
+import type { HttpError } from '@/utils/http/error/types';
+
 import { errorLogger } from '@/utils/http/error/logger';
 import { HttpErrorType } from '@/utils/http/error/types';
-import type { HttpError } from '@/utils/http/error/types';
 
 interface Props {
   children: React.ReactNode;

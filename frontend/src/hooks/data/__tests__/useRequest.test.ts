@@ -1,7 +1,8 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
-import type { AxiosError } from 'axios';
 import { AxiosHeaders } from 'axios';
 import { vi } from 'vitest';
+
+import type { AxiosError } from 'axios';
 
 import { useCache } from '@/hooks/http/useCache';
 import { useHttp } from '@/hooks/http/useHttp';

@@ -1,6 +1,7 @@
+import type { Alert, AlertNotification, AlertRule } from './types';
+
 import { errorLogger } from '../../utils/errorLogger';
 
-import type { Alert, AlertNotification, AlertRule } from './types';
 
 /**
  * 告警管理器

@@ -1,8 +1,9 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import axiosRetry from 'axios-retry';
 
-import { store } from '@/store';
 import type { ApiResponse } from '@/types/api';
+
+import { store } from '@/store';
 import { HttpErrorFactory } from '@/utils/http/error/factory';
 
 // 定义请求配置接口

@@ -3,8 +3,9 @@ import { Button, IconButton, List, ListItem, ListItemText, Switch } from '@mui/m
 import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { AlertManager } from '@/infrastructure/monitoring/AlertManager';
 import type { AlertRule } from '@/infrastructure/monitoring/types';
+
+import { AlertManager } from '@/infrastructure/monitoring/AlertManager';
 
 export const AlertManagement: React.FC = () => {
   const [rules, setRules] = useState<AlertRule[]>([]);

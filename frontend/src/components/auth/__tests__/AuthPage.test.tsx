@@ -2,8 +2,9 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, test, vi } from 'vitest';
 
-import { useAuth, useAuthForm } from '@/hooks/auth';
 import type { LoginFormData, RegisterFormData } from '@/types/auth';
+
+import { useAuth, useAuthForm } from '@/hooks/auth';
 import { validateLoginForm, validateRegisterForm } from '@/utils/auth/validation';
 
 import AuthPage from '../AuthPage';
