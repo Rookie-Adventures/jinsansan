@@ -4,6 +4,23 @@ import { Middleware, Action } from 'redux';
 const EXECUTION_TIME_THRESHOLD = 100; // ms
 const ACTION_SIZE_THRESHOLD = 1000; // bytes
 
+/**
+ * 记录性能监控信息
+ * @param startTime 开始时间
+ * @returns 执行持续时间
+ */
+const logPerformance = (startTime: number): number => {
+  const endTime = performance.now();
+  const duration = endTime - startTime;
+
+  if (duration > EXECUTION_TIME_THRESHOLD) {
+    console.warn(`Warning: Action execution time exceeded ${EXECUTION_TIME_THRESHOLD}ms`);
+  }
+
+  console.info(`Action execution time: ${duration.toFixed(2)}ms`);
+  return duration;
+};
+
 export const loggerMiddleware: Middleware = store => next => action => {
   if (process.env.NODE_ENV === 'production') {
     return next(action);
@@ -50,18 +67,7 @@ export const loggerMiddleware: Middleware = store => next => action => {
               const nextState = store.getState();
               console.log('Next State:', nextState);
               console.groupEnd();
-
-              const endTime = performance.now();
-              const duration = endTime - startTime;
-
-              if (duration > EXECUTION_TIME_THRESHOLD) {
-                console.warn(
-                  `Warning: Action execution time exceeded ${EXECUTION_TIME_THRESHOLD}ms`
-                );
-              }
-
-              console.info(`Action execution time: ${duration.toFixed(2)}ms`);
-
+              logPerformance(startTime);
               return value;
             } catch (error) {
               console.error('Error logging state:', error);
@@ -89,15 +95,7 @@ export const loggerMiddleware: Middleware = store => next => action => {
       // Ignore group errors
     }
 
-    const endTime = performance.now();
-    const duration = endTime - startTime;
-
-    if (duration > EXECUTION_TIME_THRESHOLD) {
-      console.warn(`Warning: Action execution time exceeded ${EXECUTION_TIME_THRESHOLD}ms`);
-    }
-
-    console.info(`Action execution time: ${duration.toFixed(2)}ms`);
-
+    logPerformance(startTime);
     return result;
   } catch (error) {
     console.error('Action Error:', error);
