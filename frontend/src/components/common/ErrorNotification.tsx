@@ -103,12 +103,17 @@ export const ErrorNotification = (): JSX.Element => {
           vertical: notification.position,
           horizontal: 'center',
         }}
+        role="presentation"
+        aria-label={`${notification.position} notification`}
       >
         <Alert
           onClose={handleCloseNotification}
           severity={getSeverityColor(notification.type)}
           variant="filled"
           elevation={6}
+          role="alert"
+          aria-label={notification.message}
+          data-position={notification.position}
         >
           {notification.message}
         </Alert>

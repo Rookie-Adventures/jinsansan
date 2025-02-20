@@ -1,6 +1,6 @@
 {
   "statistics": {
-    "detectionDate": "2025-02-20T11:04:24.775Z",
+    "detectionDate": "2025-02-20T11:21:38.256Z",
     "formats": {
       "typescript": {
         "sources": {
@@ -2265,8 +2265,8 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/components/common/ErrorNotification.tsx": {
-            "lines": 55,
-            "tokens": 435,
+            "lines": 60,
+            "tokens": 475,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -2434,8 +2434,8 @@
           }
         },
         "total": {
-          "lines": 2046,
-          "tokens": 18054,
+          "lines": 2051,
+          "tokens": 18094,
           "sources": 60,
           "clones": 0,
           "duplicatedLines": 0,
@@ -2749,14 +2749,14 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/components/common/__tests__/ErrorNotification.test.tsx": {
-            "lines": 277,
-            "tokens": 2465,
+            "lines": 265,
+            "tokens": 2372,
             "sources": 1,
-            "clones": 4,
-            "duplicatedLines": 62,
-            "duplicatedTokens": 462,
-            "percentage": 22.38,
-            "percentageTokens": 18.74,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -3205,8 +3205,8 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/components/common/ErrorNotification.tsx": {
-            "lines": 162,
-            "tokens": 1258,
+            "lines": 167,
+            "tokens": 1298,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -3374,28 +3374,28 @@
           }
         },
         "total": {
-          "lines": 8820,
-          "tokens": 81198,
+          "lines": 8813,
+          "tokens": 81145,
           "sources": 77,
-          "clones": 22,
-          "duplicatedLines": 272,
-          "duplicatedTokens": 2570,
-          "percentage": 3.08,
-          "percentageTokens": 3.17,
+          "clones": 20,
+          "duplicatedLines": 241,
+          "duplicatedTokens": 2339,
+          "percentage": 2.73,
+          "percentageTokens": 2.88,
           "newDuplicatedLines": 0,
           "newClones": 0
         }
       }
     },
     "total": {
-      "lines": 27389,
-      "tokens": 249086,
+      "lines": 27387,
+      "tokens": 249073,
       "sources": 278,
-      "clones": 35,
-      "duplicatedLines": 458,
-      "duplicatedTokens": 4318,
-      "percentage": 1.67,
-      "percentageTokens": 1.73,
+      "clones": 33,
+      "duplicatedLines": 427,
+      "duplicatedTokens": 4087,
+      "percentage": 1.56,
+      "percentageTokens": 1.64,
       "newDuplicatedLines": 0,
       "newClones": 0
     }
@@ -4370,78 +4370,6 @@
           "line": 100,
           "column": 2,
           "position": 856
-        }
-      }
-    },
-    {
-      "format": "tsx",
-      "lines": 18,
-      "fragment": ";\r\n\r\n      render(<ErrorNotification />);\r\n\r\n      await act(async () => {\r\n        const error = new Error('详细错误信息');\r\n        window.dispatchEvent(\r\n          new CustomEvent('show-error-modal', {\r\n            detail: {\r\n              title: '错误标题',\r\n              message: '错误消息',\r\n              error: error,\r\n            },\r\n          })\r\n        );\r\n      });\r\n\r\n      expect(screen.queryByText",
-      "tokens": 0,
-      "firstFile": {
-        "name": "D:/jinsansan/frontend/src/components/common/__tests__/ErrorNotification.test.tsx",
-        "start": 156,
-        "end": 173,
-        "startLoc": {
-          "line": 156,
-          "column": 13,
-          "position": 1376
-        },
-        "endLoc": {
-          "line": 173,
-          "column": 12,
-          "position": 1502
-        }
-      },
-      "secondFile": {
-        "name": "D:/jinsansan/frontend/src/components/common/__tests__/ErrorNotification.test.tsx",
-        "start": 135,
-        "end": 152,
-        "startLoc": {
-          "line": 135,
-          "column": 14,
-          "position": 1204
-        },
-        "endLoc": {
-          "line": 152,
-          "column": 10,
-          "position": 1330
-        }
-      }
-    },
-    {
-      "format": "tsx",
-      "lines": 15,
-      "fragment": ", async () => {\r\n      render(<ErrorNotification />);\r\n\r\n      await act(async () => {\r\n        window.dispatchEvent(\r\n          new CustomEvent('show-error-modal', {\r\n            detail: {\r\n              title: '错误标题',\r\n              message: '错误消息',\r\n            },\r\n          })\r\n        );\r\n      });\r\n\r\n      const",
-      "tokens": 0,
-      "firstFile": {
-        "name": "D:/jinsansan/frontend/src/components/common/__tests__/ErrorNotification.test.tsx",
-        "start": 207,
-        "end": 221,
-        "startLoc": {
-          "line": 207,
-          "column": 16,
-          "position": 1849
-        },
-        "endLoc": {
-          "line": 221,
-          "column": 6,
-          "position": 1954
-        }
-      },
-      "secondFile": {
-        "name": "D:/jinsansan/frontend/src/components/common/__tests__/ErrorNotification.test.tsx",
-        "start": 116,
-        "end": 130,
-        "startLoc": {
-          "line": 116,
-          "column": 14,
-          "position": 1032
-        },
-        "endLoc": {
-          "line": 130,
-          "column": 7,
-          "position": 1137
         }
       }
     },
