@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import { type FC } from 'react';
 
-import type { AlertRule, AlertSeverity } from '@/infrastructure/monitoring/types';
+import type { AlertRule } from '@/infrastructure/monitoring/types';
 
 /** 告警规则列表组件的属性 */
 interface AlertRuleListProps {
@@ -29,13 +29,6 @@ interface AlertRuleListProps {
   /** 切换规则启用状态的回调函数 */
   onToggle: (ruleId: string, enabled: boolean) => void;
 }
-
-const severityColors: Record<AlertSeverity, 'default' | 'info' | 'warning' | 'error'> = {
-  info: 'info',
-  warning: 'warning',
-  error: 'error',
-  critical: 'error',
-};
 
 /**
  * 告警规则列表组件
@@ -72,23 +65,49 @@ export const AlertRuleList: FC<AlertRuleListProps> = ({ rules, onEdit, onDelete,
                 {rule.metric} {rule.condition.operator} {rule.condition.value}
               </TableCell>
               <TableCell>
-                <Chip label={rule.severity} size="small" color={severityColors[rule.severity]} />
+                <Chip
+                  size="small"
+                  color={rule.severity === 'warning' ? 'warning' : 'error'}
+                  label={rule.severity}
+                  role="status"
+                  aria-label={rule.severity}
+                />
               </TableCell>
               <TableCell>
                 {rule.notification.email?.length ? (
                   <Tooltip title={rule.notification.email.join(', ')}>
-                    <Chip label={`${rule.notification.email.length} 个接收人`} size="small" />
+                    <Chip
+                      size="small"
+                      label={`${rule.notification.email.length} 个接收人`}
+                      aria-label={rule.notification.email.join(', ')}
+                      role="status"
+                    />
                   </Tooltip>
                 ) : (
-                  '未设置'
+                  <Chip
+                    size="small"
+                    label="未设置"
+                    aria-label="未设置"
+                    role="status"
+                  />
                 )}
               </TableCell>
               <TableCell>
                 <Box sx={{ display: 'flex', gap: 1 }}>
-                  <IconButton size="small" onClick={() => onEdit(rule)} color="primary">
+                  <IconButton 
+                    size="small" 
+                    onClick={() => onEdit(rule)} 
+                    color="primary"
+                    aria-label="edit"
+                  >
                     <EditIcon fontSize="small" />
                   </IconButton>
-                  <IconButton size="small" onClick={() => onDelete(rule.id)} color="error">
+                  <IconButton 
+                    size="small" 
+                    onClick={() => onDelete(rule.id)} 
+                    color="error"
+                    aria-label="delete"
+                  >
                     <DeleteIcon fontSize="small" />
                   </IconButton>
                 </Box>

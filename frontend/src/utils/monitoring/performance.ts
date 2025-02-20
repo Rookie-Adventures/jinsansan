@@ -150,15 +150,12 @@ export class PerformanceMonitor {
     }
 
     this.reportingTimer = setInterval(() => {
-      const stats = this.getPerformanceStats();
-      
       if (this.enableReporting) {
-        this.logger.debug('Performance Report:', { stats });
-      }
-
-      // 只在生产环境发送到监控系统
-      if (process.env.NODE_ENV === 'production') {
-        void this.sendToMonitoringSystem(stats);
+        const stats = this.getPerformanceStats();
+        // 使用 void 操作符包装 Promise，并且不再抛出错误
+        void this.sendToMonitoringSystem(stats).catch(() => {
+          // 错误已经在 sendToMonitoringSystem 中被记录，这里不需要额外处理
+        });
       }
     }, this.reportingInterval);
   }
@@ -174,20 +171,31 @@ export class PerformanceMonitor {
   // 添加控制方法
   public setReporting(enable: boolean): void {
     this.enableReporting = enable;
+    if (enable) {
+      this.startReporting();
+    } else {
+      this.stopReporting();
+    }
   }
 
   // 发送数据到监控系统
-  private async sendToMonitoringSystem(stats: PerformanceStats): Promise<void> {
+  public async sendToMonitoringSystem(stats: PerformanceStats): Promise<void> {
     try {
-      await fetch('/api/monitoring/metrics', {
+      const response = await fetch('/api/monitoring/metrics', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(stats),
       });
+
+      if (!response.ok) {
+        throw new Error(`Failed to send metrics: ${response.statusText}`);
+      }
     } catch (error) {
-      this.logger.error('Failed to send metrics to monitoring system:', { error });
+      // 确保错误是 Error 类型
+      const errorToLog = error instanceof Error ? error : new Error(String(error));
+      this.logger.error('Failed to send metrics to monitoring system:', { error: errorToLog });
     }
   }
 

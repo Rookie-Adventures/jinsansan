@@ -7,7 +7,7 @@ type NumberValidationRule = yup.NumberSchema<number | undefined>;
 export const required = (message = '此字段为必填项'): ValidationRule => yup.string().required(message);
 
 export const email = (message = '请输入有效的邮箱地址'): ValidationRule =>
-  yup.string().email(message).required();
+  yup.string().matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, message).required();
 
 export const url = (message = '请输入有效的URL'): ValidationRule =>
   yup.string().url(message).required();
@@ -48,7 +48,10 @@ export const username = (
 export const confirmPassword = (ref: string, message = '两次输入的密码不一致'): ValidationRule =>
   yup
     .string()
-    .oneOf([yup.ref(ref)], message)
+    .test('confirmPassword', message, function(value) {
+      const refValue = this.options.context?.values?.[ref];
+      return value === refValue;
+    })
     .required();
 
 // 数字规则

@@ -22,7 +22,14 @@ export class NotificationManager {
 
   public showNotification(options: NotificationOptions): void {
     if (this.notificationHandler) {
-      this.notificationHandler(options);
+      try {
+        this.notificationHandler(options);
+      } catch (error) {
+        errorLogger.log(error instanceof Error ? error : new Error('Handler error'), {
+          level: 'error',
+          context: { options }
+        });
+      }
     } else {
       errorLogger.log(new Error('No notification handler set'), {
         level: 'warning',
