@@ -4,18 +4,18 @@ import { RouterProvider } from 'react-router-dom';
 
 import type { RootState } from '@/store';
 
-import ErrorBoundary from '@/components/ErrorBoundary';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ErrorNotification } from '@/components/ErrorNotification';
 import { router } from '@/router';
 import { clearError } from '@/store/slices/error';
 import { createTheme } from '@/theme';
 
-export const App = () => {
+export const App = (): JSX.Element => {
   const error = useSelector((state: RootState) => state.error.current);
   const isDarkMode = useSelector((state: RootState) => state.app.darkMode);
   const dispatch = useDispatch();
 
-  const handleErrorClose = () => {
+  const handleErrorClose = (): void => {
     dispatch(clearError());
   };
 

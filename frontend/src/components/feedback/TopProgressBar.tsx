@@ -2,6 +2,8 @@ import { LinearProgress, Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
 
+import type { FC } from 'react';
+
 const StyledProgressBar = styled(LinearProgress)(({ theme }) => ({
   position: 'fixed',
   top: 0,
@@ -19,7 +21,7 @@ interface TopProgressBarProps {
   progress?: number;
 }
 
-export const TopProgressBar = ({ loading = false, progress }: TopProgressBarProps) => {
+export const TopProgressBar: FC<TopProgressBarProps> = ({ loading = false, progress }) => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {

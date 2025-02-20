@@ -1,10 +1,23 @@
 import { LogData, LogLevel } from './types';
 
+/**
+ * 日志记录器类
+ * 实现单例模式，提供日志队列和自动刷新功能
+ */
 export class Logger {
   private static instance: Logger;
   private logQueue: Array<{ level: LogLevel; message: string; data?: LogData }> = [];
   private readonly MAX_QUEUE_SIZE = 100;
   private readonly FLUSH_INTERVAL = 5000; // 5秒
+
+  /* eslint-disable no-console */
+  private readonly logMethods = {
+    debug: (prefix: string, message: string, data?: LogData) => console.log(prefix, message, data),
+    info: (prefix: string, message: string, data?: LogData) => console.info(prefix, message, data),
+    warn: (prefix: string, message: string, data?: LogData) => console.warn(prefix, message, data),
+    error: (prefix: string, message: string, data?: LogData) => console.error(prefix, message, data),
+  };
+  /* eslint-enable no-console */
 
   private constructor() {
     this.startAutoFlush();
@@ -53,24 +66,13 @@ export class Logger {
       if (process.env.NODE_ENV === 'development') {
         logs.forEach(({ level, message, data }) => {
           const prefix = this.formatMessage(level);
-          switch (level) {
-            case 'debug':
-              console.log(prefix, message, data);
-              break;
-            case 'info':
-              console.info(prefix, message, data);
-              break;
-            case 'warn':
-              console.warn(prefix, message, data);
-              break;
-            case 'error':
-              console.error(prefix, message, data);
-              break;
-          }
+          this.logMethods[level](prefix, message, data);
         });
       }
     } catch (error) {
+      /* eslint-disable no-console */
       console.error('Failed to flush logs:', error);
+      /* eslint-enable no-console */
     }
   }
 
@@ -99,20 +101,7 @@ export class Logger {
     // 在测试环境下直接输出到控制台
     if (process.env.NODE_ENV === 'test') {
       const logData = typeof message === 'object' && message !== null ? message : data;
-      switch (level) {
-        case 'debug':
-          console.log(prefix, formattedMessage, logData);
-          break;
-        case 'info':
-          console.info(prefix, formattedMessage, logData);
-          break;
-        case 'warn':
-          console.warn(prefix, formattedMessage, logData);
-          break;
-        case 'error':
-          console.error(prefix, formattedMessage, logData);
-          break;
-      }
+      this.logMethods[level](prefix, formattedMessage, logData);
       return;
     }
 

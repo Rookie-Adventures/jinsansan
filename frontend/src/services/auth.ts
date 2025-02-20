@@ -1,6 +1,7 @@
 import { AxiosHeaders } from 'axios';
 
-import type { LoginFormData, RegisterFormData, User } from '@/types/auth';
+import type { LoginFormData, RegisterFormData } from '@/types/auth';
+import type { User } from '@/types/user';
 
 import request from '@/utils/request';
 
@@ -19,7 +20,7 @@ const defaultHeaders = new AxiosHeaders({
 });
 
 export const authApi = {
-  login: async (data: LoginFormData) => {
+  login: async (data: LoginFormData): Promise<LoginResponse> => {
     try {
       const response = await request<LoginResponse>({
         method: 'POST',
@@ -34,7 +35,7 @@ export const authApi = {
     }
   },
 
-  register: async (data: RegisterFormData) => {
+  register: async (data: RegisterFormData): Promise<LoginResponse> => {
     try {
       const response = await request<LoginResponse>({
         method: 'POST',
@@ -49,7 +50,7 @@ export const authApi = {
     }
   },
 
-  logout: async () => {
+  logout: async (): Promise<void> => {
     try {
       await request({
         method: 'POST',
@@ -62,7 +63,7 @@ export const authApi = {
     }
   },
 
-  getCurrentUser: async () => {
+  getCurrentUser: async (): Promise<User> => {
     try {
       const response = await request<User>({
         method: 'GET',

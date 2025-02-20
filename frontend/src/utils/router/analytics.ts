@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigationType } from 'react-router-dom';
 
+import { Logger } from '@/infrastructure/logging/Logger';
 import { errorLogger } from '@/utils/error/errorLogger';
 
 // 获取基础 URL
@@ -25,12 +26,14 @@ class RouterAnalytics {
   private lastPath: string | null = null;
   private lastTimestamp: number | null = null;
   private baseUrl: string;
+  private logger: Logger;
 
   private constructor() {
     this.baseUrl = getBaseUrl();
+    this.logger = Logger.getInstance();
     // 在开发环境下，不初始化分析服务
     if (import.meta.env.DEV) {
-      console.log('Analytics service is disabled in development mode');
+      this.logger.info('Analytics service is disabled in development mode');
       return;
     }
   }
@@ -102,7 +105,7 @@ class RouterAnalytics {
   public trackPageView(path: string): void {
     // 在开发环境下，只打印日志
     if (import.meta.env.DEV) {
-      console.log('Page view tracked:', path);
+      this.logger.info('Page view tracked:', { path });
       return;
     }
     // 实际的页面追踪代码...
@@ -117,8 +120,14 @@ export const useRouteAnalytics = (): void => {
 
   useEffect(() => {
     routerAnalytics.trackRoute(location.pathname, navigationType).catch(error => {
-      // 在这里我们可以选择忽略错误，因为它已经被 reportAnalytics 中的 errorLogger 记录了
-      console.debug('Route analytics tracking failed:', error);
+      // 错误已经被 reportAnalytics 中的 errorLogger 记录，这里只需要静默处理
+      errorLogger.log(error instanceof Error ? error : new Error('Route analytics tracking failed'), {
+        level: 'error',
+        context: {
+          path: location.pathname,
+          navigationType,
+        },
+      });
     });
   }, [location, navigationType]);
 };

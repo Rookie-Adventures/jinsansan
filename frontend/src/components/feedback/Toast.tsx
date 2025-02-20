@@ -1,14 +1,16 @@
 import { Alert, Snackbar } from '@mui/material';
 import { useCallback } from 'react';
 
+import type { FC } from 'react';
+
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { hideToast } from '@/store/slices/appSlice';
 
-export const Toast = () => {
+export const Toast: FC = () => {
   const dispatch = useAppDispatch();
   const { open, message, severity } = useAppSelector(state => state.app.toast);
 
-  const handleClose = useCallback(() => {
+  const handleClose = useCallback((): void => {
     dispatch(hideToast());
   }, [dispatch]);
 

@@ -1,7 +1,6 @@
 import '@testing-library/jest-dom';
-import { cleanup } from '@testing-library/react';
 import { setupServer } from 'msw/node';
-import { afterAll, afterEach, beforeAll, beforeEach, Mock, vi } from 'vitest';
+import { afterAll, afterEach, beforeAll, beforeEach, vi } from 'vitest';
 
 import { handlers } from '../mocks/handlers';
 
@@ -25,12 +24,12 @@ vi.mock('react-router-dom', async () => {
 
 // Mock localStorage
 interface MockStorage {
-  [key: string]: any;
-  getItem: Mock;
-  setItem: Mock;
-  removeItem: Mock;
-  clear: Mock;
-  key: Mock;
+  [key: string]: ReturnType<typeof vi.fn> | string | number | (() => Generator<[string, unknown], void, unknown>);
+  getItem: ReturnType<typeof vi.fn>;
+  setItem: ReturnType<typeof vi.fn>;
+  removeItem: ReturnType<typeof vi.fn>;
+  clear: ReturnType<typeof vi.fn>;
+  key: ReturnType<typeof vi.fn>;
   length: number;
 }
 
@@ -102,7 +101,6 @@ beforeEach(() => {
 
 // 每个测试后清理
 afterEach(() => {
-  cleanup();
   server.resetHandlers();
 });
 

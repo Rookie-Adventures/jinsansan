@@ -47,7 +47,11 @@ export type CustomTheme = BaseTheme & {
         root?: Partial<CSSObject>;
       };
     };
-    [key: string]: any;
+    [key: string]: {
+      styleOverrides?: {
+        root?: Partial<CSSObject>;
+      };
+    } | undefined;
   };
 };
 

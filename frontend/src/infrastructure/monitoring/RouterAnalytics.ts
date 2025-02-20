@@ -1,3 +1,5 @@
+import { Logger } from '../logging/Logger';
+
 import { PerformanceMonitor } from './PerformanceMonitor';
 
 export interface IRouteAnalytics {
@@ -14,6 +16,7 @@ export class RouterAnalytics {
   private lastPath?: string;
   private lastTimestamp?: number;
   private performanceMonitor: PerformanceMonitor;
+  private logger: Logger;
   private routeStats: Record<string, number> = {};
   private routeDurations: Record<string, number[]> = {};
 
@@ -43,6 +46,7 @@ export class RouterAnalytics {
 
   private constructor() {
     this.performanceMonitor = PerformanceMonitor.getInstance();
+    this.logger = Logger.getInstance();
   }
 
   public static getInstance(): RouterAnalytics {
@@ -154,7 +158,7 @@ export class RouterAnalytics {
     this.activeTransition = true;
 
     // 记录路由转换的起点和终点
-    console.debug(`Route transition: ${fromPath} -> ${toPath}`);
+    this.logger.debug(`Route transition: ${fromPath} -> ${toPath}`);
 
     // 开始记录帧率
     const recordFrame = () => {
@@ -276,19 +280,25 @@ export class RouterAnalytics {
   }
 
   public async trackPreloadError(path: string, error: Error): Promise<void> {
+    const request = this.preloadRequests.get(path);
+    if (!request) return;
+
+    const duration = Date.now() - request.startTime;
+    this.performanceMonitor.trackCustomMetric('route_preload_error_duration', duration);
     this.preloadStats.failureCount++;
 
-    // 记录预加载错误
-    this.performanceMonitor.trackCustomMetric('route_preload_error', 1);
-    this.performanceMonitor.trackCustomMetric(
-      'route_preload_error_count',
-      this.preloadStats.failureCount
-    );
+    // 记录错误计数
+    this.performanceMonitor.trackCustomMetric('route_preload_error_count', 1);
 
-    // 记录错误详情
-    console.error(`Route preload error for path ${path}:`, error.message);
+    // 记录错误信息
+    this.logger.error('Route preload failed', {
+      path,
+      duration,
+      error: error.message,
+      stack: error.stack,
+    });
 
-    // 更新活动预加载计数
+    // 更新活跃预加载计数
     const activeCount = this.activePreloads.get(path) || 0;
     if (activeCount > 0) {
       this.activePreloads.set(path, activeCount - 1);
