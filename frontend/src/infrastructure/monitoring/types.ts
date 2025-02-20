@@ -7,7 +7,8 @@ export enum MetricType {
   INTERACTION = 'interaction',
   PAGE_LOAD = 'page_load',
   CUSTOM = 'custom',
-  API_CALL = 'api_call'
+  API_CALL = 'api_call',
+  CPU_USAGE = 'cpu_usage'
 }
 
 /**
@@ -19,11 +20,30 @@ export type MetricTags = Record<string, string | number | boolean | null>;
  * 指标数据联合类型
  */
 export interface MetricData {
+  /** 指标名称 */
   name?: string;
+  /** 指标值 */
   value?: number;
+  /** 持续时间 */
   duration?: number;
+  /** 开始时间 */
   startTime?: number;
+  /** 标签 */
   tags?: MetricTags;
+  /** API地址 */
+  url?: string;
+  /** 是否成功 */
+  success?: boolean;
+  /** DOM完成时间 */
+  domComplete?: number;
+  /** 页面加载完成时间 */
+  loadEventEnd?: number;
+  /** DOM可交互时间 */
+  domInteractive?: number;
+  /** DOM内容加载完成时间 */
+  domContentLoadedEventEnd?: number;
+  /** 资源类型 */
+  initiatorType?: string;
 }
 
 /**

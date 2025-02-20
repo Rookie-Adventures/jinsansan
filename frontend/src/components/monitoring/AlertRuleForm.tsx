@@ -19,10 +19,11 @@ import type {
   AlertRule,
   AlertRuleType,
   AlertSeverity,
-  MetricType,
 } from '@/infrastructure/monitoring/types';
 import type { ChangeEvent, FC, FormEvent } from 'react';
 
+
+import { MetricType } from '@/infrastructure/monitoring/types';
 import { sanitizeInput } from '@/utils/security';
 
 // 创建带有测试ID的自定义组件
@@ -45,15 +46,15 @@ interface AlertRuleFormProps {
   onCancel: () => void;
 }
 
-const METRIC_TYPES: MetricType[] = [
-  'page_load',
-  'resource',
-  'long_task',
-  'interaction',
-  'custom',
-  'api_call',
-  'cpu_usage',
-];
+const METRIC_TYPES = [
+  MetricType.PAGE_LOAD,
+  MetricType.RESOURCE,
+  MetricType.LONG_TASK,
+  MetricType.INTERACTION,
+  MetricType.CUSTOM,
+  MetricType.API_CALL,
+  MetricType.CPU_USAGE
+] as const;
 
 const RULE_TYPES: AlertRuleType[] = ['threshold', 'trend', 'anomaly'];
 const SEVERITIES: AlertSeverity[] = ['info', 'warning', 'error', 'critical'];

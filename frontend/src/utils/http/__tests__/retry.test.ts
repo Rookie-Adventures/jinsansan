@@ -42,6 +42,15 @@ const executeRetryTest = async (
   return { promise, fn, expectedCalls };
 };
 
+const executeRetryFunctionTest = async (
+  fn: Mock,
+  options: { retries: number; delay: number } = { retries: 3, delay: 1000 }
+) => {
+  const promise = retryFunction(fn, options);
+  await vi.runAllTimersAsync();
+  return promise;
+};
+
 describe('retry', () => {
   beforeEach(() => {
     vi.useFakeTimers();
@@ -241,3 +250,67 @@ describe('retry', () => {
     });
   });
 });
+
+describe('retryFunction', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.clearAllTimers();
+    vi.useRealTimers();
+  });
+
+  test('应该在达到最大重试次数后抛出最后一次的错误', async () => {
+    const failingFunction = vi.fn().mockRejectedValue(new Error('fail3'));
+    await expect(executeRetryFunctionTest(failingFunction)).rejects.toThrow('fail3');
+    expect(failingFunction).toHaveBeenCalledTimes(3);
+  });
+
+  test('应该在成功时立即返回结果', async () => {
+    const successFunction = vi.fn().mockResolvedValue('success');
+    const result = await executeRetryFunctionTest(successFunction);
+    expect(result).toBe('success');
+    expect(successFunction).toHaveBeenCalledTimes(1);
+  });
+
+  test('应该遵守延迟时间', async () => {
+    const failingFunction = vi.fn()
+      .mockRejectedValueOnce(new Error('fail1'))
+      .mockRejectedValueOnce(new Error('fail2'))
+      .mockResolvedValue('success');
+
+    const promise = retryFunction(failingFunction, { retries: 3, delay: 1000 });
+    expect(failingFunction).toHaveBeenCalledTimes(1);
+    
+    await vi.advanceTimersByTimeAsync(1000);
+    expect(failingFunction).toHaveBeenCalledTimes(2);
+    
+    await vi.advanceTimersByTimeAsync(1000);
+    expect(failingFunction).toHaveBeenCalledTimes(3);
+    
+    const result = await promise;
+    expect(result).toBe('success');
+  });
+});
+
+// 简单的重试函数实现
+async function retryFunction<T>(fn: () => Promise<T> | T, options = { retries: 3, delay: 1000 }): Promise<T> {
+  let lastError: Error | undefined;
+  
+  for (let i = 0; i < options.retries; i++) {
+    try {
+      return await fn();
+    } catch (error) {
+      lastError = error as Error;
+      if (i < options.retries - 1) {
+        await new Promise(resolve => setTimeout(resolve, options.delay));
+      }
+    }
+  }
+  
+  if (!lastError) {
+    throw new Error('Unexpected: No error occurred but retry failed');
+  }
+  throw lastError;
+}

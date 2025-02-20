@@ -1,9 +1,10 @@
 import { Grid, Card, CardContent, Typography, Box } from '@mui/material';
 import { type FC, useState, useEffect } from 'react';
 
-import type { PerformanceMetric, MetricData, MetricType } from '@/infrastructure/monitoring/types';
+import type { PerformanceMetric, MetricData } from '@/infrastructure/monitoring/types';
 
 import { PerformanceMonitor } from '@/infrastructure/monitoring/PerformanceMonitor';
+import { MetricType } from '@/infrastructure/monitoring/types';
 
 export const MetricsDisplay: FC = () => {
   const [metrics, setMetrics] = useState<PerformanceMetric[]>([]);
@@ -40,18 +41,18 @@ export const MetricsDisplay: FC = () => {
   };
 
   const getMetricName = (type: MetricType, data: MetricData): string => {
-    if ('url' in data) {
+    if ('url' in data && data.url) {
       return data.url;
     }
-    if ('name' in data) {
+    if ('name' in data && data.name) {
       return data.name;
     }
     switch (type) {
-      case 'page_load':
+      case MetricType.PAGE_LOAD:
         return 'Page Load Time';
-      case 'long_task':
+      case MetricType.LONG_TASK:
         return 'Long Task Duration';
-      case 'cpu_usage':
+      case MetricType.CPU_USAGE:
         return 'CPU Usage';
       default:
         return type;
@@ -59,10 +60,10 @@ export const MetricsDisplay: FC = () => {
   };
 
   const getMetricColor = (data: MetricData): string => {
-    if ('duration' in data && data.duration > 1000) {
+    if ('duration' in data && typeof data.duration === 'number' && data.duration > 1000) {
       return '#f44336'; // Red for slow performance
     }
-    if ('value' in data && data.value > 80) {
+    if ('value' in data && typeof data.value === 'number' && data.value > 80) {
       return '#f44336'; // Red for high values
     }
     return '#4caf50'; // Green for good performance

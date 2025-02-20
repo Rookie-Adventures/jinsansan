@@ -183,7 +183,7 @@ describe('PerformanceMonitor', () => {
       expectedData: {
         name: 'test.js',
         duration: 100,
-        type: 'script',
+        initiatorType: 'script',
       },
     },
     {

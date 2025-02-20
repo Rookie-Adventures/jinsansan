@@ -1,5 +1,7 @@
 import type { User } from './user';
 
+export type { User };
+
 export interface LoginFormData {
   username: string;
   password: string;

@@ -29,11 +29,11 @@ export interface SearchService {
 export class SearchServiceImpl implements SearchService {
   async search<T>(params: SearchParams): Promise<SearchResult<T>> {
     const response = await http.get('/api/search', { params });
-    return response.data;
+    return response.data as SearchResult<T>;
   }
 
   async advancedSearch<T>(params: SearchParams): Promise<SearchResult<T>> {
     const response = await http.get('/api/search/advanced', { params });
-    return response.data;
+    return response.data as SearchResult<T>;
   }
 }

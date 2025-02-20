@@ -1,6 +1,6 @@
 import { errorLogger } from '../../utils/errorLogger';
 
-import { PerformanceMetric } from './types';
+import { MetricType, type PerformanceMetric } from './types';
 
 export class PerformanceMonitor {
   private static instance: PerformanceMonitor;
@@ -42,7 +42,7 @@ export class PerformanceMonitor {
       }
 
       this.metrics.push({
-        type: 'custom',
+        type: MetricType.CUSTOM,
         timestamp: Date.now(),
         data: {
           name,
@@ -60,7 +60,7 @@ export class PerformanceMonitor {
     const navigationStart = timing.navigationStart;
 
     this.metrics.push({
-      type: 'page_load',
+      type: MetricType.PAGE_LOAD,
       timestamp: Date.now(),
       data: {
         domComplete: timing.domComplete - navigationStart,
@@ -76,12 +76,12 @@ export class PerformanceMonitor {
       const entries = list.getEntries() as PerformanceResourceTiming[];
       entries.forEach(entry => {
         this.metrics.push({
-          type: 'resource',
+          type: MetricType.RESOURCE,
           timestamp: Date.now(),
           data: {
             name: entry.name,
             duration: entry.duration,
-            type: entry.initiatorType,
+            initiatorType: entry.initiatorType,
           },
         });
       });
@@ -95,7 +95,7 @@ export class PerformanceMonitor {
       const entries = list.getEntries();
       entries.forEach(entry => {
         this.metrics.push({
-          type: 'long_task',
+          type: MetricType.LONG_TASK,
           timestamp: Date.now(),
           data: {
             duration: entry.duration,
@@ -113,7 +113,7 @@ export class PerformanceMonitor {
       const entries = list.getEntries();
       entries.forEach(entry => {
         this.metrics.push({
-          type: 'interaction',
+          type: MetricType.INTERACTION,
           timestamp: Date.now(),
           data: {
             name: entry.name,
@@ -137,7 +137,7 @@ export class PerformanceMonitor {
       }
 
       this.metrics.push({
-        type: 'custom',
+        type: MetricType.CUSTOM,
         timestamp: Date.now(),
         data: {
           name,
@@ -153,7 +153,7 @@ export class PerformanceMonitor {
 
   public trackApiCall(url: string, duration: number, success: boolean): void {
     this.metrics.push({
-      type: 'api_call',
+      type: MetricType.API_CALL,
       timestamp: Date.now(),
       data: {
         url,

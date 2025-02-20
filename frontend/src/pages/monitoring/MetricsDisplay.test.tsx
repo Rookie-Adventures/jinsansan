@@ -9,6 +9,8 @@ import type {
 } from '@/infrastructure/monitoring/types';
 
 import { PerformanceMonitor } from '@/infrastructure/monitoring/PerformanceMonitor';
+import { MetricType } from '@/infrastructure/monitoring/types';
+
 
 import { MetricsDisplay } from './MetricsDisplay';
 
@@ -18,7 +20,7 @@ vi.mock('@/infrastructure/monitoring/PerformanceMonitor');
 describe('MetricsDisplay', () => {
   const mockMetrics: PerformanceMetric[] = [
     {
-      type: 'page_load',
+      type: MetricType.PAGE_LOAD,
       timestamp: Date.now(),
       data: {
         domComplete: 1200,
@@ -28,7 +30,7 @@ describe('MetricsDisplay', () => {
       } as PageLoadMetrics,
     },
     {
-      type: 'custom',
+      type: MetricType.CUSTOM,
       timestamp: Date.now(),
       data: {
         name: 'Memory Usage',
@@ -37,7 +39,7 @@ describe('MetricsDisplay', () => {
       } as CustomMetrics,
     },
     {
-      type: 'api_call',
+      type: MetricType.API_CALL,
       timestamp: Date.now(),
       data: {
         url: '/api/data',
