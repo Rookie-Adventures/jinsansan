@@ -103,11 +103,16 @@ export class FileManager {
   }
 
   /**
-   * 读取文件内容
+   * 通用文件读取方法
    * @param file 要读取的文件
-   * @throws {FileError} 当文件读取失败时抛出
+   * @param operation 操作类型
+   * @param readMethod 读取方法名称
    */
-  public readFileContent(file: File): Promise<string> {
+  private readFile(
+    file: File,
+    operation: 'FILE_READ' | 'BASE64_CONVERSION',
+    readMethod: 'readAsText' | 'readAsDataURL'
+  ): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
 
@@ -115,10 +120,19 @@ export class FileManager {
         resolve(reader.result as string);
       };
 
-      reader.onerror = this.createFileReaderErrorHandler('FILE_READ', file, reject, this.logger);
+      reader.onerror = this.createFileReaderErrorHandler(operation, file, reject, this.logger);
 
-      reader.readAsText(file);
+      reader[readMethod](file);
     });
+  }
+
+  /**
+   * 读取文件内容
+   * @param file 要读取的文件
+   * @throws {FileError} 当文件读取失败时抛出
+   */
+  public readFileContent(file: File): Promise<string> {
+    return this.readFile(file, 'FILE_READ', 'readAsText');
   }
 
   /**
@@ -180,17 +194,7 @@ export class FileManager {
    * @throws {FileError} 当转换失败时抛出
    */
   public convertToBase64(file: File): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        resolve(reader.result as string);
-      };
-
-      reader.onerror = this.createFileReaderErrorHandler('BASE64_CONVERSION', file, reject, this.logger);
-
-      reader.readAsDataURL(file);
-    });
+    return this.readFile(file, 'BASE64_CONVERSION', 'readAsDataURL');
   }
 
   /**

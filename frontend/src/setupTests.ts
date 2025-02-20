@@ -1,6 +1,8 @@
 import '@testing-library/jest-dom';
 import { expect, vi } from 'vitest';
 
+import { mockAllBrowserApis } from './test/utils/mockBrowserApis';
+
 // 扩展 Vitest 的匹配器
 expect.extend({
   toHaveBeenCalledExactlyOnceWith(received: ReturnType<typeof vi.fn>, ...expectedArgs: unknown[]) {
@@ -39,6 +41,12 @@ process.env.VITE_API_URL = 'http://localhost:3000';
 
 // 设置全局的测试超时时间
 vi.setConfig({ testTimeout: 10000 });
+
+// 在所有测试开始前设置
+beforeAll(() => {
+  // 模拟所有浏览器 API
+  mockAllBrowserApis();
+});
 
 // Reset mocks before each test
 beforeEach(() => {

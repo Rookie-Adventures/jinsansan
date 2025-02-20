@@ -3,6 +3,7 @@ import { setupServer } from 'msw/node';
 import { afterAll, afterEach, beforeAll, beforeEach, vi } from 'vitest';
 
 import { handlers } from '../mocks/handlers';
+import { mockAllBrowserApis } from '../test/utils/mockBrowserApis';
 
 // MSW 服务器设置
 export const server = setupServer(...handlers);
@@ -55,7 +56,7 @@ beforeAll(() => {
   // 启动 MSW
   server.listen({ onUnhandledRequest: 'error' });
 
-  // Mock window 对象
+  // 设置 localStorage mock
   Object.defineProperty(window, 'localStorage', {
     value: localStorageMock,
     writable: true,
@@ -63,20 +64,8 @@ beforeAll(() => {
 
   global.fetch = fetchMock;
 
-  // Mock window.matchMedia
-  Object.defineProperty(window, 'matchMedia', {
-    writable: true,
-    value: vi.fn().mockImplementation(query => ({
-      matches: false,
-      media: query,
-      onchange: null,
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-      dispatchEvent: vi.fn(),
-    })),
-  });
+  // 模拟所有浏览器 API
+  mockAllBrowserApis();
 
   // 设置 fake timers
   vi.useFakeTimers();

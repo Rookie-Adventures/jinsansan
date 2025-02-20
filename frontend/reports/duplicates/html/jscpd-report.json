@@ -1,6 +1,6 @@
 {
   "statistics": {
-    "detectionDate": "2025-02-20T10:26:30.390Z",
+    "detectionDate": "2025-02-20T10:56:50.983Z",
     "formats": {
       "typescript": {
         "sources": {
@@ -868,6 +868,18 @@
             "newDuplicatedLines": 0,
             "newClones": 0
           },
+          "D:/jinsansan/frontend/src/test/utils/mockBrowserApis.ts": {
+            "lines": 54,
+            "tokens": 463,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 14,
+            "duplicatedTokens": 139,
+            "percentage": 25.93,
+            "percentageTokens": 30.02,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
           "D:/jinsansan/frontend/src/test/mocks/server.ts": {
             "lines": 11,
             "tokens": 129,
@@ -965,14 +977,14 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/store/middleware/logger.ts": {
-            "lines": 105,
-            "tokens": 882,
+            "lines": 103,
+            "tokens": 838,
             "sources": 1,
-            "clones": 2,
-            "duplicatedLines": 18,
-            "duplicatedTokens": 178,
-            "percentage": 17.14,
-            "percentageTokens": 20.18,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -1205,14 +1217,14 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/infrastructure/file/FileManager.ts": {
-            "lines": 220,
-            "tokens": 1666,
+            "lines": 229,
+            "tokens": 1688,
             "sources": 1,
-            "clones": 2,
-            "duplicatedLines": 20,
-            "duplicatedTokens": 240,
-            "percentage": 9.09,
-            "percentageTokens": 14.41,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -1553,26 +1565,26 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/tests/setup.ts": {
-            "lines": 112,
-            "tokens": 1007,
+            "lines": 101,
+            "tokens": 889,
             "sources": 1,
-            "clones": 2,
-            "duplicatedLines": 28,
-            "duplicatedTokens": 278,
-            "percentage": 25,
-            "percentageTokens": 27.61,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/test/setup.ts": {
-            "lines": 110,
-            "tokens": 937,
+            "lines": 82,
+            "tokens": 636,
             "sources": 1,
-            "clones": 1,
-            "duplicatedLines": 14,
-            "duplicatedTokens": 139,
-            "percentage": 12.73,
-            "percentageTokens": 14.83,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -1686,14 +1698,14 @@
           }
         },
         "total": {
-          "lines": 16488,
-          "tokens": 149858,
-          "sources": 140,
-          "clones": 17,
-          "duplicatedLines": 233,
-          "duplicatedTokens": 2235,
-          "percentage": 1.41,
-          "percentageTokens": 1.49,
+          "lines": 16510,
+          "tokens": 149880,
+          "sources": 141,
+          "clones": 14,
+          "duplicatedLines": 200,
+          "duplicatedTokens": 1887,
+          "percentage": 1.21,
+          "percentageTokens": 1.26,
           "newDuplicatedLines": 0,
           "newClones": 0
         }
@@ -3012,27 +3024,39 @@
             "newDuplicatedLines": 0,
             "newClones": 0
           },
-          "D:/jinsansan/frontend/src/pages/auth/RegisterPage.tsx": {
-            "lines": 32,
-            "tokens": 245,
+          "D:/jinsansan/frontend/src/pages/auth/withAuthRedirect.tsx": {
+            "lines": 27,
+            "tokens": 252,
             "sources": 1,
-            "clones": 1,
-            "duplicatedLines": 11,
-            "duplicatedTokens": 104,
-            "percentage": 34.38,
-            "percentageTokens": 42.45,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/pages/auth/RegisterPage.tsx": {
+            "lines": 23,
+            "tokens": 152,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/pages/auth/LoginPage.tsx": {
-            "lines": 24,
-            "tokens": 233,
+            "lines": 15,
+            "tokens": 139,
             "sources": 1,
-            "clones": 1,
-            "duplicatedLines": 11,
-            "duplicatedTokens": 104,
-            "percentage": 45.83,
-            "percentageTokens": 44.64,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -3350,28 +3374,28 @@
           }
         },
         "total": {
-          "lines": 8811,
-          "tokens": 81133,
-          "sources": 76,
-          "clones": 23,
-          "duplicatedLines": 283,
-          "duplicatedTokens": 2674,
-          "percentage": 3.21,
-          "percentageTokens": 3.3,
+          "lines": 8820,
+          "tokens": 81198,
+          "sources": 77,
+          "clones": 22,
+          "duplicatedLines": 272,
+          "duplicatedTokens": 2570,
+          "percentage": 3.08,
+          "percentageTokens": 3.17,
           "newDuplicatedLines": 0,
           "newClones": 0
         }
       }
     },
     "total": {
-      "lines": 27345,
-      "tokens": 249045,
-      "sources": 276,
-      "clones": 40,
-      "duplicatedLines": 516,
-      "duplicatedTokens": 4909,
-      "percentage": 1.89,
-      "percentageTokens": 1.97,
+      "lines": 27376,
+      "tokens": 249132,
+      "sources": 278,
+      "clones": 36,
+      "duplicatedLines": 472,
+      "duplicatedTokens": 4457,
+      "percentage": 1.72,
+      "percentageTokens": 1.79,
       "newDuplicatedLines": 0,
       "newClones": 0
     }
@@ -4639,150 +4663,6 @@
     },
     {
       "format": "typescript",
-      "lines": 10,
-      "fragment": "const endTime = performance.now();\r\n    const duration = endTime - startTime;\r\n\r\n    if (duration > EXECUTION_TIME_THRESHOLD) {\r\n      console.warn(`Warning: Action execution time exceeded ${EXECUTION_TIME_THRESHOLD}ms`);\r\n    }\r\n\r\n    console.info(`Action execution time: ${duration.toFixed(2)}ms`);\r\n\r\n    return result",
-      "tokens": 0,
-      "firstFile": {
-        "name": "D:/jinsansan/frontend/src/store/middleware/logger.ts",
-        "start": 92,
-        "end": 101,
-        "startLoc": {
-          "line": 92,
-          "column": 5,
-          "position": 752
-        },
-        "endLoc": {
-          "line": 101,
-          "column": 7,
-          "position": 841
-        }
-      },
-      "secondFile": {
-        "name": "D:/jinsansan/frontend/src/store/middleware/logger.ts",
-        "start": 54,
-        "end": 65,
-        "startLoc": {
-          "line": 54,
-          "column": 15,
-          "position": 465
-        },
-        "endLoc": {
-          "line": 65,
-          "column": 6,
-          "position": 560
-        }
-      }
-    },
-    {
-      "format": "tsx",
-      "lines": 12,
-      "fragment": ": FC = () => {\r\n  const navigate = useNavigate();\r\n  const { isAuthenticated } = useAuth();\r\n\r\n  useEffect(() => {\r\n    if (isAuthenticated) {\r\n      navigate('/');\r\n    }\r\n  }, [isAuthenticated, navigate]);\r\n\r\n  return (\r\n    <AuthPage ",
-      "tokens": 0,
-      "firstFile": {
-        "name": "D:/jinsansan/frontend/src/pages/auth/LoginPage.tsx",
-        "start": 8,
-        "end": 19,
-        "startLoc": {
-          "line": 8,
-          "column": 10,
-          "position": 74
-        },
-        "endLoc": {
-          "line": 19,
-          "column": 2,
-          "position": 178
-        }
-      },
-      "secondFile": {
-        "name": "D:/jinsansan/frontend/src/pages/auth/RegisterPage.tsx",
-        "start": 8,
-        "end": 20,
-        "startLoc": {
-          "line": 8,
-          "column": 13,
-          "position": 74
-        },
-        "endLoc": {
-          "line": 20,
-          "column": 7,
-          "position": 178
-        }
-      }
-    },
-    {
-      "format": "typescript",
-      "lines": 11,
-      "fragment": "(file: File): Promise<string> {\r\n    return new Promise((resolve, reject) => {\r\n      const reader = new FileReader();\r\n\r\n      reader.onload = () => {\r\n        resolve(reader.result as string);\r\n      };\r\n\r\n      reader.onerror = () => {\r\n        const error: FileError = {\r\n          code: 'BASE64_CONVERSION_ERROR'",
-      "tokens": 0,
-      "firstFile": {
-        "name": "D:/jinsansan/frontend/src/infrastructure/file/FileManager.ts",
-        "start": 166,
-        "end": 176,
-        "startLoc": {
-          "line": 166,
-          "column": 16,
-          "position": 1149
-        },
-        "endLoc": {
-          "line": 176,
-          "column": 26,
-          "position": 1269
-        }
-      },
-      "secondFile": {
-        "name": "D:/jinsansan/frontend/src/infrastructure/file/FileManager.ts",
-        "start": 83,
-        "end": 93,
-        "startLoc": {
-          "line": 83,
-          "column": 16,
-          "position": 567
-        },
-        "endLoc": {
-          "line": 93,
-          "column": 18,
-          "position": 687
-        }
-      }
-    },
-    {
-      "format": "typescript",
-      "lines": 15,
-      "fragment": "Object.defineProperty(window, 'matchMedia', {\r\n  writable: true,\r\n  value: vi.fn().mockImplementation(query => ({\r\n    matches: false,\r\n    media: query,\r\n    onchange: null,\r\n    addListener: vi.fn(),\r\n    removeListener: vi.fn(),\r\n    addEventListener: vi.fn(),\r\n    removeEventListener: vi.fn(),\r\n    dispatchEvent: vi.fn(),\r\n  })),\r\n});\r\n\r\n// 模拟 ResizeObserver",
-      "tokens": 0,
-      "firstFile": {
-        "name": "D:/jinsansan/frontend/src/test/setup.ts",
-        "start": 49,
-        "end": 63,
-        "startLoc": {
-          "line": 49,
-          "column": 1,
-          "position": 351
-        },
-        "endLoc": {
-          "line": 63,
-          "column": 21,
-          "position": 490
-        }
-      },
-      "secondFile": {
-        "name": "D:/jinsansan/frontend/src/tests/setup.ts",
-        "start": 67,
-        "end": 81,
-        "startLoc": {
-          "line": 67,
-          "column": 3,
-          "position": 623
-        },
-        "endLoc": {
-          "line": 81,
-          "column": 18,
-          "position": 764
-        }
-      }
-    },
-    {
-      "format": "typescript",
       "lines": 15,
       "fragment": "Object.defineProperty(window, 'matchMedia', {\r\n  writable: true,\r\n  value: vi.fn().mockImplementation(query => ({\r\n    matches: false,\r\n    media: query,\r\n    onchange: null,\r\n    addListener: vi.fn(),\r\n    removeListener: vi.fn(),\r\n    addEventListener: vi.fn(),\r\n    removeEventListener: vi.fn(),\r\n    dispatchEvent: vi.fn(),\r\n  })),\r\n});\r\n\r\n// Mock fetch API",
       "tokens": 0,
@@ -4802,18 +4682,18 @@
         }
       },
       "secondFile": {
-        "name": "D:/jinsansan/frontend/src/tests/setup.ts",
-        "start": 67,
-        "end": 81,
+        "name": "D:/jinsansan/frontend/src/test/utils/mockBrowserApis.ts",
+        "start": 7,
+        "end": 20,
         "startLoc": {
-          "line": 67,
+          "line": 7,
           "column": 3,
-          "position": 623
+          "position": 39
         },
         "endLoc": {
-          "line": 81,
-          "column": 18,
-          "position": 764
+          "line": 20,
+          "column": 2,
+          "position": 177
         }
       }
     }
