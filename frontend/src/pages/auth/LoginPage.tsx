@@ -1,20 +1,11 @@
-import { type FC, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { type FC } from 'react';
 
 import AuthPage from '@/components/auth/AuthPage';
 import LoginForm from '@/components/auth/LoginForm';
-import { useAuth } from '@/hooks/auth';
+
+import { withAuthRedirect } from './withAuthRedirect';
 
 const LoginPage: FC = () => {
-  const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/');
-    }
-  }, [isAuthenticated, navigate]);
-
   return (
     <AuthPage type="login" initialData={{ username: '', password: '' }}>
       <LoginForm />
@@ -22,4 +13,4 @@ const LoginPage: FC = () => {
   );
 };
 
-export default LoginPage;
+export default withAuthRedirect(LoginPage);

@@ -10,6 +10,33 @@ export class FileManager {
   }
 
   /**
+   * 创建文件读取错误处理器
+   * @param operation 操作名称
+   * @param file 相关文件
+   * @param reject Promise 的 reject 函数
+   * @param logger 日志记录器
+   */
+  private createFileReaderErrorHandler(
+    operation: 'FILE_READ' | 'BASE64_CONVERSION',
+    file: File,
+    reject: (reason?: FileError) => void,
+    logger: Logger
+  ): (this: FileReader, ev: ProgressEvent<FileReader>) => void {
+    return function(this: FileReader) {
+      const error: FileError = {
+        code: `${operation}_ERROR`,
+        message: operation === 'FILE_READ' ? '文件读取失败' : '转换Base64失败',
+        originalError: this.error as Error,
+      };
+      logger.error(error.message, {
+        fileName: file.name,
+        error: this.error,
+      });
+      reject(error);
+    };
+  }
+
+  /**
    * 验证文件大小
    * @param file 要验证的文件
    * @param maxSize 最大允许大小（字节）
@@ -81,25 +108,14 @@ export class FileManager {
    * @throws {FileError} 当文件读取失败时抛出
    */
   public readFileContent(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
+    return new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
 
       reader.onload = () => {
         resolve(reader.result as string);
       };
 
-      reader.onerror = () => {
-        const error: FileError = {
-          code: 'FILE_READ_ERROR',
-          message: '文件读取失败',
-          originalError: reader.error as Error,
-        };
-        this.logger.error(error.message, {
-          fileName: file.name,
-          error: reader.error,
-        });
-        reject(error);
-      };
+      reader.onerror = this.createFileReaderErrorHandler('FILE_READ', file, reject, this.logger);
 
       reader.readAsText(file);
     });
@@ -164,25 +180,14 @@ export class FileManager {
    * @throws {FileError} 当转换失败时抛出
    */
   public convertToBase64(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
+    return new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
 
       reader.onload = () => {
         resolve(reader.result as string);
       };
 
-      reader.onerror = () => {
-        const error: FileError = {
-          code: 'BASE64_CONVERSION_ERROR',
-          message: '转换Base64失败',
-          originalError: reader.error as Error,
-        };
-        this.logger.error(error.message, {
-          fileName: file.name,
-          error: reader.error,
-        });
-        reject(error);
-      };
+      reader.onerror = this.createFileReaderErrorHandler('BASE64_CONVERSION', file, reject, this.logger);
 
       reader.readAsDataURL(file);
     });

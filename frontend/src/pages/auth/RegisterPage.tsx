@@ -1,20 +1,11 @@
-import { type FC, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { type FC } from 'react';
 
 import AuthPage from '@/components/auth/AuthPage';
 import RegisterForm from '@/components/auth/RegisterForm';
-import { useAuth } from '@/hooks/auth';
+
+import { withAuthRedirect } from './withAuthRedirect';
 
 const RegisterPage: FC = () => {
-  const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/');
-    }
-  }, [isAuthenticated, navigate]);
-
   return (
     <AuthPage
       type="register"
@@ -30,4 +21,4 @@ const RegisterPage: FC = () => {
   );
 };
 
-export default RegisterPage;
+export default withAuthRedirect(RegisterPage);
