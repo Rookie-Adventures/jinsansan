@@ -1,6 +1,6 @@
 {
   "statistics": {
-    "detectionDate": "2025-02-20T11:33:22.222Z",
+    "detectionDate": "2025-02-20T16:37:44.121Z",
     "formats": {
       "typescript": {
         "sources": {
@@ -880,6 +880,18 @@
             "newDuplicatedLines": 0,
             "newClones": 0
           },
+          "D:/jinsansan/frontend/src/test/utils/muiTestHelpers.ts": {
+            "lines": 63,
+            "tokens": 460,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
           "D:/jinsansan/frontend/src/test/utils/mockBrowserApis.ts": {
             "lines": 82,
             "tokens": 579,
@@ -1722,13 +1734,13 @@
           }
         },
         "total": {
-          "lines": 16654,
-          "tokens": 150859,
-          "sources": 143,
+          "lines": 16717,
+          "tokens": 151319,
+          "sources": 144,
           "clones": 13,
           "duplicatedLines": 186,
           "duplicatedTokens": 1748,
-          "percentage": 1.12,
+          "percentage": 1.11,
           "percentageTokens": 1.16,
           "newDuplicatedLines": 0,
           "newClones": 0
@@ -1750,7 +1762,7 @@
           },
           "D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx": {
             "lines": 25,
-            "tokens": 194,
+            "tokens": 170,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -2037,8 +2049,8 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx": {
-            "lines": 0,
-            "tokens": 9,
+            "lines": 197,
+            "tokens": 1594,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -2458,8 +2470,8 @@
           }
         },
         "total": {
-          "lines": 2051,
-          "tokens": 18094,
+          "lines": 2248,
+          "tokens": 19655,
           "sources": 60,
           "clones": 0,
           "duplicatedLines": 0,
@@ -2485,14 +2497,14 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx": {
-            "lines": 444,
-            "tokens": 4129,
+            "lines": 428,
+            "tokens": 3641,
             "sources": 1,
-            "clones": 2,
-            "duplicatedLines": 20,
-            "duplicatedTokens": 182,
-            "percentage": 4.5,
-            "percentageTokens": 4.41,
+            "clones": 4,
+            "duplicatedLines": 48,
+            "duplicatedTokens": 352,
+            "percentage": 11.21,
+            "percentageTokens": 9.67,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -2562,9 +2574,9 @@
             "sources": 1,
             "clones": 3,
             "duplicatedLines": 48,
-            "duplicatedTokens": 469,
+            "duplicatedTokens": 433,
             "percentage": 43.64,
-            "percentageTokens": 50.59,
+            "percentageTokens": 46.71,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -2593,26 +2605,26 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx": {
-            "lines": 120,
-            "tokens": 1184,
+            "lines": 128,
+            "tokens": 1139,
             "sources": 1,
-            "clones": 5,
-            "duplicatedLines": 64,
-            "duplicatedTokens": 644,
-            "percentage": 53.33,
-            "percentageTokens": 54.39,
+            "clones": 7,
+            "duplicatedLines": 88,
+            "duplicatedTokens": 789,
+            "percentage": 68.75,
+            "percentageTokens": 69.27,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/pages/auth/__tests__/LoginPage.test.tsx": {
-            "lines": 116,
-            "tokens": 1104,
+            "lines": 124,
+            "tokens": 1063,
             "sources": 1,
-            "clones": 4,
-            "duplicatedLines": 68,
-            "duplicatedTokens": 651,
-            "percentage": 58.62,
-            "percentageTokens": 58.97,
+            "clones": 6,
+            "duplicatedLines": 92,
+            "duplicatedTokens": 784,
+            "percentage": 74.19,
+            "percentageTokens": 73.75,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -2641,14 +2653,14 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuth.test.tsx": {
-            "lines": 346,
-            "tokens": 3494,
+            "lines": 343,
+            "tokens": 3473,
             "sources": 1,
-            "clones": 4,
-            "duplicatedLines": 42,
-            "duplicatedTokens": 422,
-            "percentage": 12.14,
-            "percentageTokens": 12.08,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -2701,14 +2713,14 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/components/feedback/__tests__/LoadingBar.test.tsx": {
-            "lines": 159,
-            "tokens": 1366,
+            "lines": 132,
+            "tokens": 1068,
             "sources": 1,
-            "clones": 4,
-            "duplicatedLines": 76,
-            "duplicatedTokens": 608,
-            "percentage": 47.8,
-            "percentageTokens": 44.51,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -2905,8 +2917,8 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx": {
-            "lines": 298,
-            "tokens": 2728,
+            "lines": 307,
+            "tokens": 2530,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -3398,28 +3410,28 @@
           }
         },
         "total": {
-          "lines": 8806,
-          "tokens": 81103,
+          "lines": 8785,
+          "tokens": 80012,
           "sources": 77,
-          "clones": 20,
-          "duplicatedLines": 241,
-          "duplicatedTokens": 2339,
-          "percentage": 2.74,
-          "percentageTokens": 2.88,
+          "clones": 19,
+          "duplicatedLines": 220,
+          "duplicatedTokens": 2030,
+          "percentage": 2.5,
+          "percentageTokens": 2.54,
           "newDuplicatedLines": 0,
           "newClones": 0
         }
       }
     },
     "total": {
-      "lines": 27511,
-      "tokens": 250056,
-      "sources": 280,
-      "clones": 33,
-      "duplicatedLines": 427,
-      "duplicatedTokens": 4087,
-      "percentage": 1.55,
-      "percentageTokens": 1.63,
+      "lines": 27750,
+      "tokens": 250986,
+      "sources": 281,
+      "clones": 32,
+      "duplicatedLines": 406,
+      "duplicatedTokens": 3778,
+      "percentage": 1.46,
+      "percentageTokens": 1.51,
       "newDuplicatedLines": 0,
       "newClones": 0
     }
@@ -3463,37 +3475,73 @@
     },
     {
       "format": "tsx",
-      "lines": 11,
-      "fragment": ", () => {\r\n    beforeEach(() => {\r\n      const testUser = createTestUser();\r\n      vi.mocked(useAuth).mockReturnValue(createAuthState({\r\n        isAuthenticated: true,\r\n        user: testUser,\r\n        token: 'test-token',\r\n      }));\r\n    });\r\n\r\n    it('点击用户名应该关闭菜单'",
+      "lines": 15,
+      "fragment": ");\n      vi.mocked(useAuth).mockReturnValue(createAuthState({\n        isAuthenticated: true,\n        user: createTestUser(),\n        token: 'test-token',\n        logout: mockLogout,\n      }));\n\n      renderNavbar();\n      await openUserMenu();\n\n      const logoutButton = screen.getByText('退出登录');\n      await clickAndWait(logoutButton);\n\n      await",
       "tokens": 0,
       "firstFile": {
         "name": "D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx",
-        "start": 405,
-        "end": 415,
+        "start": 291,
+        "end": 305,
         "startLoc": {
-          "line": 405,
-          "column": 9,
-          "position": 3741
+          "line": 291,
+          "column": 13,
+          "position": 2427
         },
         "endLoc": {
-          "line": 415,
-          "column": 14,
-          "position": 3832
+          "line": 305,
+          "column": 6,
+          "position": 2522
         }
       },
       "secondFile": {
         "name": "D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx",
-        "start": 243,
-        "end": 253,
+        "start": 267,
+        "end": 281,
         "startLoc": {
-          "line": 243,
-          "column": 9,
-          "position": 2237
+          "line": 267,
+          "column": 2,
+          "position": 2219
         },
         "endLoc": {
-          "line": 253,
+          "line": 281,
+          "column": 7,
+          "position": 2316
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 11,
+      "fragment": ", () => {\n    beforeEach(() => {\n      const testUser = createTestUser();\n      vi.mocked(useAuth).mockReturnValue(createAuthState({\n        isAuthenticated: true,\n        user: testUser,\n        token: 'test-token',\n      }));\n    });\n\n    it('点击用户名应该关闭菜单'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx",
+        "start": 389,
+        "end": 399,
+        "startLoc": {
+          "line": 389,
+          "column": 9,
+          "position": 3287
+        },
+        "endLoc": {
+          "line": 399,
+          "column": 14,
+          "position": 3368
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx",
+        "start": 244,
+        "end": 254,
+        "startLoc": {
+          "line": 244,
+          "column": 9,
+          "position": 2014
+        },
+        "endLoc": {
+          "line": 254,
           "column": 16,
-          "position": 2328
+          "position": 2095
         }
       }
     },
@@ -3716,21 +3764,21 @@
     {
       "format": "tsx",
       "lines": 13,
-      "fragment": ";\r\n\r\n// Mock hooks\r\nvi.mock('react-router-dom', async () => {\r\n  const actual = await vi.importActual('react-router-dom');\r\n  return {\r\n    ...(actual as any),\r\n    useNavigate: vi.fn(),\r\n  };\r\n});\r\n\r\nvi.mock('@/hooks/auth', () => ({\r\n  useAuth: vi.fn((",
+      "fragment": ";\n\n// Mock hooks\nvi.mock('react-router-dom', async () => {\n  const actual = await vi.importActual('react-router-dom');\n  return {\n    ...(actual as any),\n    useNavigate: vi.fn(),\n  };\n});\n\nvi.mock('@/hooks/auth', () => ({\n  useAuth: vi.fn((",
       "tokens": 0,
       "firstFile": {
         "name": "D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx",
-        "start": 9,
-        "end": 21,
+        "start": 10,
+        "end": 22,
         "startLoc": {
-          "line": 9,
+          "line": 10,
           "column": 18,
-          "position": 100
+          "position": 105
         },
         "endLoc": {
-          "line": 21,
+          "line": 22,
           "column": 2,
-          "position": 209
+          "position": 202
         }
       },
       "secondFile": {
@@ -3751,109 +3799,181 @@
     },
     {
       "format": "tsx",
-      "lines": 25,
-      "fragment": ";\r\n\r\n// Mock hooks\r\nvi.mock('react-router-dom', async () => {\r\n  const actual = await vi.importActual('react-router-dom');\r\n  return {\r\n    ...(actual as any),\r\n    useNavigate: vi.fn(),\r\n  };\r\n});\r\n\r\nvi.mock('@/hooks/auth', () => ({\r\n  useAuth: vi.fn(() => ({\r\n    login: vi.fn(),\r\n    register: vi.fn(),\r\n    logout: vi.fn(),\r\n    getCurrentUser: vi.fn(),\r\n    loading: false,\r\n    user: null,\r\n    token: null,\r\n    error: null,\r\n    isAuthenticated: false,\r\n  })),\r\n  useAuthForm: vi.fn(() => ({\r\n    formData: { username: '', password: '' }",
+      "lines": 10,
+      "fragment": "import { render, screen } from '@testing-library/react';\nimport { MemoryRouter, useNavigate } from 'react-router-dom';\nimport { describe, expect, it, vi } from 'vitest';\n\nimport type { User } from '@/types/auth';\n\nimport { useAuth } from '@/hooks/auth';\nimport { waitForAnimation } from '@/test/utils/muiTestHelpers';\n\nimport LoginPage",
       "tokens": 0,
       "firstFile": {
         "name": "D:/jinsansan/frontend/src/pages/auth/__tests__/LoginPage.test.tsx",
-        "start": 9,
-        "end": 33,
+        "start": 1,
+        "end": 10,
         "startLoc": {
-          "line": 9,
-          "column": 15,
-          "position": 100
+          "line": 1,
+          "column": 1,
+          "position": 0
         },
         "endLoc": {
-          "line": 33,
+          "line": 10,
+          "column": 10,
+          "position": 100
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx",
+        "start": 1,
+        "end": 10,
+        "startLoc": {
+          "line": 1,
+          "column": 1,
+          "position": 0
+        },
+        "endLoc": {
+          "line": 10,
+          "column": 13,
+          "position": 100
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 25,
+      "fragment": ";\n\n// Mock hooks\nvi.mock('react-router-dom', async () => {\n  const actual = await vi.importActual('react-router-dom');\n  return {\n    ...(actual as any),\n    useNavigate: vi.fn(),\n  };\n});\n\nvi.mock('@/hooks/auth', () => ({\n  useAuth: vi.fn(() => ({\n    login: vi.fn(),\n    register: vi.fn(),\n    logout: vi.fn(),\n    getCurrentUser: vi.fn(),\n    loading: false,\n    user: null,\n    token: null,\n    error: null,\n    isAuthenticated: false,\n  })),\n  useAuthForm: vi.fn(() => ({\n    formData: { username: '', password: '' }",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/pages/auth/__tests__/LoginPage.test.tsx",
+        "start": 10,
+        "end": 34,
+        "startLoc": {
+          "line": 10,
+          "column": 15,
+          "position": 105
+        },
+        "endLoc": {
+          "line": 34,
           "column": 2,
-          "position": 347
+          "position": 328
         }
       },
       "secondFile": {
         "name": "D:/jinsansan/frontend/src/router/guards/__tests__/GuestGuard.test.tsx",
         "start": 7,
-        "end": 33,
+        "end": 34,
         "startLoc": {
           "line": 7,
           "column": 16,
           "position": 80
         },
         "endLoc": {
-          "line": 33,
+          "line": 34,
           "column": 2,
-          "position": 346
+          "position": 327
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 16,
+      "fragment": " />\n      </MemoryRouter>\n    );\n  };\n\n  beforeEach(() => {\n    vi.clearAllMocks();\n    vi.useFakeTimers({ shouldAdvanceTime: true });\n  });\n\n  afterEach(() => {\n    vi.clearAllTimers();\n    vi.useRealTimers();\n  });\n\n  it('应该正确渲染登录页面'",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/pages/auth/__tests__/LoginPage.test.tsx",
+        "start": 48,
+        "end": 63,
+        "startLoc": {
+          "line": 48,
+          "column": 10,
+          "position": 441
+        },
+        "endLoc": {
+          "line": 63,
+          "column": 13,
+          "position": 533
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx",
+        "start": 48,
+        "end": 63,
+        "startLoc": {
+          "line": 48,
+          "column": 13,
+          "position": 453
+        },
+        "endLoc": {
+          "line": 63,
+          "column": 13,
+          "position": 545
         }
       }
     },
     {
       "format": "tsx",
       "lines": 17,
-      "fragment": ")).toBeInTheDocument();\r\n  });\r\n\r\n  it('在加载状态下应禁用表单', () => {\r\n    vi.mocked(useAuth).mockReturnValue({\r\n      login: vi.fn(),\r\n      register: vi.fn(),\r\n      logout: vi.fn(),\r\n      getCurrentUser: vi.fn(),\r\n      loading: true,\r\n      user: null,\r\n      token: null,\r\n      error: null,\r\n      isAuthenticated: false,\r\n    });\r\n\r\n    renderLoginPage",
+      "fragment": ")).toBeInTheDocument();\n  });\n\n  it('在加载状态下应禁用表单', async () => {\n    vi.mocked(useAuth).mockReturnValue({\n      login: vi.fn(),\n      register: vi.fn(),\n      logout: vi.fn(),\n      getCurrentUser: vi.fn(),\n      loading: true,\n      user: null,\n      token: null,\n      error: null,\n      isAuthenticated: false,\n    });\n\n    renderLoginPage",
       "tokens": 0,
       "firstFile": {
         "name": "D:/jinsansan/frontend/src/pages/auth/__tests__/LoginPage.test.tsx",
-        "start": 69,
-        "end": 85,
+        "start": 76,
+        "end": 92,
         "startLoc": {
-          "line": 69,
+          "line": 76,
           "column": 12,
-          "position": 676
+          "position": 671
         },
         "endLoc": {
-          "line": 85,
+          "line": 92,
           "column": 16,
-          "position": 817
+          "position": 798
         }
       },
       "secondFile": {
         "name": "D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx",
-        "start": 71,
-        "end": 87,
+        "start": 78,
+        "end": 94,
         "startLoc": {
-          "line": 71,
+          "line": 78,
           "column": 12,
-          "position": 722
+          "position": 715
         },
         "endLoc": {
-          "line": 87,
+          "line": 94,
           "column": 19,
-          "position": 863
+          "position": 842
         }
       }
     },
     {
       "format": "tsx",
       "lines": 24,
-      "fragment": "})).toBeDisabled();\r\n  });\r\n\r\n  it('已认证用户应重定向到首页', () => {\r\n    const mockUser: User = {\r\n      id: 1,\r\n      username: 'test',\r\n      email: 'test@example.com',\r\n      permissions: [],\r\n    };\r\n\r\n    vi.mocked(useAuth).mockReturnValue({\r\n      login: vi.fn(),\r\n      register: vi.fn(),\r\n      logout: vi.fn(),\r\n      getCurrentUser: vi.fn(),\r\n      loading: false,\r\n      user: mockUser,\r\n      token: 'token',\r\n      error: null,\r\n      isAuthenticated: true,\r\n    });\r\n\r\n    renderLoginPage",
+      "fragment": "})).toBeDisabled();\n  });\n\n  it('已认证用户应重定向到首页', async () => {\n    const mockUser: User = {\n      id: 1,\n      username: 'test',\n      email: 'test@example.com',\n      permissions: [],\n    };\n\n    vi.mocked(useAuth).mockReturnValue({\n      login: vi.fn(),\n      register: vi.fn(),\n      logout: vi.fn(),\n      getCurrentUser: vi.fn(),\n      loading: false,\n      user: mockUser,\n      token: 'token',\n      error: null,\n      isAuthenticated: true,\n    });\n\n    renderLoginPage",
       "tokens": 0,
       "firstFile": {
         "name": "D:/jinsansan/frontend/src/pages/auth/__tests__/LoginPage.test.tsx",
-        "start": 89,
-        "end": 112,
+        "start": 96,
+        "end": 119,
         "startLoc": {
-          "line": 89,
+          "line": 96,
           "column": 2,
-          "position": 876
+          "position": 853
         },
         "endLoc": {
-          "line": 112,
+          "line": 119,
           "column": 16,
-          "position": 1071
+          "position": 1027
         }
       },
       "secondFile": {
         "name": "D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx",
-        "start": 93,
-        "end": 116,
+        "start": 100,
+        "end": 123,
         "startLoc": {
-          "line": 93,
+          "line": 100,
           "column": 2,
-          "position": 956
+          "position": 929
         },
         "endLoc": {
-          "line": 116,
+          "line": 123,
           "column": 19,
-          "position": 1151
+          "position": 1103
         }
       }
     },
@@ -4219,78 +4339,6 @@
     },
     {
       "format": "tsx",
-      "lines": 8,
-      "fragment": "{\r\n          const method = authMethods[actionType];\r\n          if (method === 'login') {\r\n            await result.current.login(testData.login);\r\n          } else if (method === 'register') {\r\n            await result.current.register(testData.register);\r\n          }\r\n        } catch",
-      "tokens": 0,
-      "firstFile": {
-        "name": "D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuth.test.tsx",
-        "start": 257,
-        "end": 264,
-        "startLoc": {
-          "line": 257,
-          "column": 2,
-          "position": 2611
-        },
-        "endLoc": {
-          "line": 264,
-          "column": 6,
-          "position": 2699
-        }
-      },
-      "secondFile": {
-        "name": "D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuth.test.tsx",
-        "start": 231,
-        "end": 238,
-        "startLoc": {
-          "line": 231,
-          "column": 2,
-          "position": 2339
-        },
-        "endLoc": {
-          "line": 238,
-          "column": 2,
-          "position": 2426
-        }
-      }
-    },
-    {
-      "format": "tsx",
-      "lines": 15,
-      "fragment": ",\r\n        initialState: {\r\n          token: 'test-token',\r\n          user: createTestUser(),\r\n        },\r\n      });\r\n      const { result } = renderAuth();\r\n\r\n      await act(async () => {\r\n        await result.current.logout();\r\n      });\r\n\r\n      expect(mockNavigate).toHaveBeenCalledWith('/');\r\n      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('persist:root');\r\n      expect",
-      "tokens": 0,
-      "firstFile": {
-        "name": "D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuth.test.tsx",
-        "start": 298,
-        "end": 312,
-        "startLoc": {
-          "line": 298,
-          "column": 6,
-          "position": 3015
-        },
-        "endLoc": {
-          "line": 312,
-          "column": 7,
-          "position": 3138
-        }
-      },
-      "secondFile": {
-        "name": "D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuth.test.tsx",
-        "start": 277,
-        "end": 291,
-        "startLoc": {
-          "line": 277,
-          "column": 5,
-          "position": 2819
-        },
-        "endLoc": {
-          "line": 291,
-          "column": 2,
-          "position": 2942
-        }
-      }
-    },
-    {
-      "format": "tsx",
       "lines": 10,
       "fragment": ", () => {\r\n      const WrapperComponent = () => {\r\n        const { control } = useForm<TestFormData>({\r\n          defaultValues: { testField: '' },\r\n        });\r\n        return <TestForm control={control} />;\r\n      };\r\n\r\n      render(<WrapperComponent />);\r\n      const input = screen.getByRole('textbox')",
       "tokens": 0,
@@ -4327,78 +4375,6 @@
     },
     {
       "format": "tsx",
-      "lines": 20,
-      "fragment": ", async () => {\r\n    const { helper } = renderWithProviders(<LoadingBar />, {\r\n      app: { \r\n        darkMode: false,\r\n        loading: true,\r\n        toast: {\r\n          open: false,\r\n          message: '',\r\n          severity: 'info',\r\n        }\r\n      }\r\n    });\r\n\r\n    // 等待组件完全更新\r\n    await helper.waitForComponentUpdate();\r\n    \r\n    const progressBar = screen.getByRole('progressbar');\r\n    expect(progressBar).toBeInTheDocument();\r\n\r\n    // 等待进度更新",
-      "tokens": 0,
-      "firstFile": {
-        "name": "D:/jinsansan/frontend/src/components/feedback/__tests__/LoadingBar.test.tsx",
-        "start": 102,
-        "end": 121,
-        "startLoc": {
-          "line": 102,
-          "column": 13,
-          "position": 867
-        },
-        "endLoc": {
-          "line": 121,
-          "column": 10,
-          "position": 1019
-        }
-      },
-      "secondFile": {
-        "name": "D:/jinsansan/frontend/src/components/feedback/__tests__/LoadingBar.test.tsx",
-        "start": 82,
-        "end": 100,
-        "startLoc": {
-          "line": 82,
-          "column": 15,
-          "position": 706
-        },
-        "endLoc": {
-          "line": 100,
-          "column": 2,
-          "position": 856
-        }
-      }
-    },
-    {
-      "format": "tsx",
-      "lines": 20,
-      "fragment": ", async () => {\r\n    const { helper } = renderWithProviders(<LoadingBar />, {\r\n      app: { \r\n        darkMode: false,\r\n        loading: true,\r\n        toast: {\r\n          open: false,\r\n          message: '',\r\n          severity: 'info',\r\n        }\r\n      }\r\n    });\r\n\r\n    // 等待组件完全更新\r\n    await helper.waitForComponentUpdate();\r\n    \r\n    const progressBar = screen.getByRole('progressbar');\r\n    expect(progressBar).toBeInTheDocument();\r\n\r\n    // 切换到非加载状态",
-      "tokens": 0,
-      "firstFile": {
-        "name": "D:/jinsansan/frontend/src/components/feedback/__tests__/LoadingBar.test.tsx",
-        "start": 129,
-        "end": 148,
-        "startLoc": {
-          "line": 129,
-          "column": 21,
-          "position": 1092
-        },
-        "endLoc": {
-          "line": 148,
-          "column": 12,
-          "position": 1244
-        }
-      },
-      "secondFile": {
-        "name": "D:/jinsansan/frontend/src/components/feedback/__tests__/LoadingBar.test.tsx",
-        "start": 82,
-        "end": 100,
-        "startLoc": {
-          "line": 82,
-          "column": 15,
-          "position": 706
-        },
-        "endLoc": {
-          "line": 100,
-          "column": 2,
-          "position": 856
-        }
-      }
-    },
-    {
-      "format": "tsx",
       "lines": 6,
       "fragment": "expect(screen.getByLabelText('用户名')).toBeInTheDocument();\r\n    expect(screen.getByLabelText('邮箱')).toBeInTheDocument();\r\n    expect(screen.getByLabelText('密码')).toBeInTheDocument();\r\n    expect(screen.getByLabelText('确认密码')).toBeInTheDocument();\r\n    expect(screen.getByRole('button', { name: '注册' })).toBeInTheDocument();\r\n  }",
       "tokens": 0,
@@ -4419,17 +4395,17 @@
       },
       "secondFile": {
         "name": "D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx",
-        "start": 64,
-        "end": 70,
+        "start": 71,
+        "end": 77,
         "startLoc": {
-          "line": 64,
+          "line": 71,
           "column": 5,
           "position": 614
         },
         "endLoc": {
-          "line": 70,
+          "line": 77,
           "column": 10,
-          "position": 711
+          "position": 705
         }
       }
     },
@@ -4455,17 +4431,17 @@
       },
       "secondFile": {
         "name": "D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx",
-        "start": 87,
-        "end": 94,
+        "start": 94,
+        "end": 101,
         "startLoc": {
-          "line": 87,
-          "column": 2,
-          "position": 865
-        },
-        "endLoc": {
           "line": 94,
           "column": 2,
-          "position": 967
+          "position": 844
+        },
+        "endLoc": {
+          "line": 101,
+          "column": 2,
+          "position": 939
         }
       }
     },
@@ -4491,17 +4467,17 @@
       },
       "secondFile": {
         "name": "D:/jinsansan/frontend/src/pages/auth/__tests__/LoginPage.test.tsx",
-        "start": 85,
-        "end": 90,
+        "start": 92,
+        "end": 97,
         "startLoc": {
-          "line": 85,
+          "line": 92,
           "column": 2,
-          "position": 819
+          "position": 800
         },
         "endLoc": {
-          "line": 90,
+          "line": 97,
           "column": 2,
-          "position": 887
+          "position": 863
         }
       }
     },

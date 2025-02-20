@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from 'vitest';
 import type { User } from '@/types/auth';
 
 import { useAuth } from '@/hooks/auth';
+import { waitForAnimation } from '@/test/utils/muiTestHelpers';
 
 import LoginPage from '../LoginPage';
 
@@ -51,9 +52,15 @@ describe('LoginPage', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.useFakeTimers({ shouldAdvanceTime: true });
   });
 
-  it('应该正确渲染登录页面', () => {
+  afterEach(() => {
+    vi.clearAllTimers();
+    vi.useRealTimers();
+  });
+
+  it('应该正确渲染登录页面', async () => {
     renderLoginPage();
 
     // 验证页面标题和描述
@@ -69,7 +76,7 @@ describe('LoginPage', () => {
     expect(screen.getByText('没有账号？立即注册')).toBeInTheDocument();
   });
 
-  it('在加载状态下应禁用表单', () => {
+  it('在加载状态下应禁用表单', async () => {
     vi.mocked(useAuth).mockReturnValue({
       login: vi.fn(),
       register: vi.fn(),
@@ -89,7 +96,7 @@ describe('LoginPage', () => {
     expect(screen.getByRole('button', { name: '登录' })).toBeDisabled();
   });
 
-  it('已认证用户应重定向到首页', () => {
+  it('已认证用户应重定向到首页', async () => {
     const mockUser: User = {
       id: 1,
       username: 'test',
@@ -110,6 +117,7 @@ describe('LoginPage', () => {
     });
 
     renderLoginPage();
+    await waitForAnimation();
 
     // 验证重定向逻辑
     expect(mockNavigate).toHaveBeenCalledWith('/');

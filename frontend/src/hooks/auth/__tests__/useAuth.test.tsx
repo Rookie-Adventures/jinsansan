@@ -179,6 +179,16 @@ const setupAuthTest = (config: {
   };
 };
 
+// 提取共同的测试逻辑
+const testAuthAction = async (result: any, actionType: AuthActionType, testData: any) => {
+  const method = authMethods[actionType];
+  if (method === 'login') {
+    await result.current.login(testData.login);
+  } else if (method === 'register') {
+    await result.current.register(testData.register);
+  }
+};
+
 describe('useAuth', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -229,12 +239,7 @@ describe('useAuth', () => {
       const { result } = renderAuth();
 
       await act(async () => {
-        const method = authMethods[actionType];
-        if (method === 'login') {
-          await result.current.login(testData.login);
-        } else if (method === 'register') {
-          await result.current.register(testData.register);
-        }
+        await testAuthAction(result, actionType, testData);
       });
 
       expect(mockNavigate).toHaveBeenCalledWith('/');
@@ -255,12 +260,7 @@ describe('useAuth', () => {
 
       await act(async () => {
         try {
-          const method = authMethods[actionType];
-          if (method === 'login') {
-            await result.current.login(testData.login);
-          } else if (method === 'register') {
-            await result.current.register(testData.register);
-          }
+          await testAuthAction(result, actionType, testData);
         } catch (error) {
           expect(error).toBeInstanceOf(HttpError);
         }
@@ -271,44 +271,41 @@ describe('useAuth', () => {
   });
 
   describe('登出功能', () => {
-    it('登出成功时应该清除认证状态并跳转到首页', async () => {
-      const { renderAuth } = setupAuthTest({
+    const setupLogoutTest = (isSuccess: boolean, error?: Error) => {
+      const testSetup = setupAuthTest({
         actionType: 'logout',
-        isSuccess: true,
-        initialState: {
-          token: 'test-token',
-          user: createTestUser(),
-        },
-      });
-      const { result } = renderAuth();
-
-      await act(async () => {
-        await result.current.logout();
-      });
-
-      expect(mockNavigate).toHaveBeenCalledWith('/');
-      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('persist:root');
-    });
-
-    it('登出失败时应该记录错误并仍然清除认证状态', async () => {
-      const error = new Error('退出登录失败');
-      const { renderAuth } = setupAuthTest({
-        actionType: 'logout',
-        isSuccess: false,
+        isSuccess,
         error,
         initialState: {
           token: 'test-token',
           user: createTestUser(),
         },
       });
-      const { result } = renderAuth();
 
+      return testSetup;
+    };
+
+    const verifyLogoutBehavior = async (result: any) => {
       await act(async () => {
         await result.current.logout();
       });
 
       expect(mockNavigate).toHaveBeenCalledWith('/');
       expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('persist:root');
+    };
+
+    it('登出成功时应该清除认证状态并跳转到首页', async () => {
+      const { renderAuth } = setupLogoutTest(true);
+      const { result } = renderAuth();
+      await verifyLogoutBehavior(result);
+    });
+
+    it('登出失败时应该记录错误并仍然清除认证状态', async () => {
+      const error = new Error('退出登录失败');
+      const { renderAuth } = setupLogoutTest(false, error);
+      const { result } = renderAuth();
+      
+      await verifyLogoutBehavior(result);
       expect(errorLogger.log).toHaveBeenCalled();
     });
   });

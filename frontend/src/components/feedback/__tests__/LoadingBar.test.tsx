@@ -17,6 +17,16 @@ const createTestStore = (preloadedState = {}) => {
   });
 };
 
+const defaultAppState = {
+  darkMode: false,
+  loading: true,
+  toast: {
+    open: false,
+    message: '',
+    severity: 'info',
+  }
+};
+
 // 创建一个测试工具类来管理所有异步操作
 class TestHelper {
   store: ReturnType<typeof createTestStore>;
@@ -25,36 +35,39 @@ class TestHelper {
     this.store = createTestStore(initialState);
   }
 
-  // 等待组件渲染和状态更新
-  async waitForComponentUpdate() {
+  // 等待组件更新和动画
+  async waitForUpdate(type: 'component' | 'progress' | 'animation') {
+    const delays = {
+      component: 0,  // React 状态更新
+      progress: 500, // 进度更新定时器
+      animation: 300, // 动画完成
+    };
+
     await act(async () => {
-      await vi.advanceTimersByTimeAsync(0);  // 等待 React 状态更新
-      await vi.advanceTimersByTimeAsync(0);  // 等待 useEffect 执行
+      await vi.advanceTimersByTimeAsync(delays[type]);
     });
   }
 
-  // 等待进度更新
-  async waitForProgress() {
-    await act(async () => {
-      await vi.advanceTimersByTimeAsync(500);  // 等待进度更新定时器
-    });
-  }
-
-  // 等待动画完成
-  async waitForAnimation() {
-    await act(async () => {
-      await vi.advanceTimersByTimeAsync(300);  // 等待动画完成
-    });
+  // 等待所有更新完成
+  async waitForAll() {
+    await this.waitForUpdate('component');
+    await this.waitForUpdate('progress');
+    await this.waitForUpdate('animation');
   }
 }
 
-const renderWithProviders = (ui: React.ReactElement, initialState = {}) => {
-  const helper = new TestHelper(initialState);
+const renderWithProviders = (initialState = {}) => {
+  const helper = new TestHelper({
+    app: {
+      ...defaultAppState,
+      ...initialState,
+    },
+  });
   
   const view = render(
     <Provider store={helper.store}>
       <ThemeProvider theme={createTheme({ palette: { mode: 'light' } })}>
-        {ui}
+        <LoadingBar />
       </ThemeProvider>
     </Provider>
   );
@@ -75,51 +88,26 @@ describe('LoadingBar', () => {
   });
 
   it('初始状态下不应该显示进度条', () => {
-    renderWithProviders(<LoadingBar />);
+    renderWithProviders({ loading: false });
     expect(screen.queryByRole('progressbar')).toBeNull();
   });
 
   it('加载状态下应该显示进度条', async () => {
-    const { helper } = renderWithProviders(<LoadingBar />, {
-      app: { 
-        darkMode: false,
-        loading: true,
-        toast: {
-          open: false,
-          message: '',
-          severity: 'info',
-        }
-      }
-    });
-
-    // 等待组件完全更新
-    await helper.waitForComponentUpdate();
+    const { helper } = renderWithProviders();
+    await helper.waitForUpdate('component');
     
     const progressBar = screen.getByRole('progressbar');
     expect(progressBar).toBeInTheDocument();
   });
 
   it('进度值应该随时间增加', async () => {
-    const { helper } = renderWithProviders(<LoadingBar />, {
-      app: { 
-        darkMode: false,
-        loading: true,
-        toast: {
-          open: false,
-          message: '',
-          severity: 'info',
-        }
-      }
-    });
-
-    // 等待组件完全更新
-    await helper.waitForComponentUpdate();
+    const { helper } = renderWithProviders();
+    await helper.waitForUpdate('component');
     
     const progressBar = screen.getByRole('progressbar');
     expect(progressBar).toBeInTheDocument();
 
-    // 等待进度更新
-    await helper.waitForProgress();
+    await helper.waitForUpdate('progress');
 
     const newValue = Number(progressBar.getAttribute('aria-valuenow'));
     expect(newValue).toBeGreaterThan(0);
@@ -127,20 +115,8 @@ describe('LoadingBar', () => {
   });
 
   it('加载完成后应该显示 100% 并淡出', async () => {
-    const { helper } = renderWithProviders(<LoadingBar />, {
-      app: { 
-        darkMode: false,
-        loading: true,
-        toast: {
-          open: false,
-          message: '',
-          severity: 'info',
-        }
-      }
-    });
-
-    // 等待组件完全更新
-    await helper.waitForComponentUpdate();
+    const { helper } = renderWithProviders();
+    await helper.waitForUpdate('component');
     
     const progressBar = screen.getByRole('progressbar');
     expect(progressBar).toBeInTheDocument();
@@ -149,12 +125,9 @@ describe('LoadingBar', () => {
     await act(async () => {
       helper.store.dispatch({ type: 'app/setLoading', payload: false });
     });
-    await helper.waitForComponentUpdate();
+    await helper.waitForAll();
 
     expect(progressBar.getAttribute('aria-valuenow')).toBe('100');
-
-    // 等待淡出动画
-    await helper.waitForAnimation();
     expect(screen.queryByRole('progressbar')).toBeNull();
   });
 });

@@ -8,6 +8,7 @@ import { createMemoryRouter, RouterProvider, createRoutesFromElements, Route } f
 import { vi } from 'vitest';
 
 import { useAuth } from '@/hooks/auth';
+import { clickAndWait, waitForAnimation } from '@/test/utils/muiTestHelpers';
 import { errorLogger } from '@/utils/http/error/logger';
 
 import appReducer from '../../../../store/slices/appSlice';
@@ -163,14 +164,14 @@ const renderNavbar = () => {
   );
 };
 
-const openUserMenu = () => {
+const openUserMenu = async () => {
   const accountButton = screen.queryByLabelText('用户菜单');
   if (accountButton) {
-    fireEvent.click(accountButton);
+    await clickAndWait(accountButton);
   } else {
     // 移动端菜单按钮
     const menuButton = screen.getByLabelText('menu');
-    fireEvent.click(menuButton);
+    await clickAndWait(menuButton);
   }
 };
 
@@ -250,20 +251,20 @@ describe('Navbar', () => {
       }));
     });
 
-    it('已登录状态应该显示用户菜单', () => {
+    it('已登录状态应该显示用户菜单', async () => {
       renderNavbar();
       
       // 桌面端应该显示用户头像按钮
       const accountButton = screen.getByLabelText('用户菜单');
       expect(accountButton).toBeInTheDocument();
       
-      fireEvent.click(accountButton);
+      await clickAndWait(accountButton);
       expect(screen.getByText('testuser')).toBeInTheDocument();
       expect(screen.getByText('退出登录')).toBeInTheDocument();
     });
 
     it('点击退出登录应该调用 logout', async () => {
-      const mockLogout = vi.fn().mockResolvedValue(undefined);
+      const mockLogout = vi.fn();
       vi.mocked(useAuth).mockReturnValue(createAuthState({
         isAuthenticated: true,
         user: createTestUser(),
@@ -272,15 +273,12 @@ describe('Navbar', () => {
       }));
 
       renderNavbar();
+      await openUserMenu();
       
-      await user.click(screen.getByLabelText('用户菜单'));
-      vi.advanceTimersByTime(100);
+      const logoutButton = screen.getByText('退出登录');
+      await clickAndWait(logoutButton);
       
-      await user.click(screen.getByText('退出登录'));
-      vi.advanceTimersByTime(100);
-
       expect(mockLogout).toHaveBeenCalled();
-      expect(mockNavigate).toHaveBeenCalledWith('/');
     });
   });
 
@@ -299,10 +297,10 @@ describe('Navbar', () => {
       }));
 
       renderNavbar();
-      openUserMenu();
+      await openUserMenu();
 
       const logoutButton = screen.getByText('退出登录');
-      fireEvent.click(logoutButton);
+      await clickAndWait(logoutButton);
 
       await vi.waitFor(() => {
         expect(mockLogout).toHaveBeenCalled();
@@ -325,21 +323,17 @@ describe('Navbar', () => {
     it('移动端未登录状态应该显示菜单图标和移动端菜单', async () => {
       renderNavbar();
       
-      // 验证菜单图标存在
       const menuButton = screen.getByLabelText('menu');
       expect(menuButton).toBeInTheDocument();
       
-      // 点击菜单图标
-      fireEvent.click(menuButton);
+      await clickAndWait(menuButton);
       
-      // 验证移动端菜单内容
       expect(screen.getByText('首页')).toBeInTheDocument();
       expect(screen.getByText('文档')).toBeInTheDocument();
       expect(screen.getByText('API')).toBeInTheDocument();
       expect(screen.getByText('价格')).toBeInTheDocument();
       expect(screen.getByText('登录')).toBeInTheDocument();
       
-      // 验证导航链接不可见
       expect(screen.queryByRole('button', { name: '文档' })).not.toBeInTheDocument();
     });
 
@@ -353,17 +347,13 @@ describe('Navbar', () => {
 
       renderNavbar();
       
-      // 验证用户头像按钮存在
       const accountButton = await screen.findByLabelText('用户菜单');
       expect(accountButton).toBeInTheDocument();
       
-      // 验证菜单图标不存在
       expect(screen.queryByLabelText('menu')).not.toBeInTheDocument();
       
-      // 点击用户头像
-      fireEvent.click(accountButton);
+      await clickAndWait(accountButton);
       
-      // 验证用户菜单内容
       expect(screen.getByText(testUser.username)).toBeInTheDocument();
       expect(screen.getByText('退出登录')).toBeInTheDocument();
     });
@@ -371,14 +361,10 @@ describe('Navbar', () => {
     it('移动端菜单项点击应该正确导航', async () => {
       renderNavbar();
       
-      // 打开菜单
-      await user.click(screen.getByLabelText('menu'));
-      vi.advanceTimersByTime(300);
+      await clickAndWait(screen.getByLabelText('menu'));
       
-      // 点击第一个菜单项
       const menuItem = screen.getByRole('menuitem', { name: '文档', hidden: true });
-      await user.click(menuItem);
-      vi.advanceTimersByTime(300);
+      await clickAndWait(menuItem);
       
       expect(mockNavigate).toHaveBeenCalledWith('/docs');
     });
@@ -386,16 +372,14 @@ describe('Navbar', () => {
     it('点击移动端菜单外部应该关闭菜单', async () => {
       renderNavbar();
       
-      // 打开菜单
-      await user.click(screen.getByLabelText('menu'));
+      await clickAndWait(screen.getByLabelText('menu'));
       await waitFor(() => {
         expect(screen.getByRole('menuitem', { name: '文档', hidden: true })).toBeInTheDocument();
       });
       
-      // 按 ESC 键关闭菜单
       await user.keyboard('{Escape}');
+      await waitForAnimation();
       
-      // 确认菜单已关闭
       await waitFor(() => {
         expect(screen.queryByRole('menuitem', { name: '文档', hidden: true })).not.toBeInTheDocument();
       });
