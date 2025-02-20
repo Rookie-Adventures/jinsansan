@@ -13,6 +13,12 @@ import { vi } from 'vitest';
 
 import type { HttpRequestConfig } from '@/utils/http/types';
 
+import { 
+  createMockResponse, 
+  testHttpMethod, 
+  testHttpMethodError,
+  createMockAbortController 
+} from '@/test/utils/httpTestHelpers';
 import { http } from '@/utils/http';
 
 import { useHttp } from '../useHttp';
@@ -27,49 +33,6 @@ const mockTestData: TestData = { id: 1, name: 'test' };
 const mockConfig: HttpRequestConfig = {
   headers: { 'X-Test': 'test' },
   params: { id: 1 },
-};
-
-// 辅助函数
-const createMockResponse = <T>(data: T) => ({ data });
-const createNetworkError = (message = 'Network error') => new Error(message);
-
-// 测试工厂函数
-interface TestHttpMethodConfig<T = any> {
-  method: 'get' | 'post' | 'put' | 'delete';
-  mockData?: T;
-  requestData?: any;
-  config?: HttpRequestConfig;
-}
-
-const testHttpMethod = async <T>({
-  method,
-  mockData,
-  requestData,
-  config
-}: TestHttpMethodConfig<T>) => {
-  const mockResponse = createMockResponse(mockData);
-  vi.mocked(http[method]).mockResolvedValue(mockResponse);
-
-  const { result } = renderHook(() => useHttp());
-  const response = await result.current[method]('/test', 
-    ['post', 'put'].includes(method) ? requestData : config,
-    ['post', 'put'].includes(method) ? config : undefined
-  );
-
-  if (['post', 'put'].includes(method)) {
-    expect(http[method]).toHaveBeenCalledWith('/test', requestData, config);
-  } else {
-    expect(http[method]).toHaveBeenCalledWith('/test', config);
-  }
-  expect(response).toEqual(mockResponse);
-};
-
-const testHttpMethodError = async (method: 'get' | 'post' | 'put' | 'delete', requestData?: any) => {
-  const mockError = createNetworkError();
-  vi.mocked(http[method]).mockRejectedValue(mockError);
-
-  const { result } = renderHook(() => useHttp());
-  await expect(result.current[method]('/test', requestData)).rejects.toThrow('Network error');
 };
 
 describe('useHttp', () => {
@@ -87,7 +50,8 @@ describe('useHttp', () => {
       await testHttpMethod({
         method,
         mockData: method === 'delete' ? { success: true } : mockTestData,
-        requestData: ['post', 'put'].includes(method) ? mockTestData : undefined
+        requestData: ['post', 'put'].includes(method) ? mockTestData : undefined,
+        hook: useHttp
       });
     });
 
@@ -96,17 +60,22 @@ describe('useHttp', () => {
         method,
         mockData: method === 'delete' ? { success: true } : mockTestData,
         requestData: ['post', 'put'].includes(method) ? mockTestData : undefined,
-        config: mockConfig
+        config: mockConfig,
+        hook: useHttp
       });
     });
 
     it(`应该正确处理 ${name} 请求的错误`, async () => {
-      await testHttpMethodError(method, ['post', 'put'].includes(method) ? {} : undefined);
+      await testHttpMethodError(
+        method, 
+        useHttp,
+        ['post', 'put'].includes(method) ? {} : undefined
+      );
     });
   });
 
   it('应该支持请求取消', async () => {
-    const mockAbortController = new AbortController();
+    const mockAbortController = createMockAbortController();
     const abortError = new Error('AbortError');
     abortError.name = 'AbortError';
 
@@ -161,11 +130,11 @@ describe('useHttp', () => {
         tags: ['tag1', 'tag2'],
       };
 
-      const mockResponse = { data: mockComplexData };
+      const mockResponse = createMockResponse(mockComplexData);
       vi.mocked(http.get).mockResolvedValue(mockResponse);
 
       const { result } = renderHook(() => useHttp());
-      const response = await result.current.get<{ data: ComplexData }>('/test');
+      const response = await result.current.get<typeof mockResponse>('/test');
 
       expect(response).toEqual(mockResponse);
       // 类型检查 - 这些断言在运行时会被执行，但在编译时也会进行类型检查
@@ -183,8 +152,8 @@ describe('useHttp', () => {
       const errorResponse: ResponseType = { success: false, error: 'Not found' };
 
       vi.mocked(http.get)
-        .mockResolvedValueOnce({ data: successResponse })
-        .mockResolvedValueOnce({ data: errorResponse });
+        .mockResolvedValueOnce(createMockResponse(successResponse))
+        .mockResolvedValueOnce(createMockResponse(errorResponse));
 
       const { result } = renderHook(() => useHttp());
       

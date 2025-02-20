@@ -1,6 +1,6 @@
 {
   "statistics": {
-    "detectionDate": "2025-02-20T11:21:38.256Z",
+    "detectionDate": "2025-02-20T11:33:22.222Z",
     "formats": {
       "typescript": {
         "sources": {
@@ -497,14 +497,14 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/hooks/http/__tests__/useHttp.test.ts": {
-            "lines": 203,
-            "tokens": 2303,
+            "lines": 172,
+            "tokens": 1816,
             "sources": 1,
             "clones": 1,
             "duplicatedLines": 25,
             "duplicatedTokens": 188,
-            "percentage": 12.32,
-            "percentageTokens": 8.16,
+            "percentage": 14.53,
+            "percentageTokens": 10.35,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -868,9 +868,33 @@
             "newDuplicatedLines": 0,
             "newClones": 0
           },
+          "D:/jinsansan/frontend/src/test/utils/testHelpers.ts": {
+            "lines": 68,
+            "tokens": 504,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
           "D:/jinsansan/frontend/src/test/utils/mockBrowserApis.ts": {
             "lines": 82,
             "tokens": 579,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/test/utils/httpTestHelpers.ts": {
+            "lines": 94,
+            "tokens": 1008,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -1698,14 +1722,14 @@
           }
         },
         "total": {
-          "lines": 16523,
-          "tokens": 149834,
-          "sources": 141,
+          "lines": 16654,
+          "tokens": 150859,
+          "sources": 143,
           "clones": 13,
           "duplicatedLines": 186,
           "duplicatedTokens": 1748,
-          "percentage": 1.13,
-          "percentageTokens": 1.17,
+          "percentage": 1.12,
+          "percentageTokens": 1.16,
           "newDuplicatedLines": 0,
           "newClones": 0
         }
@@ -2749,8 +2773,8 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/components/common/__tests__/ErrorNotification.test.tsx": {
-            "lines": 265,
-            "tokens": 2372,
+            "lines": 258,
+            "tokens": 2330,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -3374,13 +3398,13 @@
           }
         },
         "total": {
-          "lines": 8813,
-          "tokens": 81145,
+          "lines": 8806,
+          "tokens": 81103,
           "sources": 77,
           "clones": 20,
           "duplicatedLines": 241,
           "duplicatedTokens": 2339,
-          "percentage": 2.73,
+          "percentage": 2.74,
           "percentageTokens": 2.88,
           "newDuplicatedLines": 0,
           "newClones": 0
@@ -3388,14 +3412,14 @@
       }
     },
     "total": {
-      "lines": 27387,
-      "tokens": 249073,
-      "sources": 278,
+      "lines": 27511,
+      "tokens": 250056,
+      "sources": 280,
       "clones": 33,
       "duplicatedLines": 427,
       "duplicatedTokens": 4087,
-      "percentage": 1.56,
-      "percentageTokens": 1.64,
+      "percentage": 1.55,
+      "percentageTokens": 1.63,
       "newDuplicatedLines": 0,
       "newClones": 0
     }
@@ -4143,17 +4167,17 @@
       },
       "secondFile": {
         "name": "D:/jinsansan/frontend/src/hooks/http/__tests__/useHttp.test.ts",
-        "start": 139,
-        "end": 164,
+        "start": 108,
+        "end": 133,
         "startLoc": {
-          "line": 139,
+          "line": 108,
           "column": 13,
-          "position": 1536
+          "position": 1066
         },
         "endLoc": {
-          "line": 164,
+          "line": 133,
           "column": 6,
-          "position": 1724
+          "position": 1254
         }
       }
     },
