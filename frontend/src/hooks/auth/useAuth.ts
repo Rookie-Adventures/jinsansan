@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import type { LoginFormData, RegisterFormData } from '@/types/auth';
+import type { User } from '@/types/user';
 import type { AxiosError } from 'axios';
 
 import { useAppDispatch, useAppSelector } from '@/store';
@@ -10,7 +11,19 @@ import { errorLogger } from '@/utils/errorLogger';
 import { HttpErrorFactory } from '@/utils/http/error/factory';
 import { HttpError, HttpErrorType } from '@/utils/http/error/types';
 
-export const useAuth = () => {
+interface UseAuth {
+  user: User | null;
+  token: string | null;
+  loading: boolean;
+  error: string | null;
+  isAuthenticated: boolean;
+  login: (data: LoginFormData) => Promise<void>;
+  register: (data: RegisterFormData) => Promise<void>;
+  logout: () => Promise<void>;
+  getCurrentUser: () => Promise<void>;
+}
+
+export const useAuth = (): UseAuth => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { user, token, loading, error } = useAppSelector(state => state.auth);

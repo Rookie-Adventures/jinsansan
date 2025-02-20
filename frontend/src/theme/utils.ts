@@ -11,7 +11,7 @@ export const THEME_TRANSITION_DURATION = 200;
  * @param theme - MUI主题对象
  * @returns 过渡样式对象
  */
-export const getThemeTransitionStyles = (theme: Theme) => ({
+export const getThemeTransitionStyles = (theme: Theme): Record<string, unknown> => ({
   // 全局过渡效果
   '*': {
     transition: theme.transitions.create(
@@ -102,7 +102,7 @@ export const generatePalette = (
     throw new Error('Invalid color format');
   }
 
-  const createAlphaFn = (color: string) => (opacity: number) => {
+  const createAlphaFn = (color: string): ((opacity: number) => string) => (opacity: number): string => {
     const rgb = hexToRgb(color);
     return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${Math.max(0, Math.min(1, opacity))})`;
   };
@@ -132,8 +132,14 @@ export const generatePalette = (
   return palette;
 };
 
+interface RGB {
+  r: number;
+  g: number;
+  b: number;
+}
+
 // 辅助函数
-const hexToRgb = (hex: string) => {
+const hexToRgb = (hex: string): RGB => {
   const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
   hex = hex.replace(shorthandRegex, (_, r, g, b) => r + r + g + g + b + b);
 
@@ -161,8 +167,8 @@ const generateSecondaryColor = (primaryColor: string): string => {
   return `#${r}${g}${b}`;
 };
 
-const rgbToHex = (rgb: { r: number; g: number; b: number }): string => {
-  const toHex = (n: number) => {
+const rgbToHex = (rgb: RGB): string => {
+  const toHex = (n: number): string => {
     const hex = Math.min(255, Math.max(0, n)).toString(16);
     return hex.length === 1 ? '0' + hex : hex;
   };

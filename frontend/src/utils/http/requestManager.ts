@@ -8,7 +8,7 @@ interface CacheItem<T> {
 
 class RequestManager {
   private static instance: RequestManager;
-  private cache: Map<string, CacheItem<unknown>>;
+  public cache: Map<string, CacheItem<unknown>>;
 
   private constructor() {
     this.cache = new Map();
@@ -40,6 +40,14 @@ class RequestManager {
 
   public generateCacheKey(config: Record<string, unknown>): string {
     return JSON.stringify(config);
+  }
+
+  public clearCache(key?: string): void {
+    if (key) {
+      this.cache.delete(key);
+    } else {
+      this.cache.clear();
+    }
   }
 }
 

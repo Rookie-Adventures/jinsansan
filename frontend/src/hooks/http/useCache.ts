@@ -2,7 +2,14 @@ import { useCallback } from 'react';
 
 import { requestManager } from '@/utils/http';
 
-export const useCache = () => {
+interface UseCacheReturn {
+  getCacheData: <T>(key: string) => T | null;
+  setCacheData: <T>(key: string, data: T, ttl?: number) => void;
+  generateCacheKey: (config: Record<string, unknown>) => string;
+  clearCache: (key?: string) => void;
+}
+
+export const useCache = (): UseCacheReturn => {
   const getCacheData = useCallback(<T>(key: string): T | null => {
     return requestManager.getCacheData<T>(key);
   }, []);
