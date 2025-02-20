@@ -1,6 +1,14 @@
+/**
+ * 缓存项接口
+ */
+interface CacheItem<T> {
+  data: T;
+  expiry: number;
+}
+
 class RequestManager {
   private static instance: RequestManager;
-  public cache: Map<string, { data: any; expiry: number }>;
+  private cache: Map<string, CacheItem<unknown>>;
 
   private constructor() {
     this.cache = new Map();
@@ -14,7 +22,7 @@ class RequestManager {
   }
 
   public getCacheData<T>(key: string): T | null {
-    const cached = this.cache.get(key);
+    const cached = this.cache.get(key) as CacheItem<T> | undefined;
     if (!cached) return null;
     if (Date.now() > cached.expiry) {
       this.cache.delete(key);

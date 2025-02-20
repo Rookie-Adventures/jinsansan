@@ -1,6 +1,6 @@
 {
   "statistics": {
-    "detectionDate": "2025-02-20T02:33:19.023Z",
+    "detectionDate": "2025-02-20T03:37:26.237Z",
     "formats": {
       "typescript": {
         "sources": {
@@ -19,6 +19,30 @@
           "D:/jinsansan/frontend/src/utils/http/error/__tests__/factory.test.ts": {
             "lines": 131,
             "tokens": 1199,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/business/sections/config/pricing.ts": {
+            "lines": 32,
+            "tokens": 278,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/business/sections/config/features.ts": {
+            "lines": 41,
+            "tokens": 296,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -845,14 +869,14 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/store/middleware/logger.ts": {
-            "lines": 105,
-            "tokens": 882,
+            "lines": 98,
+            "tokens": 864,
             "sources": 1,
-            "clones": 2,
-            "duplicatedLines": 18,
-            "duplicatedTokens": 178,
-            "percentage": 17.14,
-            "percentageTokens": 20.18,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -1073,14 +1097,14 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/infrastructure/file/FileManager.ts": {
-            "lines": 220,
-            "tokens": 1666,
+            "lines": 216,
+            "tokens": 1566,
             "sources": 1,
-            "clones": 2,
-            "duplicatedLines": 20,
-            "duplicatedTokens": 240,
-            "percentage": 9.09,
-            "percentageTokens": 14.41,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -1554,14 +1578,14 @@
           }
         },
         "total": {
-          "lines": 14540,
-          "tokens": 130131,
-          "sources": 129,
-          "clones": 14,
-          "duplicatedLines": 191,
-          "duplicatedTokens": 1809,
-          "percentage": 1.31,
-          "percentageTokens": 1.39,
+          "lines": 14602,
+          "tokens": 130587,
+          "sources": 131,
+          "clones": 12,
+          "duplicatedLines": 172,
+          "duplicatedTokens": 1600,
+          "percentage": 1.18,
+          "percentageTokens": 1.23,
           "newDuplicatedLines": 0,
           "newClones": 0
         }
@@ -1678,7 +1702,7 @@
           },
           "D:/jinsansan/frontend/src/components/feedback/__tests__/LoadingBar.test.tsx": {
             "lines": 0,
-            "tokens": 3,
+            "tokens": 5,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -1797,8 +1821,8 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/components/business/sections/PricingSection.tsx": {
-            "lines": 92,
-            "tokens": 752,
+            "lines": 104,
+            "tokens": 852,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -1821,8 +1845,8 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/components/business/sections/FeatureSection.tsx": {
-            "lines": 42,
-            "tokens": 291,
+            "lines": 59,
+            "tokens": 399,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -2027,18 +2051,6 @@
           "D:/jinsansan/frontend/src/components/feedback/Toast.tsx": {
             "lines": 5,
             "tokens": 51,
-            "sources": 1,
-            "clones": 0,
-            "duplicatedLines": 0,
-            "duplicatedTokens": 0,
-            "percentage": 0,
-            "percentageTokens": 0,
-            "newDuplicatedLines": 0,
-            "newClones": 0
-          },
-          "D:/jinsansan/frontend/src/components/feedback/LoadingBar.tsx": {
-            "lines": 0,
-            "tokens": 3,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -2290,9 +2302,9 @@
           }
         },
         "total": {
-          "lines": 1917,
-          "tokens": 16656,
-          "sources": 60,
+          "lines": 1946,
+          "tokens": 16863,
+          "sources": 59,
           "clones": 0,
           "duplicatedLines": 0,
           "duplicatedTokens": 0,
@@ -2512,23 +2524,23 @@
             "lines": 97,
             "tokens": 927,
             "sources": 1,
-            "clones": 1,
-            "duplicatedLines": 34,
-            "duplicatedTokens": 256,
-            "percentage": 35.05,
-            "percentageTokens": 27.62,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/components/feedback/__tests__/LoadingBar.test.tsx": {
-            "lines": 122,
-            "tokens": 1040,
+            "lines": 159,
+            "tokens": 1215,
             "sources": 1,
-            "clones": 1,
-            "duplicatedLines": 34,
-            "duplicatedTokens": 256,
-            "percentage": 27.87,
-            "percentageTokens": 24.62,
+            "clones": 4,
+            "duplicatedLines": 76,
+            "duplicatedTokens": 540,
+            "percentage": 47.8,
+            "percentageTokens": 44.44,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -2665,8 +2677,8 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/components/business/sections/PricingSection.tsx": {
-            "lines": 151,
-            "tokens": 1180,
+            "lines": 141,
+            "tokens": 1105,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -2689,8 +2701,8 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/components/business/sections/FeatureSection.tsx": {
-            "lines": 98,
-            "tokens": 696,
+            "lines": 84,
+            "tokens": 624,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -2868,27 +2880,39 @@
             "newDuplicatedLines": 0,
             "newClones": 0
           },
-          "D:/jinsansan/frontend/src/pages/auth/RegisterPage.tsx": {
-            "lines": 32,
-            "tokens": 245,
+          "D:/jinsansan/frontend/src/pages/auth/withAuthRedirect.tsx": {
+            "lines": 22,
+            "tokens": 248,
             "sources": 1,
-            "clones": 1,
-            "duplicatedLines": 11,
-            "duplicatedTokens": 104,
-            "percentage": 34.38,
-            "percentageTokens": 42.45,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/pages/auth/RegisterPage.tsx": {
+            "lines": 23,
+            "tokens": 152,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/pages/auth/LoginPage.tsx": {
-            "lines": 24,
-            "tokens": 233,
+            "lines": 15,
+            "tokens": 139,
             "sources": 1,
-            "clones": 1,
-            "duplicatedLines": 11,
-            "duplicatedTokens": 104,
-            "percentage": 45.83,
-            "percentageTokens": 44.64,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -2953,8 +2977,8 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/components/feedback/LoadingBar.tsx": {
-            "lines": 68,
-            "tokens": 552,
+            "lines": 82,
+            "tokens": 619,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -3206,28 +3230,28 @@
           }
         },
         "total": {
-          "lines": 8616,
-          "tokens": 78504,
-          "sources": 75,
+          "lines": 8647,
+          "tokens": 78660,
+          "sources": 76,
           "clones": 22,
-          "duplicatedLines": 279,
-          "duplicatedTokens": 2616,
-          "percentage": 3.24,
-          "percentageTokens": 3.33,
+          "duplicatedLines": 272,
+          "duplicatedTokens": 2526,
+          "percentage": 3.15,
+          "percentageTokens": 3.21,
           "newDuplicatedLines": 0,
           "newClones": 0
         }
       }
     },
     "total": {
-      "lines": 25073,
-      "tokens": 225291,
-      "sources": 264,
-      "clones": 36,
-      "duplicatedLines": 470,
-      "duplicatedTokens": 4425,
-      "percentage": 1.87,
-      "percentageTokens": 1.96,
+      "lines": 25195,
+      "tokens": 226110,
+      "sources": 266,
+      "clones": 34,
+      "duplicatedLines": 444,
+      "duplicatedTokens": 4126,
+      "percentage": 1.76,
+      "percentageTokens": 1.82,
       "newDuplicatedLines": 0,
       "newClones": 0
     }
@@ -4027,37 +4051,73 @@
     },
     {
       "format": "tsx",
-      "lines": 35,
-      "fragment": ";\n\nconst createTestStore = (preloadedState = {}) => {\n  return configureStore({\n    reducer: {\n      app: appReducer,\n    },\n    preloadedState: {\n      app: {\n        darkMode: false,\n        loading: false,\n        toast: {\n          open: false,\n          message: '',\n          severity: 'info' as AlertColor,\n        },\n        ...preloadedState,\n      },\n    },\n  });\n};\n\nconst renderWithProviders = (ui: React.ReactElement, { preloadedState = {} } = {}) => {\n  const store = createTestStore(preloadedState);\n  return {\n    ...render(\n      <Provider store={store}>\n        <ThemeProvider theme={createTheme({ palette: { mode: 'light' } })}>{ui}</ThemeProvider>\n      </Provider>\n    ),\n    store,\n  };\n};\n\ndescribe('LoadingBar'",
+      "lines": 20,
+      "fragment": ", async () => {\n    const { helper } = renderWithProviders(<LoadingBar />, {\n      app: { \n        darkMode: false,\n        loading: true,\n        toast: {\n          open: false,\n          message: '',\n          severity: 'info',\n        }\n      }\n    });\n\n    // 等待组件完全更新\n    await helper.waitForComponentUpdate();\n    \n    const progressBar = screen.getByRole('progressbar');\n    expect(progressBar).toBeInTheDocument();\n\n    // 等待进度更新",
       "tokens": 0,
       "firstFile": {
         "name": "D:/jinsansan/frontend/src/components/feedback/__tests__/LoadingBar.test.tsx",
-        "start": 9,
-        "end": 43,
+        "start": 102,
+        "end": 121,
         "startLoc": {
-          "line": 9,
-          "column": 16,
-          "position": 114
+          "line": 102,
+          "column": 13,
+          "position": 770
         },
         "endLoc": {
-          "line": 43,
-          "column": 13,
-          "position": 370
+          "line": 121,
+          "column": 10,
+          "position": 905
         }
       },
       "secondFile": {
-        "name": "D:/jinsansan/frontend/src/components/feedback/__tests__/Toast.test.tsx",
-        "start": 9,
-        "end": 43,
+        "name": "D:/jinsansan/frontend/src/components/feedback/__tests__/LoadingBar.test.tsx",
+        "start": 82,
+        "end": 100,
         "startLoc": {
-          "line": 9,
-          "column": 11,
-          "position": 113
+          "line": 82,
+          "column": 15,
+          "position": 627
         },
         "endLoc": {
-          "line": 43,
-          "column": 8,
-          "position": 403
+          "line": 100,
+          "column": 2,
+          "position": 761
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 20,
+      "fragment": ", async () => {\n    const { helper } = renderWithProviders(<LoadingBar />, {\n      app: { \n        darkMode: false,\n        loading: true,\n        toast: {\n          open: false,\n          message: '',\n          severity: 'info',\n        }\n      }\n    });\n\n    // 等待组件完全更新\n    await helper.waitForComponentUpdate();\n    \n    const progressBar = screen.getByRole('progressbar');\n    expect(progressBar).toBeInTheDocument();\n\n    // 切换到非加载状态",
+      "tokens": 0,
+      "firstFile": {
+        "name": "D:/jinsansan/frontend/src/components/feedback/__tests__/LoadingBar.test.tsx",
+        "start": 129,
+        "end": 148,
+        "startLoc": {
+          "line": 129,
+          "column": 21,
+          "position": 970
+        },
+        "endLoc": {
+          "line": 148,
+          "column": 12,
+          "position": 1105
+        }
+      },
+      "secondFile": {
+        "name": "D:/jinsansan/frontend/src/components/feedback/__tests__/LoadingBar.test.tsx",
+        "start": 82,
+        "end": 100,
+        "startLoc": {
+          "line": 82,
+          "column": 15,
+          "position": 627
+        },
+        "endLoc": {
+          "line": 100,
+          "column": 2,
+          "position": 761
         }
       }
     },
@@ -4346,114 +4406,6 @@
           "line": 112,
           "column": 43,
           "position": 1094
-        }
-      }
-    },
-    {
-      "format": "typescript",
-      "lines": 10,
-      "fragment": "const endTime = performance.now();\r\n    const duration = endTime - startTime;\r\n\r\n    if (duration > EXECUTION_TIME_THRESHOLD) {\r\n      console.warn(`Warning: Action execution time exceeded ${EXECUTION_TIME_THRESHOLD}ms`);\r\n    }\r\n\r\n    console.info(`Action execution time: ${duration.toFixed(2)}ms`);\r\n\r\n    return result",
-      "tokens": 0,
-      "firstFile": {
-        "name": "D:/jinsansan/frontend/src/store/middleware/logger.ts",
-        "start": 92,
-        "end": 101,
-        "startLoc": {
-          "line": 92,
-          "column": 5,
-          "position": 752
-        },
-        "endLoc": {
-          "line": 101,
-          "column": 7,
-          "position": 841
-        }
-      },
-      "secondFile": {
-        "name": "D:/jinsansan/frontend/src/store/middleware/logger.ts",
-        "start": 54,
-        "end": 65,
-        "startLoc": {
-          "line": 54,
-          "column": 15,
-          "position": 465
-        },
-        "endLoc": {
-          "line": 65,
-          "column": 6,
-          "position": 560
-        }
-      }
-    },
-    {
-      "format": "tsx",
-      "lines": 12,
-      "fragment": ": FC = () => {\r\n  const navigate = useNavigate();\r\n  const { isAuthenticated } = useAuth();\r\n\r\n  useEffect(() => {\r\n    if (isAuthenticated) {\r\n      navigate('/');\r\n    }\r\n  }, [isAuthenticated, navigate]);\r\n\r\n  return (\r\n    <AuthPage ",
-      "tokens": 0,
-      "firstFile": {
-        "name": "D:/jinsansan/frontend/src/pages/auth/LoginPage.tsx",
-        "start": 8,
-        "end": 19,
-        "startLoc": {
-          "line": 8,
-          "column": 10,
-          "position": 74
-        },
-        "endLoc": {
-          "line": 19,
-          "column": 2,
-          "position": 178
-        }
-      },
-      "secondFile": {
-        "name": "D:/jinsansan/frontend/src/pages/auth/RegisterPage.tsx",
-        "start": 8,
-        "end": 20,
-        "startLoc": {
-          "line": 8,
-          "column": 13,
-          "position": 74
-        },
-        "endLoc": {
-          "line": 20,
-          "column": 7,
-          "position": 178
-        }
-      }
-    },
-    {
-      "format": "typescript",
-      "lines": 11,
-      "fragment": "(file: File): Promise<string> {\r\n    return new Promise((resolve, reject) => {\r\n      const reader = new FileReader();\r\n\r\n      reader.onload = () => {\r\n        resolve(reader.result as string);\r\n      };\r\n\r\n      reader.onerror = () => {\r\n        const error: FileError = {\r\n          code: 'BASE64_CONVERSION_ERROR'",
-      "tokens": 0,
-      "firstFile": {
-        "name": "D:/jinsansan/frontend/src/infrastructure/file/FileManager.ts",
-        "start": 166,
-        "end": 176,
-        "startLoc": {
-          "line": 166,
-          "column": 16,
-          "position": 1149
-        },
-        "endLoc": {
-          "line": 176,
-          "column": 26,
-          "position": 1269
-        }
-      },
-      "secondFile": {
-        "name": "D:/jinsansan/frontend/src/infrastructure/file/FileManager.ts",
-        "start": 83,
-        "end": 93,
-        "startLoc": {
-          "line": 83,
-          "column": 16,
-          "position": 567
-        },
-        "endLoc": {
-          "line": 93,
-          "column": 18,
-          "position": 687
         }
       }
     },

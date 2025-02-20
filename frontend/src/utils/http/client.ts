@@ -5,8 +5,12 @@ import request from '../request';
 
 import { RequestMethod } from './types';
 
+/**
+ * HTTP 客户端实现类
+ * @implements {RequestMethod}
+ */
 class HttpClient implements RequestMethod {
-  async get<T = any>(url: string, config?: HttpRequestConfig): Promise<T> {
+  async get<T>(url: string, config?: HttpRequestConfig): Promise<T> {
     const response = await request<T>({
       ...config,
       url,
@@ -16,7 +20,7 @@ class HttpClient implements RequestMethod {
     return response.data;
   }
 
-  async post<T = any>(url: string, data?: any, config?: HttpRequestConfig): Promise<T> {
+  async post<T>(url: string, data?: unknown, config?: HttpRequestConfig): Promise<T> {
     const response = await request<T>({
       ...config,
       url,
@@ -27,7 +31,7 @@ class HttpClient implements RequestMethod {
     return response.data;
   }
 
-  async put<T = any>(url: string, data?: any, config?: HttpRequestConfig): Promise<T> {
+  async put<T>(url: string, data?: unknown, config?: HttpRequestConfig): Promise<T> {
     const response = await request<T>({
       ...config,
       url,
@@ -38,7 +42,7 @@ class HttpClient implements RequestMethod {
     return response.data;
   }
 
-  async delete<T = any>(url: string, config?: HttpRequestConfig): Promise<T> {
+  async delete<T>(url: string, config?: HttpRequestConfig): Promise<T> {
     const response = await request<T>({
       ...config,
       url,
