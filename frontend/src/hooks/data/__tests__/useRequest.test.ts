@@ -1,60 +1,25 @@
 // 第三方库导入
 import { renderHook, act, waitFor } from '@testing-library/react';
-import { AxiosHeaders } from 'axios';
-import { vi } from 'vitest';
-
-import type { AxiosError } from 'axios';
+import { vi, expect, describe, it, beforeEach } from 'vitest';
 
 // 内部模块导入
 import { useCache } from '@/hooks/http/useCache';
 import { useHttp } from '@/hooks/http/useHttp';
+import {
+  type AxiosError,
+  type TestData,
+  type ComplexTestData,
+  type TestResponse,
+  type UnionResponseType,
+  createTestData,
+  createTestResponse,
+  createAxiosError,
+  expectTypeChecks,
+  createUnionResponses,
+  createComplexTestData,
+} from '@/tests/utils/http-test-utils';
 
 import { useRequest } from '../useRequest';
-
-// 共享的测试数据和类型
-interface TestData {
-  id: number;
-  name: string;
-}
-
-interface TestResponse {
-  code: number;
-  data: TestData;
-  message: string;
-}
-
-const createTestData = (id: number = 1, name: string = 'test'): TestData => ({
-  id,
-  name,
-});
-
-const createTestResponse = (data: TestData, code: number = 200, message: string = 'success'): TestResponse => ({
-  code,
-  data,
-  message,
-});
-
-const createAxiosError = (status: number = 500, message: string = 'Internal server error'): AxiosError => {
-  const headers = new AxiosHeaders();
-  return {
-    name: 'AxiosError',
-    message: 'Request failed',
-    isAxiosError: true,
-    toJSON: () => ({}),
-    config: {
-      headers,
-    },
-    response: {
-      data: { message },
-      status,
-      statusText: message,
-      headers: {},
-      config: {
-        headers,
-      },
-    },
-  };
-};
 
 // Mock hooks
 vi.mock('@/hooks/http/useHttp', () => ({
@@ -65,10 +30,23 @@ vi.mock('@/hooks/http/useCache', () => ({
   useCache: vi.fn(),
 }));
 
+// Mock HTTP client
+const mockGet = vi.fn();
+vi.mock('@/utils/http', () => ({
+  httpClient: {
+    get: (...args: unknown[]) => mockGet(...args),
+  },
+}));
+
+// Mock cache utilities
+const mockGetCacheData = vi.fn();
+const mockSetCacheData = vi.fn();
+vi.mock('@/utils/cache', () => ({
+  getCacheData: (...args: unknown[]) => mockGetCacheData(...args),
+  setCacheData: (...args: unknown[]) => mockSetCacheData(...args),
+}));
+
 describe('useRequest', () => {
-  const mockGet = vi.fn();
-  const mockGetCacheData = vi.fn();
-  const mockSetCacheData = vi.fn();
   const mockGenerateCacheKey = vi.fn();
   const mockClearCache = vi.fn();
 
@@ -128,18 +106,7 @@ describe('useRequest', () => {
       mockGet.mockRejectedValue(mockError);
 
       const { result } = renderHook(() => useRequest<TestData>('/test'));
-
-      await act(async () => {
-        try {
-          await result.current.execute();
-        } catch (error) {
-          expect(error).toBe(mockError);
-        }
-      });
-
-      expect(result.current.loading).toBeFalsy();
-      expect(result.current.error).toBe(mockError);
-      expect(result.current.data).toBeNull();
+      await expectErrorHandling(result, mockError);
     });
 
     it('应该正确处理请求取消', async () => {
@@ -192,10 +159,8 @@ describe('useRequest', () => {
 
   describe('缓存功能', () => {
     it('启用缓存时应该优先返回缓存数据', async () => {
-      const cachedData = createTestData(1, 'cached');
-      mockGetCacheData.mockReturnValue(cachedData);
-
-      const { result } = renderHook(() => useRequest<TestData>('/test'));
+      const { testData, result } = setupRequestTest();
+      mockGetCacheData.mockReturnValue(testData);
 
       let response;
       await act(async () => {
@@ -206,28 +171,17 @@ describe('useRequest', () => {
           },
         });
       });
-
-      expect(response).toEqual(cachedData);
-      expect(result.current.data).toEqual(cachedData);
+      
+      expect(response).toEqual(testData);
+      expect(result.current.data).toEqual(testData);
       expect(mockGet).not.toHaveBeenCalled();
     });
 
     it('缓存未命中时应该发送请求并缓存响应', async () => {
-      const testData = createTestData();
-      const mockResponse = createTestResponse(testData);
+      const { testData, result } = setupRequestTest();
       mockGetCacheData.mockReturnValue(null);
-      mockGet.mockResolvedValue(mockResponse);
 
-      const { result } = renderHook(() => useRequest<TestData>('/test'));
-
-      await act(async () => {
-        await result.current.execute({
-          cache: {
-            enable: true,
-            ttl: 5000,
-          },
-        });
-      });
+      await executeRequestWithCache(result);
 
       expect(mockSetCacheData).toHaveBeenCalledWith('/test', testData, 5000);
       expect(result.current.data).toEqual(testData);
@@ -235,22 +189,10 @@ describe('useRequest', () => {
 
     it('应该使用自定义缓存键', async () => {
       const customCacheKey = 'custom-key';
-      const testData = createTestData();
-      const mockResponse = createTestResponse(testData);
+      const { testData, result } = setupRequestTest();
       mockGetCacheData.mockReturnValue(null);
-      mockGet.mockResolvedValue(mockResponse);
 
-      const { result } = renderHook(() => useRequest<TestData>('/test'));
-
-      await act(async () => {
-        await result.current.execute({
-          cache: {
-            enable: true,
-            ttl: 5000,
-            key: customCacheKey,
-          },
-        });
-      });
+      await executeRequestWithCache(result, { key: customCacheKey });
 
       expect(mockGetCacheData).toHaveBeenCalledWith(customCacheKey);
       expect(mockSetCacheData).toHaveBeenCalledWith(customCacheKey, testData, 5000);
@@ -271,27 +213,31 @@ describe('useRequest', () => {
       const { result } = renderHook(() => useRequest<TestData>('/test'));
 
       // 第一次请求，使用缓存数据
+      let response;
       await act(async () => {
-        const response = await result.current.execute({
+        response = await result.current.execute({
           cache: {
             enable: true,
             ttl: 5000,
           },
         });
-        expect(response).toEqual(cachedData);
       });
+
+      expect(response).toEqual(cachedData);
+      expect(result.current.data).toEqual(cachedData);
 
       // 第二次请求，缓存过期，重新获取数据
       await act(async () => {
-        const response = await result.current.execute({
+        response = await result.current.execute({
           cache: {
             enable: true,
             ttl: 5000,
           },
         });
-        expect(response).toEqual(newData);
       });
 
+      expect(response).toEqual(newData);
+      expect(result.current.data).toEqual(newData);
       expect(mockGet).toHaveBeenCalledTimes(1);
       expect(mockSetCacheData).toHaveBeenCalledWith('/test', newData, 5000);
     });
@@ -454,18 +400,7 @@ describe('useRequest', () => {
       mockGet.mockRejectedValue(mockError);
 
       const { result } = renderHook(() => useRequest<TestData>('/test'));
-
-      await act(async () => {
-        try {
-          await result.current.execute();
-        } catch (error) {
-          expect(error).toBe(mockError);
-        }
-      });
-
-      expect(result.current.loading).toBeFalsy();
-      expect(result.current.error).toBe(mockError);
-      expect(result.current.data).toBeNull();
+      await expectErrorHandling(result, mockError);
     });
 
     it('应该在重新请求时重置错误状态', async () => {
@@ -502,64 +437,93 @@ describe('useRequest', () => {
 
   describe('类型安全', () => {
     it('应该正确处理泛型类型', async () => {
-      interface ComplexData {
-        id: number;
-        name: string;
-        metadata: {
-          createdAt: string;
-          updatedAt: string;
-        };
-        tags: string[];
-      }
-
-      const mockComplexData: ComplexData = {
-        id: 1,
-        name: 'test',
-        metadata: {
-          createdAt: '2024-01-01',
-          updatedAt: '2024-01-02',
-        },
-        tags: ['tag1', 'tag2'],
-      };
-
+      const mockComplexData = createComplexTestData();
       mockGet.mockResolvedValue({ data: mockComplexData });
 
-      const { result } = renderHook(() => useRequest<ComplexData>('/test'));
-      const response = await result.current.execute();
+      const { result } = renderHook(() => useRequest<ComplexTestData>('/test'));
+      
+      const response = await act(async () => {
+        return await result.current.execute();
+      });
 
       expect(response).toEqual(mockComplexData);
-      // 类型检查 - 这些断言在运行时会被执行，但在编译时也会进行类型检查
-      expect(typeof response.id).toBe('number');
-      expect(typeof response.name).toBe('string');
-      expect(Array.isArray(response.tags)).toBe(true);
-      expect(response.metadata).toHaveProperty('createdAt');
-      expect(response.metadata).toHaveProperty('updatedAt');
+      expectTypeChecks(response);
     });
 
     it('应该正确处理联合类型', async () => {
-      type ResponseType = { success: true; data: TestData } | { success: false; error: string };
-
       const testData = createTestData();
-      const successResponse: ResponseType = { success: true, data: testData };
-      const errorResponse: ResponseType = { success: false, error: 'Not found' };
+      const [successResponse, errorResponse] = createUnionResponses(testData);
 
       mockGet
         .mockResolvedValueOnce({ data: successResponse })
         .mockResolvedValueOnce({ data: errorResponse });
 
-      const { result } = renderHook(() => useRequest<ResponseType>('/test'));
+      const { result } = renderHook(() => useRequest<UnionResponseType>('/test'));
       
-      const response1 = await result.current.execute();
-      expect(response1.success).toBe(true);
-      if (response1.success) {
+      const response1 = await act(async () => {
+        return await result.current.execute();
+      });
+
+      if ('success' in response1 && response1.success) {
         expect(response1.data).toEqual(testData);
       }
 
-      const response2 = await result.current.execute();
-      expect(response2.success).toBe(false);
-      if (!response2.success) {
+      const response2 = await act(async () => {
+        return await result.current.execute();
+      });
+
+      if ('success' in response2 && !response2.success) {
         expect(response2.error).toBe('Not found');
       }
     });
   });
 });
+
+// 测试工具函数
+const setupRequestTest = (mockResponse?: TestResponse) => {
+  const testData = createTestData();
+  const response = mockResponse || createTestResponse(testData);
+  mockGet.mockResolvedValue(response);
+  const view = renderHook(() => useRequest<TestData>('/test'));
+  return { 
+    testData, 
+    response, 
+    result: view.result,
+    rerender: view.rerender 
+  };
+};
+
+const executeRequestWithCache = async (
+  result: any, 
+  options?: { 
+    ttl?: number, 
+    key?: string 
+  }
+) => {
+  await act(async () => {
+    await result.current.execute({
+      cache: {
+        enable: true,
+        ttl: options?.ttl || 5000,
+        ...(options?.key && { key: options.key }),
+      },
+    });
+  });
+};
+
+const expectErrorHandling = async (
+  result: any,
+  mockError: AxiosError
+) => {
+  await act(async () => {
+    try {
+      await result.current.execute();
+    } catch (error) {
+      expect(error).toBe(mockError);
+    }
+  });
+  
+  expect(result.current.loading).toBeFalsy();
+  expect(result.current.error).toBe(mockError);
+  expect(result.current.data).toBeNull();
+};

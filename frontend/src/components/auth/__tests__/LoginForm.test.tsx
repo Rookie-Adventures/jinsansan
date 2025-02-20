@@ -1,5 +1,9 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { vi } from 'vitest';
+import { fireEvent } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
+
+import type { LoginFormData } from '@/types/auth';
+
+import { setupAuthTest } from '@/tests/utils/test-utils';
 
 import LoginForm from '../LoginForm';
 
@@ -9,7 +13,7 @@ describe('LoginForm', () => {
   const mockOnTogglePassword = vi.fn();
 
   const defaultProps = {
-    formData: { username: '', password: '' },
+    formData: { username: '', password: '' } as LoginFormData,
     showPassword: false,
     disabled: false,
     onSubmit: mockOnSubmit,
@@ -22,50 +26,56 @@ describe('LoginForm', () => {
   });
 
   it('应该正确渲染登录表单', () => {
-    render(<LoginForm {...defaultProps} />);
+    const { findPasswordInput, getByRole } = setupAuthTest(
+      <LoginForm {...defaultProps} />
+    );
 
-    expect(screen.getByLabelText('用户名')).toBeInTheDocument();
-    expect(screen.getByLabelText('密码')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: '登录' })).toBeInTheDocument();
+    expect(getByRole('heading', { level: 1, name: '登录' })).toBeInTheDocument();
+    expect(getByRole('textbox', { name: '用户名' })).toBeInTheDocument();
+    expect(findPasswordInput()).toBeTruthy();
+    expect(getByRole('button', { name: '登录' })).toBeInTheDocument();
   });
 
   it('应该在输入时触发表单变更', () => {
-    render(<LoginForm {...defaultProps} />);
+    const { getByLabelText } = setupAuthTest(<LoginForm {...defaultProps} />);
 
-    const usernameInput = screen.getByLabelText('用户名');
-    const passwordInput = screen.getByLabelText('密码');
-
-    fireEvent.change(usernameInput, { target: { value: 'testuser' } });
+    fireEvent.change(getByLabelText('用户名'), {
+      target: { value: 'testuser' },
+    });
     expect(mockOnFormChange).toHaveBeenCalledWith({ username: 'testuser' });
 
-    fireEvent.change(passwordInput, { target: { value: 'testpass' } });
+    fireEvent.change(getByLabelText('密码'), {
+      target: { value: 'testpass' },
+    });
     expect(mockOnFormChange).toHaveBeenCalledWith({ password: 'testpass' });
   });
 
   it('应该正确切换密码可见性', () => {
-    render(<LoginForm {...defaultProps} />);
+    const { getByTestId } = setupAuthTest(<LoginForm {...defaultProps} />);
 
-    const toggleButton = screen.getByTestId('password-visibility-toggle');
+    const toggleButton = getByTestId('password-visibility-toggle');
     fireEvent.click(toggleButton);
 
     expect(mockOnTogglePassword).toHaveBeenCalled();
   });
 
   it('应该在提交时触发onSubmit', () => {
-    render(<LoginForm {...defaultProps} />);
+    const { getByTestId } = setupAuthTest(<LoginForm {...defaultProps} />);
 
-    const form = screen.getByTestId('auth-form');
+    const form = getByTestId('auth-form');
     fireEvent.submit(form);
 
     expect(mockOnSubmit).toHaveBeenCalled();
   });
 
   it('在禁用状态下应该禁用所有输入和按钮', () => {
-    render(<LoginForm {...defaultProps} disabled={true} />);
+    const { getByLabelText, getByRole, getByTestId } = setupAuthTest(
+      <LoginForm {...defaultProps} disabled />
+    );
 
-    expect(screen.getByLabelText('用户名')).toBeDisabled();
-    expect(screen.getByLabelText('密码')).toBeDisabled();
-    expect(screen.getByRole('button', { name: '登录' })).toBeDisabled();
-    expect(screen.getByTestId('password-visibility-toggle')).toBeDisabled();
+    expect(getByLabelText('用户名')).toBeDisabled();
+    expect(getByLabelText('密码')).toBeDisabled();
+    expect(getByRole('button', { name: '登录' })).toBeDisabled();
+    expect(getByTestId('password-visibility-toggle')).toBeDisabled();
   });
 });

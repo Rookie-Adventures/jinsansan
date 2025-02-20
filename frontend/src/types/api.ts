@@ -1,4 +1,3 @@
-
 import type { HttpError } from '@/utils/http/error/types';
 import type { ProgressInfo } from '@/utils/http/progress-monitor';
 import type { AxiosRequestConfig } from 'axios';
@@ -14,6 +13,8 @@ export interface ApiResponse<T = unknown> {
   message: string;
   /** 响应数据 */
   data: T;
+  /** 响应时间戳 */
+  timestamp: number;
 }
 
 /**

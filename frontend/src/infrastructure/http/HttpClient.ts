@@ -35,10 +35,7 @@ export interface BaseResponse<T> {
 /**
  * HTTP 请求数据基础接口
  */
-export interface BaseRequest {
-  /** 请求参数 */
-  [key: string]: unknown;
-}
+export type BaseRequest = Record<string, unknown> | FormData;
 
 /**
  * HTTP 客户端配置接口

@@ -50,7 +50,7 @@ export class FileServiceImpl implements FileService {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await http.post<ApiResponse<UploadResponse>>('/api/files/upload/csv', formData as unknown as Record<string, string>, {
+    const response = await http.post<UploadResponse>('/api/files/upload/csv', formData, {
       headers: {
         ...options?.headers,
         'Content-Type': 'multipart/form-data',
@@ -63,16 +63,16 @@ export class FileServiceImpl implements FileService {
       },
     });
 
-    return response.data.data;
+    return response.data;
   }
 
   async downloadCSV(params: DownloadParams): Promise<Blob> {
-    const response = await http.get<ArrayBuffer>('/api/files/download/csv', {
+    const response = await http.get<ApiResponse<ArrayBuffer>>('/api/files/download/csv', {
       params,
       responseType: 'arraybuffer',
     });
 
-    const blob = new Blob([response.data], { type: 'text/csv' });
+    const blob = new Blob([response.data.data], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
@@ -84,14 +84,19 @@ export class FileServiceImpl implements FileService {
   }
 
   async parseCSV<T extends Record<string, unknown>>(content: string): Promise<T[]> {
-    const rows = content.split('\n');
-    const headers = rows[0].split(',');
+    const rows = content.trim().split('\n');
+    if (rows.length <= 1) return [];
 
-    return rows.slice(1).map(row => {
-      const values = row.split(',');
+    const headers = rows[0].split(',').map(header => header.trim());
+    const dataRows = rows.slice(1).filter(row => row.trim());
+
+    return dataRows.map(row => {
+      const values = row.split(',').map(value => value.trim());
       return headers.reduce((obj: Partial<T>, header, index) => {
-        const key = header.trim() as keyof T;
-        obj[key] = values[index]?.trim() as T[keyof T];
+        if (values[index]) {
+          const key = header as keyof T;
+          obj[key] = values[index] as T[keyof T];
+        }
         return obj;
       }, {}) as T;
     });

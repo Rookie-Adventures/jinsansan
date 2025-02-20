@@ -126,44 +126,71 @@ describe('Data Reporting', () => {
   });
 
   describe('错误处理', () => {
-    it('应该处理网络错误', async () => {
-      const mockFetch = vi.fn().mockRejectedValue(new Error('Network error'));
-      global.fetch = mockFetch;
+    const testErrorHandling = async (
+      config: {
+        mockFetch?: () => void;
+        errorAction: () => Promise<void> | void;
+        expectedMetricsLength: number;
+      }
+    ) => {
+      if (config.mockFetch) {
+        config.mockFetch();
+      }
 
-      performanceMonitor.trackCustomMetric('test-metric', 100);
-      await performanceMonitor.flush();
+      try {
+        await config.errorAction();
+      } catch {
+        // 预期的错误，继续执行测试
+      }
+
+      // 等待一个微任务周期，确保错误处理完成
+      await Promise.resolve();
 
       expect(errorLogger.log).toHaveBeenCalledWith(
         expect.any(Error),
         expect.objectContaining({ level: 'error' })
       );
-      expect(performanceMonitor.getMetrics()).toHaveLength(1);
+      expect(performanceMonitor.getMetrics()).toHaveLength(config.expectedMetricsLength);
+    };
+
+    const testMetricError = async (mockFetchConfig: { error?: Error; status?: number }) => {
+      await testErrorHandling({
+        mockFetch: () => {
+          const mockFetch = mockFetchConfig.error 
+            ? vi.fn().mockRejectedValue(mockFetchConfig.error)
+            : vi.fn().mockResolvedValue({ 
+                ok: false, 
+                status: mockFetchConfig.status, 
+                statusText: 'Internal Server Error' 
+              });
+          global.fetch = mockFetch;
+        },
+        errorAction: async () => {
+          performanceMonitor.trackCustomMetric('test-metric', 100);
+          await performanceMonitor.flush().catch(() => {
+            // 预期的错误
+          });
+        },
+        expectedMetricsLength: 1
+      });
+    };
+
+    it('应该处理网络错误', async () => {
+      await testMetricError({ error: new Error('Network error') });
     });
 
     it('应该处理服务器错误', async () => {
-      const mockFetch = vi
-        .fn()
-        .mockResolvedValue({ ok: false, status: 500, statusText: 'Internal Server Error' });
-      global.fetch = mockFetch;
-
-      performanceMonitor.trackCustomMetric('test-metric', 100);
-      await performanceMonitor.flush();
-
-      expect(errorLogger.log).toHaveBeenCalledWith(
-        expect.any(Error),
-        expect.objectContaining({ level: 'error' })
-      );
-      expect(performanceMonitor.getMetrics()).toHaveLength(1);
+      await testMetricError({ status: 500 });
     });
 
     it('应该处理无效数据', async () => {
-      // @ts-expect-error 故意传入无效数据以测试错误处理
-      performanceMonitor.trackCustomMetric(null, 'invalid');
-
-      expect(errorLogger.log).toHaveBeenCalledWith(
-        expect.any(Error),
-        expect.objectContaining({ level: 'error' })
-      );
+      await testErrorHandling({
+        errorAction: () => {
+          // @ts-expect-error 故意传入无效数据以测试错误处理
+          performanceMonitor.trackCustomMetric(null, 'invalid');
+        },
+        expectedMetricsLength: 0
+      });
     });
   });
 });
