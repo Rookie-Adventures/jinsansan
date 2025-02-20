@@ -1,6 +1,6 @@
 {
   "statistics": {
-    "detectionDate": "2025-02-19T23:24:00.901Z",
+    "detectionDate": "2025-02-20T02:33:19.023Z",
     "formats": {
       "typescript": {
         "sources": {
@@ -125,14 +125,14 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/utils/http/__tests__/retry.test.ts": {
-            "lines": 250,
-            "tokens": 2449,
+            "lines": 242,
+            "tokens": 2410,
             "sources": 1,
             "clones": 2,
             "duplicatedLines": 18,
             "duplicatedTokens": 170,
-            "percentage": 7.2,
-            "percentageTokens": 6.94,
+            "percentage": 7.44,
+            "percentageTokens": 7.05,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -382,9 +382,9 @@
             "sources": 1,
             "clones": 1,
             "duplicatedLines": 25,
-            "duplicatedTokens": 188,
+            "duplicatedTokens": 163,
             "percentage": 12.32,
-            "percentageTokens": 8.16,
+            "percentageTokens": 7.08,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -402,13 +402,13 @@
           },
           "D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts": {
             "lines": 564,
-            "tokens": 5400,
+            "tokens": 4839,
             "sources": 1,
             "clones": 5,
             "duplicatedLines": 85,
-            "duplicatedTokens": 804,
+            "duplicatedTokens": 719,
             "percentage": 15.07,
-            "percentageTokens": 14.89,
+            "percentageTokens": 14.86,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -1554,14 +1554,14 @@
           }
         },
         "total": {
-          "lines": 14548,
-          "tokens": 130731,
+          "lines": 14540,
+          "tokens": 130131,
           "sources": 129,
           "clones": 14,
           "duplicatedLines": 191,
-          "duplicatedTokens": 1864,
+          "duplicatedTokens": 1809,
           "percentage": 1.31,
-          "percentageTokens": 1.43,
+          "percentageTokens": 1.39,
           "newDuplicatedLines": 0,
           "newClones": 0
         }
@@ -1581,8 +1581,8 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx": {
-            "lines": 0,
-            "tokens": 3,
+            "lines": 25,
+            "tokens": 170,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -1649,18 +1649,6 @@
             "duplicatedTokens": 0,
             "percentage": 0,
             "percentageTokens": 0,
-            "newDuplicatedLines": 0,
-            "newClones": 0
-          },
-          "D:/jinsansan/frontend/src/components/monitoring/__tests__/AlertRuleForm.test.tsx": {
-            "lines": 100,
-            "tokens": 1097,
-            "sources": 1,
-            "clones": 2,
-            "duplicatedLines": 172,
-            "duplicatedTokens": 1778,
-            "percentage": 172,
-            "percentageTokens": 162.08,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -1760,9 +1748,21 @@
             "newDuplicatedLines": 0,
             "newClones": 0
           },
+          "D:/jinsansan/frontend/src/components/common/layout/SectionLayout.tsx": {
+            "lines": 0,
+            "tokens": 3,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
           "D:/jinsansan/frontend/src/components/common/layout/Navbar.tsx": {
-            "lines": 171,
-            "tokens": 1321,
+            "lines": 250,
+            "tokens": 1901,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -1784,9 +1784,21 @@
             "newDuplicatedLines": 0,
             "newClones": 0
           },
+          "D:/jinsansan/frontend/src/components/common/cards/AnimatedCard.tsx": {
+            "lines": 3,
+            "tokens": 61,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
           "D:/jinsansan/frontend/src/components/business/sections/PricingSection.tsx": {
-            "lines": 118,
-            "tokens": 1027,
+            "lines": 92,
+            "tokens": 752,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -1809,8 +1821,8 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/components/business/sections/FeatureSection.tsx": {
-            "lines": 61,
-            "tokens": 495,
+            "lines": 42,
+            "tokens": 291,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -2278,14 +2290,14 @@
           }
         },
         "total": {
-          "lines": 1955,
-          "tokens": 17421,
-          "sources": 59,
-          "clones": 1,
-          "duplicatedLines": 86,
-          "duplicatedTokens": 889,
-          "percentage": 4.4,
-          "percentageTokens": 5.1,
+          "lines": 1917,
+          "tokens": 16656,
+          "sources": 60,
+          "clones": 0,
+          "duplicatedLines": 0,
+          "duplicatedTokens": 0,
+          "percentage": 0,
+          "percentageTokens": 0,
           "newDuplicatedLines": 0,
           "newClones": 0
         }
@@ -2305,14 +2317,14 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx": {
-            "lines": 392,
-            "tokens": 3620,
+            "lines": 444,
+            "tokens": 3710,
             "sources": 1,
             "clones": 2,
-            "duplicatedLines": 34,
-            "duplicatedTokens": 308,
-            "percentage": 8.67,
-            "percentageTokens": 8.51,
+            "duplicatedLines": 20,
+            "duplicatedTokens": 162,
+            "percentage": 4.5,
+            "percentageTokens": 4.37,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -2473,8 +2485,8 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/components/monitoring/__tests__/AlertRuleForm.test.tsx": {
-            "lines": 155,
-            "tokens": 1586,
+            "lines": 187,
+            "tokens": 1862,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -2502,21 +2514,21 @@
             "sources": 1,
             "clones": 1,
             "duplicatedLines": 34,
-            "duplicatedTokens": 290,
+            "duplicatedTokens": 256,
             "percentage": 35.05,
-            "percentageTokens": 31.28,
+            "percentageTokens": 27.62,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/components/feedback/__tests__/LoadingBar.test.tsx": {
             "lines": 122,
-            "tokens": 1162,
+            "tokens": 1040,
             "sources": 1,
             "clones": 1,
             "duplicatedLines": 34,
-            "duplicatedTokens": 290,
+            "duplicatedTokens": 256,
             "percentage": 27.87,
-            "percentageTokens": 24.96,
+            "percentageTokens": 24.62,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -2604,15 +2616,27 @@
             "newDuplicatedLines": 0,
             "newClones": 0
           },
-          "D:/jinsansan/frontend/src/components/common/layout/Navbar.tsx": {
-            "lines": 243,
-            "tokens": 1944,
+          "D:/jinsansan/frontend/src/components/common/layout/SectionLayout.tsx": {
+            "lines": 57,
+            "tokens": 489,
             "sources": 1,
-            "clones": 2,
-            "duplicatedLines": 56,
-            "duplicatedTokens": 454,
-            "percentage": 23.05,
-            "percentageTokens": 23.35,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/common/layout/Navbar.tsx": {
+            "lines": 327,
+            "tokens": 2404,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -2628,15 +2652,27 @@
             "newDuplicatedLines": 0,
             "newClones": 0
           },
-          "D:/jinsansan/frontend/src/components/business/sections/PricingSection.tsx": {
-            "lines": 220,
-            "tokens": 1809,
+          "D:/jinsansan/frontend/src/components/common/cards/AnimatedCard.tsx": {
+            "lines": 58,
+            "tokens": 531,
             "sources": 1,
-            "clones": 2,
-            "duplicatedLines": 23,
-            "duplicatedTokens": 203,
-            "percentage": 10.45,
-            "percentageTokens": 11.22,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "D:/jinsansan/frontend/src/components/business/sections/PricingSection.tsx": {
+            "lines": 151,
+            "tokens": 1180,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -2653,14 +2689,14 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/components/business/sections/FeatureSection.tsx": {
-            "lines": 153,
-            "tokens": 1229,
+            "lines": 98,
+            "tokens": 696,
             "sources": 1,
-            "clones": 2,
-            "duplicatedLines": 23,
-            "duplicatedTokens": 203,
-            "percentage": 15.03,
-            "percentageTokens": 16.52,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -2917,8 +2953,8 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/components/feedback/LoadingBar.tsx": {
-            "lines": 55,
-            "tokens": 571,
+            "lines": 68,
+            "tokens": 552,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -3170,28 +3206,28 @@
           }
         },
         "total": {
-          "lines": 8444,
-          "tokens": 77961,
-          "sources": 73,
-          "clones": 25,
-          "duplicatedLines": 337,
-          "duplicatedTokens": 3153,
-          "percentage": 3.99,
-          "percentageTokens": 4.04,
+          "lines": 8616,
+          "tokens": 78504,
+          "sources": 75,
+          "clones": 22,
+          "duplicatedLines": 279,
+          "duplicatedTokens": 2616,
+          "percentage": 3.24,
+          "percentageTokens": 3.33,
           "newDuplicatedLines": 0,
           "newClones": 0
         }
       }
     },
     "total": {
-      "lines": 24947,
-      "tokens": 226113,
-      "sources": 261,
-      "clones": 40,
-      "duplicatedLines": 614,
-      "duplicatedTokens": 5906,
-      "percentage": 2.46,
-      "percentageTokens": 2.61,
+      "lines": 25073,
+      "tokens": 225291,
+      "sources": 264,
+      "clones": 36,
+      "duplicatedLines": 470,
+      "duplicatedTokens": 4425,
+      "percentage": 1.87,
+      "percentageTokens": 1.96,
       "newDuplicatedLines": 0,
       "newClones": 0
     }
@@ -3199,37 +3235,37 @@
   "duplicates": [
     {
       "format": "tsx",
-      "lines": 18,
-      "fragment": "() => {\r\n      vi.mocked(useAuth).mockReturnValue({\r\n        isAuthenticated: true,\r\n        user: {\r\n          id: 1,\r\n          username: 'testuser',\r\n          email: 'test@example.com',\r\n          permissions: ['read:posts'],\r\n        },\r\n        logout: vi.fn(),\r\n        login: vi.fn(),\r\n        register: vi.fn(),\r\n        loading: false,\r\n        error: null,\r\n        token: 'test-token',\r\n        getCurrentUser: vi.fn(),\r\n      });\r\n    }",
+      "lines": 11,
+      "fragment": ", () => {\n    beforeEach(() => {\n      const testUser = createTestUser();\n      vi.mocked(useAuth).mockReturnValue(createAuthState({\n        isAuthenticated: true,\n        user: testUser,\n        token: 'test-token',\n      }));\n    });\n\n    it('点击用户名应该关闭菜单'",
       "tokens": 0,
       "firstFile": {
         "name": "D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx",
-        "start": 339,
-        "end": 356,
+        "start": 405,
+        "end": 415,
         "startLoc": {
-          "line": 339,
-          "column": 2,
-          "position": 3172
+          "line": 405,
+          "column": 9,
+          "position": 3356
         },
         "endLoc": {
-          "line": 356,
-          "column": 2,
-          "position": 3326
+          "line": 415,
+          "column": 14,
+          "position": 3437
         }
       },
       "secondFile": {
         "name": "D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx",
-        "start": 281,
-        "end": 299,
+        "start": 243,
+        "end": 253,
         "startLoc": {
-          "line": 281,
-          "column": 2,
-          "position": 2648
+          "line": 243,
+          "column": 9,
+          "position": 1996
         },
         "endLoc": {
-          "line": 299,
-          "column": 13,
-          "position": 2804
+          "line": 253,
+          "column": 16,
+          "position": 2077
         }
       }
     },
@@ -3312,32 +3348,32 @@
       "tokens": 0,
       "firstFile": {
         "name": "D:/jinsansan/frontend/src/utils/http/__tests__/retry.test.ts",
-        "start": 241,
-        "end": 250,
+        "start": 233,
+        "end": 242,
         "startLoc": {
-          "line": 241,
+          "line": 233,
           "column": 16,
-          "position": 2358
+          "position": 2319
         },
         "endLoc": {
-          "line": 250,
+          "line": 242,
           "column": 2,
-          "position": 2443
+          "position": 2404
         }
       },
       "secondFile": {
         "name": "D:/jinsansan/frontend/src/utils/http/__tests__/retry.test.ts",
-        "start": 215,
-        "end": 225,
+        "start": 207,
+        "end": 217,
         "startLoc": {
-          "line": 215,
+          "line": 207,
           "column": 13,
-          "position": 2104
+          "position": 2065
         },
         "endLoc": {
-          "line": 225,
+          "line": 217,
           "column": 3,
-          "position": 2190
+          "position": 2151
         }
       }
     },
@@ -3740,7 +3776,7 @@
     {
       "format": "typescript",
       "lines": 13,
-      "fragment": "const testData = createTestData();\r\n      const mockResponse = createTestResponse(testData);\r\n      mockGetCacheData.mockReturnValue(null);\r\n      mockGet.mockResolvedValue(mockResponse);\r\n\r\n      const { result } = renderHook(() => useRequest<TestData>('/test'));\r\n\r\n      await act(async () => {\r\n        await result.current.execute({\r\n          cache: {\r\n            enable: true,\r\n            ttl: 5000,\r\n            key",
+      "fragment": "const testData = createTestData();\n      const mockResponse = createTestResponse(testData);\n      mockGetCacheData.mockReturnValue(null);\n      mockGet.mockResolvedValue(mockResponse);\n\n      const { result } = renderHook(() => useRequest<TestData>('/test'));\n\n      await act(async () => {\n        await result.current.execute({\n          cache: {\n            enable: true,\n            ttl: 5000,\n            key",
       "tokens": 0,
       "firstFile": {
         "name": "D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts",
@@ -3749,12 +3785,12 @@
         "startLoc": {
           "line": 238,
           "column": 7,
-          "position": 2288
+          "position": 2053
         },
         "endLoc": {
           "line": 250,
           "column": 4,
-          "position": 2418
+          "position": 2171
         }
       },
       "secondFile": {
@@ -3764,19 +3800,19 @@
         "startLoc": {
           "line": 216,
           "column": 7,
-          "position": 2068
+          "position": 1855
         },
         "endLoc": {
           "line": 228,
           "column": 2,
-          "position": 2198
+          "position": 1973
         }
       }
     },
     {
       "format": "typescript",
       "lines": 19,
-      "fragment": ");\r\n      mockGet.mockRejectedValue(mockError);\r\n\r\n      const { result } = renderHook(() => useRequest<TestData>('/test'));\r\n\r\n      await act(async () => {\r\n        try {\r\n          await result.current.execute();\r\n        } catch (error) {\r\n          expect(error).toBe(mockError);\r\n        }\r\n      });\r\n\r\n      expect(result.current.loading).toBeFalsy();\r\n      expect(result.current.error).toBe(mockError);\r\n      expect(result.current.data).toBeNull();\r\n    });\r\n\r\n    it('应该在重新请求时重置错误状态'",
+      "fragment": ");\n      mockGet.mockRejectedValue(mockError);\n\n      const { result } = renderHook(() => useRequest<TestData>('/test'));\n\n      await act(async () => {\n        try {\n          await result.current.execute();\n        } catch (error) {\n          expect(error).toBe(mockError);\n        }\n      });\n\n      expect(result.current.loading).toBeFalsy();\n      expect(result.current.error).toBe(mockError);\n      expect(result.current.data).toBeNull();\n    });\n\n    it('应该在重新请求时重置错误状态'",
       "tokens": 0,
       "firstFile": {
         "name": "D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts",
@@ -3785,12 +3821,12 @@
         "startLoc": {
           "line": 453,
           "column": 15,
-          "position": 4232
+          "position": 3782
         },
         "endLoc": {
           "line": 471,
           "column": 17,
-          "position": 4410
+          "position": 3942
         }
       },
       "secondFile": {
@@ -3800,19 +3836,19 @@
         "startLoc": {
           "line": 127,
           "column": 2,
-          "position": 1211
+          "position": 1085
         },
         "endLoc": {
           "line": 145,
           "column": 13,
-          "position": 1389
+          "position": 1245
         }
       }
     },
     {
       "format": "typescript",
       "lines": 26,
-      "fragment": ");\r\n  });\r\n\r\n  describe('类型安全', () => {\r\n    it('应该正确处理泛型类型', async () => {\r\n      interface ComplexData {\r\n        id: number;\r\n        name: string;\r\n        metadata: {\r\n          createdAt: string;\r\n          updatedAt: string;\r\n        };\r\n        tags: string[];\r\n      }\r\n\r\n      const mockComplexData: ComplexData = {\r\n        id: 1,\r\n        name: 'test',\r\n        metadata: {\r\n          createdAt: '2024-01-01',\r\n          updatedAt: '2024-01-02',\r\n        },\r\n        tags: ['tag1', 'tag2'],\r\n      };\r\n\r\n      mockGet",
+      "fragment": ");\n  });\n\n  describe('类型安全', () => {\n    it('应该正确处理泛型类型', async () => {\n      interface ComplexData {\n        id: number;\n        name: string;\n        metadata: {\n          createdAt: string;\n          updatedAt: string;\n        };\n        tags: string[];\n      }\n\n      const mockComplexData: ComplexData = {\n        id: 1,\n        name: 'test',\n        metadata: {\n          createdAt: '2024-01-01',\n          updatedAt: '2024-01-02',\n        },\n        tags: ['tag1', 'tag2'],\n      };\n\n      mockGet",
       "tokens": 0,
       "firstFile": {
         "name": "D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts",
@@ -3821,12 +3857,12 @@
         "startLoc": {
           "line": 500,
           "column": 2,
-          "position": 4692
+          "position": 4195
         },
         "endLoc": {
           "line": 525,
           "column": 8,
-          "position": 4880
+          "position": 4358
         }
       },
       "secondFile": {
@@ -3954,42 +3990,6 @@
       }
     },
     {
-      "format": "javascript",
-      "lines": 87,
-      "fragment": "} />);\r\n\r\n      expect(screen.getByLabelText('规则名称')).toHaveValue(defaultRule.name);\r\n      expect(screen.getByLabelText('通知邮箱')).toHaveValue(\r\n        defaultRule.notification.email?.join(',')\r\n      );\r\n    });\r\n\r\n    it('calls onCancel when cancel button is clicked', () => {\r\n      render(<AlertRuleForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);\r\n\r\n      fireEvent.click(screen.getByText('取消'));\r\n      expect(mockOnCancel).toHaveBeenCalled();\r\n    });\r\n  });\r\n\r\n  // 表单验证测试\r\n  describe('表单验证', () => {\r\n    it('validates required fields', async () => {\r\n      render(<AlertRuleForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);\r\n\r\n      // 触发表单提交\r\n      fireEvent.submit(screen.getByRole('form'));\r\n\r\n      // 等待错误消息出现\r\n      expect(await screen.findByText('规则名称不能为空')).toBeInTheDocument();\r\n    });\r\n\r\n    it('validates threshold values', async () => {\r\n      render(<AlertRuleForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);\r\n\r\n      // 输入无效的阈值\r\n      fireEvent.change(screen.getByLabelText('阈值'), { target: { value: '-1' } });\r\n\r\n      // 触发表单提交\r\n      fireEvent.submit(screen.getByRole('form'));\r\n\r\n      // 等待错误消息出现\r\n      expect(await screen.findByText('阈值不能为负数')).toBeInTheDocument();\r\n    });\r\n\r\n    it('validates email format', async () => {\r\n      render(<AlertRuleForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);\r\n\r\n      // 输入必填字段\r\n      await user.type(screen.getByLabelText('规则名称'), 'Test Rule');\r\n      await user.type(screen.getByLabelText('通知邮箱'), 'invalid-email');\r\n      await user.click(screen.getByRole('button', { name: '保存' }));\r\n\r\n      // 等待验证完成\r\n      await waitFor(() => {\r\n        expect(screen.getByText('邮箱格式不正确')).toBeInTheDocument();\r\n      });\r\n    });\r\n  });\r\n\r\n  // 安全性测试\r\n  describe('安全性', () => {\r\n    it('should safely handle potentially malicious input', async () => {\r\n      render(<AlertRuleForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);\r\n\r\n      const maliciousInput = '<script>alert(\"xss\")</script>';\r\n      await user.type(screen.getByLabelText('规则名称'), maliciousInput);\r\n      await user.click(screen.getByRole('button', { name: '保存' }));\r\n\r\n      // 验证提交的数据是否被正确转义\r\n      expect(mockOnSubmit).toHaveBeenCalledWith(\r\n        expect.objectContaining({\r\n          name: expect.not.stringContaining('<script>'),\r\n          type: 'threshold',\r\n          condition: expect.any(Object),\r\n          notification: expect.any(Object),\r\n        })\r\n      );\r\n    });\r\n\r\n    it('should render safely without props', () => {\r\n      expect(() =>\r\n        render(<AlertRuleForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />)\r\n      ).not.toThrow();\r\n    });\r\n  });\r\n\r\n  // 数据提交测试\r\n  describe('数据提交', () => {\r\n    it('calls onSubmit with sanitized form data when form is valid', async () => {\r\n      render(<AlertRuleForm onSubmit={mockOnSubmit} onCancel={mockOnCancel}",
-      "tokens": 0,
-      "firstFile": {
-        "name": "D:/jinsansan/frontend/src/components/monitoring/__tests__/AlertRuleForm.test.tsx",
-        "start": 53,
-        "end": 139,
-        "startLoc": {
-          "line": 53,
-          "column": 13,
-          "position": 557
-        },
-        "endLoc": {
-          "line": 139,
-          "column": 2,
-          "position": 1446
-        }
-      },
-      "secondFile": {
-        "name": "D:/jinsansan/frontend/src/components/monitoring/__tests__/AlertRuleForm.test.tsx",
-        "start": 53,
-        "end": 131,
-        "startLoc": {
-          "line": 53,
-          "column": 12,
-          "position": 545
-        },
-        "endLoc": {
-          "line": 131,
-          "column": 2,
-          "position": 1365
-        }
-      }
-    },
-    {
       "format": "tsx",
       "lines": 10,
       "fragment": ", () => {\r\n      const WrapperComponent = () => {\r\n        const { control } = useForm<TestFormData>({\r\n          defaultValues: { testField: '' },\r\n        });\r\n        return <TestForm control={control} />;\r\n      };\r\n\r\n      render(<WrapperComponent />);\r\n      const input = screen.getByRole('textbox')",
@@ -4028,7 +4028,7 @@
     {
       "format": "tsx",
       "lines": 35,
-      "fragment": ";\r\n\r\nconst createTestStore = (preloadedState = {}) => {\r\n  return configureStore({\r\n    reducer: {\r\n      app: appReducer,\r\n    },\r\n    preloadedState: {\r\n      app: {\r\n        darkMode: false,\r\n        loading: false,\r\n        toast: {\r\n          open: false,\r\n          message: '',\r\n          severity: 'info' as AlertColor,\r\n        },\r\n        ...preloadedState,\r\n      },\r\n    },\r\n  });\r\n};\r\n\r\nconst renderWithProviders = (ui: React.ReactElement, { preloadedState = {} } = {}) => {\r\n  const store = createTestStore(preloadedState);\r\n  return {\r\n    ...render(\r\n      <Provider store={store}>\r\n        <ThemeProvider theme={createTheme({ palette: { mode: 'light' } })}>{ui}</ThemeProvider>\r\n      </Provider>\r\n    ),\r\n    store,\r\n  };\r\n};\r\n\r\ndescribe('LoadingBar'",
+      "fragment": ";\n\nconst createTestStore = (preloadedState = {}) => {\n  return configureStore({\n    reducer: {\n      app: appReducer,\n    },\n    preloadedState: {\n      app: {\n        darkMode: false,\n        loading: false,\n        toast: {\n          open: false,\n          message: '',\n          severity: 'info' as AlertColor,\n        },\n        ...preloadedState,\n      },\n    },\n  });\n};\n\nconst renderWithProviders = (ui: React.ReactElement, { preloadedState = {} } = {}) => {\n  const store = createTestStore(preloadedState);\n  return {\n    ...render(\n      <Provider store={store}>\n        <ThemeProvider theme={createTheme({ palette: { mode: 'light' } })}>{ui}</ThemeProvider>\n      </Provider>\n    ),\n    store,\n  };\n};\n\ndescribe('LoadingBar'",
       "tokens": 0,
       "firstFile": {
         "name": "D:/jinsansan/frontend/src/components/feedback/__tests__/LoadingBar.test.tsx",
@@ -4037,12 +4037,12 @@
         "startLoc": {
           "line": 9,
           "column": 16,
-          "position": 122
+          "position": 114
         },
         "endLoc": {
           "line": 43,
           "column": 13,
-          "position": 412
+          "position": 370
         }
       },
       "secondFile": {
@@ -4130,114 +4130,6 @@
           "line": 130,
           "column": 7,
           "position": 1137
-        }
-      }
-    },
-    {
-      "format": "tsx",
-      "lines": 29,
-      "fragment": "();\r\n  const { isAuthenticated, user, logout } = useAuth();\r\n\r\n  const handleMenu = (event: MouseEvent<HTMLElement>) => {\r\n    setAnchorEl(event.currentTarget);\r\n  };\r\n\r\n  const handleClose = () => {\r\n    setAnchorEl(null);\r\n  };\r\n\r\n  const handleLogout = async () => {\r\n    try {\r\n      handleClose();\r\n      navigate('/');\r\n      await logout();\r\n    } catch (error) {\r\n      errorLogger.log(\r\n        new HttpError({\r\n          type: HttpErrorType.AUTH,\r\n          message: '退出登录失败',\r\n          data: error,\r\n        })\r\n      );\r\n    }\r\n  };\r\n\r\n  return (\r\n    <",
-      "tokens": 0,
-      "firstFile": {
-        "name": "D:/jinsansan/frontend/src/components/common/layout/Navbar.tsx",
-        "start": 139,
-        "end": 167,
-        "startLoc": {
-          "line": 139,
-          "column": 12,
-          "position": 1107
-        },
-        "endLoc": {
-          "line": 167,
-          "column": 2,
-          "position": 1334
-        }
-      },
-      "secondFile": {
-        "name": "D:/jinsansan/frontend/src/components/common/layout/Navbar.tsx",
-        "start": 27,
-        "end": 55,
-        "startLoc": {
-          "line": 27,
-          "column": 9,
-          "position": 256
-        },
-        "endLoc": {
-          "line": 55,
-          "column": 2,
-          "position": 483
-        }
-      }
-    },
-    {
-      "format": "tsx",
-      "lines": 9,
-      "fragment": ": FC = () => {\r\n  const theme = useTheme();\r\n  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));\r\n\r\n  return (\r\n    <Container maxWidth=\"lg\">\r\n      <Box\r\n        sx={{\r\n          py: { xs: 4, md: 8",
-      "tokens": 0,
-      "firstFile": {
-        "name": "D:/jinsansan/frontend/src/components/business/sections/FeatureSection.tsx",
-        "start": 39,
-        "end": 47,
-        "startLoc": {
-          "line": 39,
-          "column": 15,
-          "position": 297
-        },
-        "endLoc": {
-          "line": 47,
-          "column": 2,
-          "position": 392
-        }
-      },
-      "secondFile": {
-        "name": "D:/jinsansan/frontend/src/components/business/sections/PricingSection.tsx",
-        "start": 44,
-        "end": 52,
-        "startLoc": {
-          "line": 44,
-          "column": 15,
-          "position": 322
-        },
-        "endLoc": {
-          "line": 52,
-          "column": 2,
-          "position": 417
-        }
-      }
-    },
-    {
-      "format": "tsx",
-      "lines": 16,
-      "fragment": ">\r\n        <Typography\r\n          component=\"h2\"\r\n          variant=\"h3\"\r\n          align=\"center\"\r\n          gutterBottom\r\n          sx={{\r\n            mb: 2,\r\n            fontSize: { xs: '2rem', md: '3rem' },\r\n            fontWeight: 'bold',\r\n            background: 'linear-gradient(135deg, #24243e 0%, #302b63 100%)',\r\n            WebkitBackgroundClip: 'text',\r\n            WebkitTextFillColor: 'transparent',\r\n          }}\r\n        >\r\n          核心功能",
-      "tokens": 0,
-      "firstFile": {
-        "name": "D:/jinsansan/frontend/src/components/business/sections/FeatureSection.tsx",
-        "start": 54,
-        "end": 69,
-        "startLoc": {
-          "line": 54,
-          "column": 7,
-          "position": 457
-        },
-        "endLoc": {
-          "line": 69,
-          "column": 5,
-          "position": 565
-        }
-      },
-      "secondFile": {
-        "name": "D:/jinsansan/frontend/src/components/business/sections/PricingSection.tsx",
-        "start": 61,
-        "end": 76,
-        "startLoc": {
-          "line": 61,
-          "column": 7,
-          "position": 496
-        },
-        "endLoc": {
-          "line": 76,
-          "column": 5,
-          "position": 604
         }
       }
     },

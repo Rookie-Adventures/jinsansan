@@ -65,5 +65,19 @@ export const LoadingBar: FC = () => {
 
   if (!visible) return null;
 
-  return <StyledLinearProgress variant="determinate" value={progress} />;
+  return (
+    <StyledLinearProgress
+      role="progressbar"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={progress}
+      variant="determinate"
+      value={progress}
+      sx={{
+        '& .MuiLinearProgress-bar': {
+          transition: 'transform 0.3s linear',
+        },
+      }}
+    />
+  );
 };

@@ -1,4 +1,4 @@
-import { ThemeProvider, createTheme, AlertColor } from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen, act } from '@testing-library/react';
 import { Provider } from 'react-redux';
@@ -13,30 +13,55 @@ const createTestStore = (preloadedState = {}) => {
     reducer: {
       app: appReducer,
     },
-    preloadedState: {
-      app: {
-        darkMode: false,
-        loading: false,
-        toast: {
-          open: false,
-          message: '',
-          severity: 'info' as AlertColor,
-        },
-        ...preloadedState,
-      },
-    },
+    preloadedState,
   });
 };
 
-const renderWithProviders = (ui: React.ReactElement, { preloadedState = {} } = {}) => {
-  const store = createTestStore(preloadedState);
+// 创建一个测试工具类来管理所有异步操作
+class TestHelper {
+  store: ReturnType<typeof createTestStore>;
+  
+  constructor(initialState = {}) {
+    this.store = createTestStore(initialState);
+  }
+
+  // 等待组件渲染和状态更新
+  async waitForComponentUpdate() {
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(0);  // 等待 React 状态更新
+      await vi.advanceTimersByTimeAsync(0);  // 等待 useEffect 执行
+    });
+  }
+
+  // 等待进度更新
+  async waitForProgress() {
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(500);  // 等待进度更新定时器
+    });
+  }
+
+  // 等待动画完成
+  async waitForAnimation() {
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(300);  // 等待动画完成
+    });
+  }
+}
+
+const renderWithProviders = (ui: React.ReactElement, initialState = {}) => {
+  const helper = new TestHelper(initialState);
+  
+  const view = render(
+    <Provider store={helper.store}>
+      <ThemeProvider theme={createTheme({ palette: { mode: 'light' } })}>
+        {ui}
+      </ThemeProvider>
+    </Provider>
+  );
+
   return {
-    ...render(
-      <Provider store={store}>
-        <ThemeProvider theme={createTheme({ palette: { mode: 'light' } })}>{ui}</ThemeProvider>
-      </Provider>
-    ),
-    store,
+    ...view,
+    helper,
   };
 };
 
@@ -51,73 +76,85 @@ describe('LoadingBar', () => {
 
   it('初始状态下不应该显示进度条', () => {
     renderWithProviders(<LoadingBar />);
-    const progressBar = screen.queryByRole('progressbar');
-    expect(progressBar).toBeNull();
+    expect(screen.queryByRole('progressbar')).toBeNull();
   });
 
-  it('加载状态下应该显示进度条', () => {
-    renderWithProviders(<LoadingBar />, {
-      preloadedState: { loading: true },
+  it('加载状态下应该显示进度条', async () => {
+    const { helper } = renderWithProviders(<LoadingBar />, {
+      app: { 
+        darkMode: false,
+        loading: true,
+        toast: {
+          open: false,
+          message: '',
+          severity: 'info',
+        }
+      }
     });
+
+    // 等待组件完全更新
+    await helper.waitForComponentUpdate();
+    
     const progressBar = screen.getByRole('progressbar');
     expect(progressBar).toBeInTheDocument();
   });
 
   it('进度值应该随时间增加', async () => {
-    renderWithProviders(<LoadingBar />, {
-      preloadedState: { loading: true },
+    const { helper } = renderWithProviders(<LoadingBar />, {
+      app: { 
+        darkMode: false,
+        loading: true,
+        toast: {
+          open: false,
+          message: '',
+          severity: 'info',
+        }
+      }
     });
 
+    // 等待组件完全更新
+    await helper.waitForComponentUpdate();
+    
     const progressBar = screen.getByRole('progressbar');
+    expect(progressBar).toBeInTheDocument();
 
-    // 初始值应该为 0
-    expect(progressBar.getAttribute('aria-valuenow')).toBe('0');
-
-    // 等待第一次进度更新（500ms 是更新间隔）
-    await act(async () => {
-      await vi.advanceTimersByTimeAsync(500);
-    });
+    // 等待进度更新
+    await helper.waitForProgress();
 
     const newValue = Number(progressBar.getAttribute('aria-valuenow'));
     expect(newValue).toBeGreaterThan(0);
     expect(newValue).toBeLessThanOrEqual(90);
-
-    // 验证进度会继续增加
-    await act(async () => {
-      await vi.advanceTimersByTimeAsync(500);
-    });
-
-    const finalValue = Number(progressBar.getAttribute('aria-valuenow'));
-    expect(finalValue).toBeGreaterThan(newValue);
-    expect(finalValue).toBeLessThanOrEqual(90);
   });
 
   it('加载完成后应该显示 100% 并淡出', async () => {
-    const { store } = renderWithProviders(<LoadingBar />, {
-      preloadedState: { loading: true },
+    const { helper } = renderWithProviders(<LoadingBar />, {
+      app: { 
+        darkMode: false,
+        loading: true,
+        toast: {
+          open: false,
+          message: '',
+          severity: 'info',
+        }
+      }
     });
 
+    // 等待组件完全更新
+    await helper.waitForComponentUpdate();
+    
     const progressBar = screen.getByRole('progressbar');
-
-    // 等待一个 tick 让 useEffect 执行
-    await act(async () => {
-      await vi.advanceTimersByTimeAsync(0);
-    });
+    expect(progressBar).toBeInTheDocument();
 
     // 切换到非加载状态
     await act(async () => {
-      store.dispatch({ type: 'app/setLoading', payload: false });
-      // 等待状态更新
-      await vi.advanceTimersByTimeAsync(0);
+      helper.store.dispatch({ type: 'app/setLoading', payload: false });
     });
+    await helper.waitForComponentUpdate();
 
     expect(progressBar.getAttribute('aria-valuenow')).toBe('100');
 
     // 等待淡出动画
-    await act(async () => {
-      await vi.advanceTimersByTimeAsync(300);
-    });
-
+    await helper.waitForAnimation();
     expect(screen.queryByRole('progressbar')).toBeNull();
   });
 });

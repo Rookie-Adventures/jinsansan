@@ -24,6 +24,48 @@ import { HttpError, HttpErrorType } from '@/utils/http/error/types';
 // 相对路径导入
 import { ThemeToggle } from '../ThemeToggle';
 
+// 用户菜单属性接口
+interface UserMenuProps {
+  anchorEl: HTMLElement | null;
+  onClose: () => void;
+  onLogout: () => void;
+  username?: string;
+}
+
+// 用户菜单组件
+const UserMenu: FC<UserMenuProps> = ({ anchorEl, onClose, onLogout, username }) => (
+  <Menu
+    id="menu-appbar"
+    anchorEl={anchorEl}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'right',
+    }}
+    keepMounted={false}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'right',
+    }}
+    open={Boolean(anchorEl)}
+    onClose={onClose}
+    TransitionProps={{
+      timeout: 0,
+      appear: false,
+      enter: false,
+      exit: false
+    }}
+    disablePortal
+    slotProps={{
+      paper: {
+        sx: { minWidth: 120 }
+      }
+    }}
+  >
+    <MenuItem onClick={onClose}>{username || '用户'}</MenuItem>
+    <MenuItem onClick={onLogout}>退出登录</MenuItem>
+  </Menu>
+);
+
 // 抽取导航菜单组件
 const NavigationMenu: FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -101,36 +143,12 @@ const NavigationMenu: FC = () => {
           >
             <AccountCircle />
           </IconButton>
-          <Menu
-            id="menu-appbar"
+          <UserMenu
             anchorEl={anchorEl}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-            keepMounted={false}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            open={Boolean(anchorEl)}
             onClose={handleClose}
-            TransitionProps={{
-              timeout: 0,
-              appear: false,
-              enter: false,
-              exit: false
-            }}
-            disablePortal
-            slotProps={{
-              paper: {
-                sx: { minWidth: 120 }
-              }
-            }}
-          >
-            <MenuItem onClick={handleClose}>{user?.username || '用户'}</MenuItem>
-            <MenuItem onClick={handleLogout}>退出登录</MenuItem>
-          </Menu>
+            onLogout={handleLogout}
+            username={user?.username}
+          />
         </>
       ) : (
         <Button
@@ -243,36 +261,12 @@ const Navbar: FC = () => {
                   >
                     <AccountCircle />
                   </IconButton>
-                  <Menu
-                    id="menu-appbar"
+                  <UserMenu
                     anchorEl={userAnchorEl}
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'right',
-                    }}
-                    keepMounted={false}
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    open={Boolean(userAnchorEl)}
                     onClose={handleUserClose}
-                    TransitionProps={{
-                      timeout: 0,
-                      appear: false,
-                      enter: false,
-                      exit: false
-                    }}
-                    disablePortal
-                    slotProps={{
-                      paper: {
-                        sx: { minWidth: 120 }
-                      }
-                    }}
-                  >
-                    <MenuItem onClick={handleUserClose}>{user?.username || '用户'}</MenuItem>
-                    <MenuItem onClick={handleLogout}>退出登录</MenuItem>
-                  </Menu>
+                    onLogout={handleLogout}
+                    username={user?.username}
+                  />
                 </>
               ) : (
                 <>

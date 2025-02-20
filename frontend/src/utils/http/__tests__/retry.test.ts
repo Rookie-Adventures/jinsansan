@@ -87,16 +87,8 @@ describe('retry', () => {
       .mockRejectedValueOnce(errors[1])
       .mockRejectedValue(errors[2]);
 
-    const promise = retry(fn, { times: 3, delay: 1000 });
-    
-    // 等待第一次失败
-    await vi.advanceTimersByTimeAsync(1000);
-    // 等待第二次失败
-    await vi.advanceTimersByTimeAsync(2000);
-    // 等待第三次失败
-    await vi.advanceTimersByTimeAsync(4000);
-
-    await expect(promise).rejects.toBe(errors[2]);
+    const { promise } = await executeRetryTest(fn, { times: 3, delay: 1000 }, 3);
+    await expect(promise).rejects.toThrow('fail3');
     expect(fn).toHaveBeenCalledTimes(3);
   });
 
