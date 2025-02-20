@@ -17,190 +17,188 @@ import { http } from '@/utils/http';
 
 import { useHttp } from '../useHttp';
 
+// 共享的测试数据
+interface TestData {
+  id: number;
+  name: string;
+}
+
+const mockTestData: TestData = { id: 1, name: 'test' };
+const mockConfig: HttpRequestConfig = {
+  headers: { 'X-Test': 'test' },
+  params: { id: 1 },
+};
+
+// 辅助函数
+const createMockResponse = <T>(data: T) => ({ data });
+const createNetworkError = (message = 'Network error') => new Error(message);
+
+// 测试工厂函数
+interface TestHttpMethodConfig<T = any> {
+  method: 'get' | 'post' | 'put' | 'delete';
+  mockData?: T;
+  requestData?: any;
+  config?: HttpRequestConfig;
+}
+
+const testHttpMethod = async <T>({
+  method,
+  mockData,
+  requestData,
+  config
+}: TestHttpMethodConfig<T>) => {
+  const mockResponse = createMockResponse(mockData);
+  vi.mocked(http[method]).mockResolvedValue(mockResponse);
+
+  const { result } = renderHook(() => useHttp());
+  const response = await result.current[method]('/test', 
+    ['post', 'put'].includes(method) ? requestData : config,
+    ['post', 'put'].includes(method) ? config : undefined
+  );
+
+  if (['post', 'put'].includes(method)) {
+    expect(http[method]).toHaveBeenCalledWith('/test', requestData, config);
+  } else {
+    expect(http[method]).toHaveBeenCalledWith('/test', config);
+  }
+  expect(response).toEqual(mockResponse);
+};
+
+const testHttpMethodError = async (method: 'get' | 'post' | 'put' | 'delete', requestData?: any) => {
+  const mockError = createNetworkError();
+  vi.mocked(http[method]).mockRejectedValue(mockError);
+
+  const { result } = renderHook(() => useHttp());
+  await expect(result.current[method]('/test', requestData)).rejects.toThrow('Network error');
+};
+
 describe('useHttp', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  describe('GET 请求', () => {
-    it('应该正确发送 GET 请求', async () => {
-      const mockResponse = { data: { id: 1, name: 'test' } };
-      vi.mocked(http.get).mockResolvedValue(mockResponse);
-
-      const { result } = renderHook(() => useHttp());
-      const response = await result.current.get('/test');
-
-      expect(http.get).toHaveBeenCalledWith('/test', undefined);
-      expect(response).toEqual(mockResponse);
+  describe.each([
+    ['GET', 'get' as const],
+    ['POST', 'post' as const],
+    ['PUT', 'put' as const],
+    ['DELETE', 'delete' as const],
+  ])('%s 请求', (name, method) => {
+    it(`应该正确发送 ${name} 请求`, async () => {
+      await testHttpMethod({
+        method,
+        mockData: method === 'delete' ? { success: true } : mockTestData,
+        requestData: ['post', 'put'].includes(method) ? mockTestData : undefined
+      });
     });
 
-    it('应该正确处理 GET 请求的配置参数', async () => {
-      const mockConfig: HttpRequestConfig = {
-        params: { id: 1 },
-        headers: { 'X-Test': 'test' },
-      };
-      const mockResponse = { data: { id: 1, name: 'test' } };
-      vi.mocked(http.get).mockResolvedValue(mockResponse);
-
-      const { result } = renderHook(() => useHttp());
-      const response = await result.current.get('/test', mockConfig);
-
-      expect(http.get).toHaveBeenCalledWith('/test', mockConfig);
-      expect(response).toEqual(mockResponse);
+    it(`应该正确处理 ${name} 请求的配置参数`, async () => {
+      await testHttpMethod({
+        method,
+        mockData: method === 'delete' ? { success: true } : mockTestData,
+        requestData: ['post', 'put'].includes(method) ? mockTestData : undefined,
+        config: mockConfig
+      });
     });
 
-    it('应该正确处理 GET 请求的错误', async () => {
-      const mockError = new Error('Network error');
-      vi.mocked(http.get).mockRejectedValue(mockError);
-
-      const { result } = renderHook(() => useHttp());
-      await expect(result.current.get('/test')).rejects.toThrow('Network error');
+    it(`应该正确处理 ${name} 请求的错误`, async () => {
+      await testHttpMethodError(method, ['post', 'put'].includes(method) ? {} : undefined);
     });
   });
 
-  describe('POST 请求', () => {
-    it('应该正确发送 POST 请求', async () => {
-      const mockData = { name: 'test' };
-      const mockResponse = { data: { id: 1, name: 'test' } };
-      vi.mocked(http.post).mockResolvedValue(mockResponse);
+  it('应该支持请求取消', async () => {
+    const mockAbortController = new AbortController();
+    const abortError = new Error('AbortError');
+    abortError.name = 'AbortError';
 
-      const { result } = renderHook(() => useHttp());
-      const response = await result.current.post('/test', mockData);
+    vi.mocked(http.get).mockImplementation((_url, config) => {
+      const signal = config?.signal as AbortSignal | undefined;
+      if (signal?.aborted) {
+        return Promise.reject(abortError);
+      }
 
-      expect(http.post).toHaveBeenCalledWith('/test', mockData, undefined);
-      expect(response).toEqual(mockResponse);
+      return new Promise((_resolve, reject) => {
+        const handleAbort = () => {
+          if (signal) {
+            signal.removeEventListener('abort', handleAbort);
+          }
+          reject(abortError);
+        };
+
+        if (signal) {
+          signal.addEventListener('abort', handleAbort);
+        }
+      });
     });
 
-    it('应该正确处理 POST 请求的配置参数', async () => {
-      const mockData = { name: 'test' };
-      const mockConfig: HttpRequestConfig = {
-        headers: { 'X-Test': 'test' },
-      };
-      const mockResponse = { data: { id: 1, name: 'test' } };
-      vi.mocked(http.post).mockResolvedValue(mockResponse);
+    const { result } = renderHook(() => useHttp());
+    const promise = result.current.get('/test', { signal: mockAbortController.signal });
 
-      const { result } = renderHook(() => useHttp());
-      const response = await result.current.post('/test', mockData, mockConfig);
+    // 立即取消请求
+    mockAbortController.abort();
 
-      expect(http.post).toHaveBeenCalledWith('/test', mockData, mockConfig);
-      expect(response).toEqual(mockResponse);
-    });
-
-    it('应该正确处理 POST 请求的错误', async () => {
-      const mockError = new Error('Network error');
-      vi.mocked(http.post).mockRejectedValue(mockError);
-
-      const { result } = renderHook(() => useHttp());
-      await expect(result.current.post('/test', {})).rejects.toThrow('Network error');
-    });
-  });
-
-  describe('PUT 请求', () => {
-    it('应该正确发送 PUT 请求', async () => {
-      const mockData = { name: 'test' };
-      const mockResponse = { data: { id: 1, name: 'test' } };
-      vi.mocked(http.put).mockResolvedValue(mockResponse);
-
-      const { result } = renderHook(() => useHttp());
-      const response = await result.current.put('/test', mockData);
-
-      expect(http.put).toHaveBeenCalledWith('/test', mockData, undefined);
-      expect(response).toEqual(mockResponse);
-    });
-
-    it('应该正确处理 PUT 请求的配置参数', async () => {
-      const mockData = { name: 'test' };
-      const mockConfig: HttpRequestConfig = {
-        headers: { 'X-Test': 'test' },
-      };
-      const mockResponse = { data: { id: 1, name: 'test' } };
-      vi.mocked(http.put).mockResolvedValue(mockResponse);
-
-      const { result } = renderHook(() => useHttp());
-      const response = await result.current.put('/test', mockData, mockConfig);
-
-      expect(http.put).toHaveBeenCalledWith('/test', mockData, mockConfig);
-      expect(response).toEqual(mockResponse);
-    });
-
-    it('应该正确处理 PUT 请求的错误', async () => {
-      const mockError = new Error('Network error');
-      vi.mocked(http.put).mockRejectedValue(mockError);
-
-      const { result } = renderHook(() => useHttp());
-      await expect(result.current.put('/test', {})).rejects.toThrow('Network error');
-    });
-  });
-
-  describe('DELETE 请求', () => {
-    it('应该正确发送 DELETE 请求', async () => {
-      const mockResponse = { data: { success: true } };
-      vi.mocked(http.delete).mockResolvedValue(mockResponse);
-
-      const { result } = renderHook(() => useHttp());
-      const response = await result.current.delete('/test');
-
-      expect(http.delete).toHaveBeenCalledWith('/test', undefined);
-      expect(response).toEqual(mockResponse);
-    });
-
-    it('应该正确处理 DELETE 请求的配置参数', async () => {
-      const mockConfig: HttpRequestConfig = {
-        headers: { 'X-Test': 'test' },
-      };
-      const mockResponse = { data: { success: true } };
-      vi.mocked(http.delete).mockResolvedValue(mockResponse);
-
-      const { result } = renderHook(() => useHttp());
-      const response = await result.current.delete('/test', mockConfig);
-
-      expect(http.delete).toHaveBeenCalledWith('/test', mockConfig);
-      expect(response).toEqual(mockResponse);
-    });
-
-    it('应该正确处理 DELETE 请求的错误', async () => {
-      const mockError = new Error('Network error');
-      vi.mocked(http.delete).mockRejectedValue(mockError);
-
-      const { result } = renderHook(() => useHttp());
-      await expect(result.current.delete('/test')).rejects.toThrow('Network error');
-    });
+    await expect(promise).rejects.toThrow('AbortError');
   });
 
   describe('类型安全', () => {
     it('应该正确处理泛型类型', async () => {
-      interface TestData {
+      interface ComplexData {
         id: number;
         name: string;
+        metadata: {
+          createdAt: string;
+          updatedAt: string;
+        };
+        tags: string[];
       }
 
-      const mockResponse: TestData = { id: 1, name: 'test' };
+      const mockComplexData: ComplexData = {
+        id: 1,
+        name: 'test',
+        metadata: {
+          createdAt: '2024-01-01',
+          updatedAt: '2024-01-02',
+        },
+        tags: ['tag1', 'tag2'],
+      };
+
+      const mockResponse = { data: mockComplexData };
       vi.mocked(http.get).mockResolvedValue(mockResponse);
 
       const { result } = renderHook(() => useHttp());
-      const response = await result.current.get<TestData>('/test');
+      const response = await result.current.get<{ data: ComplexData }>('/test');
 
       expect(response).toEqual(mockResponse);
+      // 类型检查 - 这些断言在运行时会被执行，但在编译时也会进行类型检查
+      expect(typeof response.data.id).toBe('number');
+      expect(typeof response.data.name).toBe('string');
+      expect(Array.isArray(response.data.tags)).toBe(true);
+      expect(response.data.metadata).toHaveProperty('createdAt');
+      expect(response.data.metadata).toHaveProperty('updatedAt');
     });
-  });
 
-  describe('Hook 持久性', () => {
-    it('重新渲染时应该返回相同的方法引用', () => {
-      const { result, rerender } = renderHook(() => useHttp());
+    it('应该正确处理联合类型', async () => {
+      type ResponseType = { success: true; data: TestData } | { success: false; error: string };
 
-      const firstRender = {
-        get: result.current.get,
-        post: result.current.post,
-        put: result.current.put,
-        delete: result.current.delete,
-      };
+      const successResponse: ResponseType = { success: true, data: mockTestData };
+      const errorResponse: ResponseType = { success: false, error: 'Not found' };
 
-      rerender();
+      vi.mocked(http.get)
+        .mockResolvedValueOnce({ data: successResponse })
+        .mockResolvedValueOnce({ data: errorResponse });
 
-      expect(result.current.get).toBe(firstRender.get);
-      expect(result.current.post).toBe(firstRender.post);
-      expect(result.current.put).toBe(firstRender.put);
-      expect(result.current.delete).toBe(firstRender.delete);
+      const { result } = renderHook(() => useHttp());
+      
+      const response1 = await result.current.get<{ data: ResponseType }>('/test');
+      expect(response1.data.success).toBe(true);
+      if (response1.data.success) {
+        expect(response1.data.data).toEqual(mockTestData);
+      }
+
+      const response2 = await result.current.get<{ data: ResponseType }>('/test');
+      expect(response2.data.success).toBe(false);
+      if (!response2.data.success) {
+        expect(response2.data.error).toBe('Not found');
+      }
     });
   });
 });

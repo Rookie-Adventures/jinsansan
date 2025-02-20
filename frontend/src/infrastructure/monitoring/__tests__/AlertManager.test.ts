@@ -4,64 +4,102 @@ import type { AlertRule } from '../types';
 
 import { AlertManager } from '../AlertManager';
 
+// 测试辅助类型和函数
+interface TestContext {
+  alertManager: AlertManager;
+  notificationHandler: ReturnType<typeof createNotificationHandler>;
+}
+
+// 创建测试规则的工厂函数
+const createTestRule = (overrides: Partial<AlertRule> = {}): AlertRule => ({
+  id: 'test-rule-1',
+  name: '测试规则1',
+  type: 'threshold',
+  metric: 'cpu_usage',
+  condition: {
+    operator: '>',
+    value: 80,
+  },
+  severity: 'warning',
+  enabled: true,
+  notification: {
+    email: ['test@example.com'],
+  },
+  ...overrides,
+});
+
+// 创建通知处理器的辅助函数
+function createNotificationHandler() {
+  const handler = vi.fn();
+  return { handler };
+}
+
+// 告警评估辅助函数
+const evaluateMetricSequence = (
+  context: TestContext,
+  value: number,
+  count: number = 5,
+  interval: number = 60000
+) => {
+  const baseTime = Date.now();
+  for (let i = 0; i < count; i++) {
+    context.alertManager.evaluateMetric('cpu_usage', value, baseTime + i * interval);
+  }
+  return baseTime;
+};
+
+// 验证告警状态辅助函数
+const verifyAlertState = (
+  context: TestContext,
+  expectedAlerts: number,
+  expectedValue?: number,
+  expectedRuleId?: string
+) => {
+  const activeAlerts = context.alertManager.getActiveAlerts();
+  expect(activeAlerts).toHaveLength(expectedAlerts);
+  if (expectedAlerts > 0 && expectedValue !== undefined && expectedRuleId !== undefined) {
+    expect(activeAlerts[0].value).toBe(expectedValue);
+    expect(activeAlerts[0].ruleId).toBe(expectedRuleId);
+  }
+};
+
 describe('AlertManager', () => {
-  let alertManager: AlertManager;
-  let mockNotificationHandler: ReturnType<typeof vi.fn>;
+  let context: TestContext;
 
   beforeEach(() => {
-    alertManager = AlertManager.getInstance();
+    const alertManager = AlertManager.getInstance();
     alertManager.clearState();
-    mockNotificationHandler = vi.fn();
-    alertManager.setNotificationHandler(mockNotificationHandler);
+    const notificationHandler = createNotificationHandler();
+    alertManager.setNotificationHandler(notificationHandler.handler);
+    context = { alertManager, notificationHandler };
   });
 
   describe('规则管理', () => {
-    const testRule: AlertRule = {
-      id: 'test-rule-1',
-      name: '测试规则1',
-      type: 'threshold',
-      metric: 'cpu_usage',
-      condition: {
-        operator: '>',
-        value: 80,
-      },
-      severity: 'warning',
-      enabled: true,
-      notification: {
-        email: ['test@example.com'],
-      },
-    };
+    const testRule = createTestRule();
 
     it('应该能够添加新规则', () => {
-      alertManager.addRule(testRule);
-      expect(alertManager.getRule(testRule.id)).toEqual(testRule);
+      context.alertManager.addRule(testRule);
+      expect(context.alertManager.getRule(testRule.id)).toEqual(testRule);
     });
 
     it('应该能够更新已存在的规则', () => {
-      alertManager.addRule(testRule);
-      const updatedRule = {
-        ...testRule,
-        name: '更新后的规则名称',
-      };
-      alertManager.updateRule(updatedRule);
-      expect(alertManager.getRule(testRule.id)).toEqual(updatedRule);
+      context.alertManager.addRule(testRule);
+      const updatedRule = createTestRule({ name: '更新后的规则名称' });
+      context.alertManager.updateRule(updatedRule);
+      expect(context.alertManager.getRule(testRule.id)).toEqual(updatedRule);
     });
 
     it('应该能够删除规则', () => {
-      alertManager.addRule(testRule);
-      alertManager.deleteRule(testRule.id);
-      expect(alertManager.getRule(testRule.id)).toBeUndefined();
+      context.alertManager.addRule(testRule);
+      context.alertManager.deleteRule(testRule.id);
+      expect(context.alertManager.getRule(testRule.id)).toBeUndefined();
     });
 
     it('应该能够获取所有规则', () => {
-      const rule2: AlertRule = {
-        ...testRule,
-        id: 'test-rule-2',
-        name: '测试规则2',
-      };
-      alertManager.addRule(testRule);
-      alertManager.addRule(rule2);
-      const rules = alertManager.getRules();
+      const rule2 = createTestRule({ id: 'test-rule-2', name: '测试规则2' });
+      context.alertManager.addRule(testRule);
+      context.alertManager.addRule(rule2);
+      const rules = context.alertManager.getRules();
       expect(rules).toHaveLength(2);
       expect(rules).toContainEqual(testRule);
       expect(rules).toContainEqual(rule2);
@@ -69,38 +107,16 @@ describe('AlertManager', () => {
   });
 
   describe('告警评估', () => {
-    const testRule: AlertRule = {
-      id: 'test-rule-1',
-      name: '测试规则1',
-      type: 'threshold',
-      metric: 'cpu_usage',
-      condition: {
-        operator: '>',
-        value: 80,
-      },
-      severity: 'warning',
-      enabled: true,
-      notification: {
-        email: ['test@example.com'],
-      },
-    };
+    const testRule = createTestRule();
 
     beforeEach(() => {
-      alertManager.addRule(testRule);
+      context.alertManager.addRule(testRule);
     });
 
     it('应该在指标超过阈值时触发告警', () => {
-      const baseTime = Date.now();
-      // 模拟5分钟内的连续高CPU使用率
-      for (let i = 0; i < 5; i++) {
-        alertManager.evaluateMetric('cpu_usage', 85, baseTime + i * 60000);
-      }
-
-      const activeAlerts = alertManager.getActiveAlerts();
-      expect(activeAlerts).toHaveLength(1);
-      expect(activeAlerts[0].ruleId).toBe(testRule.id);
-      expect(activeAlerts[0].value).toBe(85);
-      expect(mockNotificationHandler).toHaveBeenCalledWith(
+      evaluateMetricSequence(context, 85);
+      verifyAlertState(context, 1, 85, testRule.id);
+      expect(context.notificationHandler.handler).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'trigger',
           rule: testRule,
@@ -110,17 +126,11 @@ describe('AlertManager', () => {
     });
 
     it('应该在指标恢复正常时解除告警', () => {
-      const baseTime = Date.now();
-      // 先触发告警
-      for (let i = 0; i < 5; i++) {
-        alertManager.evaluateMetric('cpu_usage', 85, baseTime + i * 60000);
-      }
+      const baseTime = evaluateMetricSequence(context, 85);
+      context.alertManager.evaluateMetric('cpu_usage', 75, baseTime + 300000);
 
-      // 然后恢复正常
-      alertManager.evaluateMetric('cpu_usage', 75, baseTime + 300000);
-
-      expect(alertManager.getActiveAlerts()).toHaveLength(0);
-      expect(mockNotificationHandler).toHaveBeenLastCalledWith(
+      verifyAlertState(context, 0);
+      expect(context.notificationHandler.handler).toHaveBeenLastCalledWith(
         expect.objectContaining({
           type: 'resolve',
           rule: testRule,
@@ -130,114 +140,57 @@ describe('AlertManager', () => {
     });
 
     it('不应该对禁用的规则触发告警', () => {
-      const disabledRule = { ...testRule, enabled: false };
-      alertManager.updateRule(disabledRule);
-
-      const baseTime = Date.now();
-      for (let i = 0; i < 5; i++) {
-        alertManager.evaluateMetric('cpu_usage', 85, baseTime + i * 60000);
-      }
-
-      expect(alertManager.getActiveAlerts()).toHaveLength(0);
-      expect(mockNotificationHandler).not.toHaveBeenCalled();
+      const disabledRule = createTestRule({ enabled: false });
+      context.alertManager.updateRule(disabledRule);
+      evaluateMetricSequence(context, 85);
+      verifyAlertState(context, 0);
+      expect(context.notificationHandler.handler).not.toHaveBeenCalled();
     });
 
     it('应该正确处理不同操作符的条件', () => {
-      const operators: Array<'>' | '<' | '>=' | '<=' | '==' | '!='> = [
-        '>',
-        '<',
-        '>=',
-        '<=',
-        '==',
-        '!=',
-      ];
+      const operators = ['>', '<', '>=', '<=', '==', '!='] as const;
       const testValues = [75, 80, 85];
 
       operators.forEach(operator => {
-        const rule: AlertRule = {
-          ...testRule,
-          condition: {
-            operator,
-            value: 80,
-          },
-        };
+        const rule = createTestRule({
+          condition: { operator, value: 80 },
+        });
 
         testValues.forEach(value => {
-          // 每个值测试前清除状态并添加规则
-          alertManager.clearState();
-          alertManager.addRule(rule);
-
-          const baseTime = Date.now();
-          // 确保有足够的连续记录，每次间隔 60 秒，总共 5 分钟
-          for (let i = 0; i < 5; i++) {
-            alertManager.evaluateMetric('cpu_usage', value, baseTime + i * 60000);
-          }
+          context.alertManager.clearState();
+          context.alertManager.addRule(rule);
+          evaluateMetricSequence(context, value);
 
           const shouldTrigger = (() => {
             switch (operator) {
-              case '>':
-                return value > 80;
-              case '<':
-                return value < 80;
-              case '>=':
-                return value >= 80;
-              case '<=':
-                return value <= 80;
-              case '==':
-                return value === 80;
-              case '!=':
-                return value !== 80;
-              default:
-                return false;
+              case '>': return value > 80;
+              case '<': return value < 80;
+              case '>=': return value >= 80;
+              case '<=': return value <= 80;
+              case '==': return value === 80;
+              case '!=': return value !== 80;
+              default: return false;
             }
           })();
 
-          if (shouldTrigger) {
-            expect(alertManager.getActiveAlerts()).toHaveLength(1);
-            const alert = alertManager.getActiveAlerts()[0];
-            expect(alert.value).toBe(value);
-            expect(alert.ruleId).toBe(rule.id);
-          } else {
-            expect(alertManager.getActiveAlerts()).toHaveLength(0);
-          }
+          verifyAlertState(context, shouldTrigger ? 1 : 0, shouldTrigger ? value : undefined, shouldTrigger ? rule.id : undefined);
         });
       });
     });
   });
 
   describe('告警历史', () => {
-    const testRule: AlertRule = {
-      id: 'test-rule-1',
-      name: '测试规则1',
-      type: 'threshold',
-      metric: 'cpu_usage',
-      condition: {
-        operator: '>',
-        value: 80,
-      },
-      severity: 'warning',
-      enabled: true,
-      notification: {
-        email: ['test@example.com'],
-      },
-    };
+    const testRule = createTestRule();
 
     beforeEach(() => {
-      alertManager.addRule(testRule);
+      context.alertManager.addRule(testRule);
     });
 
     it('应该正确记录告警历史', () => {
-      const baseTime = Date.now();
+      const baseTime = evaluateMetricSequence(context, 85);
+      context.alertManager.evaluateMetric('cpu_usage', 75, baseTime + 300000);
 
-      // 触发告警
-      for (let i = 0; i < 5; i++) {
-        alertManager.evaluateMetric('cpu_usage', 85, baseTime + i * 60000);
-      }
-
-      // 解除告警
-      alertManager.evaluateMetric('cpu_usage', 75, baseTime + 300000);
-
-      const history = alertManager.getAlertHistory();
+      const history = context.alertManager.getAlertHistory();
       expect(history).toHaveLength(1);
       expect(history[0]).toMatchObject({
         ruleId: testRule.id,
@@ -247,67 +200,45 @@ describe('AlertManager', () => {
     });
 
     it('应该遵守历史记录限制', () => {
-      alertManager.setHistoryLimit(2);
-      const baseTime = Date.now();
+      context.alertManager.setHistoryLimit(2);
+      const baseTime = evaluateMetricSequence(context, 85);
 
       // 创建3个告警周期
       for (let j = 0; j < 3; j++) {
         // 触发告警
-        for (let i = 0; i < 5; i++) {
-          alertManager.evaluateMetric('cpu_usage', 85, baseTime + j * 300000 + i * 60000);
-        }
+        evaluateMetricSequence(context, 85);
         // 解除告警
-        alertManager.evaluateMetric('cpu_usage', 75, baseTime + j * 300000 + 300000);
+        context.alertManager.evaluateMetric('cpu_usage', 75, baseTime + j * 300000 + 300000);
       }
 
-      const history = alertManager.getAlertHistory();
+      const history = context.alertManager.getAlertHistory();
       expect(history).toHaveLength(2);
     });
   });
 
   describe('通知处理', () => {
-    const testRule: AlertRule = {
-      id: 'test-rule-1',
-      name: '测试规则1',
-      type: 'threshold',
-      metric: 'cpu_usage',
-      condition: {
-        operator: '>',
-        value: 80,
-      },
-      severity: 'warning',
-      enabled: true,
-      notification: {
-        email: ['test@example.com'],
-      },
-    };
+    const testRule = createTestRule();
 
     beforeEach(() => {
-      alertManager.addRule(testRule);
+      context.alertManager.addRule(testRule);
     });
 
     it('应该能够添加多个通知处理器', () => {
       const handler2 = vi.fn();
-      alertManager.addNotificationHandler(handler2);
+      context.alertManager.addNotificationHandler(handler2);
 
-      const baseTime = Date.now();
-      for (let i = 0; i < 5; i++) {
-        alertManager.evaluateMetric('cpu_usage', 85, baseTime + i * 60000);
-      }
+      evaluateMetricSequence(context, 85);
 
-      expect(mockNotificationHandler).toHaveBeenCalled();
+      expect(context.notificationHandler.handler).toHaveBeenCalled();
       expect(handler2).toHaveBeenCalled();
     });
 
     it('应该能够移除通知处理器', () => {
-      alertManager.removeNotificationHandler(mockNotificationHandler);
+      context.alertManager.removeNotificationHandler(context.notificationHandler.handler);
 
-      const baseTime = Date.now();
-      for (let i = 0; i < 5; i++) {
-        alertManager.evaluateMetric('cpu_usage', 85, baseTime + i * 60000);
-      }
+      evaluateMetricSequence(context, 85);
 
-      expect(mockNotificationHandler).not.toHaveBeenCalled();
+      expect(context.notificationHandler.handler).not.toHaveBeenCalled();
     });
 
     it('应该在通知处理器出错时继续运行', () => {
@@ -316,13 +247,10 @@ describe('AlertManager', () => {
       });
       const successHandler = vi.fn();
 
-      alertManager.setNotificationHandler(errorHandler);
-      alertManager.addNotificationHandler(successHandler);
+      context.alertManager.setNotificationHandler(errorHandler);
+      context.alertManager.addNotificationHandler(successHandler);
 
-      const baseTime = Date.now();
-      for (let i = 0; i < 5; i++) {
-        alertManager.evaluateMetric('cpu_usage', 85, baseTime + i * 60000);
-      }
+      evaluateMetricSequence(context, 85);
 
       expect(errorHandler).toHaveBeenCalled();
       expect(successHandler).toHaveBeenCalled();

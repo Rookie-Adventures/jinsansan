@@ -1,3 +1,4 @@
+// 第三方库导入
 import { AccountCircle, Menu as MenuIcon } from '@mui/icons-material';
 import {
   AppBar,
@@ -15,12 +16,15 @@ import {
 import { type FC, type MouseEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+// 内部模块导入
 import { useAuth } from '@/hooks/auth';
 import { errorLogger } from '@/utils/http/error/logger';
 import { HttpError, HttpErrorType } from '@/utils/http/error/types';
 
+// 相对路径导入
 import { ThemeToggle } from '../ThemeToggle';
 
+// 抽取导航菜单组件
 const NavigationMenu: FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const navigate = useNavigate();
@@ -37,9 +41,9 @@ const NavigationMenu: FC = () => {
 
   const handleLogout = async () => {
     try {
+      await logout();
       handleClose();
       navigate('/');
-      await logout();
     } catch (error) {
       errorLogger.log(
         new HttpError({
@@ -48,6 +52,8 @@ const NavigationMenu: FC = () => {
           data: error,
         })
       );
+      handleClose();
+      navigate('/');
     }
   };
 
@@ -86,11 +92,12 @@ const NavigationMenu: FC = () => {
         <>
           <IconButton
             size="large"
-            aria-label="account of current user"
+            aria-label="用户菜单"
             aria-controls="menu-appbar"
             aria-haspopup="true"
             onClick={handleMenu}
             color="inherit"
+            sx={{ color: theme.palette.text.primary }}
           >
             <AccountCircle />
           </IconButton>
@@ -101,13 +108,25 @@ const NavigationMenu: FC = () => {
               vertical: 'bottom',
               horizontal: 'right',
             }}
-            keepMounted
+            keepMounted={false}
             transformOrigin={{
               vertical: 'top',
               horizontal: 'right',
             }}
             open={Boolean(anchorEl)}
             onClose={handleClose}
+            TransitionProps={{
+              timeout: 0,
+              appear: false,
+              enter: false,
+              exit: false
+            }}
+            disablePortal
+            slotProps={{
+              paper: {
+                sx: { minWidth: 120 }
+              }
+            }}
           >
             <MenuItem onClick={handleClose}>{user?.username || '用户'}</MenuItem>
             <MenuItem onClick={handleLogout}>退出登录</MenuItem>
@@ -133,25 +152,34 @@ const NavigationMenu: FC = () => {
 };
 
 const Navbar: FC = () => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [mobileAnchorEl, setMobileAnchorEl] = useState<null | HTMLElement>(null);
+  const [userAnchorEl, setUserAnchorEl] = useState<null | HTMLElement>(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
   const { isAuthenticated, user, logout } = useAuth();
 
-  const handleMenu = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+  const handleMobileMenu = (event: MouseEvent<HTMLElement>) => {
+    setMobileAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleUserMenu = (event: MouseEvent<HTMLElement>) => {
+    setUserAnchorEl(event.currentTarget);
+  };
+
+  const handleMobileClose = () => {
+    setMobileAnchorEl(null);
+  };
+
+  const handleUserClose = () => {
+    setUserAnchorEl(null);
   };
 
   const handleLogout = async () => {
     try {
-      handleClose();
-      navigate('/');
       await logout();
+      handleUserClose();
+      navigate('/');
     } catch (error) {
       errorLogger.log(
         new HttpError({
@@ -160,7 +188,14 @@ const Navbar: FC = () => {
           data: error,
         })
       );
+      handleUserClose();
+      navigate('/');
     }
+  };
+
+  const handleMobileNavigation = (path: string) => {
+    handleMobileClose();
+    navigate(path);
   };
 
   return (
@@ -199,37 +234,92 @@ const Navbar: FC = () => {
                 <>
                   <IconButton
                     size="large"
-                    aria-label="account of current user"
+                    aria-label="用户菜单"
                     aria-controls="menu-appbar"
                     aria-haspopup="true"
-                    onClick={handleMenu}
+                    onClick={handleUserMenu}
                     color="inherit"
+                    sx={{ color: theme.palette.text.primary }}
                   >
                     <AccountCircle />
                   </IconButton>
                   <Menu
                     id="menu-appbar"
-                    anchorEl={anchorEl}
+                    anchorEl={userAnchorEl}
                     anchorOrigin={{
                       vertical: 'bottom',
                       horizontal: 'right',
                     }}
-                    keepMounted
+                    keepMounted={false}
                     transformOrigin={{
                       vertical: 'top',
                       horizontal: 'right',
                     }}
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
+                    open={Boolean(userAnchorEl)}
+                    onClose={handleUserClose}
+                    TransitionProps={{
+                      timeout: 0,
+                      appear: false,
+                      enter: false,
+                      exit: false
+                    }}
+                    disablePortal
+                    slotProps={{
+                      paper: {
+                        sx: { minWidth: 120 }
+                      }
+                    }}
                   >
-                    <MenuItem onClick={handleClose}>{user?.username || '用户'}</MenuItem>
+                    <MenuItem onClick={handleUserClose}>{user?.username || '用户'}</MenuItem>
                     <MenuItem onClick={handleLogout}>退出登录</MenuItem>
                   </Menu>
                 </>
               ) : (
-                <IconButton size="large" edge="end" color="inherit" aria-label="menu">
-                  <MenuIcon />
-                </IconButton>
+                <>
+                  <IconButton 
+                    size="large" 
+                    edge="end" 
+                    color="inherit" 
+                    aria-label="menu"
+                    onClick={handleMobileMenu}
+                    sx={{ color: theme.palette.text.primary }}
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                  <Menu
+                    id="mobile-menu"
+                    anchorEl={mobileAnchorEl}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'right',
+                    }}
+                    keepMounted={false}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={Boolean(mobileAnchorEl)}
+                    onClose={handleMobileClose}
+                    TransitionProps={{
+                      timeout: 0,
+                      appear: false,
+                      enter: false,
+                      exit: false
+                    }}
+                    disablePortal
+                    slotProps={{
+                      paper: {
+                        sx: { minWidth: 120 }
+                      }
+                    }}
+                  >
+                    <MenuItem onClick={() => handleMobileNavigation('/')}>首页</MenuItem>
+                    <MenuItem onClick={() => handleMobileNavigation('/docs')}>文档</MenuItem>
+                    <MenuItem onClick={() => handleMobileNavigation('/api')}>API</MenuItem>
+                    <MenuItem onClick={() => handleMobileNavigation('/pricing')}>价格</MenuItem>
+                    <MenuItem onClick={() => handleMobileNavigation('/login')}>登录</MenuItem>
+                  </Menu>
+                </>
               )}
             </Box>
           ) : (
@@ -241,4 +331,4 @@ const Navbar: FC = () => {
   );
 };
 
-export default Navbar;
+export default Navbar; 

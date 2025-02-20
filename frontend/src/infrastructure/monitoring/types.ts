@@ -1,25 +1,30 @@
 /**
  * 性能指标类型
  */
-export type MetricType =
-  | 'page_load'
-  | 'resource'
-  | 'long_task'
-  | 'interaction'
-  | 'custom'
-  | 'api_call'
-  | 'cpu_usage';
+export enum MetricType {
+  RESOURCE = 'resource',
+  LONG_TASK = 'long_task',
+  INTERACTION = 'interaction',
+  PAGE_LOAD = 'page_load',
+  CUSTOM = 'custom',
+  API_CALL = 'api_call'
+}
+
+/**
+ * 通用标签类型
+ */
+export type MetricTags = Record<string, string | number | boolean | null>;
 
 /**
  * 指标数据联合类型
  */
-export type MetricData =
-  | PageLoadMetrics
-  | ResourceMetrics
-  | LongTaskMetrics
-  | InteractionMetrics
-  | CustomMetrics
-  | ApiCallMetrics;
+export interface MetricData {
+  name?: string;
+  value?: number;
+  duration?: number;
+  startTime?: number;
+  tags?: MetricTags;
+}
 
 /**
  * 性能指标接口
@@ -90,7 +95,7 @@ export interface CustomMetrics {
   /** 指标值 */
   value: number;
   /** 标签 */
-  tags?: Record<string, string | number | boolean | null>;
+  tags?: MetricTags;
 }
 
 /**

@@ -1,192 +1,202 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { ThemeProvider, createTheme } from '@mui/material';
+import { render, screen, fireEvent, within } from '@testing-library/react';
 import { vi } from 'vitest';
 
-import { errorRecoveryManager } from '../../../utils/http/error/recovery';
-import { HttpError, HttpErrorType } from '../../../utils/http/error/types';
+import { HttpError, HttpErrorType } from '@/utils/http/error/types';
+
 import { ErrorNotification } from '../index';
 
-// Mock errorRecoveryManager
-vi.mock('../../../utils/http/error/recovery', () => ({
-  errorRecoveryManager: {
-    attemptRecovery: vi.fn(),
-  },
-}));
+// 测试辅助类型和函数
+interface TestConfig {
+  error?: HttpError | null;
+  onClose?: () => void;
+}
+
+interface ErrorData {
+  message: string;
+}
+
+const getErrorTitle = (type: HttpErrorType): string => {
+  switch (type) {
+    case HttpErrorType.HTTP_ERROR:
+      return '服务器错误';
+    case HttpErrorType.AUTH:
+      return '认证错误';
+    case HttpErrorType.NETWORK_ERROR:
+      return '网络错误';
+    default:
+      return '错误';
+  }
+};
+
+const createTestError = (overrides: Partial<HttpError> = {}): HttpError => {
+  return new HttpError({
+    type: HttpErrorType.HTTP_ERROR,
+    message: 'Test error message',
+    status: 500,
+    data: { message: 'Test error detail' } as ErrorData,
+    ...overrides,
+  });
+};
+
+const renderErrorNotification = (config: TestConfig = {}) => {
+  const {
+    error = null,
+    onClose = vi.fn(),
+  } = config;
+
+  return {
+    onClose,
+    ...render(
+      <ThemeProvider theme={createTheme()}>
+        <ErrorNotification
+          error={error}
+          onClose={onClose}
+        />
+      </ThemeProvider>
+    ),
+  };
+};
+
+const verifyErrorDisplay = async (error: HttpError) => {
+  // 验证错误标题
+  const alert = screen.getByRole('alert');
+  const titleElement = within(alert).getByText(getErrorTitle(error.type));
+  expect(titleElement).toBeInTheDocument();
+
+  // 验证错误消息
+  const messageElement = within(alert).getByText(error.message, { exact: true });
+  expect(messageElement).toBeInTheDocument();
+
+  // 验证错误详情
+  const errorData = error.data as ErrorData | undefined;
+  if (errorData?.message) {
+    const detailElement = screen.queryByText(errorData.message);
+    expect(detailElement).toBeInTheDocument();
+  }
+
+  // 验证错误图标
+  const alertIcon = screen.getByTestId('ErrorOutlineIcon');
+  expect(alertIcon).toBeInTheDocument();
+};
 
 describe('ErrorNotification', () => {
-  const mockOnClose = vi.fn();
-
   beforeEach(() => {
-    vi.clearAllMocks();
-    // 正确模拟 window.location
-    const originalLocation = window.location;
-    Object.defineProperty(window, 'location', {
-      configurable: true,
-      value: { ...originalLocation, reload: vi.fn(), href: originalLocation.href },
-    });
+    vi.useFakeTimers();
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
+    vi.clearAllTimers();
+    vi.useRealTimers();
   });
 
-  describe('基础渲染', () => {
-    it('当没有错误时不应该渲染任何内容', () => {
-      render(<ErrorNotification error={null} onClose={mockOnClose} />);
+  describe('基础功能', () => {
+    it('没有错误时不应该显示通知', () => {
+      renderErrorNotification();
       expect(screen.queryByRole('alert')).not.toBeInTheDocument();
     });
 
-    it('应该正确渲染网络错误', () => {
-      const error = new HttpError({
-        type: HttpErrorType.NETWORK_ERROR,
-        message: '网络连接失败',
-      });
-
-      render(<ErrorNotification error={error} onClose={mockOnClose} />);
-
-      expect(screen.getByText('网络错误')).toBeInTheDocument();
-      expect(screen.getByText('网络连接失败')).toBeInTheDocument();
-      expect(screen.getByText('重试')).toBeInTheDocument();
+    it('有错误时应该显示错误消息', () => {
+      const error = createTestError();
+      renderErrorNotification({ error });
+      verifyErrorDisplay(error);
     });
 
-    it('应该正确渲染认证错误', () => {
-      const error = new HttpError({
-        type: HttpErrorType.AUTH,
-        message: '登录已过期',
-      });
+    it('应该显示不同类型的错误', async () => {
+      const testCases = [
+        {
+          type: HttpErrorType.AUTH,
+          message: '用户未登录',
+          status: 401,
+          data: { message: '请重新登录' },
+        },
+        {
+          type: HttpErrorType.NETWORK_ERROR,
+          message: '网络连接失败',
+          status: 0,
+          data: { message: '请检查网络连接' },
+        },
+        {
+          type: HttpErrorType.HTTP_ERROR,
+          message: '请求失败',
+          status: 400,
+          data: { message: '输入数据无效' },
+        },
+      ];
 
-      render(<ErrorNotification error={error} onClose={mockOnClose} />);
+      for (const testCase of testCases) {
+        const error = createTestError(testCase);
+        const { rerender } = renderErrorNotification({ error });
+        await verifyErrorDisplay(error);
+        rerender(
+          <ThemeProvider theme={createTheme()}>
+            <ErrorNotification error={null} onClose={vi.fn()} />
+          </ThemeProvider>
+        );
+      }
+    });
+  });
 
-      expect(screen.getByText('认证错误')).toBeInTheDocument();
-      expect(screen.getByText('登录已过期')).toBeInTheDocument();
-      expect(screen.getByText('重新登录')).toBeInTheDocument();
+  describe('交互功能', () => {
+    it('点击关闭按钮应该触发 onClose', () => {
+      const error = createTestError();
+      const onClose = vi.fn();
+      renderErrorNotification({ error, onClose });
+
+      const closeButton = screen.getByRole('button', { name: /close/i });
+      fireEvent.click(closeButton);
+
+      expect(onClose).toHaveBeenCalledTimes(1);
     });
 
-    it('应该使用默认描述当没有错误消息时', () => {
-      const error = new HttpError({
-        type: HttpErrorType.HTTP_ERROR,
-        message: '',
-      });
+    it('应该在指定时间后自动关闭', async () => {
+      const error = createTestError();
+      const onClose = vi.fn();
 
-      render(<ErrorNotification error={error} onClose={mockOnClose} />);
+      renderErrorNotification({ error, onClose });
 
-      expect(screen.getByText('服务器错误')).toBeInTheDocument();
-      expect(screen.getByText('服务器处理请求时出错')).toBeInTheDocument();
+      // 等待自动关闭时间
+      vi.runAllTimers();
+
+      expect(onClose).toHaveBeenCalledTimes(1);
+    });
+
+    it('鼠标悬停时不应该自动关闭', async () => {
+      const error = createTestError();
+      const onClose = vi.fn();
+
+      renderErrorNotification({ error, onClose });
+
+      // 模拟鼠标悬停
+      const alert = screen.getByRole('alert');
+      fireEvent.mouseEnter(alert);
+
+      // 等待自动关闭时间
+      vi.runAllTimers();
+      expect(onClose).not.toHaveBeenCalled();
+
+      // 移开鼠标后应该关闭
+      fireEvent.mouseLeave(alert);
+      vi.runAllTimers();
+      expect(onClose).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('错误处理', () => {
-    it('应该处理可恢复的错误', async () => {
-      vi.mocked(errorRecoveryManager.attemptRecovery).mockResolvedValue(true);
-
-      const error = new HttpError({
-        type: HttpErrorType.NETWORK_ERROR,
-        message: '网络错误',
-      });
-
-      render(<ErrorNotification error={error} onClose={mockOnClose} />);
-
-      const retryButton = screen.getByText('重试');
-      fireEvent.click(retryButton);
-
-      expect(retryButton).toBeDisabled();
-      expect(screen.getByText('处理中...')).toBeInTheDocument();
-
-      // 分开验证恢复尝试和关闭操作
-      await waitFor(() => {
-        expect(errorRecoveryManager.attemptRecovery).toHaveBeenCalledWith(error);
-      });
-
-      await waitFor(() => {
-        expect(mockOnClose).toHaveBeenCalled();
-      });
+    it('应该优雅处理缺少错误详情的情况', () => {
+      const error = createTestError({ data: undefined });
+      renderErrorNotification({ error });
+      expect(screen.getByText(error.message)).toBeInTheDocument();
+      expect(screen.queryByTestId('error-detail')).not.toBeInTheDocument();
     });
 
-    it('应该处理恢复失败的情况', async () => {
-      vi.mocked(errorRecoveryManager.attemptRecovery).mockResolvedValue(false);
-
-      const error = new HttpError({
-        type: HttpErrorType.NETWORK_ERROR,
-        message: '网络错误',
+    it('应该处理错误消息为空的情况', () => {
+      const error = createTestError({ 
+        message: '',
+        type: HttpErrorType.HTTP_ERROR 
       });
-
-      render(<ErrorNotification error={error} onClose={mockOnClose} />);
-
-      const retryButton = screen.getByText('重试');
-      fireEvent.click(retryButton);
-
-      // 分开验证恢复尝试和按钮状态
-      await waitFor(() => {
-        expect(errorRecoveryManager.attemptRecovery).toHaveBeenCalledWith(error);
-      });
-
-      await waitFor(() => {
-        expect(mockOnClose).not.toHaveBeenCalled();
-      });
-
-      expect(retryButton).not.toBeDisabled();
-      expect(screen.getByText('重试')).toBeInTheDocument();
-    });
-
-    it('应该正确处理刷新页面操作', () => {
-      const error = new HttpError({
-        type: HttpErrorType.REACT_ERROR,
-        message: '渲染错误',
-      });
-
-      render(<ErrorNotification error={error} onClose={mockOnClose} />);
-
-      fireEvent.click(screen.getByText('刷新页面'));
-      expect(window.location.reload).toHaveBeenCalled();
-    });
-
-    it('应该正确处理重新登录操作', () => {
-      const error = new HttpError({
-        type: HttpErrorType.AUTH,
-        message: '登录已过期',
-      });
-
-      render(<ErrorNotification error={error} onClose={mockOnClose} />);
-
-      fireEvent.click(screen.getByText('重新登录'));
-      expect(window.location.href).toBe('/login');
-    });
-  });
-
-  describe('自动关闭行为', () => {
-    it('错误提示不应该自动关闭', () => {
-      const error = new HttpError({
-        type: HttpErrorType.HTTP_ERROR,
-        message: '严重错误',
-      });
-
-      render(<ErrorNotification error={error} onClose={mockOnClose} />);
-
-      expect(screen.getByRole('alert')).toHaveAttribute('data-auto-hide-duration', 'false');
-    });
-
-    it('警告信息应该自动关闭', () => {
-      const error = new HttpError({
-        type: HttpErrorType.UNKNOWN_ERROR,
-        message: '警告信息',
-      });
-
-      render(<ErrorNotification error={error} onClose={mockOnClose} />);
-
-      expect(screen.getByRole('alert')).toHaveAttribute('data-auto-hide-duration', '6000');
-    });
-  });
-
-  describe('关闭行为', () => {
-    it('应该能通过关闭按钮关闭通知', () => {
-      const error = new HttpError({
-        type: HttpErrorType.UNKNOWN_ERROR,
-        message: '提示信息',
-      });
-
-      render(<ErrorNotification error={error} onClose={mockOnClose} />);
-
-      fireEvent.click(screen.getByRole('button', { name: 'Close' }));
-      expect(mockOnClose).toHaveBeenCalled();
+      renderErrorNotification({ error });
+      expect(screen.getByText('服务器处理请求时出错')).toBeInTheDocument();
     });
   });
 });

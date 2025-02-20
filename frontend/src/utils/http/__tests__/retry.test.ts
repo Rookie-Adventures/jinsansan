@@ -1,7 +1,46 @@
-import { AxiosError } from 'axios';
-import { vi, expect, describe, it, beforeEach, afterEach } from 'vitest';
+import { vi, expect, describe, it, beforeEach, afterEach, type Mock } from 'vitest';
+
+import type { RetryConfig } from '../retry';
 
 import { retry, createRetry } from '../retry';
+
+// 测试辅助类型和函数
+interface RetryTestError extends Error {
+  isAxiosError?: boolean;
+  code?: string;
+  response?: {
+    status: number;
+    data: unknown;
+  };
+}
+
+type RetryTestConfig = Partial<RetryConfig>;
+
+const createTestError = (message: string, overrides: Partial<RetryTestError> = {}): RetryTestError => {
+  const error = new Error(message) as RetryTestError;
+  Object.assign(error, overrides);
+  return error;
+};
+
+const createAxiosError = (
+  message: string,
+  overrides: Partial<RetryTestError> = {}
+): RetryTestError => {
+  return createTestError(message, {
+    isAxiosError: true,
+    ...overrides,
+  });
+};
+
+const executeRetryTest = async (
+  fn: Mock,
+  config?: RetryTestConfig,
+  expectedCalls: number = 1
+) => {
+  const promise = retry(fn, config);
+  await vi.runAllTimersAsync();
+  return { promise, fn, expectedCalls };
+};
 
 describe('retry', () => {
   beforeEach(() => {
@@ -15,55 +54,57 @@ describe('retry', () => {
 
   it('应该在成功时直接返回结果', async () => {
     const fn = vi.fn().mockResolvedValue('success');
-    const result = await retry(fn);
+    const { promise, fn: mockFn } = await executeRetryTest(fn);
+    const result = await promise;
+    
     expect(result).toBe('success');
-    expect(fn).toHaveBeenCalledTimes(1);
+    expect(mockFn).toHaveBeenCalledTimes(1);
   });
 
   it('应该在失败时重试指定次数', async () => {
     const fn = vi
       .fn()
-      .mockRejectedValueOnce(new Error('fail'))
-      .mockRejectedValueOnce(new Error('fail'))
+      .mockRejectedValueOnce(createTestError('fail'))
+      .mockRejectedValueOnce(createTestError('fail'))
       .mockResolvedValue('success');
 
-    const promise = retry(fn, { times: 3, delay: 1000 });
-    await vi.runAllTimersAsync();
+    const { promise, fn: mockFn } = await executeRetryTest(fn, { times: 3, delay: 1000 }, 3);
     const result = await promise;
+    
     expect(result).toBe('success');
-    expect(fn).toHaveBeenCalledTimes(3);
+    expect(mockFn).toHaveBeenCalledTimes(3);
   });
 
   it('应该在达到最大重试次数后抛出最后一次的错误', async () => {
-    const error1 = new Error('fail1');
-    const error2 = new Error('fail2');
-    const error3 = new Error('fail3');
+    const errors = [
+      createTestError('fail1'),
+      createTestError('fail2'),
+      createTestError('fail3')
+    ];
 
-    const fn = vi
-      .fn()
-      .mockRejectedValueOnce(error1)
-      .mockRejectedValueOnce(error2)
-      .mockRejectedValue(error3);
+    const fn = vi.fn()
+      .mockRejectedValueOnce(errors[0])
+      .mockRejectedValueOnce(errors[1])
+      .mockRejectedValue(errors[2]);
 
     const promise = retry(fn, { times: 3, delay: 1000 });
-    await vi.runAllTimersAsync();
     
-    try {
-      await promise;
-      // 如果没有抛出错误，测试应该失败
-      expect('Promise should have rejected').toBe(false);
-    } catch (error) {
-      expect(error).toBe(error3);
-    }
-    
+    // 等待第一次失败
+    await vi.advanceTimersByTimeAsync(1000);
+    // 等待第二次失败
+    await vi.advanceTimersByTimeAsync(2000);
+    // 等待第三次失败
+    await vi.advanceTimersByTimeAsync(4000);
+
+    await expect(promise).rejects.toBe(errors[2]);
     expect(fn).toHaveBeenCalledTimes(3);
   });
 
   it('应该使用指数退避延迟', async () => {
     const fn = vi
       .fn()
-      .mockRejectedValueOnce(new Error('fail'))
-      .mockRejectedValueOnce(new Error('fail'))
+      .mockRejectedValueOnce(createTestError('fail'))
+      .mockRejectedValueOnce(createTestError('fail'))
       .mockResolvedValue('success');
 
     const promise = retry(fn, { times: 3, delay: 1000 });
@@ -84,14 +125,15 @@ describe('retry', () => {
   });
 
   it('应该在禁用时不重试', async () => {
-    const error = new Error('fail');
+    const error = createTestError('fail');
     const fn = vi.fn().mockRejectedValue(error);
+    
     await expect(retry(fn, { enable: false })).rejects.toThrow(error);
     expect(fn).toHaveBeenCalledTimes(1);
   });
 
   it('应该根据 shouldRetry 判断是否重试', async () => {
-    const error = new Error('fail');
+    const error = createTestError('fail');
     const fn = vi.fn().mockRejectedValue(error);
     const shouldRetry = vi.fn().mockReturnValue(false);
 
@@ -101,8 +143,8 @@ describe('retry', () => {
   });
 
   it('应该正确处理 shouldRetry 抛出异常的情况', async () => {
-    const error = new Error('fail');
-    const shouldRetryError = new Error('shouldRetry error');
+    const error = createTestError('fail');
+    const shouldRetryError = createTestError('shouldRetry error');
     const fn = vi.fn().mockRejectedValue(error);
     const shouldRetry = vi.fn().mockImplementation(() => {
       throw shouldRetryError;
@@ -113,12 +155,11 @@ describe('retry', () => {
   });
 
   it('应该调用 onRetry 回调并传递正确的参数', async () => {
-    const error = new Error('fail');
+    const error = createTestError('fail');
     const fn = vi.fn().mockRejectedValueOnce(error).mockResolvedValue('success');
     const onRetry = vi.fn();
 
-    const promise = retry(fn, { onRetry, delay: 1000 });
-    await vi.runAllTimersAsync();
+    const { promise } = await executeRetryTest(fn, { onRetry, delay: 1000 }, 2);
     const result = await promise;
 
     expect(result).toBe('success');
@@ -127,14 +168,13 @@ describe('retry', () => {
   });
 
   it('应该在 onRetry 回调抛出异常时继续重试', async () => {
-    const error = new Error('fail');
+    const error = createTestError('fail');
     const fn = vi.fn().mockRejectedValueOnce(error).mockResolvedValue('success');
     const onRetry = vi.fn().mockImplementation(() => {
-      throw new Error('onRetry error');
+      throw createTestError('onRetry error');
     });
 
-    const promise = retry(fn, { onRetry, delay: 1000 });
-    await vi.runAllTimersAsync();
+    const { promise } = await executeRetryTest(fn, { onRetry, delay: 1000 }, 2);
     const result = await promise;
 
     expect(result).toBe('success');
@@ -144,7 +184,9 @@ describe('retry', () => {
   describe('createRetry', () => {
     it('应该创建一个预配置的重试函数', async () => {
       const retryWithConfig = createRetry({ times: 2, delay: 500 });
-      const fn = vi.fn().mockRejectedValueOnce(new Error('fail')).mockResolvedValue('success');
+      const fn = vi.fn()
+        .mockRejectedValueOnce(createTestError('fail'))
+        .mockResolvedValue('success');
 
       const promise = retryWithConfig(fn);
       await vi.runAllTimersAsync();
@@ -156,7 +198,7 @@ describe('retry', () => {
 
     it('应该允许覆盖预配置的选项', async () => {
       const retryWithConfig = createRetry({ times: 2, delay: 500, shouldRetry: () => false });
-      const fn = vi.fn().mockRejectedValue(new Error('fail'));
+      const fn = vi.fn().mockRejectedValue(createTestError('fail'));
 
       await expect(retryWithConfig(fn)).rejects.toThrow('fail');
       expect(fn).toHaveBeenCalledTimes(1);
@@ -165,24 +207,25 @@ describe('retry', () => {
 
   describe('Axios 错误处理', () => {
     it('应该重试网络错误', async () => {
-      const networkError = new Error('Network Error') as AxiosError;
-      networkError.isAxiosError = true;
-      networkError.code = 'ECONNABORTED';
+      const networkError = createAxiosError('Network Error', {
+        code: 'ECONNABORTED'
+      });
 
-      const fn = vi.fn().mockRejectedValueOnce(networkError).mockResolvedValue('success');
+      const fn = vi.fn()
+        .mockRejectedValueOnce(networkError)
+        .mockResolvedValue('success');
 
-      const promise = retry(fn);
-      await vi.runAllTimersAsync();
+      const { promise, fn: mockFn } = await executeRetryTest(fn, undefined, 2);
       const result = await promise;
 
       expect(result).toBe('success');
-      expect(fn).toHaveBeenCalledTimes(2);
+      expect(mockFn).toHaveBeenCalledTimes(2);
     });
 
     it('不应该重试 HTTP 错误响应', async () => {
-      const httpError = new Error('Not Found') as AxiosError;
-      httpError.isAxiosError = true;
-      httpError.response = { status: 404, data: 'Not Found' } as any;
+      const httpError = createAxiosError('Not Found', {
+        response: { status: 404, data: 'Not Found' }
+      });
 
       const fn = vi.fn().mockRejectedValue(httpError);
       await expect(retry(fn)).rejects.toThrow('Not Found');
@@ -190,18 +233,19 @@ describe('retry', () => {
     });
 
     it('应该重试没有响应的请求错误', async () => {
-      const noResponseError = new Error('No Response') as AxiosError;
-      noResponseError.isAxiosError = true;
-      noResponseError.response = undefined;
+      const noResponseError = createAxiosError('No Response', {
+        response: undefined
+      });
 
-      const fn = vi.fn().mockRejectedValueOnce(noResponseError).mockResolvedValue('success');
+      const fn = vi.fn()
+        .mockRejectedValueOnce(noResponseError)
+        .mockResolvedValue('success');
 
-      const promise = retry(fn);
-      await vi.runAllTimersAsync();
+      const { promise, fn: mockFn } = await executeRetryTest(fn, undefined, 2);
       const result = await promise;
 
       expect(result).toBe('success');
-      expect(fn).toHaveBeenCalledTimes(2);
+      expect(mockFn).toHaveBeenCalledTimes(2);
     });
   });
 });

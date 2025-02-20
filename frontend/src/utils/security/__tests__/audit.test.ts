@@ -7,6 +7,33 @@ import { errorLogger } from '@/utils/error/errorLogger';
 
 import { AuditLogManager, AuditLogType, AuditLogLevels } from '../audit';
 
+// 测试辅助函数和类型定义
+interface TestAuditLog {
+  type: AuditLogType;
+  level: typeof AuditLogLevels[keyof typeof AuditLogLevels];
+  action: string;
+  resource: string;
+  details: Record<string, unknown>;
+}
+
+const createTestLog = (overrides: Partial<TestAuditLog> = {}): TestAuditLog => ({
+  type: AuditLogType.SECURITY,
+  level: AuditLogLevels.INFO,
+  action: 'test-action',
+  resource: 'test-resource',
+  details: { test: 'data' },
+  ...overrides,
+});
+
+const logAudit = async (log: TestAuditLog) => {
+  await AuditLogManager.getInstance().log(
+    log.type,
+    log.level,
+    log.action,
+    log.resource,
+    log.details
+  );
+};
 
 // Mock errorLogger
 vi.mock('@/utils/error/errorLogger');
@@ -60,43 +87,21 @@ describe('AuditLogManager', () => {
 
   describe('日志记录测试', () => {
     it('应该正确记录审计日志', async () => {
-      const testLog = {
-        type: AuditLogType.SECURITY,
-        level: AuditLogLevels.INFO,
-        action: 'test-action',
-        resource: 'test-resource',
-        details: { test: 'data' },
-      };
-
-      await auditLogManager.log(
-        testLog.type,
-        testLog.level,
-        testLog.action,
-        testLog.resource,
-        testLog.details
-      );
+      const testLog = createTestLog();
+      await logAudit(testLog);
 
       const logs = auditLogManager.getLogs(0, Date.now());
       expect(logs).toHaveLength(1);
-      expect(logs[0]).toMatchObject({
-        type: testLog.type,
-        level: testLog.level,
-        action: testLog.action,
-        resource: testLog.resource,
-        details: testLog.details,
-      });
+      expect(logs[0]).toMatchObject(testLog);
     });
 
     it('应该限制内存中的日志数量', async () => {
       // 添加超过最大限制的日志
       for (let i = 0; i < 1100; i++) {
-        await auditLogManager.log(
-          AuditLogType.SYSTEM,
-          AuditLogLevels.INFO,
-          'action',
-          'resource',
-          { index: i }
-        );
+        await logAudit(createTestLog({
+          type: AuditLogType.SYSTEM,
+          details: { index: i }
+        }));
       }
 
       const logs = auditLogManager.getLogs(0, Date.now());
@@ -105,46 +110,40 @@ describe('AuditLogManager', () => {
   });
 
   describe('日志查询测试', () => {
+    const testLogs = [
+      createTestLog({
+        type: AuditLogType.SECURITY,
+        level: AuditLogLevels.INFO,
+        action: 'login',
+        resource: 'user',
+        details: { userId: '1' }
+      }),
+      createTestLog({
+        type: AuditLogType.SECURITY,
+        level: AuditLogLevels.WARNING,
+        action: 'access',
+        resource: 'file',
+        details: { fileId: '2' }
+      }),
+      createTestLog({
+        type: AuditLogType.SYSTEM,
+        level: AuditLogLevels.ERROR,
+        action: 'error',
+        resource: 'service',
+        details: { error: 'test' }
+      })
+    ];
+
     beforeEach(async () => {
       // 添加测试日志
-      const testLogs = [
-        {
-          type: AuditLogType.SECURITY,
-          level: AuditLogLevels.INFO,
-          action: 'login',
-          resource: 'user',
-          details: { userId: '1' },
-        },
-        {
-          type: AuditLogType.SECURITY,
-          level: AuditLogLevels.WARNING,
-          action: 'access',
-          resource: 'file',
-          details: { fileId: '2' },
-        },
-        {
-          type: AuditLogType.SYSTEM,
-          level: AuditLogLevels.ERROR,
-          action: 'error',
-          resource: 'service',
-          details: { error: 'test' },
-        },
-      ];
-
       for (const log of testLogs) {
-        await auditLogManager.log(
-          log.type,
-          log.level,
-          log.action,
-          log.resource,
-          log.details
-        );
+        await logAudit(log);
       }
     });
 
     it('应该按类型筛选日志', () => {
       const logs = auditLogManager.getLogsByType(AuditLogType.SECURITY);
-      expect(logs).toHaveLength(2); // 现在应该有两条 SECURITY 类型的日志
+      expect(logs).toHaveLength(2);
       expect(logs[0].action).toBe('login');
       expect(logs[1].action).toBe('access');
     });
@@ -167,21 +166,12 @@ describe('AuditLogManager', () => {
       // Mock fetch to simulate API failure
       global.fetch = vi.fn().mockRejectedValue(new Error('API Error'));
 
-      const testLog = {
+      const testLog = createTestLog({
         type: AuditLogType.SYSTEM,
-        level: AuditLogLevels.ERROR,
-        action: 'test-error',
-        resource: 'test-resource',
-        details: { test: 'data' },
-      };
+        level: AuditLogLevels.ERROR
+      });
 
-      await auditLogManager.log(
-        testLog.type,
-        testLog.level,
-        testLog.action,
-        testLog.resource,
-        testLog.details
-      );
+      await logAudit(testLog);
 
       // 验证日志是否被保存到本地存储
       const storedLogs = localStorage.getItem('failedAuditLogs');
@@ -191,21 +181,15 @@ describe('AuditLogManager', () => {
     });
 
     it('应该触发严重级别的告警', async () => {
-      const criticalLog = {
+      const criticalLog = createTestLog({
         type: AuditLogType.SECURITY,
         level: AuditLogLevels.CRITICAL,
         action: 'security-breach',
         resource: 'system',
-        details: { severity: 'high' },
-      };
+        details: { severity: 'high' }
+      });
 
-      await auditLogManager.log(
-        criticalLog.type,
-        criticalLog.level,
-        criticalLog.action,
-        criticalLog.resource,
-        criticalLog.details
-      );
+      await logAudit(criticalLog);
 
       // 验证是否触发了告警
       expect(mockErrorLogger.log).toHaveBeenCalled();
@@ -218,21 +202,12 @@ describe('AuditLogManager', () => {
         throw new Error('Storage Error');
       });
 
-      const testLog = {
+      const testLog = createTestLog({
         type: AuditLogType.SYSTEM,
-        level: AuditLogLevels.ERROR,
-        action: 'test-error',
-        resource: 'test-resource',
-        details: { test: 'data' },
-      };
+        level: AuditLogLevels.ERROR
+      });
 
-      await auditLogManager.log(
-        testLog.type,
-        testLog.level,
-        testLog.action,
-        testLog.resource,
-        testLog.details
-      );
+      await logAudit(testLog);
 
       // 验证错误是否被正确处理
       expect(mockErrorLogger.log).toHaveBeenCalled();

@@ -5,12 +5,48 @@ import { errorLogger } from '@/utils/error/errorLogger';
 
 import { routerErrorHandler } from '../error-handler';
 
+// 测试辅助类型和函数
+interface TestError extends Error {
+  status?: number;
+  data?: Record<string, unknown>;
+}
+
+const createTestError = (message: string, overrides: Partial<TestError> = {}): TestError => {
+  const error = new Error(message) as TestError;
+  Object.assign(error, overrides);
+  return error;
+};
+
 // Mock errorLogger
 vi.mock('@/utils/error/errorLogger', () => ({
   errorLogger: {
     log: vi.fn(),
   },
 }));
+
+// 添加验证辅助函数
+interface ErrorLogContext {
+  message?: string;
+  level: ErrorLevel;
+  context?: Record<string, unknown>;
+}
+
+const verifyErrorLog = (
+  callIndex: number,
+  expectedMessage: string | Error,
+  expectedLog: Partial<ErrorLogContext>
+) => {
+  expect(errorLogger.log).toHaveBeenNthCalledWith(
+    callIndex,
+    expectedMessage instanceof Error ? expectedMessage : expect.objectContaining({
+      message: expect.stringContaining(expectedMessage),
+    }),
+    expect.objectContaining({
+      level: expectedLog.level,
+      ...(expectedLog.context && { context: expectedLog.context }),
+    })
+  );
+};
 
 describe('RouterErrorHandler', () => {
   beforeEach(() => {
@@ -19,146 +55,116 @@ describe('RouterErrorHandler', () => {
 
   describe('handleError', () => {
     it('应该处理 404 错误', () => {
-      const error = new Error('Page not found');
-      Object.assign(error, { status: 404 });
+      const error = createTestError('Page not found', { status: 404 });
+      const testPath = '/not-found';
 
-      routerErrorHandler.handleError(error, { path: '/not-found' });
+      routerErrorHandler.handleError(error, { path: testPath });
 
       expect(errorLogger.log).toHaveBeenCalledTimes(2);
-      // 验证第一次调用 - 记录原始错误
-      expect(errorLogger.log).toHaveBeenNthCalledWith(
-        1,
-        error,
-        expect.objectContaining({
-          level: ErrorLevel.ERROR,
-          context: expect.objectContaining({
-            path: '/not-found',
-            status: 404,
-          }),
-        })
-      );
-      // 验证第二次调用 - 记录格式化的 404 错误
-      expect(errorLogger.log).toHaveBeenNthCalledWith(
-        2,
-        expect.objectContaining({
-          message: expect.stringContaining('Route not found'),
-        }),
-        expect.objectContaining({
-          level: ErrorLevel.ERROR,
-          context: expect.objectContaining({
-            status: 404,
-          }),
-        })
-      );
+      
+      // 验证原始错误日志
+      verifyErrorLog(1, 'Page not found', {
+        level: ErrorLevel.ERROR,
+        context: {
+          path: testPath,
+          status: 404,
+        },
+      });
+
+      // 验证格式化的 404 错误日志
+      verifyErrorLog(2, 'Route not found', {
+        level: ErrorLevel.ERROR,
+        context: {
+          status: 404,
+        },
+      });
     });
 
     it('应该处理 403 错误', () => {
-      const error = new Error('Access denied');
-      Object.assign(error, { status: 403, data: { reason: 'unauthorized' } });
+      const error = createTestError('Access denied', { 
+        status: 403, 
+        data: { reason: 'unauthorized' } 
+      });
 
       routerErrorHandler.handleError(error);
 
       expect(errorLogger.log).toHaveBeenCalledTimes(3);
-      // 验证第一次调用 - 记录原始错误
-      expect(errorLogger.log).toHaveBeenNthCalledWith(
-        1,
-        error,
-        expect.objectContaining({
-          level: ErrorLevel.ERROR,
-          context: expect.objectContaining({
-            status: 403,
-          }),
-        })
-      );
-      // 验证第二次调用 - 记录格式化的 403 错误
-      expect(errorLogger.log).toHaveBeenNthCalledWith(
-        2,
-        expect.objectContaining({
-          message: expect.stringContaining('Access forbidden'),
-        }),
-        expect.objectContaining({
-          level: ErrorLevel.ERROR,
-          context: expect.objectContaining({
-            status: 403,
-            errorData: { reason: 'unauthorized' },
-          }),
-        })
-      );
-      // 验证第三次调用 - 记录警告
-      expect(errorLogger.log).toHaveBeenNthCalledWith(
-        3,
-        expect.any(Error),
-        expect.objectContaining({
-          level: ErrorLevel.WARN,
-        })
-      );
+      
+      // 验证原始错误日志
+      verifyErrorLog(1, 'Access denied', {
+        level: ErrorLevel.ERROR,
+        context: {
+          status: 403,
+        },
+      });
+
+      // 验证格式化的 403 错误日志
+      verifyErrorLog(2, 'Access forbidden', {
+        level: ErrorLevel.ERROR,
+        context: {
+          status: 403,
+          errorData: { reason: 'unauthorized' },
+        },
+      });
+
+      // 验证警告日志
+      verifyErrorLog(3, 'Access forbidden for path', {
+        level: ErrorLevel.WARN,
+      });
     });
 
     it('应该处理未知错误', () => {
-      const error = new Error('Unknown error');
+      const error = createTestError('Unknown error');
 
       routerErrorHandler.handleError(error);
 
       expect(errorLogger.log).toHaveBeenCalledTimes(2);
-      // 验证第一次调用 - 记录原始错误
-      expect(errorLogger.log).toHaveBeenNthCalledWith(
-        1,
-        error,
-        expect.objectContaining({
-          level: ErrorLevel.ERROR,
-          context: expect.objectContaining({
-            status: 500,
-          }),
-        })
-      );
-      // 验证第二次调用 - 记录严重错误
-      expect(errorLogger.log).toHaveBeenNthCalledWith(
-        2,
-        error,
-        expect.objectContaining({
-          level: ErrorLevel.CRITICAL,
-          context: expect.objectContaining({
-            isCritical: true,
-            timestamp: expect.any(Number),
-          }),
-        })
-      );
+      
+      // 验证原始错误日志
+      verifyErrorLog(1, 'Unknown error', {
+        level: ErrorLevel.ERROR,
+        context: {
+          status: 500,
+        },
+      });
+
+      // 验证严重错误日志
+      verifyErrorLog(2, 'Unknown error', {
+        level: ErrorLevel.CRITICAL,
+        context: {
+          isCritical: true,
+          timestamp: expect.any(Number),
+        },
+      });
     });
 
     it('应该处理非 Error 对象', () => {
-      const error = 'String error message';
+      const errorMessage = 'String error message';
 
-      routerErrorHandler.handleError(error);
+      routerErrorHandler.handleError(errorMessage);
 
       expect(errorLogger.log).toHaveBeenCalledTimes(2);
-      // 验证第一次调用 - 记录原始错误
-      expect(errorLogger.log).toHaveBeenNthCalledWith(
-        1,
-        expect.any(Error),
-        expect.objectContaining({
-          level: ErrorLevel.ERROR,
-          context: expect.objectContaining({
-            status: 500,
-          }),
-        })
-      );
-      // 验证第二次调用 - 记录严重错误
-      expect(errorLogger.log).toHaveBeenNthCalledWith(
-        2,
-        expect.any(Error),
-        expect.objectContaining({
-          level: ErrorLevel.CRITICAL,
-          context: expect.objectContaining({
-            isCritical: true,
-            timestamp: expect.any(Number),
-          }),
-        })
-      );
+      
+      // 验证原始错误日志
+      verifyErrorLog(1, errorMessage, {
+        level: ErrorLevel.ERROR,
+        context: {
+          status: 500,
+        },
+      });
+
+      // 验证严重错误日志
+      verifyErrorLog(2, errorMessage, {
+        level: ErrorLevel.CRITICAL,
+        context: {
+          isCritical: true,
+          timestamp: expect.any(Number),
+        },
+      });
     });
 
     it('应该处理带有额外数据的错误', () => {
-      const error = new Error('Complex error');
-      Object.assign(error, {
+      const error = createTestError('Complex error', {
         data: {
           code: 'INTERNAL_ERROR',
           details: 'Something went wrong',
@@ -168,44 +174,46 @@ describe('RouterErrorHandler', () => {
       routerErrorHandler.handleError(error);
 
       expect(errorLogger.log).toHaveBeenCalledTimes(2);
-      // 验证第一次调用 - 记录原始错误
-      expect(errorLogger.log).toHaveBeenNthCalledWith(
-        1,
-        error,
-        expect.objectContaining({
-          level: ErrorLevel.ERROR,
-          context: expect.objectContaining({
-            status: 500,
-          }),
-        })
-      );
-      // 验证第二次调用 - 记录严重错误
-      expect(errorLogger.log).toHaveBeenNthCalledWith(
-        2,
-        error,
-        expect.objectContaining({
-          level: ErrorLevel.CRITICAL,
-          context: expect.objectContaining({
-            isCritical: true,
-            timestamp: expect.any(Number),
-          }),
-        })
-      );
+      
+      // 验证原始错误日志
+      verifyErrorLog(1, 'Complex error', {
+        level: ErrorLevel.ERROR,
+        context: {
+          status: 500,
+        },
+      });
+
+      // 验证严重错误日志
+      verifyErrorLog(2, 'Complex error', {
+        level: ErrorLevel.CRITICAL,
+        context: {
+          isCritical: true,
+          timestamp: expect.any(Number),
+        },
+      });
     });
 
     it('应该处理 null 或 undefined 错误', () => {
       routerErrorHandler.handleError(null);
 
       expect(errorLogger.log).toHaveBeenCalledTimes(2);
-      expect(errorLogger.log).toHaveBeenNthCalledWith(
-        1,
-        expect.objectContaining({
-          message: 'null',
-        }),
-        expect.objectContaining({
-          level: 'error',
-        })
-      );
+      
+      // 验证原始错误日志
+      verifyErrorLog(1, 'null', {
+        level: ErrorLevel.ERROR,
+        context: {
+          status: 500,
+        },
+      });
+
+      // 验证严重错误日志
+      verifyErrorLog(2, 'null', {
+        level: ErrorLevel.CRITICAL,
+        context: {
+          isCritical: true,
+          timestamp: expect.any(Number),
+        },
+      });
     });
   });
 

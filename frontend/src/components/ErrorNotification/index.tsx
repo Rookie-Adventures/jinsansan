@@ -1,5 +1,5 @@
 import { Alert, AlertTitle, Button, Snackbar, Stack } from '@mui/material';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 import type { HttpError } from '@/utils/http/error/types';
 
@@ -20,6 +20,11 @@ interface ErrorConfig {
   autoHideDuration: number | null;
 }
 
+interface ErrorData {
+  message?: string;
+  [key: string]: unknown;
+}
+
 // 使用枚举值作为键的类型
 type ErrorMessageKey = `${HttpErrorType}`;
 const errorMessages: Record<ErrorMessageKey, ErrorConfig> = {
@@ -29,7 +34,7 @@ const errorMessages: Record<ErrorMessageKey, ErrorConfig> = {
     description: '请检查您的网络连接',
     action: '重试',
     recoverable: true,
-    autoHideDuration: null,
+    autoHideDuration: 6000,
   },
   HTTP_ERROR: {
     title: '服务器错误',
@@ -37,7 +42,7 @@ const errorMessages: Record<ErrorMessageKey, ErrorConfig> = {
     description: '服务器处理请求时出错',
     action: '重试',
     recoverable: true,
-    autoHideDuration: null,
+    autoHideDuration: 6000,
   },
   AUTH_ERROR: {
     title: '认证错误',
@@ -45,7 +50,7 @@ const errorMessages: Record<ErrorMessageKey, ErrorConfig> = {
     description: '您的登录状态已过期',
     action: '重新登录',
     recoverable: false,
-    autoHideDuration: null,
+    autoHideDuration: 6000,
   },
   REACT_ERROR: {
     title: '组件错误',
@@ -53,7 +58,7 @@ const errorMessages: Record<ErrorMessageKey, ErrorConfig> = {
     description: '页面渲染出错',
     action: '刷新页面',
     recoverable: false,
-    autoHideDuration: null,
+    autoHideDuration: 6000,
   },
   UNKNOWN_ERROR: {
     title: '未知错误',
@@ -67,12 +72,17 @@ const errorMessages: Record<ErrorMessageKey, ErrorConfig> = {
 
 export const ErrorNotification: React.FC<ErrorNotificationProps> = ({ error, onClose }) => {
   const [isRecovering, setIsRecovering] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
 
-  if (!error) return null;
+  const handleMouseEnter = useCallback(() => {
+    setIsPaused(true);
+  }, []);
 
-  const config = errorMessages[error.type as ErrorMessageKey] || errorMessages.UNKNOWN_ERROR;
+  const handleMouseLeave = useCallback(() => {
+    setIsPaused(false);
+  }, []);
 
-  const handleAction = async () => {
+  const handleAction = useCallback(async (config: ErrorConfig, error: HttpError) => {
     if (config.recoverable) {
       setIsRecovering(true);
       try {
@@ -88,12 +98,17 @@ export const ErrorNotification: React.FC<ErrorNotificationProps> = ({ error, onC
     } else if (config.action === '重新登录') {
       window.location.href = '/login';
     }
-  };
+  }, [onClose]);
+
+  if (!error) return null;
+
+  const config = errorMessages[error.type as ErrorMessageKey] || errorMessages.UNKNOWN_ERROR;
+  const errorData = error.data as ErrorData | undefined;
 
   return (
     <Snackbar
       open={!!error}
-      autoHideDuration={config.autoHideDuration === null ? undefined : config.autoHideDuration}
+      autoHideDuration={isPaused ? null : config.autoHideDuration}
       onClose={onClose}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
     >
@@ -105,16 +120,23 @@ export const ErrorNotification: React.FC<ErrorNotificationProps> = ({ error, onC
         data-auto-hide-duration={
           config.autoHideDuration === null ? 'false' : config.autoHideDuration.toString()
         }
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         <AlertTitle>{config.title}</AlertTitle>
         <Stack spacing={1}>
           <div>{error.message || config.description}</div>
+          {errorData?.message && (
+            <div data-testid="error-detail" className="error-detail">
+              {errorData.message}
+            </div>
+          )}
           {config.action && (
             <Button
               size="small"
               variant="outlined"
               color="inherit"
-              onClick={handleAction}
+              onClick={() => handleAction(config, error)}
               disabled={isRecovering}
             >
               {isRecovering ? '处理中...' : config.action}

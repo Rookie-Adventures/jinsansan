@@ -2,6 +2,63 @@ import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 
 import { errorLogger } from '../../../utils/errorLogger';
 import { PerformanceMonitor } from '../PerformanceMonitor';
+import { MetricType } from '../types';
+
+// 测试辅助函数和类型
+interface MockEntry {
+  name?: string;
+  duration: number;
+  startTime?: number;
+  initiatorType?: string;
+}
+
+interface MockObserver {
+  observe: ReturnType<typeof vi.fn>;
+  disconnect: ReturnType<typeof vi.fn>;
+  callback?: (list: { getEntries: () => MockEntry[] }) => void;
+}
+
+// 性能监控类型映射
+const ENTRY_TYPE_TO_METRIC_TYPE = {
+  'resource': MetricType.RESOURCE,
+  'longtask': MetricType.LONG_TASK,
+  'event': MetricType.INTERACTION,
+} as const;
+
+type EntryType = keyof typeof ENTRY_TYPE_TO_METRIC_TYPE;
+
+const createMockObserver = (): MockObserver => ({
+  observe: vi.fn(),
+  disconnect: vi.fn(),
+});
+
+const setupObserver = (_monitor: PerformanceMonitor, _entryType: string) => {
+  const mockObserver = createMockObserver();
+  (global as any).PerformanceObserver = vi.fn(callback => {
+    mockObserver.callback = callback;
+    return mockObserver;
+  });
+  return mockObserver;
+};
+
+const triggerObserverCallback = (observer: MockObserver, entries: MockEntry[]) => {
+  observer.callback?.({
+    getEntries: () => entries,
+  });
+};
+
+const verifyMetrics = (
+  monitor: PerformanceMonitor,
+  expectedType: MetricType,
+  expectedData: Record<string, any>
+) => {
+  const metrics = monitor['metrics'];
+  expect(metrics).toHaveLength(1);
+  expect(metrics[0]).toMatchObject({
+    type: expectedType,
+    data: expectedData,
+  });
+};
 
 // Mock errorLogger
 vi.mock('../../../utils/errorLogger', () => ({
@@ -29,43 +86,15 @@ Object.defineProperty(global, 'performance', {
   },
 });
 
-// Mock PerformanceObserver
-class MockPerformanceObserver {
-  private callback: (list: any) => void;
-
-  constructor(callback: (list: any) => void) {
-    this.callback = callback;
-  }
-
-  observe() {
-    // Store the observer for testing
-    mockObservers.push(this);
-  }
-
-  // Helper method for tests to trigger callbacks
-  triggerCallback(entries: any[]) {
-    this.callback({
-      getEntries: () => entries,
-    });
-  }
-}
-
-const mockObservers: MockPerformanceObserver[] = [];
-global.PerformanceObserver = MockPerformanceObserver as any;
-
 describe('PerformanceMonitor', () => {
   let monitor: PerformanceMonitor;
 
   beforeEach(() => {
-    // 重置所有的 mock
     vi.resetAllMocks();
-    // 使用假的定时器
     vi.useFakeTimers();
-    // 获取实例
     monitor = PerformanceMonitor.getInstance();
     mockPerformanceNow.mockReset();
     mockFetch.mockReset();
-    mockObservers.length = 0;
     vi.clearAllMocks();
     monitor.clearMetrics();
   });
@@ -108,23 +137,16 @@ describe('PerformanceMonitor', () => {
       };
 
       monitor.recordMetric(testMetric.name, testMetric.value, testMetric.tags);
-      const metrics = monitor['metrics'];
-
-      expect(metrics).toHaveLength(1);
-      expect(metrics[0]).toMatchObject({
-        type: 'custom',
-        data: {
-          name: testMetric.name,
-          value: testMetric.value,
-          tags: testMetric.tags,
-        },
+      verifyMetrics(monitor, MetricType.CUSTOM, {
+        name: testMetric.name,
+        value: testMetric.value,
+        tags: testMetric.tags,
       });
     });
   });
 
   describe('页面加载性能监控', () => {
     beforeEach(() => {
-      // Mock performance.timing
       Object.defineProperty(window.performance, 'timing', {
         value: {
           navigationStart: 0,
@@ -139,109 +161,54 @@ describe('PerformanceMonitor', () => {
 
     it('应该能收集页面加载指标', () => {
       monitor.observePageLoadMetrics();
-      const metrics = monitor['metrics'];
-
-      expect(metrics).toHaveLength(1);
-      expect(metrics[0]).toMatchObject({
-        type: 'page_load',
-        data: {
-          domComplete: 1000,
-          loadEventEnd: 1200,
-          domInteractive: 800,
-          domContentLoadedEventEnd: 900,
-        },
+      verifyMetrics(monitor, MetricType.PAGE_LOAD, {
+        domComplete: 1000,
+        loadEventEnd: 1200,
+        domInteractive: 800,
+        domContentLoadedEventEnd: 900,
       });
     });
   });
 
-  describe('资源加载性能监控', () => {
-    let mockObserver: any;
-    let mockObserve: any;
-    let mockDisconnect: any;
-
-    beforeEach(() => {
-      mockObserve = vi.fn();
-      mockDisconnect = vi.fn();
-      mockObserver = {
-        observe: mockObserve,
-        disconnect: mockDisconnect,
-      };
-
-      // Mock PerformanceObserver
-      (global as any).PerformanceObserver = vi.fn(callback => {
-        mockObserver.callback = callback;
-        return mockObserver;
-      });
-    });
-
-    it('应该能观察资源加载性能', () => {
-      monitor.observeResourceTiming();
-
-      expect(mockObserve).toHaveBeenCalledWith({ entryTypes: ['resource'] });
-
-      // 模拟资源加载完成
-      const mockEntry = {
+  describe.each([
+    {
+      name: '资源加载性能监控',
+      method: 'observeResourceTiming' as const,
+      entryType: 'resource' as EntryType,
+      mockEntry: {
         name: 'test.js',
         duration: 100,
         initiatorType: 'script',
-      };
-
-      mockObserver.callback({
-        getEntries: () => [mockEntry],
-      });
-
-      const metrics = monitor['metrics'];
-      expect(metrics).toHaveLength(1);
-      expect(metrics[0]).toMatchObject({
-        type: 'resource',
-        data: {
-          name: mockEntry.name,
-          duration: mockEntry.duration,
-          type: mockEntry.initiatorType,
-        },
-      });
-    });
-  });
-
-  describe('长任务监控', () => {
-    let mockObserver: any;
-
-    beforeEach(() => {
-      mockObserver = {
-        observe: vi.fn(),
-        disconnect: vi.fn(),
-      };
-
-      (global as any).PerformanceObserver = vi.fn(callback => {
-        mockObserver.callback = callback;
-        return mockObserver;
-      });
-    });
-
-    it('应该能观察长任务', () => {
-      monitor.observeLongTasks();
-
-      expect(mockObserver.observe).toHaveBeenCalledWith({ entryTypes: ['longtask'] });
-
-      // 模拟长任务
-      const mockEntry = {
+      },
+      expectedData: {
+        name: 'test.js',
+        duration: 100,
+        type: 'script',
+      },
+    },
+    {
+      name: '长任务监控',
+      method: 'observeLongTasks' as const,
+      entryType: 'longtask' as EntryType,
+      mockEntry: {
         duration: 100,
         startTime: 0,
-      };
+      },
+      expectedData: {
+        duration: 100,
+        startTime: 0,
+      },
+    },
+  ])('$name', ({ method, entryType, mockEntry, expectedData }) => {
+    it(`应该能观察${entryType}`, () => {
+      const mockObserver = setupObserver(monitor, entryType);
+      
+      const monitorMethod = monitor[method];
+      monitorMethod.call(monitor);
+      expect(mockObserver.observe).toHaveBeenCalledWith({ entryTypes: [entryType] });
 
-      mockObserver.callback({
-        getEntries: () => [mockEntry],
-      });
-
-      const metrics = monitor['metrics'];
-      expect(metrics).toHaveLength(1);
-      expect(metrics[0]).toMatchObject({
-        type: 'long_task',
-        data: {
-          duration: mockEntry.duration,
-          startTime: mockEntry.startTime,
-        },
-      });
+      triggerObserverCallback(mockObserver, [mockEntry]);
+      verifyMetrics(monitor, ENTRY_TYPE_TO_METRIC_TYPE[entryType], expectedData);
     });
   });
 
@@ -279,7 +246,7 @@ describe('PerformanceMonitor', () => {
       const metrics = monitor['metrics'];
       expect(metrics).toHaveLength(1);
       expect(metrics[0]).toMatchObject({
-        type: 'interaction',
+        type: MetricType.INTERACTION,
         data: {
           name: mockEntry.name,
           duration: mockEntry.duration,

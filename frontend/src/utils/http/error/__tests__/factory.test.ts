@@ -4,6 +4,32 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { HttpErrorFactory } from '../factory';
 import { HttpError, HttpErrorType } from '../types';
 
+interface ExpectedErrorResult {
+  type: HttpErrorType;
+  message: string;
+  code: string;
+  status?: number;
+  data?: unknown;
+  isAxiosError?: boolean;
+}
+
+const verifyHttpError = (result: HttpError, expected: ExpectedErrorResult) => {
+  expect(result).toBeInstanceOf(HttpError);
+  expect(result.type).toBe(expected.type);
+  expect(result.message).toBe(expected.message);
+  expect(result.code).toBe(expected.code);
+  
+  if (expected.status !== undefined) {
+    expect(result.status).toBe(expected.status);
+  }
+  if (expected.data !== undefined) {
+    expect(result.data).toEqual(expected.data);
+  }
+  if (expected.isAxiosError !== undefined) {
+    expect(result.isAxiosError).toBe(expected.isAxiosError);
+  }
+};
+
 describe('HttpErrorFactory', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -31,13 +57,14 @@ describe('HttpErrorFactory', () => {
 
       const result = HttpErrorFactory.create(axiosError as AxiosError);
 
-      expect(result).toBeInstanceOf(HttpError);
-      expect(result.type).toBe(HttpErrorType.HTTP_ERROR);
-      expect(result.message).toBe('Network Error');
-      expect(result.code).toBe('ECONNABORTED');
-      expect(result.status).toBe(500);
-      expect(result.data).toEqual({ message: 'Server Error' });
-      expect(result.isAxiosError).toBe(true);
+      verifyHttpError(result, {
+        type: HttpErrorType.HTTP_ERROR,
+        message: 'Network Error',
+        code: 'ECONNABORTED',
+        status: 500,
+        data: { message: 'Server Error' },
+        isAxiosError: true,
+      });
     });
 
     it('应该处理没有响应的 AxiosError', () => {
@@ -49,23 +76,25 @@ describe('HttpErrorFactory', () => {
 
       const result = HttpErrorFactory.create(axiosError as AxiosError);
 
-      expect(result).toBeInstanceOf(HttpError);
-      expect(result.type).toBe(HttpErrorType.HTTP_ERROR);
-      expect(result.message).toBe('Network Error');
-      expect(result.code).toBe('ECONNABORTED');
-      expect(result.status).toBeUndefined();
-      expect(result.data).toBeUndefined();
-      expect(result.isAxiosError).toBe(true);
+      verifyHttpError(result, {
+        type: HttpErrorType.HTTP_ERROR,
+        message: 'Network Error',
+        code: 'ECONNABORTED',
+        status: undefined,
+        data: undefined,
+        isAxiosError: true,
+      });
     });
 
     it('应该处理普通 Error', () => {
       const error = new Error('Unknown error');
       const result = HttpErrorFactory.create(error);
 
-      expect(result).toBeInstanceOf(HttpError);
-      expect(result.type).toBe(HttpErrorType.UNKNOWN_ERROR);
-      expect(result.message).toBe('Unknown error');
-      expect(result.code).toBe('UNKNOWN_ERROR');
+      verifyHttpError(result, {
+        type: HttpErrorType.UNKNOWN_ERROR,
+        message: 'Unknown error',
+        code: 'UNKNOWN_ERROR',
+      });
     });
 
     it('应该处理自定义错误数据', () => {
@@ -85,16 +114,18 @@ describe('HttpErrorFactory', () => {
 
       const result = HttpErrorFactory.create(axiosError as AxiosError);
 
-      expect(result).toBeInstanceOf(HttpError);
-      expect(result.type).toBe(HttpErrorType.HTTP_ERROR);
-      expect(result.message).toBe('Validation Error');
-      expect(result.code).toBe('ERR_BAD_REQUEST');
-      expect(result.status).toBe(400);
-      expect(result.data).toEqual({
-        code: 'VALIDATION_ERROR',
-        fields: {
-          username: 'Required',
+      verifyHttpError(result, {
+        type: HttpErrorType.HTTP_ERROR,
+        message: 'Validation Error',
+        code: 'ERR_BAD_REQUEST',
+        status: 400,
+        data: {
+          code: 'VALIDATION_ERROR',
+          fields: {
+            username: 'Required',
+          },
         },
+        isAxiosError: true,
       });
     });
   });

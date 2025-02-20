@@ -1,11 +1,9 @@
 import { useCallback, useState } from 'react';
 
 import type { HttpRequestConfig } from '@/utils/http/types';
-import type { AxiosError } from 'axios';
 
 import { useCache } from '@/hooks/http/useCache';
 import { useHttp } from '@/hooks/http/useHttp';
-
 
 interface ApiResponse<T> {
   code: number;
@@ -13,7 +11,8 @@ interface ApiResponse<T> {
   message: string;
 }
 
-interface RequestOptions {
+// 扩展 RequestOptions 接口以支持 signal 属性
+export interface RequestOptions extends Pick<HttpRequestConfig, 'signal'> {
   cache?: {
     enable: boolean;
     ttl: number;
@@ -140,17 +139,18 @@ const useRequestExecute = <T>({
         }
 
         const response = await get<ApiResponse<T>>(url, finalOptions);
-        return handlers.handleResponseData(
+        const data = handlers.handleResponseData(
           response,
           finalOptions?.cache?.enable ? finalOptions.cache.key || url : undefined,
           finalOptions?.cache?.ttl
         );
-      } catch (err) {
-        const error = err as AxiosError;
-        state.setError(error);
-        throw error;
-      } finally {
         state.setLoading(false);
+        return data;
+      } catch (err) {
+        const error = err as Error;
+        state.setError(error);
+        state.setLoading(false);
+        throw error;
       }
     },
     [url, defaultOptions, state, handlers, get]

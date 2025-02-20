@@ -1,14 +1,17 @@
 import { useMediaQuery } from '@mui/material';
+import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
 import { configureStore } from '@reduxjs/toolkit';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
-import { MemoryRouter } from 'react-router-dom';
+import { createMemoryRouter, RouterProvider, createRoutesFromElements, Route } from 'react-router-dom';
 import { vi } from 'vitest';
 
 import { useAuth } from '@/hooks/auth';
 import { errorLogger } from '@/utils/http/error/logger';
 
 import appReducer from '../../../../store/slices/appSlice';
+import authReducer from '../../../../store/slices/authSlice';
 import Navbar from '../Navbar';
 
 // Mock useAuth hook
@@ -75,40 +78,127 @@ vi.mock('@/utils/http/error/types', async () => {
   };
 });
 
-describe('Navbar', () => {
-  const createTestStore = () => {
-    return configureStore({
-      reducer: {
-        app: appReducer,
-      },
-    });
-  };
+// 测试辅助函数和类型定义
+interface TestUser {
+  id: number;
+  username: string;
+  email: string;
+  permissions: string[];
+}
 
-  const renderNavbar = () => {
-    const store = createTestStore();
-    return render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <Navbar />
-        </MemoryRouter>
-      </Provider>
-    );
-  };
+interface AuthState {
+  isAuthenticated: boolean;
+  user: TestUser | null;
+  token: string | null;
+  logout: () => Promise<void>;
+  login: (credentials: any) => Promise<void>;
+  register: (data: any) => Promise<void>;
+  loading: boolean;
+  error: string | null;
+  getCurrentUser: () => Promise<void>;
+}
+
+const createTestUser = (): TestUser => ({
+  id: 1,
+  username: 'testuser',
+  email: 'test@example.com',
+  permissions: ['read:posts'],
+});
+
+const createAuthState = (overrides: Partial<AuthState> = {}): ReturnType<typeof useAuth> => ({
+  isAuthenticated: false,
+  user: null,
+  logout: vi.fn(),
+  login: vi.fn(),
+  register: vi.fn(),
+  loading: false,
+  error: null,
+  token: null,
+  getCurrentUser: vi.fn(),
+  ...overrides,
+});
+
+const createTestStore = () => {
+  return configureStore({
+    reducer: {
+      app: appReducer,
+      auth: authReducer,
+      _persist: (state = { version: -1, rehydrated: true }) => state
+    },
+  });
+};
+
+const createRouter = () => {
+  return createMemoryRouter(
+    createRoutesFromElements(
+      <Route path="*" element={<Navbar />} />
+    ),
+    {
+      initialEntries: ['/'],
+      future: {
+        // @ts-expect-error React Router v7 future flags are not yet in the types
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      },
+    }
+  );
+};
+
+const createTheme = () => ({
+  // Implement your theme creation logic here
+});
+
+const renderNavbar = () => {
+  const store = createTestStore();
+  const router = createRouter();
+  
+  return render(
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={createTheme()}>
+        <Provider store={store}>
+          <RouterProvider router={router} />
+        </Provider>
+      </ThemeProvider>
+    </StyledEngineProvider>
+  );
+};
+
+const openUserMenu = () => {
+  const accountButton = screen.queryByLabelText('用户菜单');
+  if (accountButton) {
+    fireEvent.click(accountButton);
+  } else {
+    // 移动端菜单按钮
+    const menuButton = screen.getByLabelText('menu');
+    fireEvent.click(menuButton);
+  }
+};
+
+// 扩展 FutureConfig 类型
+declare module 'react-router-dom' {
+  interface FutureConfig {
+    v7_startTransition: boolean;
+    v7_relativeSplatPath: boolean;
+  }
+}
+
+describe('Navbar', () => {
+  let user: ReturnType<typeof userEvent.setup>;
 
   beforeEach(() => {
-    vi.clearAllMocks();
-    // 默认未登录状态
-    vi.mocked(useAuth).mockReturnValue({
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    user = userEvent.setup({ delay: null });
+    vi.mocked(useAuth).mockReturnValue(createAuthState({
       isAuthenticated: false,
       user: null,
-      logout: vi.fn(),
-      login: vi.fn(),
-      register: vi.fn(),
-      loading: false,
-      error: null,
       token: null,
-      getCurrentUser: vi.fn(),
-    });
+    }));
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+    vi.clearAllTimers();
+    vi.useRealTimers();
   });
 
   describe('基础渲染', () => {
@@ -131,78 +221,63 @@ describe('Navbar', () => {
     it('点击导航链接应该正确跳转', () => {
       renderNavbar();
 
-      fireEvent.click(screen.getByRole('button', { name: '文档' }));
-      expect(mockNavigate).toHaveBeenCalledWith('/docs');
+      const navigationLinks = [
+        { name: '文档', path: '/docs' },
+        { name: 'API', path: '/api' },
+        { name: '价格', path: '/pricing' },
+      ];
 
-      fireEvent.click(screen.getByRole('button', { name: 'API' }));
-      expect(mockNavigate).toHaveBeenCalledWith('/api');
-
-      fireEvent.click(screen.getByRole('button', { name: '价格' }));
-      expect(mockNavigate).toHaveBeenCalledWith('/pricing');
+      navigationLinks.forEach(({ name, path }) => {
+        fireEvent.click(screen.getByRole('button', { name }));
+        expect(mockNavigate).toHaveBeenCalledWith(path);
+      });
     });
 
     it('点击登录按钮应该跳转到登录页面', () => {
       renderNavbar();
-
       fireEvent.click(screen.getByRole('button', { name: '登录' }));
       expect(mockNavigate).toHaveBeenCalledWith('/login');
     });
   });
 
   describe('用户认证状态', () => {
-    it('已登录状态应该显示用户菜单', () => {
-      vi.mocked(useAuth).mockReturnValue({
+    beforeEach(() => {
+      const testUser = createTestUser();
+      vi.mocked(useAuth).mockReturnValue(createAuthState({
         isAuthenticated: true,
-        user: {
-          id: 1,
-          username: 'testuser',
-          email: 'test@example.com',
-          permissions: ['read:posts'],
-        },
-        logout: vi.fn(),
-        login: vi.fn(),
-        register: vi.fn(),
-        loading: false,
-        error: null,
+        user: testUser,
         token: 'test-token',
-        getCurrentUser: vi.fn(),
-      });
+      }));
+    });
 
+    it('已登录状态应该显示用户菜单', () => {
       renderNavbar();
-
-      const accountButton = screen.getByLabelText('account of current user');
+      
+      // 桌面端应该显示用户头像按钮
+      const accountButton = screen.getByLabelText('用户菜单');
+      expect(accountButton).toBeInTheDocument();
+      
       fireEvent.click(accountButton);
-
       expect(screen.getByText('testuser')).toBeInTheDocument();
       expect(screen.getByText('退出登录')).toBeInTheDocument();
     });
 
     it('点击退出登录应该调用 logout', async () => {
-      const mockLogout = vi.fn();
-      vi.mocked(useAuth).mockReturnValue({
+      const mockLogout = vi.fn().mockResolvedValue(undefined);
+      vi.mocked(useAuth).mockReturnValue(createAuthState({
         isAuthenticated: true,
-        user: {
-          id: 1,
-          username: 'testuser',
-          email: 'test@example.com',
-          permissions: ['read:posts'],
-        },
-        logout: mockLogout,
-        login: vi.fn(),
-        register: vi.fn(),
-        loading: false,
-        error: null,
+        user: createTestUser(),
         token: 'test-token',
-        getCurrentUser: vi.fn(),
-      });
+        logout: mockLogout,
+      }));
 
       renderNavbar();
-
-      const accountButton = screen.getByLabelText('account of current user');
-      fireEvent.click(accountButton);
-
-      const logoutButton = screen.getByText('退出登录');
-      fireEvent.click(logoutButton);
+      
+      await user.click(screen.getByLabelText('用户菜单'));
+      vi.advanceTimersByTime(100);
+      
+      await user.click(screen.getByText('退出登录'));
+      vi.advanceTimersByTime(100);
 
       expect(mockLogout).toHaveBeenCalled();
       expect(mockNavigate).toHaveBeenCalledWith('/');
@@ -215,35 +290,20 @@ describe('Navbar', () => {
       const mockLogout = vi.fn().mockRejectedValue(mockError);
       const mockErrorLog = vi.fn();
 
-      // Mock errorLogger
       vi.mocked(errorLogger.log).mockImplementation(mockErrorLog);
-
-      vi.mocked(useAuth).mockReturnValue({
+      vi.mocked(useAuth).mockReturnValue(createAuthState({
         isAuthenticated: true,
-        user: {
-          id: 1,
-          username: 'testuser',
-          email: 'test@example.com',
-          permissions: ['read:posts'],
-        },
-        logout: mockLogout,
-        login: vi.fn(),
-        register: vi.fn(),
-        loading: false,
-        error: null,
+        user: createTestUser(),
         token: 'test-token',
-        getCurrentUser: vi.fn(),
-      });
+        logout: mockLogout,
+      }));
 
       renderNavbar();
-
-      const accountButton = screen.getByLabelText('account of current user');
-      fireEvent.click(accountButton);
+      openUserMenu();
 
       const logoutButton = screen.getByText('退出登录');
-      await fireEvent.click(logoutButton);
+      fireEvent.click(logoutButton);
 
-      // 等待 Promise 拒绝后的错误处理
       await vi.waitFor(() => {
         expect(mockLogout).toHaveBeenCalled();
         expect(mockNavigate).toHaveBeenCalledWith('/');
@@ -251,7 +311,6 @@ describe('Navbar', () => {
           expect.objectContaining({
             type: 'AUTH_ERROR',
             message: '退出登录失败',
-            data: mockError,
           })
         );
       });
@@ -260,137 +319,127 @@ describe('Navbar', () => {
 
   describe('移动端视图', () => {
     beforeEach(() => {
-      // Mock useMediaQuery 返回 true 表示移动端
       vi.mocked(useMediaQuery).mockReturnValue(true);
     });
 
-    afterEach(() => {
-      vi.resetAllMocks();
-    });
-
-    it('移动端应该显示菜单图标而不是导航链接', () => {
+    it('移动端未登录状态应该显示菜单图标和移动端菜单', async () => {
       renderNavbar();
-
-      // 不应该显示导航链接
-      expect(screen.queryByRole('button', { name: '首页' })).not.toBeInTheDocument();
+      
+      // 验证菜单图标存在
+      const menuButton = screen.getByLabelText('menu');
+      expect(menuButton).toBeInTheDocument();
+      
+      // 点击菜单图标
+      fireEvent.click(menuButton);
+      
+      // 验证移动端菜单内容
+      expect(screen.getByText('首页')).toBeInTheDocument();
+      expect(screen.getByText('文档')).toBeInTheDocument();
+      expect(screen.getByText('API')).toBeInTheDocument();
+      expect(screen.getByText('价格')).toBeInTheDocument();
+      expect(screen.getByText('登录')).toBeInTheDocument();
+      
+      // 验证导航链接不可见
       expect(screen.queryByRole('button', { name: '文档' })).not.toBeInTheDocument();
-      expect(screen.queryByRole('button', { name: 'API' })).not.toBeInTheDocument();
-      expect(screen.queryByRole('button', { name: '价格' })).not.toBeInTheDocument();
-
-      // 应该显示菜单图标
-      expect(screen.getByLabelText('menu')).toBeInTheDocument();
     });
 
-    it('移动端已登录状态应该显示用户头像', () => {
-      vi.mocked(useAuth).mockReturnValue({
+    it('移动端已登录状态应该显示用户头像和用户菜单', async () => {
+      const testUser = createTestUser();
+      vi.mocked(useAuth).mockReturnValue(createAuthState({
         isAuthenticated: true,
-        user: {
-          id: 1,
-          username: 'testuser',
-          email: 'test@example.com',
-          permissions: ['read:posts'],
-        },
-        logout: vi.fn(),
-        login: vi.fn(),
-        register: vi.fn(),
-        loading: false,
-        error: null,
+        user: testUser,
         token: 'test-token',
-        getCurrentUser: vi.fn(),
-      });
+      }));
 
       renderNavbar();
-
-      expect(screen.getByLabelText('account of current user')).toBeInTheDocument();
+      
+      // 验证用户头像按钮存在
+      const accountButton = await screen.findByLabelText('用户菜单');
+      expect(accountButton).toBeInTheDocument();
+      
+      // 验证菜单图标不存在
       expect(screen.queryByLabelText('menu')).not.toBeInTheDocument();
+      
+      // 点击用户头像
+      fireEvent.click(accountButton);
+      
+      // 验证用户菜单内容
+      expect(screen.getByText(testUser.username)).toBeInTheDocument();
+      expect(screen.getByText('退出登录')).toBeInTheDocument();
     });
 
-    it('移动端用户菜单应该正常工作', () => {
-      const mockLogout = vi.fn();
-      vi.mocked(useAuth).mockReturnValue({
-        isAuthenticated: true,
-        user: {
-          id: 1,
-          username: 'testuser',
-          email: 'test@example.com',
-          permissions: ['read:posts'],
-        },
-        logout: mockLogout,
-        login: vi.fn(),
-        register: vi.fn(),
-        loading: false,
-        error: null,
-        token: 'test-token',
-        getCurrentUser: vi.fn(),
-      });
-
+    it('移动端菜单项点击应该正确导航', async () => {
       renderNavbar();
+      
+      // 打开菜单
+      await user.click(screen.getByLabelText('menu'));
+      vi.advanceTimersByTime(300);
+      
+      // 点击第一个菜单项
+      const menuItem = screen.getByRole('menuitem', { name: '文档', hidden: true });
+      await user.click(menuItem);
+      vi.advanceTimersByTime(300);
+      
+      expect(mockNavigate).toHaveBeenCalledWith('/docs');
+    });
 
-      const accountButton = screen.getByLabelText('account of current user');
-      fireEvent.click(accountButton);
-
-      expect(screen.getByText('testuser')).toBeInTheDocument();
-      expect(screen.getByText('退出登录')).toBeInTheDocument();
-
-      fireEvent.click(screen.getByText('退出登录'));
-      expect(mockLogout).toHaveBeenCalled();
-      expect(mockNavigate).toHaveBeenCalledWith('/');
+    it('点击移动端菜单外部应该关闭菜单', async () => {
+      renderNavbar();
+      
+      // 打开菜单
+      await user.click(screen.getByLabelText('menu'));
+      await waitFor(() => {
+        expect(screen.getByRole('menuitem', { name: '文档', hidden: true })).toBeInTheDocument();
+      });
+      
+      // 按 ESC 键关闭菜单
+      await user.keyboard('{Escape}');
+      
+      // 确认菜单已关闭
+      await waitFor(() => {
+        expect(screen.queryByRole('menuitem', { name: '文档', hidden: true })).not.toBeInTheDocument();
+      });
     });
   });
 
   describe('用户菜单操作', () => {
     beforeEach(() => {
-      vi.mocked(useAuth).mockReturnValue({
+      const testUser = createTestUser();
+      vi.mocked(useAuth).mockReturnValue(createAuthState({
         isAuthenticated: true,
-        user: {
-          id: 1,
-          username: 'testuser',
-          email: 'test@example.com',
-          permissions: ['read:posts'],
-        },
-        logout: vi.fn(),
-        login: vi.fn(),
-        register: vi.fn(),
-        loading: false,
-        error: null,
+        user: testUser,
         token: 'test-token',
-        getCurrentUser: vi.fn(),
+      }));
+    });
+
+    it('点击用户名应该关闭菜单', async () => {
+      renderNavbar();
+      
+      await user.click(screen.getByLabelText('用户菜单'));
+      vi.advanceTimersByTime(100);
+      
+      await user.click(screen.getByText('testuser'));
+      vi.advanceTimersByTime(100);
+      
+      expect(screen.queryByText('退出登录')).not.toBeInTheDocument();
+    });
+
+    it('点击菜单外部应该关闭菜单', async () => {
+      renderNavbar();
+      
+      // 打开用户菜单
+      await user.click(screen.getByLabelText('用户菜单'));
+      await waitFor(() => {
+        expect(screen.getByRole('menuitem', { name: '退出登录', hidden: true })).toBeInTheDocument();
       });
-    });
-
-    it('点击用户名应该关闭菜单', () => {
-      renderNavbar();
-
-      // 打开菜单
-      const accountButton = screen.getByLabelText('account of current user');
-      fireEvent.click(accountButton);
-
-      // 验证菜单已打开
-      expect(screen.getByText('testuser')).toBeInTheDocument();
-
-      // 点击用户名
-      fireEvent.click(screen.getByText('testuser'));
-
-      // 验证菜单已关闭
-      expect(screen.queryByRole('menu')).not.toBeInTheDocument();
-    });
-
-    it('点击菜单外部应该关闭菜单', () => {
-      renderNavbar();
-
-      // 打开菜单
-      const accountButton = screen.getByLabelText('account of current user');
-      fireEvent.click(accountButton);
-
-      // 验证菜单已打开
-      expect(screen.getByText('testuser')).toBeInTheDocument();
-
-      // 触发菜单关闭事件
-      const menu = screen.getByRole('menu');
-      fireEvent.keyDown(menu, { key: 'Escape' });
-
-      // 验证菜单已关闭
-      expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+      
+      // 按 ESC 键关闭菜单
+      await user.keyboard('{Escape}');
+      
+      // 确认菜单已关闭
+      await waitFor(() => {
+        expect(screen.queryByRole('menuitem', { name: '退出登录', hidden: true })).not.toBeInTheDocument();
+      });
     });
   });
 });

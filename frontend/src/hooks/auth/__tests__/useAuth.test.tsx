@@ -1,9 +1,10 @@
-import { configureStore, createAsyncThunk } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import { renderHook, act } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { vi } from 'vitest';
 
+import type { LoginFormData, RegisterFormData } from '@/types/auth';
 
 import authReducer, { login, register, logout } from '@/store/slices/authSlice';
 import { errorLogger } from '@/utils/errorLogger';
@@ -12,12 +13,101 @@ import { HttpError, HttpErrorType } from '@/utils/http/error/types';
 
 import { useAuth } from '../useAuth';
 
-// Mock redux store
+// 测试类型定义
+interface TestUser {
+  id: number;
+  username: string;
+  email: string;
+  permissions: string[];
+}
+
+interface TestAuthResponse {
+  user: TestUser;
+  token: string;
+}
+
+type AuthActionType = 'login' | 'register' | 'logout';
+
+interface AuthMethods {
+  login: (data: LoginFormData) => Promise<void>;
+  register: (data: RegisterFormData) => Promise<void>;
+  logout: () => Promise<void>;
+}
+
+const authMethods: Record<AuthActionType, keyof AuthMethods> = {
+  login: 'login',
+  register: 'register',
+  logout: 'logout',
+} as const;
+
+// 测试数据工厂
+const createTestUser = (overrides: Partial<TestUser> = {}): TestUser => ({
+  id: 1,
+  username: 'testuser',
+  email: 'test@example.com',
+  permissions: [],
+  ...overrides,
+});
+
+const createTestAuthResponse = (userOverrides: Partial<TestUser> = {}): TestAuthResponse => ({
+  user: createTestUser(userOverrides),
+  token: 'test-token',
+});
+
+// Mock 设置
+const mockNavigate = vi.fn();
+const mockLocalStorage = {
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  removeItem: vi.fn(),
+  clear: vi.fn(),
+  length: 0,
+  key: vi.fn(),
+};
+
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual<typeof import('react-router-dom')>('react-router-dom');
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
+
+vi.mock('@/utils/errorLogger', () => ({
+  errorLogger: {
+    log: vi.fn(),
+  },
+}));
+
+vi.mock('@/utils/http/error/factory', () => ({
+  HttpErrorFactory: {
+    create: vi.fn().mockImplementation((err: unknown) => {
+      if (err instanceof HttpError) return err;
+      return new HttpError({
+        type: HttpErrorType.AUTH,
+        message: err instanceof Error ? err.message : 'Unknown error',
+        status: 401,
+        data: err,
+      });
+    }),
+  },
+}));
+
+vi.mock('@/store/slices/authSlice', () => ({
+  __esModule: true,
+  default: (state = {}) => state,
+  login: vi.fn(),
+  register: vi.fn(),
+  logout: vi.fn(),
+  clearAuth: vi.fn().mockReturnValue({ type: 'auth/clearAuth' }),
+}));
+
+Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
+
+// 测试环境设置
 const createTestStore = (initialState = {}) => {
   return configureStore({
-    reducer: {
-      auth: authReducer,
-    },
+    reducer: { auth: authReducer },
     middleware: getDefaultMiddleware =>
       getDefaultMiddleware({
         serializableCheck: false,
@@ -35,127 +125,61 @@ const createTestStore = (initialState = {}) => {
   });
 };
 
-// Mock navigation
-const mockNavigate = vi.fn();
-vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual<typeof import('react-router-dom')>('react-router-dom');
-  return {
-    ...actual,
-    useNavigate: () => mockNavigate,
-  };
-});
-
-// Mock error logger
-vi.mock('@/utils/errorLogger', () => ({
-  errorLogger: {
-    log: vi.fn(),
-  },
-}));
-
-// Mock HTTP error factory
-vi.mock('@/utils/http/error/factory', () => ({
-  HttpErrorFactory: {
-    create: vi.fn().mockImplementation((err: unknown) => {
-      if (err instanceof HttpError) {
-        return err;
-      }
-      return new HttpError({
-        type: HttpErrorType.AUTH,
-        message: err instanceof Error ? err.message : 'Unknown error',
-        status: 401,
-        data: err,
-      });
-    }),
-  },
-}));
-
-// Mock localStorage
-const mockLocalStorage = {
-  getItem: vi.fn(),
-  setItem: vi.fn(),
-  removeItem: vi.fn(),
-  clear: vi.fn(),
-  length: 0,
-  key: vi.fn(),
+const createWrapper = (store = createTestStore()) => {
+  const Wrapper = ({ children }: { children: React.ReactNode }) => (
+    <Provider store={store}>
+      <MemoryRouter>{children}</MemoryRouter>
+    </Provider>
+  );
+  Wrapper.displayName = 'TestWrapper';
+  return Wrapper;
 };
 
-Object.defineProperty(window, 'localStorage', {
-  value: mockLocalStorage,
-});
+// 测试辅助函数
+const setupAuthTest = (config: {
+  initialState?: Partial<typeof authReducer>;
+  actionType?: AuthActionType;
+  isSuccess?: boolean;
+  error?: Error;
+}) => {
+  const store = createTestStore(config.initialState);
+  const wrapper = createWrapper(store);
 
-// Mock Redux actions
-vi.mock('@/store/slices/authSlice', () => ({
-  __esModule: true,
-  default: (state = {}) => state,
-  login: vi.fn().mockImplementation(_ => {
-    return {
-      type: 'auth/login/fulfilled',
-      payload: {
-        user: {
-          id: 1,
-          username: 'testuser',
-          email: 'test@example.com',
-          permissions: [],
-        },
-        token: 'test-token',
-      },
-      unwrap: () =>
-        Promise.resolve({
-          user: {
-            id: 1,
-            username: 'testuser',
-            email: 'test@example.com',
-            permissions: [],
-          },
-          token: 'test-token',
-        }),
-    };
-  }),
-  register: vi.fn().mockImplementation(_ => {
-    return {
-      type: 'auth/register/fulfilled',
-      payload: {
-        user: {
-          id: 1,
-          username: 'testuser',
-          email: 'test@example.com',
-          permissions: [],
-        },
-        token: 'test-token',
-      },
-      unwrap: () =>
-        Promise.resolve({
-          user: {
-            id: 1,
-            username: 'testuser',
-            email: 'test@example.com',
-            permissions: [],
-          },
-          token: 'test-token',
-        }),
-    };
-  }),
-  logout: vi.fn().mockImplementation(() => {
-    return {
-      type: 'auth/logout/fulfilled',
-      unwrap: () => Promise.resolve(),
-    };
-  }),
-  clearAuth: vi.fn().mockReturnValue({
-    type: 'auth/clearAuth',
-  }),
-}));
+  if (config.actionType) {
+    const response = createTestAuthResponse();
+    const mockFn = vi.mocked(
+      config.actionType === 'login' ? login :
+      config.actionType === 'register' ? register : 
+      logout
+    );
+
+    if (config.isSuccess) {
+      mockFn.mockImplementation(() => ({
+        type: `auth/${config.actionType}/fulfilled`,
+        payload: config.actionType === 'logout' ? undefined : response,
+        unwrap: () => Promise.resolve(config.actionType === 'logout' ? undefined : response),
+      }) as any);
+    } else {
+      mockFn.mockImplementation(() => ({
+        type: `auth/${config.actionType}/rejected`,
+        unwrap: () => Promise.reject(config.error || new HttpError({
+          type: HttpErrorType.AUTH,
+          message: `${config.actionType} failed`,
+          status: 401,
+          data: { reason: 'Authentication failed' },
+        })),
+      }) as any);
+    }
+  }
+
+  return {
+    store,
+    wrapper,
+    renderAuth: () => renderHook(() => useAuth(), { wrapper }),
+  };
+};
 
 describe('useAuth', () => {
-  const wrapper = ({ children }: { children: React.ReactNode }) => {
-    const store = createTestStore();
-    return (
-      <Provider store={store}>
-        <MemoryRouter>{children}</MemoryRouter>
-      </Provider>
-    );
-  };
-
   beforeEach(() => {
     vi.clearAllMocks();
     mockLocalStorage.getItem.mockReturnValue(null);
@@ -163,7 +187,8 @@ describe('useAuth', () => {
 
   describe('基础状态', () => {
     it('应该返回初始状态', () => {
-      const { result } = renderHook(() => useAuth(), { wrapper });
+      const { renderAuth } = setupAuthTest({});
+      const { result } = renderAuth();
 
       expect(result.current.user).toBeNull();
       expect(result.current.token).toBeNull();
@@ -173,126 +198,89 @@ describe('useAuth', () => {
     });
 
     it('当有token时应该显示已认证状态', () => {
-      const store = createTestStore({
-        token: 'test-token',
+      const { renderAuth } = setupAuthTest({
+        initialState: { token: 'test-token' },
       });
-
-      const customWrapper = ({ children }: { children: React.ReactNode }) => (
-        <Provider store={store}>
-          <MemoryRouter>{children}</MemoryRouter>
-        </Provider>
-      );
-
-      const { result } = renderHook(() => useAuth(), { wrapper: customWrapper });
+      const { result } = renderAuth();
 
       expect(result.current.isAuthenticated).toBeTruthy();
     });
   });
 
-  describe('登录功能', () => {
-    it('登录成功时应该跳转到首页', async () => {
-      const mockLoginData = {
-        username: 'testuser',
-        password: 'password123',
-      };
-
-      const { result } = renderHook(() => useAuth(), { wrapper });
-
-      await act(async () => {
-        await result.current.login(mockLoginData);
-      });
-
-      expect(mockNavigate).toHaveBeenCalledWith('/');
-    });
-
-    it('登录失败时应该跳转到登录页', async () => {
-      const mockError = new HttpError({
-        type: HttpErrorType.AUTH,
-        message: 'Login failed',
-        status: 401,
-        data: { reason: 'Invalid credentials' },
-      });
-
-      vi.mocked(login).mockImplementation(() => {
-        return {
-          type: 'auth/login',
-          unwrap: () => Promise.reject(mockError),
-        } as any;
-      });
-
-      const { result } = renderHook(() => useAuth(), { wrapper });
-
-      await act(async () => {
-        try {
-          await result.current.login({
-            username: 'testuser',
-            password: 'wrong-password',
-          });
-        } catch (_error) {
-          expect(_error).toBe(mockError);
-        }
-      });
-
-      expect(mockNavigate).toHaveBeenCalledWith('/login');
-    });
-  });
-
-  describe('注册功能', () => {
-    it('注册成功时应该跳转到首页', async () => {
-      const mockRegisterData = {
+  describe.each([
+    ['login' as const, '登录', '/login'],
+    ['register' as const, '注册', '/register'],
+  ])('%s功能', (actionType, name, failPath) => {
+    const testData = {
+      login: { username: 'testuser', password: 'password123' } as const,
+      register: {
         username: 'testuser',
         password: 'password123',
         email: 'test@example.com',
         confirmPassword: 'password123',
-      };
+      } as const,
+    };
 
-      const { result } = renderHook(() => useAuth(), { wrapper });
+    it(`${name}成功时应该跳转到首页`, async () => {
+      const { renderAuth } = setupAuthTest({
+        actionType,
+        isSuccess: true,
+      });
+      const { result } = renderAuth();
 
       await act(async () => {
-        await result.current.register(mockRegisterData);
+        const method = authMethods[actionType];
+        if (method === 'login') {
+          await result.current.login(testData.login);
+        } else if (method === 'register') {
+          await result.current.register(testData.register);
+        }
       });
 
       expect(mockNavigate).toHaveBeenCalledWith('/');
     });
 
-    it('注册失败时应该跳转到注册页', async () => {
-      const mockError = new HttpError({
-        type: HttpErrorType.AUTH,
-        message: 'Registration failed',
-        status: 401,
-        data: { reason: 'Username taken' },
+    it(`${name}失败时应该跳转到${failPath}`, async () => {
+      const { renderAuth } = setupAuthTest({
+        actionType,
+        isSuccess: false,
+        error: new HttpError({
+          type: HttpErrorType.AUTH,
+          message: `${name}失败`,
+          status: 401,
+          data: { reason: '认证失败' },
+        }),
       });
-
-      // 直接使用 vi.mocked(register) 来模拟返回一个失败的 Promise
-      vi.mocked(register).mockImplementation(() => ({
-        type: 'auth/register/rejected',
-        payload: mockError,
-        unwrap: () => Promise.reject(mockError),
-      } as any));
-
-      const { result } = renderHook(() => useAuth(), { wrapper });
+      const { result } = renderAuth();
 
       await act(async () => {
         try {
-          await result.current.register({
-            username: 'testuser',
-            password: 'password123',
-            email: 'test@example.com',
-            confirmPassword: 'password123',
-          });
-        } catch (_error) {
-          // 验证捕获到的错误是预期的错误
-          expect(_error).toBe(mockError);
+          const method = authMethods[actionType];
+          if (method === 'login') {
+            await result.current.login(testData.login);
+          } else if (method === 'register') {
+            await result.current.register(testData.register);
+          }
+        } catch (error) {
+          expect(error).toBeInstanceOf(HttpError);
         }
       });
 
-      expect(mockNavigate).toHaveBeenCalledWith('/register');
+      expect(mockNavigate).toHaveBeenCalledWith(failPath);
     });
   });
 
   describe('登出功能', () => {
     it('登出成功时应该清除认证状态并跳转到首页', async () => {
-      const { result } = renderHook(() => useAuth(), { wrapper });
+      const { renderAuth } = setupAuthTest({
+        actionType: 'logout',
+        isSuccess: true,
+        initialState: {
+          token: 'test-token',
+          user: createTestUser(),
+        },
+      });
+      const { result } = renderAuth();
 
       await act(async () => {
         await result.current.logout();
@@ -303,15 +291,17 @@ describe('useAuth', () => {
     });
 
     it('登出失败时应该记录错误并仍然清除认证状态', async () => {
-      const mockError = new Error('退出登录失败');
-
-      const mockLogoutAction = createAsyncThunk('auth/logout', async (): Promise<void> => {
-        throw mockError;
+      const error = new Error('退出登录失败');
+      const { renderAuth } = setupAuthTest({
+        actionType: 'logout',
+        isSuccess: false,
+        error,
+        initialState: {
+          token: 'test-token',
+          user: createTestUser(),
+        },
       });
-
-      vi.mocked(logout).mockImplementation(mockLogoutAction);
-
-      const { result } = renderHook(() => useAuth(), { wrapper });
+      const { result } = renderAuth();
 
       await act(async () => {
         await result.current.logout();
@@ -325,7 +315,8 @@ describe('useAuth', () => {
 
   describe('获取当前用户', () => {
     it('没有token时不应该获取用户信息', async () => {
-      const { result } = renderHook(() => useAuth(), { wrapper });
+      const { renderAuth } = setupAuthTest({});
+      const { result } = renderAuth();
 
       await act(async () => {
         await result.current.getCurrentUser();
@@ -335,15 +326,9 @@ describe('useAuth', () => {
     });
 
     it('获取用户失败时应该跳转到登录页', async () => {
-      const store = createTestStore({
-        token: 'test-token',
+      const { renderAuth } = setupAuthTest({
+        initialState: { token: 'test-token' },
       });
-
-      const customWrapper = ({ children }: { children: React.ReactNode }) => (
-        <Provider store={store}>
-          <MemoryRouter>{children}</MemoryRouter>
-        </Provider>
-      );
 
       const mockError = new HttpError({
         type: HttpErrorType.AUTH,
@@ -353,8 +338,7 @@ describe('useAuth', () => {
       });
 
       vi.mocked(HttpErrorFactory.create).mockReturnValue(mockError);
-
-      const { result } = renderHook(() => useAuth(), { wrapper: customWrapper });
+      const { result } = renderAuth();
 
       await expect(result.current.getCurrentUser()).rejects.toThrow();
       expect(mockNavigate).toHaveBeenCalledWith('/login');

@@ -1,21 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Copy/Paste Detector Report</title><link href="styles/tailwind.css" rel="stylesheet"><link href="styles/prism.css" rel="stylesheet"></head><body class="bg-gray-100"><header class="bg-white shadow py-4"><div class="container mx-auto px-4"><h1 class="text-3xl font-semibold text-gray-800">jscpd - copy/paste report</h1></div></header><main class="container mx-auto my-8 p-4 bg-white shadow rounded"><section class="mb-8" id="dashboard"><h2 class="text-2xl font-semibold text-gray-700 mb-4">Dashboard</h2><div class="grid grid-cols-4 gap-4"><div class="bg-blue-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-blue-800 mb-2">Total Files</h3><span class="text-4xl font-bold text-blue-800">261</span></div><div class="bg-green-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-green-800 mb-2">Total Lines of Code</h3><span class="text-4xl font-bold text-green-800">24141</span></div><div class="bg-yellow-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-yellow-800 mb-2">Number of Clones</h3><span class="text-4xl font-bold text-yellow-800">69</span></div><div class="bg-red-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-red-800 mb-2">Duplicated Lines</h3><span class="text-4xl font-bold text-red-800">1098 (4.55%)</span></div></div></section><section class="mb-8" id="formats"><h2 class="text-2xl font-semibold text-gray-700 mb-4">Formats with Duplications</h2><table class="w-full table-auto"><thead><tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal"><th class="py-3 px-6 text-left">Format</th><th class="py-3 px-6 text-left">Files</th><th class="py-3 px-6 text-left">Lines</th><th class="py-3 px-6 text-left">Clones</th><th class="py-3 px-6 text-left">Duplicated Lines</th><th class="py-3 px-6 text-left">Duplicated Tokens</th></tr></thead><tbody><tr class="bg-white border-b border-gray-200 text-gray-800 text-sm"><td class="py-3 px-6"><a class="text-blue-600 hover:underline" href="#typescript-clones">typescript</a></td><td class="py-3 px-6">129</td><td class="py-3 px-6">13674</td><td class="py-3 px-6">30</td><td class="py-3 px-6">379</td><td class="py-3 px-6">3667</td></tr><tr class="bg-white border-b border-gray-200 text-gray-800 text-sm"><td class="py-3 px-6"><a class="text-blue-600 hover:underline" href="#javascript-clones">javascript</a></td><td class="py-3 px-6">59</td><td class="py-3 px-6">2182</td><td class="py-3 px-6">1</td><td class="py-3 px-6">135</td><td class="py-3 px-6">1370</td></tr><tr class="bg-white border-b border-gray-200 text-gray-800 text-sm"><td class="py-3 px-6"><a class="text-blue-600 hover:underline" href="#tsx-clones">tsx</a></td><td class="py-3 px-6">73</td><td class="py-3 px-6">8285</td><td class="py-3 px-6">38</td><td class="py-3 px-6">584</td><td class="py-3 px-6">5227</td></tr></tbody></table></section><section class="mb-8" id="txt-clones"><a name="typescript-clones"></a><h2 class="text-2xl font-semibold text-gray-700 mb-4">typescript</h2><div class="divide-y divide-gray-200 border-b-2"><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/utils/http/error/__tests__/factory.test.ts (Line 46:10 - Line 55:14), D:/jinsansan/frontend/src/utils/http/error/__tests__/factory.test.ts (Line 28:2 - Line 37:5)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn0" onclick="toggleCodeBlock('cloneGroup0', 'expandBtn0', 'collapseBtn0')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn0" onclick="toggleCodeBlock('cloneGroup0', 'expandBtn0', 'collapseBtn0')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup0"><code class="language-typescript text-sm text-gray-800">,
-      });
-
-      const result = HttpErrorFactory.create(axiosError as AxiosError);
-
-      expect(result).toBeInstanceOf(HttpError);
-      expect(result.type).toBe(HttpErrorType.HTTP_ERROR);
-      expect(result.message).toBe('Network Error');
-      expect(result.code).toBe('ECONNABORTED');
-      expect(result.status).toBeUndefined</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/utils/http/error/__tests__/factory.test.ts (Line 81:11 - Line 89:19), D:/jinsansan/frontend/src/utils/http/error/__tests__/factory.test.ts (Line 27:2 - Line 35:16)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn1" onclick="toggleCodeBlock('cloneGroup1', 'expandBtn1', 'collapseBtn1')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn1" onclick="toggleCodeBlock('cloneGroup1', 'expandBtn1', 'collapseBtn1')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup1"><code class="language-typescript text-sm text-gray-800">},
-        },
-      });
-
-      const result = HttpErrorFactory.create(axiosError as AxiosError);
-
-      expect(result).toBeInstanceOf(HttpError);
-      expect(result.type).toBe(HttpErrorType.HTTP_ERROR);
-      expect(result.message).toBe('Validation Error'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/utils/security/__tests__/audit.test.ts (Line 28:5 - Line 40:8), D:/jinsansan/frontend/src/utils/security/__tests__/setup.ts (Line 4:1 - Line 16:14)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn9" onclick="toggleCodeBlock('cloneGroup9', 'expandBtn9', 'collapseBtn9')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn9" onclick="toggleCodeBlock('cloneGroup9', 'expandBtn9', 'collapseBtn9')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup9"><code class="language-typescript text-sm text-gray-800">const store = new Map&lt;string, string&gt;();
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Copy/Paste Detector Report</title><link href="styles/tailwind.css" rel="stylesheet"><link href="styles/prism.css" rel="stylesheet"></head><body class="bg-gray-100"><header class="bg-white shadow py-4"><div class="container mx-auto px-4"><h1 class="text-3xl font-semibold text-gray-800">jscpd - copy/paste report</h1></div></header><main class="container mx-auto my-8 p-4 bg-white shadow rounded"><section class="mb-8" id="dashboard"><h2 class="text-2xl font-semibold text-gray-700 mb-4">Dashboard</h2><div class="grid grid-cols-4 gap-4"><div class="bg-blue-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-blue-800 mb-2">Total Files</h3><span class="text-4xl font-bold text-blue-800">261</span></div><div class="bg-green-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-green-800 mb-2">Total Lines of Code</h3><span class="text-4xl font-bold text-green-800">24947</span></div><div class="bg-yellow-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-yellow-800 mb-2">Number of Clones</h3><span class="text-4xl font-bold text-yellow-800">40</span></div><div class="bg-red-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-red-800 mb-2">Duplicated Lines</h3><span class="text-4xl font-bold text-red-800">614 (2.46%)</span></div></div></section><section class="mb-8" id="formats"><h2 class="text-2xl font-semibold text-gray-700 mb-4">Formats with Duplications</h2><table class="w-full table-auto"><thead><tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal"><th class="py-3 px-6 text-left">Format</th><th class="py-3 px-6 text-left">Files</th><th class="py-3 px-6 text-left">Lines</th><th class="py-3 px-6 text-left">Clones</th><th class="py-3 px-6 text-left">Duplicated Lines</th><th class="py-3 px-6 text-left">Duplicated Tokens</th></tr></thead><tbody><tr class="bg-white border-b border-gray-200 text-gray-800 text-sm"><td class="py-3 px-6"><a class="text-blue-600 hover:underline" href="#typescript-clones">typescript</a></td><td class="py-3 px-6">129</td><td class="py-3 px-6">14548</td><td class="py-3 px-6">14</td><td class="py-3 px-6">191</td><td class="py-3 px-6">1864</td></tr><tr class="bg-white border-b border-gray-200 text-gray-800 text-sm"><td class="py-3 px-6"><a class="text-blue-600 hover:underline" href="#javascript-clones">javascript</a></td><td class="py-3 px-6">59</td><td class="py-3 px-6">1955</td><td class="py-3 px-6">1</td><td class="py-3 px-6">86</td><td class="py-3 px-6">889</td></tr><tr class="bg-white border-b border-gray-200 text-gray-800 text-sm"><td class="py-3 px-6"><a class="text-blue-600 hover:underline" href="#tsx-clones">tsx</a></td><td class="py-3 px-6">73</td><td class="py-3 px-6">8444</td><td class="py-3 px-6">25</td><td class="py-3 px-6">337</td><td class="py-3 px-6">3153</td></tr></tbody></table></section><section class="mb-8" id="txt-clones"><a name="typescript-clones"></a><h2 class="text-2xl font-semibold text-gray-700 mb-4">typescript</h2><div class="divide-y divide-gray-200 border-b-2"><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/utils/security/__tests__/audit.test.ts (Line 55:5 - Line 67:19), D:/jinsansan/frontend/src/utils/security/__tests__/setup.ts (Line 4:1 - Line 16:14)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn2" onclick="toggleCodeBlock('cloneGroup2', 'expandBtn2', 'collapseBtn2')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn2" onclick="toggleCodeBlock('cloneGroup2', 'expandBtn2', 'collapseBtn2')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup2"><code class="language-typescript text-sm text-gray-800">const store = new Map&lt;string, string&gt;();
     const localStorageMock = {
       getItem: vi.fn((key: string) =&gt; store.get(key) || null),
       setItem: vi.fn((key: string, value: string) =&gt; store.set(key, value)),
@@ -27,88 +10,16 @@
 
     global.localStorage = localStorageMock;
 
-    // 清理日志</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/utils/security/__tests__/audit.test.ts (Line 291:7 - Line 316:2), D:/jinsansan/frontend/src/utils/security/__tests__/audit.test.ts (Line 209:7 - Line 235:3)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn10" onclick="toggleCodeBlock('cloneGroup10', 'expandBtn10', 'collapseBtn10')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn10" onclick="toggleCodeBlock('cloneGroup10', 'expandBtn10', 'collapseBtn10')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup10"><code class="language-typescript text-sm text-gray-800">await auditLogManager.log(
-        testLog.type,
-        testLog.level,
-        testLog.action,
-        testLog.resource,
-        testLog.details
-      );
+    // Mock fetch 成功响应</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/utils/http/__tests__/retry.test.ts (Line 241:16 - Line 250:2), D:/jinsansan/frontend/src/utils/http/__tests__/retry.test.ts (Line 215:13 - Line 225:3)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn3" onclick="toggleCodeBlock('cloneGroup3', 'expandBtn3', 'collapseBtn3')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn3" onclick="toggleCodeBlock('cloneGroup3', 'expandBtn3', 'collapseBtn3')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup3"><code class="language-typescript text-sm text-gray-800">)
+        .mockResolvedValue('success');
 
-      // 等待异步操作完成
-      await vi.runAllTimersAsync();
-
-      // 验证错误被正确记录
-      expect(mockErrorLogger.log).toHaveBeenCalledWith(
-        expect.any(Error),
-        expect.objectContaining({
-          context: expect.objectContaining({
-            action: 'test-error',
-            level: 'error',
-            resource: 'test-resource',
-            source: 'AuditLogger',
-          }),
-          level: 'error',
-        })
-      );
-    });
-  }</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/utils/router/__tests__/error-handler.test.ts (Line 164:2 - Line 194:27), D:/jinsansan/frontend/src/utils/router/__tests__/error-handler.test.ts (Line 96:16 - Line 126:17)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn11" onclick="toggleCodeBlock('cloneGroup11', 'expandBtn11', 'collapseBtn11')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn11" onclick="toggleCodeBlock('cloneGroup11', 'expandBtn11', 'collapseBtn11')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup11"><code class="language-typescript text-sm text-gray-800">);
-
-      routerErrorHandler.handleError(error);
-
-      expect(errorLogger.log).toHaveBeenCalledTimes(2);
-      // 验证第一次调用 - 记录原始错误
-      expect(errorLogger.log).toHaveBeenNthCalledWith(
-        1,
-        error,
-        expect.objectContaining({
-          level: ErrorLevel.ERROR,
-          context: expect.objectContaining({
-            status: 500,
-          }),
-        })
-      );
-      // 验证第二次调用 - 记录严重错误
-      expect(errorLogger.log).toHaveBeenNthCalledWith(
-        2,
-        error,
-        expect.objectContaining({
-          level: ErrorLevel.CRITICAL,
-          context: expect.objectContaining({
-            isCritical: true,
-            timestamp: expect.any(Number),
-          }),
-        })
-      );
-    });
-
-    it('应该处理 null 或 undefined 错误'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/utils/http/__tests__/retry.test.ts (Line 53:13 - Line 62:9), D:/jinsansan/frontend/src/utils/http/__tests__/retry.test.ts (Line 22:15 - Line 30:6)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn12" onclick="toggleCodeBlock('cloneGroup12', 'expandBtn12', 'collapseBtn12')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn12" onclick="toggleCodeBlock('cloneGroup12', 'expandBtn12', 'collapseBtn12')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup12"><code class="language-typescript text-sm text-gray-800">, async () =&gt; {
-    const fn = vi
-      .fn()
-      .mockRejectedValueOnce(new Error('fail'))
-      .mockRejectedValueOnce(new Error('fail'))
-      .mockResolvedValue('success');
-
-    const promise = retry(fn, { times: 3, delay: 1000 });
-
-    // 第一次调用</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/utils/http/__tests__/retry.test.ts (Line 125:2 - Line 133:2), D:/jinsansan/frontend/src/utils/http/__tests__/retry.test.ts (Line 109:2 - Line 117:7)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn13" onclick="toggleCodeBlock('cloneGroup13', 'expandBtn13', 'collapseBtn13')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn13" onclick="toggleCodeBlock('cloneGroup13', 'expandBtn13', 'collapseBtn13')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup13"><code class="language-typescript text-sm text-gray-800">);
-
-    const promise = retry(fn, { onRetry, delay: 1000 });
-    await vi.runAllTimersAsync();
-    const result = await promise;
-
-    expect(result).toBe('success');
-    expect(onRetry).toHaveBeenCalledTimes(1);
-  }</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/utils/http/__tests__/retry.test.ts (Line 188:16 - Line 197:2), D:/jinsansan/frontend/src/utils/http/__tests__/retry.test.ts (Line 163:13 - Line 173:3)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn14" onclick="toggleCodeBlock('cloneGroup14', 'expandBtn14', 'collapseBtn14')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn14" onclick="toggleCodeBlock('cloneGroup14', 'expandBtn14', 'collapseBtn14')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup14"><code class="language-typescript text-sm text-gray-800">).mockResolvedValue('success');
-
-      const promise = retry(fn);
-      await vi.runAllTimersAsync();
+      const { promise, fn: mockFn } = await executeRetryTest(fn, undefined, 2);
       const result = await promise;
 
       expect(result).toBe('success');
-      expect(fn).toHaveBeenCalledTimes(2);
+      expect(mockFn).toHaveBeenCalledTimes(2);
     });
-  }</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/utils/error/__tests__/errorLogger.test.ts (Line 156:2 - Line 167:20), D:/jinsansan/frontend/src/utils/error/__tests__/errorLogger.test.ts (Line 144:7 - Line 155:28)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn15" onclick="toggleCodeBlock('cloneGroup15', 'expandBtn15', 'collapseBtn15')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn15" onclick="toggleCodeBlock('cloneGroup15', 'expandBtn15', 'collapseBtn15')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup15"><code class="language-typescript text-sm text-gray-800">));
+  }</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/utils/error/__tests__/errorLogger.test.ts (Line 158:2 - Line 169:20), D:/jinsansan/frontend/src/utils/error/__tests__/errorLogger.test.ts (Line 146:7 - Line 157:28)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn4" onclick="toggleCodeBlock('cloneGroup4', 'expandBtn4', 'collapseBtn4')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn4" onclick="toggleCodeBlock('cloneGroup4', 'expandBtn4', 'collapseBtn4')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup4"><code class="language-typescript text-sm text-gray-800">));
 
       const error = new Error('测试错误');
       await errorLogger.log(error, { level: 'error' });
@@ -119,43 +30,28 @@
       );
     });
 
-    it('应该在本地存储已有日志时追加新日志'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/PerformanceMonitor.test.ts (Line 228:2 - Line 238:12), D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/PerformanceMonitor.test.ts (Line 185:9 - Line 195:11)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn22" onclick="toggleCodeBlock('cloneGroup22', 'expandBtn22', 'collapseBtn22')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn22" onclick="toggleCodeBlock('cloneGroup22', 'expandBtn22', 'collapseBtn22')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup22"><code class="language-typescript text-sm text-gray-800">,
-      };
-
-      mockObserver.callback({
-        getEntries: () =&gt; [mockEntry],
-      });
-
-      const metrics = monitor['metrics'];
-      expect(metrics).toHaveLength(1);
-      expect(metrics[0]).toMatchObject({
-        type: 'long_task'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/PerformanceMonitor.test.ts (Line 247:9 - Line 262:12), D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/PerformanceMonitor.test.ts (Line 205:8 - Line 220:11)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn23" onclick="toggleCodeBlock('cloneGroup23', 'expandBtn23', 'collapseBtn23')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn23" onclick="toggleCodeBlock('cloneGroup23', 'expandBtn23', 'collapseBtn23')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup23"><code class="language-typescript text-sm text-gray-800">, () =&gt; {
-    let mockObserver: any;
-
-    beforeEach(() =&gt; {
-      mockObserver = {
-        observe: vi.fn(),
-        disconnect: vi.fn(),
-      };
-
-      (global as any).PerformanceObserver = vi.fn(callback =&gt; {
-        mockObserver.callback = callback;
-        return mockObserver;
-      });
+    it('应该在本地存储已有日志时追加新日志'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/UserAnalytics.test.ts (Line 263:2 - Line 284:20), D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/UserAnalytics.test.ts (Line 240:16 - Line 261:21)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn11" onclick="toggleCodeBlock('cloneGroup11', 'expandBtn11', 'collapseBtn11')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn11" onclick="toggleCodeBlock('cloneGroup11', 'expandBtn11', 'collapseBtn11')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup11"><code class="language-typescript text-sm text-gray-800">));
+      
+      const analytics = UserAnalytics.getInstance();
+      analytics.trackCustomEvent('test', { value: 1 });
+      
+      await analytics.flush();
+      
+      // 验证事件被返回到队列
+      expect(analytics.getEvents()).toHaveLength(1);
+      // 验证 fetch 只被调用一次
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      // 验证错误被正确记录
+      expect(errorLogger.log).toHaveBeenCalledWith(
+        expect.any(Error),
+        expect.objectContaining({
+          level: 'error',
+          context: expect.any(Object)
+        })
+      );
     });
 
-    it('应该能观察用户交互'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/PerformanceMonitor.test.ts (Line 270:3 - Line 281:14), D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/PerformanceMonitor.test.ts (Line 227:4 - Line 195:11)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn24" onclick="toggleCodeBlock('cloneGroup24', 'expandBtn24', 'collapseBtn24')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn24" onclick="toggleCodeBlock('cloneGroup24', 'expandBtn24', 'collapseBtn24')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup24"><code class="language-typescript text-sm text-gray-800">,
-        startTime: 0,
-      };
-
-      mockObserver.callback({
-        getEntries: () =&gt; [mockEntry],
-      });
-
-      const metrics = monitor['metrics'];
-      expect(metrics).toHaveLength(1);
-      expect(metrics[0]).toMatchObject({
-        type: 'interaction'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/DataReporter.test.ts (Line 145:2 - Line 158:11), D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/DataReporter.test.ts (Line 129:2 - Line 142:12)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn25" onclick="toggleCodeBlock('cloneGroup25', 'expandBtn25', 'collapseBtn25')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn25" onclick="toggleCodeBlock('cloneGroup25', 'expandBtn25', 'collapseBtn25')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup25"><code class="language-typescript text-sm text-gray-800">);
+    it('应该在批处理错误时停止处理后续批次'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/DataReporter.test.ts (Line 146:2 - Line 159:11), D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/DataReporter.test.ts (Line 130:2 - Line 143:12)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn12" onclick="toggleCodeBlock('cloneGroup12', 'expandBtn12', 'collapseBtn12')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn12" onclick="toggleCodeBlock('cloneGroup12', 'expandBtn12', 'collapseBtn12')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup12"><code class="language-typescript text-sm text-gray-800">);
       global.fetch = mockFetch;
 
       performanceMonitor.trackCustomMetric('test-metric', 100);
@@ -168,66 +64,7 @@
       expect(performanceMonitor.getMetrics()).toHaveLength(1);
     });
 
-    it('应该处理无效数据'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/AlertManager.test.ts (Line 69:7 - Line 86:11), D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/AlertManager.test.ts (Line 16:7 - Line 33:3)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn26" onclick="toggleCodeBlock('cloneGroup26', 'expandBtn26', 'collapseBtn26')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn26" onclick="toggleCodeBlock('cloneGroup26', 'expandBtn26', 'collapseBtn26')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup26"><code class="language-typescript text-sm text-gray-800">, () =&gt; {
-    const testRule: AlertRule = {
-      id: 'test-rule-1',
-      name: '测试规则1',
-      type: 'threshold',
-      metric: 'cpu_usage',
-      condition: {
-        operator: '&gt;',
-        value: 80,
-      },
-      severity: 'warning',
-      enabled: true,
-      notification: {
-        email: ['test@example.com'],
-      },
-    };
-
-    beforeEach</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/AlertManager.test.ts (Line 206:7 - Line 227:13), D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/AlertManager.test.ts (Line 16:7 - Line 90:17)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn27" onclick="toggleCodeBlock('cloneGroup27', 'expandBtn27', 'collapseBtn27')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn27" onclick="toggleCodeBlock('cloneGroup27', 'expandBtn27', 'collapseBtn27')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup27"><code class="language-typescript text-sm text-gray-800">, () =&gt; {
-    const testRule: AlertRule = {
-      id: 'test-rule-1',
-      name: '测试规则1',
-      type: 'threshold',
-      metric: 'cpu_usage',
-      condition: {
-        operator: '&gt;',
-        value: 80,
-      },
-      severity: 'warning',
-      enabled: true,
-      notification: {
-        email: ['test@example.com'],
-      },
-    };
-
-    beforeEach(() =&gt; {
-      alertManager.addRule(testRule);
-    });
-
-    it('应该正确记录告警历史'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/AlertManager.test.ts (Line 266:7 - Line 287:16), D:/jinsansan/frontend/src/infrastructure/monitoring/__tests__/AlertManager.test.ts (Line 16:7 - Line 90:17)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn28" onclick="toggleCodeBlock('cloneGroup28', 'expandBtn28', 'collapseBtn28')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn28" onclick="toggleCodeBlock('cloneGroup28', 'expandBtn28', 'collapseBtn28')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup28"><code class="language-typescript text-sm text-gray-800">, () =&gt; {
-    const testRule: AlertRule = {
-      id: 'test-rule-1',
-      name: '测试规则1',
-      type: 'threshold',
-      metric: 'cpu_usage',
-      condition: {
-        operator: '&gt;',
-        value: 80,
-      },
-      severity: 'warning',
-      enabled: true,
-      notification: {
-        email: ['test@example.com'],
-      },
-    };
-
-    beforeEach(() =&gt; {
-      alertManager.addRule(testRule);
-    });
-
-    it('应该能够添加多个通知处理器'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/infrastructure/http/__tests__/httpClient.test.ts (Line 51:2 - Line 61:2), D:/jinsansan/frontend/src/infrastructure/http/__tests__/httpClient.test.ts (Line 12:2 - Line 22:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn29" onclick="toggleCodeBlock('cloneGroup29', 'expandBtn29', 'collapseBtn29')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn29" onclick="toggleCodeBlock('cloneGroup29', 'expandBtn29', 'collapseBtn29')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup29"><code class="language-typescript text-sm text-gray-800">{
+    it('应该处理无效数据'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/infrastructure/http/__tests__/httpClient.test.ts (Line 52:2 - Line 62:2), D:/jinsansan/frontend/src/infrastructure/http/__tests__/httpClient.test.ts (Line 13:2 - Line 23:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn13" onclick="toggleCodeBlock('cloneGroup13', 'expandBtn13', 'collapseBtn13')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn13" onclick="toggleCodeBlock('cloneGroup13', 'expandBtn13', 'collapseBtn13')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup13"><code class="language-typescript text-sm text-gray-800">{
       get: vi.fn(),
       post: vi.fn(),
       put: vi.fn(),
@@ -237,7 +74,7 @@
         request: { use: vi.fn() },
         response: { use: vi.fn() },
       },
-    };</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/infrastructure/file/__tests__/FileManager.test.ts (Line 132:11 - Line 145:16), D:/jinsansan/frontend/src/infrastructure/file/__tests__/FileManager.test.ts (Line 86:11 - Line 99:16)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn30" onclick="toggleCodeBlock('cloneGroup30', 'expandBtn30', 'collapseBtn30')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn30" onclick="toggleCodeBlock('cloneGroup30', 'expandBtn30', 'collapseBtn30')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup30"><code class="language-typescript text-sm text-gray-800">;
+    };</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/infrastructure/file/__tests__/FileManager.test.ts (Line 133:11 - Line 146:16), D:/jinsansan/frontend/src/infrastructure/file/__tests__/FileManager.test.ts (Line 87:11 - Line 100:16)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn14" onclick="toggleCodeBlock('cloneGroup14', 'expandBtn14', 'collapseBtn14')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn14" onclick="toggleCodeBlock('cloneGroup14', 'expandBtn14', 'collapseBtn14')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup14"><code class="language-typescript text-sm text-gray-800">;
             this.onload?.();
           });
         }),
@@ -250,59 +87,22 @@
         () =&gt; mockFileReader as unknown as FileReader
       );
 
-      const result = await fileManager.convertToBase64</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/hooks/http/__tests__/useHttp.test.ts (Line 75:7 - Line 80:2), D:/jinsansan/frontend/src/hooks/http/__tests__/useHttp.test.ts (Line 60:2 - Line 65:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn31" onclick="toggleCodeBlock('cloneGroup31', 'expandBtn31', 'collapseBtn31')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn31" onclick="toggleCodeBlock('cloneGroup31', 'expandBtn31', 'collapseBtn31')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup31"><code class="language-typescript text-sm text-gray-800">};
-      const mockResponse = { data: { id: 1, name: 'test' } };
-      vi.mocked(http.post).mockResolvedValue(mockResponse);
-
-      const { result } = renderHook(() =&gt; useHttp());
-      const response = await result.current.post('/test', mockData,</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/hooks/http/__tests__/useHttp.test.ts (Line 108:21 - Line 114:4), D:/jinsansan/frontend/src/hooks/http/__tests__/useHttp.test.ts (Line 71:22 - Line 77:5)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn32" onclick="toggleCodeBlock('cloneGroup32', 'expandBtn32', 'collapseBtn32')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn32" onclick="toggleCodeBlock('cloneGroup32', 'expandBtn32', 'collapseBtn32')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup32"><code class="language-typescript text-sm text-gray-800">, async () =&gt; {
-      const mockData = { name: 'test' };
-      const mockConfig: HttpRequestConfig = {
-        headers: { 'X-Test': 'test' },
-      };
-      const mockResponse = { data: { id: 1, name: 'test' } };
-      vi.mocked(http.put</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/hooks/http/__tests__/useHttp.test.ts (Line 112:7 - Line 117:2), D:/jinsansan/frontend/src/hooks/http/__tests__/useHttp.test.ts (Line 97:2 - Line 102:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn33" onclick="toggleCodeBlock('cloneGroup33', 'expandBtn33', 'collapseBtn33')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn33" onclick="toggleCodeBlock('cloneGroup33', 'expandBtn33', 'collapseBtn33')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup33"><code class="language-typescript text-sm text-gray-800">};
-      const mockResponse = { data: { id: 1, name: 'test' } };
-      vi.mocked(http.put).mockResolvedValue(mockResponse);
-
-      const { result } = renderHook(() =&gt; useHttp());
-      const response = await result.current.put('/test', mockData,</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts (Line 163:7 - Line 178:4), D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts (Line 138:7 - Line 153:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn34" onclick="toggleCodeBlock('cloneGroup34', 'expandBtn34', 'collapseBtn34')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn34" onclick="toggleCodeBlock('cloneGroup34', 'expandBtn34', 'collapseBtn34')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup34"><code class="language-typescript text-sm text-gray-800">const mockResponse = {
-        code: 200,
-        data: { id: 1, name: 'test' },
-        message: 'success',
-      };
+      const result = await fileManager.convertToBase64</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts (Line 238:7 - Line 250:4), D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts (Line 216:7 - Line 228:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn15" onclick="toggleCodeBlock('cloneGroup15', 'expandBtn15', 'collapseBtn15')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn15" onclick="toggleCodeBlock('cloneGroup15', 'expandBtn15', 'collapseBtn15')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup15"><code class="language-typescript text-sm text-gray-800">const testData = createTestData();
+      const mockResponse = createTestResponse(testData);
       mockGetCacheData.mockReturnValue(null);
       mockGet.mockResolvedValue(mockResponse);
 
-      const { result } = renderHook(() =&gt; useRequest&lt;typeof mockResponse.data&gt;('/test'));
+      const { result } = renderHook(() =&gt; useRequest&lt;TestData&gt;('/test'));
 
       await act(async () =&gt; {
         await result.current.execute({
           cache: {
             enable: true,
             ttl: 5000,
-            key</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts (Line 203:7 - Line 211:2), D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts (Line 54:7 - Line 61:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn35" onclick="toggleCodeBlock('cloneGroup35', 'expandBtn35', 'collapseBtn35')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn35" onclick="toggleCodeBlock('cloneGroup35', 'expandBtn35', 'collapseBtn35')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup35"><code class="language-typescript text-sm text-gray-800">const mockResponse = {
-        code: 200,
-        data: { id: 1, name: 'test' },
-        message: 'success',
-      };
-      mockGet.mockResolvedValue(mockResponse);
-
-      const { result } = renderHook(() =&gt;
-        useRequest&lt;typeof mockResponse.data&gt;('/test',</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts (Line 230:13 - Line 240:6), D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts (Line 53:14 - Line 63:7)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn36" onclick="toggleCodeBlock('cloneGroup36', 'expandBtn36', 'collapseBtn36')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn36" onclick="toggleCodeBlock('cloneGroup36', 'expandBtn36', 'collapseBtn36')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup36"><code class="language-typescript text-sm text-gray-800">, async () =&gt; {
-      const mockResponse = {
-        code: 200,
-        data: { id: 1, name: 'test' },
-        message: 'success',
-      };
-      mockGet.mockResolvedValue(mockResponse);
-
-      const { result } = renderHook(() =&gt; useRequest&lt;typeof mockResponse.data&gt;('/test'));
-
-      await</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts (Line 301:2 - Line 319:2), D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts (Line 96:2 - Line 115:9)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn37" onclick="toggleCodeBlock('cloneGroup37', 'expandBtn37', 'collapseBtn37')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn37" onclick="toggleCodeBlock('cloneGroup37', 'expandBtn37', 'collapseBtn37')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup37"><code class="language-typescript text-sm text-gray-800">;
+            key</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts (Line 453:15 - Line 471:17), D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts (Line 127:2 - Line 145:13)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn16" onclick="toggleCodeBlock('cloneGroup16', 'expandBtn16', 'collapseBtn16')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn16" onclick="toggleCodeBlock('cloneGroup16', 'expandBtn16', 'collapseBtn16')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup16"><code class="language-typescript text-sm text-gray-800">);
       mockGet.mockRejectedValue(mockError);
 
-      const { result } = renderHook(() =&gt; useRequest&lt;any&gt;('/test'));
+      const { result } = renderHook(() =&gt; useRequest&lt;TestData&gt;('/test'));
 
       await act(async () =&gt; {
         try {
@@ -316,8 +116,33 @@
       expect(result.current.error).toBe(mockError);
       expect(result.current.data).toBeNull();
     });
+
+    it('应该在重新请求时重置错误状态'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/hooks/data/__tests__/useRequest.test.ts (Line 500:2 - Line 525:8), D:/jinsansan/frontend/src/hooks/http/__tests__/useHttp.test.ts (Line 139:13 - Line 164:6)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn17" onclick="toggleCodeBlock('cloneGroup17', 'expandBtn17', 'collapseBtn17')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn17" onclick="toggleCodeBlock('cloneGroup17', 'expandBtn17', 'collapseBtn17')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup17"><code class="language-typescript text-sm text-gray-800">);
   });
-}</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/store/middleware/logger.ts (Line 92:5 - Line 101:7), D:/jinsansan/frontend/src/store/middleware/logger.ts (Line 54:15 - Line 65:6)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn63" onclick="toggleCodeBlock('cloneGroup63', 'expandBtn63', 'collapseBtn63')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn63" onclick="toggleCodeBlock('cloneGroup63', 'expandBtn63', 'collapseBtn63')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup63"><code class="language-typescript text-sm text-gray-800">const endTime = performance.now();
+
+  describe('类型安全', () =&gt; {
+    it('应该正确处理泛型类型', async () =&gt; {
+      interface ComplexData {
+        id: number;
+        name: string;
+        metadata: {
+          createdAt: string;
+          updatedAt: string;
+        };
+        tags: string[];
+      }
+
+      const mockComplexData: ComplexData = {
+        id: 1,
+        name: 'test',
+        metadata: {
+          createdAt: '2024-01-01',
+          updatedAt: '2024-01-02',
+        },
+        tags: ['tag1', 'tag2'],
+      };
+
+      mockGet</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/store/middleware/logger.ts (Line 92:5 - Line 101:7), D:/jinsansan/frontend/src/store/middleware/logger.ts (Line 54:15 - Line 65:6)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn35" onclick="toggleCodeBlock('cloneGroup35', 'expandBtn35', 'collapseBtn35')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn35" onclick="toggleCodeBlock('cloneGroup35', 'expandBtn35', 'collapseBtn35')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup35"><code class="language-typescript text-sm text-gray-800">const endTime = performance.now();
     const duration = endTime - startTime;
 
     if (duration &gt; EXECUTION_TIME_THRESHOLD) {
@@ -326,20 +151,7 @@
 
     console.info(`Action execution time: ${duration.toFixed(2)}ms`);
 
-    return result</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/mocks/handlers/audit.ts (Line 5:1 - Line 18:2), D:/jinsansan/frontend/src/utils/security/audit.ts (Line 28:1 - Line 41:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn65" onclick="toggleCodeBlock('cloneGroup65', 'expandBtn65', 'collapseBtn65')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn65" onclick="toggleCodeBlock('cloneGroup65', 'expandBtn65', 'collapseBtn65')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup65"><code class="language-typescript text-sm text-gray-800">interface AuditLog {
-  id: string;
-  timestamp: number;
-  type: AuditLogType;
-  level: AuditLogLevel;
-  userId?: string;
-  action: string;
-  resource: string;
-  details: Record&lt;string, unknown&gt;;
-  ip?: string;
-  userAgent?: string;
-  status: 'success' | 'failure';
-  errorMessage?: string;
-}</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/infrastructure/file/FileManager.ts (Line 165:16 - Line 175:26), D:/jinsansan/frontend/src/infrastructure/file/FileManager.ts (Line 82:16 - Line 92:18)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn66" onclick="toggleCodeBlock('cloneGroup66', 'expandBtn66', 'collapseBtn66')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn66" onclick="toggleCodeBlock('cloneGroup66', 'expandBtn66', 'collapseBtn66')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup66"><code class="language-typescript text-sm text-gray-800">(file: File): Promise&lt;string&gt; {
+    return result</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/infrastructure/file/FileManager.ts (Line 166:16 - Line 176:26), D:/jinsansan/frontend/src/infrastructure/file/FileManager.ts (Line 83:16 - Line 93:18)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn37" onclick="toggleCodeBlock('cloneGroup37', 'expandBtn37', 'collapseBtn37')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn37" onclick="toggleCodeBlock('cloneGroup37', 'expandBtn37', 'collapseBtn37')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup37"><code class="language-typescript text-sm text-gray-800">(file: File): Promise&lt;string&gt; {
     return new Promise((resolve, reject) =&gt; {
       const reader = new FileReader();
 
@@ -349,7 +161,7 @@
 
       reader.onerror = () =&gt; {
         const error: FileError = {
-          code: 'BASE64_CONVERSION_ERROR'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/test/setup.ts (Line 49:1 - Line 63:21), D:/jinsansan/frontend/src/tests/setup.ts (Line 67:3 - Line 81:18)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn67" onclick="toggleCodeBlock('cloneGroup67', 'expandBtn67', 'collapseBtn67')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn67" onclick="toggleCodeBlock('cloneGroup67', 'expandBtn67', 'collapseBtn67')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup67"><code class="language-typescript text-sm text-gray-800">Object.defineProperty(window, 'matchMedia', {
+          code: 'BASE64_CONVERSION_ERROR'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/test/setup.ts (Line 49:1 - Line 63:21), D:/jinsansan/frontend/src/tests/setup.ts (Line 68:3 - Line 82:18)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn38" onclick="toggleCodeBlock('cloneGroup38', 'expandBtn38', 'collapseBtn38')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn38" onclick="toggleCodeBlock('cloneGroup38', 'expandBtn38', 'collapseBtn38')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup38"><code class="language-typescript text-sm text-gray-800">Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: vi.fn().mockImplementation(query =&gt; ({
     matches: false,
@@ -363,7 +175,7 @@
   })),
 });
 
-// 模拟 ResizeObserver</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/setupTests.ts (Line 19:1 - Line 33:18), D:/jinsansan/frontend/src/tests/setup.ts (Line 67:3 - Line 81:18)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn68" onclick="toggleCodeBlock('cloneGroup68', 'expandBtn68', 'collapseBtn68')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn68" onclick="toggleCodeBlock('cloneGroup68', 'expandBtn68', 'collapseBtn68')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup68"><code class="language-typescript text-sm text-gray-800">Object.defineProperty(window, 'matchMedia', {
+// 模拟 ResizeObserver</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/setupTests.ts (Line 19:1 - Line 33:18), D:/jinsansan/frontend/src/tests/setup.ts (Line 68:3 - Line 82:18)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn39" onclick="toggleCodeBlock('cloneGroup39', 'expandBtn39', 'collapseBtn39')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn39" onclick="toggleCodeBlock('cloneGroup39', 'expandBtn39', 'collapseBtn39')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup39"><code class="language-typescript text-sm text-gray-800">Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: vi.fn().mockImplementation(query =&gt; ({
     matches: false,
@@ -377,181 +189,93 @@
   })),
 });
 
-// Mock fetch API</code></pre></div><!-- Add more clone groups for .txt format as needed         // Add more clone groups for .txt format as needed--></div><a name="javascript-clones"></a><h2 class="text-2xl font-semibold text-gray-700 mb-4">javascript</h2><div class="divide-y divide-gray-200 border-b-2"><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/ErrorNotification/__tests__/index.test.tsx (Line 43:6 - Line 178:2), D:/jinsansan/frontend/src/components/ErrorNotification/__tests__/index.test.tsx (Line 33:5 - Line 126:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn44" onclick="toggleCodeBlock('cloneGroup44', 'expandBtn44', 'collapseBtn44')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn44" onclick="toggleCodeBlock('cloneGroup44', 'expandBtn44', 'collapseBtn44')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup44"><code class="language-javascript text-sm text-gray-800">} onClose={mockOnClose} /&gt;);
+// Mock fetch API</code></pre></div><!-- Add more clone groups for .txt format as needed         // Add more clone groups for .txt format as needed--></div><a name="javascript-clones"></a><h2 class="text-2xl font-semibold text-gray-700 mb-4">javascript</h2><div class="divide-y divide-gray-200 border-b-2"><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/monitoring/__tests__/AlertRuleForm.test.tsx (Line 53:13 - Line 139:2), D:/jinsansan/frontend/src/components/monitoring/__tests__/AlertRuleForm.test.tsx (Line 53:12 - Line 131:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn21" onclick="toggleCodeBlock('cloneGroup21', 'expandBtn21', 'collapseBtn21')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn21" onclick="toggleCodeBlock('cloneGroup21', 'expandBtn21', 'collapseBtn21')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup21"><code class="language-javascript text-sm text-gray-800">} /&gt;);
 
-      expect(screen.getByText('网络错误')).toBeInTheDocument();
-      expect(screen.getByText('网络连接失败')).toBeInTheDocument();
-      expect(screen.getByText('重试')).toBeInTheDocument();
+      expect(screen.getByLabelText('规则名称')).toHaveValue(defaultRule.name);
+      expect(screen.getByLabelText('通知邮箱')).toHaveValue(
+        defaultRule.notification.email?.join(',')
+      );
     });
 
-    it('应该正确渲染认证错误', () =&gt; {
-      const error = new HttpError({
-        type: HttpErrorType.AUTH,
-        message: '登录已过期',
-      });
+    it('calls onCancel when cancel button is clicked', () =&gt; {
+      render(&lt;AlertRuleForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} /&gt;);
 
-      render(&lt;ErrorNotification error={error} onClose={mockOnClose} /&gt;);
-
-      expect(screen.getByText('认证错误')).toBeInTheDocument();
-      expect(screen.getByText('登录已过期')).toBeInTheDocument();
-      expect(screen.getByText('重新登录')).toBeInTheDocument();
-    });
-
-    it('应该使用默认描述当没有错误消息时', () =&gt; {
-      const error = new HttpError({
-        type: HttpErrorType.HTTP_ERROR,
-        message: '',
-      });
-
-      render(&lt;ErrorNotification error={error} onClose={mockOnClose} /&gt;);
-
-      expect(screen.getByText('服务器错误')).toBeInTheDocument();
-      expect(screen.getByText('服务器处理请求时出错')).toBeInTheDocument();
+      fireEvent.click(screen.getByText('取消'));
+      expect(mockOnCancel).toHaveBeenCalled();
     });
   });
 
-  describe('错误处理', () =&gt; {
-    it('应该处理可恢复的错误', async () =&gt; {
-      vi.mocked(errorRecoveryManager.attemptRecovery).mockResolvedValue(true);
+  // 表单验证测试
+  describe('表单验证', () =&gt; {
+    it('validates required fields', async () =&gt; {
+      render(&lt;AlertRuleForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} /&gt;);
 
-      const error = new HttpError({
-        type: HttpErrorType.NETWORK_ERROR,
-        message: '网络错误',
-      });
+      // 触发表单提交
+      fireEvent.submit(screen.getByRole('form'));
 
-      render(&lt;ErrorNotification error={error} onClose={mockOnClose} /&gt;);
+      // 等待错误消息出现
+      expect(await screen.findByText('规则名称不能为空')).toBeInTheDocument();
+    });
 
-      const retryButton = screen.getByText('重试');
-      fireEvent.click(retryButton);
+    it('validates threshold values', async () =&gt; {
+      render(&lt;AlertRuleForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} /&gt;);
 
-      expect(retryButton).toBeDisabled();
-      expect(screen.getByText('处理中...')).toBeInTheDocument();
+      // 输入无效的阈值
+      fireEvent.change(screen.getByLabelText('阈值'), { target: { value: '-1' } });
 
+      // 触发表单提交
+      fireEvent.submit(screen.getByRole('form'));
+
+      // 等待错误消息出现
+      expect(await screen.findByText('阈值不能为负数')).toBeInTheDocument();
+    });
+
+    it('validates email format', async () =&gt; {
+      render(&lt;AlertRuleForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} /&gt;);
+
+      // 输入必填字段
+      await user.type(screen.getByLabelText('规则名称'), 'Test Rule');
+      await user.type(screen.getByLabelText('通知邮箱'), 'invalid-email');
+      await user.click(screen.getByRole('button', { name: '保存' }));
+
+      // 等待验证完成
       await waitFor(() =&gt; {
-        expect(errorRecoveryManager.attemptRecovery).toHaveBeenCalledWith(error);
-        expect(mockOnClose).toHaveBeenCalled();
+        expect(screen.getByText('邮箱格式不正确')).toBeInTheDocument();
       });
-    });
-
-    it('应该处理恢复失败的情况', async () =&gt; {
-      vi.mocked(errorRecoveryManager.attemptRecovery).mockResolvedValue(false);
-
-      const error = new HttpError({
-        type: HttpErrorType.NETWORK_ERROR,
-        message: '网络错误',
-      });
-
-      render(&lt;ErrorNotification error={error} onClose={mockOnClose} /&gt;);
-
-      const retryButton = screen.getByText('重试');
-      fireEvent.click(retryButton);
-
-      await waitFor(() =&gt; {
-        expect(errorRecoveryManager.attemptRecovery).toHaveBeenCalledWith(error);
-        expect(mockOnClose).not.toHaveBeenCalled();
-        expect(retryButton).not.toBeDisabled();
-        expect(screen.getByText('重试')).toBeInTheDocument();
-      });
-    });
-
-    it('应该正确处理刷新页面操作', () =&gt; {
-      const error = new HttpError({
-        type: HttpErrorType.REACT_ERROR,
-        message: '渲染错误',
-      });
-
-      render(&lt;ErrorNotification error={error} onClose={mockOnClose} /&gt;);
-
-      fireEvent.click(screen.getByText('刷新页面'));
-      expect(window.location.reload).toHaveBeenCalled();
-    });
-
-    it('应该正确处理重新登录操作', () =&gt; {
-      const error = new HttpError({
-        type: HttpErrorType.AUTH,
-        message: '登录已过期',
-      });
-
-      render(&lt;ErrorNotification error={error} onClose={mockOnClose} /&gt;);
-
-      fireEvent.click(screen.getByText('重新登录'));
-      expect(window.location.href).toBe('/login');
     });
   });
 
-  describe('自动关闭行为', () =&gt; {
-    it('错误提示不应该自动关闭', () =&gt; {
-      const error = new HttpError({
-        type: HttpErrorType.HTTP_ERROR,
-        message: '严重错误',
-      });
+  // 安全性测试
+  describe('安全性', () =&gt; {
+    it('should safely handle potentially malicious input', async () =&gt; {
+      render(&lt;AlertRuleForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} /&gt;);
 
-      render(&lt;ErrorNotification error={error} onClose={mockOnClose} /&gt;);
+      const maliciousInput = '&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;';
+      await user.type(screen.getByLabelText('规则名称'), maliciousInput);
+      await user.click(screen.getByRole('button', { name: '保存' }));
 
-      const alert = screen.getByRole('alert');
-      expect(alert.parentElement).toHaveAttribute('data-auto-hide-duration', 'false');
+      // 验证提交的数据是否被正确转义
+      expect(mockOnSubmit).toHaveBeenCalledWith(
+        expect.objectContaining({
+          name: expect.not.stringContaining('&lt;script&gt;'),
+          type: 'threshold',
+          condition: expect.any(Object),
+          notification: expect.any(Object),
+        })
+      );
     });
 
-    it('警告信息应该自动关闭', () =&gt; {
-      const error = new HttpError({
-        type: HttpErrorType.UNKNOWN_ERROR,
-        message: '警告信息',
-      });
-
-      render(&lt;ErrorNotification error={error} onClose={mockOnClose} /&gt;);
-
-      const alert = screen.getByRole('alert');
-      expect(alert.parentElement).toHaveAttribute('data-auto-hide-duration', '6000');
+    it('should render safely without props', () =&gt; {
+      expect(() =&gt;
+        render(&lt;AlertRuleForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} /&gt;)
+      ).not.toThrow();
     });
   });
 
-  describe('关闭行为', () =&gt; {
-    it('应该能通过关闭按钮关闭通知', () =&gt; {
-      const error = new HttpError({
-        type: HttpErrorType.UNKNOWN_ERROR,
-        message: '提示信息',
-      });
-
-      render(&lt;ErrorNotification error={error} onClose={mockOnClose}</code></pre></div><!-- Add more clone groups for .txt format as needed         // Add more clone groups for .txt format as needed--></div><a name="tsx-clones"></a><h2 class="text-2xl font-semibold text-gray-700 mb-4">tsx</h2><div class="divide-y divide-gray-200 border-b-2"><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx (Line 188:11 - Line 202:6), D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx (Line 160:2 - Line 174:7)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn2" onclick="toggleCodeBlock('cloneGroup2', 'expandBtn2', 'collapseBtn2')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn2" onclick="toggleCodeBlock('cloneGroup2', 'expandBtn2', 'collapseBtn2')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup2"><code class="language-tsx text-sm text-gray-800">,
-        login: vi.fn(),
-        register: vi.fn(),
-        loading: false,
-        error: null,
-        token: 'test-token',
-        getCurrentUser: vi.fn(),
-      });
-
-      renderNavbar();
-
-      const accountButton = screen.getByLabelText('account of current user');
-      fireEvent.click(accountButton);
-
-      const</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx (Line 217:13 - Line 242:6), D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx (Line 179:2 - Line 203:10)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn3" onclick="toggleCodeBlock('cloneGroup3', 'expandBtn3', 'collapseBtn3')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn3" onclick="toggleCodeBlock('cloneGroup3', 'expandBtn3', 'collapseBtn3')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup3"><code class="language-tsx text-sm text-gray-800">);
-
-      vi.mocked(useAuth).mockReturnValue({
-        isAuthenticated: true,
-        user: {
-          id: 1,
-          username: 'testuser',
-          email: 'test@example.com',
-          permissions: ['read:posts'],
-        },
-        logout: mockLogout,
-        login: vi.fn(),
-        register: vi.fn(),
-        loading: false,
-        error: null,
-        token: 'test-token',
-        getCurrentUser: vi.fn(),
-      });
-
-      renderNavbar();
-
-      const accountButton = screen.getByLabelText('account of current user');
-      fireEvent.click(accountButton);
-
-      const logoutButton = screen.getByText('退出登录');
-      await</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx (Line 282:19 - Line 302:7), D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx (Line 151:16 - Line 171:6)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn4" onclick="toggleCodeBlock('cloneGroup4', 'expandBtn4', 'collapseBtn4')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn4" onclick="toggleCodeBlock('cloneGroup4', 'expandBtn4', 'collapseBtn4')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup4"><code class="language-tsx text-sm text-gray-800">, () =&gt; {
+  // 数据提交测试
+  describe('数据提交', () =&gt; {
+    it('calls onSubmit with sanitized form data when form is valid', async () =&gt; {
+      render(&lt;AlertRuleForm onSubmit={mockOnSubmit} onCancel={mockOnCancel}</code></pre></div><!-- Add more clone groups for .txt format as needed         // Add more clone groups for .txt format as needed--></div><a name="tsx-clones"></a><h2 class="text-2xl font-semibold text-gray-700 mb-4">tsx</h2><div class="divide-y divide-gray-200 border-b-2"><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx (Line 339:2 - Line 356:2), D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx (Line 281:2 - Line 299:13)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn0" onclick="toggleCodeBlock('cloneGroup0', 'expandBtn0', 'collapseBtn0')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn0" onclick="toggleCodeBlock('cloneGroup0', 'expandBtn0', 'collapseBtn0')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup0"><code class="language-tsx text-sm text-gray-800">() =&gt; {
       vi.mocked(useAuth).mockReturnValue({
         isAuthenticated: true,
         user: {
@@ -568,55 +292,7 @@
         token: 'test-token',
         getCurrentUser: vi.fn(),
       });
-
-      renderNavbar();
-
-      expect</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx (Line 306:2 - Line 333:10), D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx (Line 178:2 - Line 176:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn5" onclick="toggleCodeBlock('cloneGroup5', 'expandBtn5', 'collapseBtn5')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn5" onclick="toggleCodeBlock('cloneGroup5', 'expandBtn5', 'collapseBtn5')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup5"><code class="language-tsx text-sm text-gray-800">() =&gt; {
-      const mockLogout = vi.fn();
-      vi.mocked(useAuth).mockReturnValue({
-        isAuthenticated: true,
-        user: {
-          id: 1,
-          username: 'testuser',
-          email: 'test@example.com',
-          permissions: ['read:posts'],
-        },
-        logout: mockLogout,
-        login: vi.fn(),
-        register: vi.fn(),
-        loading: false,
-        error: null,
-        token: 'test-token',
-        getCurrentUser: vi.fn(),
-      });
-
-      renderNavbar();
-
-      const accountButton = screen.getByLabelText('account of current user');
-      fireEvent.click(accountButton);
-
-      expect(screen.getByText('testuser')).toBeInTheDocument();
-      expect(screen.getByText('退出登录')).toBeInTheDocument();
-
-      fireEvent</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx (Line 340:2 - Line 357:2), D:/jinsansan/frontend/src/components/common/layout/__tests__/Navbar.test.tsx (Line 151:2 - Line 169:13)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn6" onclick="toggleCodeBlock('cloneGroup6', 'expandBtn6', 'collapseBtn6')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn6" onclick="toggleCodeBlock('cloneGroup6', 'expandBtn6', 'collapseBtn6')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup6"><code class="language-tsx text-sm text-gray-800">() =&gt; {
-      vi.mocked(useAuth).mockReturnValue({
-        isAuthenticated: true,
-        user: {
-          id: 1,
-          username: 'testuser',
-          email: 'test@example.com',
-          permissions: ['read:posts'],
-        },
-        logout: vi.fn(),
-        login: vi.fn(),
-        register: vi.fn(),
-        loading: false,
-        error: null,
-        token: 'test-token',
-        getCurrentUser: vi.fn(),
-      });
-    }</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/business/sections/__tests__/HeroSection.test.tsx (Line 6:17 - Line 18:9), D:/jinsansan/frontend/src/components/business/sections/__tests__/PricingSection.test.tsx (Line 7:20 - Line 19:57)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn7" onclick="toggleCodeBlock('cloneGroup7', 'expandBtn7', 'collapseBtn7')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn7" onclick="toggleCodeBlock('cloneGroup7', 'expandBtn7', 'collapseBtn7')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup7"><code class="language-tsx text-sm text-gray-800">;
-import { createTheme } from '@/theme';
+    }</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/business/sections/__tests__/FeatureSection.test.tsx (Line 8:20 - Line 19:17), D:/jinsansan/frontend/src/components/business/sections/__tests__/HeroSection.test.tsx (Line 8:17 - Line 19:14)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn1" onclick="toggleCodeBlock('cloneGroup1', 'expandBtn1', 'collapseBtn1')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn1" onclick="toggleCodeBlock('cloneGroup1', 'expandBtn1', 'collapseBtn1')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup1"><code class="language-tsx text-sm text-gray-800">;
 
 // Mock useMediaQuery
 vi.mock('@mui/material', async () =&gt; {
@@ -627,18 +303,7 @@ vi.mock('@mui/material', async () =&gt; {
   };
 });
 
-describe</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/business/sections/__tests__/FeatureSection.test.tsx (Line 7:20 - Line 18:17), D:/jinsansan/frontend/src/components/business/sections/__tests__/HeroSection.test.tsx (Line 7:10 - Line 18:14)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn8" onclick="toggleCodeBlock('cloneGroup8', 'expandBtn8', 'collapseBtn8')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn8" onclick="toggleCodeBlock('cloneGroup8', 'expandBtn8', 'collapseBtn8')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup8"><code class="language-tsx text-sm text-gray-800">;
-
-// Mock useMediaQuery
-vi.mock('@mui/material', async () =&gt; {
-  const actual = await vi.importActual&lt;typeof import('@mui/material')&gt;('@mui/material');
-  return {
-    ...actual,
-    useMediaQuery: vi.fn(),
-  };
-});
-
-describe('FeatureSection'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/router/guards/__tests__/AuthGuard.test.tsx (Line 9:1 - Line 21:3), D:/jinsansan/frontend/src/router/guards/__tests__/GuestGuard.test.tsx (Line 8:1 - Line 20:9)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn16" onclick="toggleCodeBlock('cloneGroup16', 'expandBtn16', 'collapseBtn16')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn16" onclick="toggleCodeBlock('cloneGroup16', 'expandBtn16', 'collapseBtn16')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup16"><code class="language-tsx text-sm text-gray-800">vi.mock('react-router-dom', async () =&gt; {
+describe('FeatureSection'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/router/guards/__tests__/AuthGuard.test.tsx (Line 11:1 - Line 23:3), D:/jinsansan/frontend/src/router/guards/__tests__/GuestGuard.test.tsx (Line 10:1 - Line 22:9)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn5" onclick="toggleCodeBlock('cloneGroup5', 'expandBtn5', 'collapseBtn5')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn5" onclick="toggleCodeBlock('cloneGroup5', 'expandBtn5', 'collapseBtn5')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup5"><code class="language-tsx text-sm text-gray-800">vi.mock('react-router-dom', async () =&gt; {
   const actual = await vi.importActual('react-router-dom');
   return {
     ...(actual as any),
@@ -650,7 +315,7 @@ vi.mock('@/hooks/auth', () =&gt; ({
   useAuth: vi.fn(),
 }));
 
-vi</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/router/guards/__tests__/AuthGuard.test.tsx (Line 85:7 - Line 100:19), D:/jinsansan/frontend/src/router/guards/__tests__/AuthGuard.test.tsx (Line 39:7 - Line 54:7)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn17" onclick="toggleCodeBlock('cloneGroup17', 'expandBtn17', 'collapseBtn17')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn17" onclick="toggleCodeBlock('cloneGroup17', 'expandBtn17', 'collapseBtn17')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup17"><code class="language-tsx text-sm text-gray-800">vi.mocked(useAuth).mockReturnValue({
+vi</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/router/guards/__tests__/AuthGuard.test.tsx (Line 87:7 - Line 102:19), D:/jinsansan/frontend/src/router/guards/__tests__/AuthGuard.test.tsx (Line 41:7 - Line 56:7)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn6" onclick="toggleCodeBlock('cloneGroup6', 'expandBtn6', 'collapseBtn6')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn6" onclick="toggleCodeBlock('cloneGroup6', 'expandBtn6', 'collapseBtn6')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup6"><code class="language-tsx text-sm text-gray-800">vi.mocked(useAuth).mockReturnValue({
         isAuthenticated: true,
         token: 'valid-token',
         getCurrentUser: mockGetCurrentUser,
@@ -665,7 +330,7 @@ vi</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/fro
       );
 
       await waitFor(() =&gt; {
-        expect(mockGetCurrentUser</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx (Line 6:15 - Line 18:2), D:/jinsansan/frontend/src/router/guards/__tests__/GuestGuard.test.tsx (Line 5:15 - Line 17:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn18" onclick="toggleCodeBlock('cloneGroup18', 'expandBtn18', 'collapseBtn18')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn18" onclick="toggleCodeBlock('cloneGroup18', 'expandBtn18', 'collapseBtn18')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup18"><code class="language-tsx text-sm text-gray-800">;
+        expect(mockGetCurrentUser</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx (Line 9:18 - Line 21:2), D:/jinsansan/frontend/src/router/guards/__tests__/GuestGuard.test.tsx (Line 7:16 - Line 19:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn7" onclick="toggleCodeBlock('cloneGroup7', 'expandBtn7', 'collapseBtn7')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn7" onclick="toggleCodeBlock('cloneGroup7', 'expandBtn7', 'collapseBtn7')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup7"><code class="language-tsx text-sm text-gray-800">;
 
 // Mock hooks
 vi.mock('react-router-dom', async () =&gt; {
@@ -677,9 +342,7 @@ vi.mock('react-router-dom', async () =&gt; {
 });
 
 vi.mock('@/hooks/auth', () =&gt; ({
-  useAuth: vi.fn((</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/pages/auth/__tests__/LoginPage.test.tsx (Line 4:15 - Line 30:2), D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx (Line 4:18 - Line 30:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn19" onclick="toggleCodeBlock('cloneGroup19', 'expandBtn19', 'collapseBtn19')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn19" onclick="toggleCodeBlock('cloneGroup19', 'expandBtn19', 'collapseBtn19')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup19"><code class="language-tsx text-sm text-gray-800">;
-import { useAuth } from '@/hooks/auth';
-import type { User } from '@/types/auth';
+  useAuth: vi.fn((</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/pages/auth/__tests__/LoginPage.test.tsx (Line 9:15 - Line 33:2), D:/jinsansan/frontend/src/router/guards/__tests__/GuestGuard.test.tsx (Line 7:16 - Line 33:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn8" onclick="toggleCodeBlock('cloneGroup8', 'expandBtn8', 'collapseBtn8')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn8" onclick="toggleCodeBlock('cloneGroup8', 'expandBtn8', 'collapseBtn8')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup8"><code class="language-tsx text-sm text-gray-800">;
 
 // Mock hooks
 vi.mock('react-router-dom', async () =&gt; {
@@ -703,7 +366,7 @@ vi.mock('@/hooks/auth', () =&gt; ({
     isAuthenticated: false,
   })),
   useAuthForm: vi.fn(() =&gt; ({
-    formData: { username: '', password: '' }</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/pages/auth/__tests__/LoginPage.test.tsx (Line 66:12 - Line 82:16), D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx (Line 68:12 - Line 84:19)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn20" onclick="toggleCodeBlock('cloneGroup20', 'expandBtn20', 'collapseBtn20')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn20" onclick="toggleCodeBlock('cloneGroup20', 'expandBtn20', 'collapseBtn20')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup20"><code class="language-tsx text-sm text-gray-800">)).toBeInTheDocument();
+    formData: { username: '', password: '' }</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/pages/auth/__tests__/LoginPage.test.tsx (Line 69:12 - Line 85:16), D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx (Line 71:12 - Line 87:19)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn9" onclick="toggleCodeBlock('cloneGroup9', 'expandBtn9', 'collapseBtn9')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn9" onclick="toggleCodeBlock('cloneGroup9', 'expandBtn9', 'collapseBtn9')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup9"><code class="language-tsx text-sm text-gray-800">)).toBeInTheDocument();
   });
 
   it('在加载状态下应禁用表单', () =&gt; {
@@ -719,7 +382,7 @@ vi.mock('@/hooks/auth', () =&gt; ({
       isAuthenticated: false,
     });
 
-    renderLoginPage</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/pages/auth/__tests__/LoginPage.test.tsx (Line 86:2 - Line 109:16), D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx (Line 90:2 - Line 113:19)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn21" onclick="toggleCodeBlock('cloneGroup21', 'expandBtn21', 'collapseBtn21')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn21" onclick="toggleCodeBlock('cloneGroup21', 'expandBtn21', 'collapseBtn21')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup21"><code class="language-tsx text-sm text-gray-800">})).toBeDisabled();
+    renderLoginPage</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/pages/auth/__tests__/LoginPage.test.tsx (Line 89:2 - Line 112:16), D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx (Line 93:2 - Line 116:19)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn10" onclick="toggleCodeBlock('cloneGroup10', 'expandBtn10', 'collapseBtn10')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn10" onclick="toggleCodeBlock('cloneGroup10', 'expandBtn10', 'collapseBtn10')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup10"><code class="language-tsx text-sm text-gray-800">})).toBeDisabled();
   });
 
   it('已认证用户应重定向到首页', () =&gt; {
@@ -742,7 +405,7 @@ vi.mock('@/hooks/auth', () =&gt; ({
       isAuthenticated: true,
     });
 
-    renderLoginPage</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuthForm.test.tsx (Line 136:2 - Line 149:2), D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuthForm.test.tsx (Line 93:12 - Line 106:9)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn38" onclick="toggleCodeBlock('cloneGroup38', 'expandBtn38', 'collapseBtn38')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn38" onclick="toggleCodeBlock('cloneGroup38', 'expandBtn38', 'collapseBtn38')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup38"><code class="language-tsx text-sm text-gray-800">({ initialData: initialRegisterData })
+    renderLoginPage</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuthForm.test.tsx (Line 138:2 - Line 151:2), D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuthForm.test.tsx (Line 95:12 - Line 108:9)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn18" onclick="toggleCodeBlock('cloneGroup18', 'expandBtn18', 'collapseBtn18')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn18" onclick="toggleCodeBlock('cloneGroup18', 'expandBtn18', 'collapseBtn18')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup18"><code class="language-tsx text-sm text-gray-800">({ initialData: initialRegisterData })
       );
 
       act(() =&gt; {
@@ -755,29 +418,20 @@ vi.mock('@/hooks/auth', () =&gt; ({
       });
     });
   });
-}</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuth.test.tsx (Line 115:26 - Line 137:7), D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuth.test.tsx (Line 91:23 - Line 113:9)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn39" onclick="toggleCodeBlock('cloneGroup39', 'expandBtn39', 'collapseBtn39')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn39" onclick="toggleCodeBlock('cloneGroup39', 'expandBtn39', 'collapseBtn39')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup39"><code class="language-tsx text-sm text-gray-800">,
-      payload: {
-        user: {
-          id: 1,
-          username: 'testuser',
-          email: 'test@example.com',
-          permissions: [],
-        },
-        token: 'test-token',
-      },
-      unwrap: () =&gt;
-        Promise.resolve({
-          user: {
-            id: 1,
-            username: 'testuser',
-            email: 'test@example.com',
-            permissions: [],
-          },
+}</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuth.test.tsx (Line 257:2 - Line 264:6), D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuth.test.tsx (Line 231:2 - Line 238:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn19" onclick="toggleCodeBlock('cloneGroup19', 'expandBtn19', 'collapseBtn19')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn19" onclick="toggleCodeBlock('cloneGroup19', 'expandBtn19', 'collapseBtn19')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup19"><code class="language-tsx text-sm text-gray-800">{
+          const method = authMethods[actionType];
+          if (method === 'login') {
+            await result.current.login(testData.login);
+          } else if (method === 'register') {
+            await result.current.register(testData.register);
+          }
+        } catch</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuth.test.tsx (Line 298:6 - Line 312:7), D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuth.test.tsx (Line 277:5 - Line 291:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn20" onclick="toggleCodeBlock('cloneGroup20', 'expandBtn20', 'collapseBtn20')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn20" onclick="toggleCodeBlock('cloneGroup20', 'expandBtn20', 'collapseBtn20')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup20"><code class="language-tsx text-sm text-gray-800">,
+        initialState: {
           token: 'test-token',
-        }),
-    };
-  }),
-  logout</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuth.test.tsx (Line 314:7 - Line 322:7), D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuth.test.tsx (Line 295:7 - Line 303:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn40" onclick="toggleCodeBlock('cloneGroup40', 'expandBtn40', 'collapseBtn40')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn40" onclick="toggleCodeBlock('cloneGroup40', 'expandBtn40', 'collapseBtn40')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup40"><code class="language-tsx text-sm text-gray-800">const { result } = renderHook(() =&gt; useAuth(), { wrapper });
+          user: createTestUser(),
+        },
+      });
+      const { result } = renderAuth();
 
       await act(async () =&gt; {
         await result.current.logout();
@@ -785,18 +439,7 @@ vi.mock('@/hooks/auth', () =&gt; ({
 
       expect(mockNavigate).toHaveBeenCalledWith('/');
       expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('persist:root');
-      expect</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuth.test.tsx (Line 337:2 - Line 348:10), D:/jinsansan/frontend/src/hooks/auth/__tests__/useAuth.test.tsx (Line 174:2 - Line 185:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn41" onclick="toggleCodeBlock('cloneGroup41', 'expandBtn41', 'collapseBtn41')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn41" onclick="toggleCodeBlock('cloneGroup41', 'expandBtn41', 'collapseBtn41')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup41"><code class="language-tsx text-sm text-gray-800">() =&gt; {
-      const store = createTestStore({
-        token: 'test-token',
-      });
-
-      const customWrapper = ({ children }: { children: React.ReactNode }) =&gt; (
-        &lt;Provider store={store}&gt;
-          &lt;MemoryRouter&gt;{children}&lt;/MemoryRouter&gt;
-        &lt;/Provider&gt;
-      );
-
-      const mockError</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/form/__tests__/FormField.test.tsx (Line 109:12 - Line 118:2), D:/jinsansan/frontend/src/components/form/__tests__/FormField.test.tsx (Line 42:14 - Line 51:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn42" onclick="toggleCodeBlock('cloneGroup42', 'expandBtn42', 'collapseBtn42')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn42" onclick="toggleCodeBlock('cloneGroup42', 'expandBtn42', 'collapseBtn42')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup42"><code class="language-tsx text-sm text-gray-800">, () =&gt; {
+      expect</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/form/__tests__/FormField.test.tsx (Line 111:12 - Line 120:2), D:/jinsansan/frontend/src/components/form/__tests__/FormField.test.tsx (Line 44:14 - Line 53:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn22" onclick="toggleCodeBlock('cloneGroup22', 'expandBtn22', 'collapseBtn22')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn22" onclick="toggleCodeBlock('cloneGroup22', 'expandBtn22', 'collapseBtn22')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup22"><code class="language-tsx text-sm text-gray-800">, () =&gt; {
       const WrapperComponent = () =&gt; {
         const { control } = useForm&lt;TestFormData&gt;({
           defaultValues: { testField: '' },
@@ -805,8 +448,7 @@ vi.mock('@/hooks/auth', () =&gt; ({
       };
 
       render(&lt;WrapperComponent /&gt;);
-      const input = screen.getByRole('textbox')</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/feedback/__tests__/LoadingBar.test.tsx (Line 8:16 - Line 43:13), D:/jinsansan/frontend/src/components/feedback/__tests__/Toast.test.tsx (Line 7:11 - Line 42:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn43" onclick="toggleCodeBlock('cloneGroup43', 'expandBtn43', 'collapseBtn43')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn43" onclick="toggleCodeBlock('cloneGroup43', 'expandBtn43', 'collapseBtn43')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup43"><code class="language-tsx text-sm text-gray-800">;
-import appReducer from '@/store/slices/appSlice';
+      const input = screen.getByRole('textbox')</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/feedback/__tests__/LoadingBar.test.tsx (Line 9:16 - Line 43:13), D:/jinsansan/frontend/src/components/feedback/__tests__/Toast.test.tsx (Line 9:11 - Line 43:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn23" onclick="toggleCodeBlock('cloneGroup23', 'expandBtn23', 'collapseBtn23')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn23" onclick="toggleCodeBlock('cloneGroup23', 'expandBtn23', 'collapseBtn23')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup23"><code class="language-tsx text-sm text-gray-800">;
 
 const createTestStore = (preloadedState = {}) =&gt; {
   return configureStore({
@@ -840,19 +482,7 @@ const renderWithProviders = (ui: React.ReactElement, { preloadedState = {} } = {
   };
 };
 
-describe('LoadingBar'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/ErrorNotification/__tests__/index.test.tsx (Line 100:6 - Line 112:6), D:/jinsansan/frontend/src/components/ErrorNotification/__tests__/index.test.tsx (Line 78:5 - Line 90:7)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn45" onclick="toggleCodeBlock('cloneGroup45', 'expandBtn45', 'collapseBtn45')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn45" onclick="toggleCodeBlock('cloneGroup45', 'expandBtn45', 'collapseBtn45')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup45"><code class="language-tsx text-sm text-gray-800">);
-
-      const error = new HttpError({
-        type: HttpErrorType.NETWORK_ERROR,
-        message: '网络错误',
-      });
-
-      render(&lt;ErrorNotification error={error} onClose={mockOnClose} /&gt;);
-
-      const retryButton = screen.getByText('重试');
-      fireEvent.click(retryButton);
-
-      await</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/common/__tests__/ErrorNotification.test.tsx (Line 155:13 - Line 172:12), D:/jinsansan/frontend/src/components/common/__tests__/ErrorNotification.test.tsx (Line 134:14 - Line 151:10)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn46" onclick="toggleCodeBlock('cloneGroup46', 'expandBtn46', 'collapseBtn46')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn46" onclick="toggleCodeBlock('cloneGroup46', 'expandBtn46', 'collapseBtn46')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup46"><code class="language-tsx text-sm text-gray-800">;
+describe('LoadingBar'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/common/__tests__/ErrorNotification.test.tsx (Line 156:13 - Line 173:12), D:/jinsansan/frontend/src/components/common/__tests__/ErrorNotification.test.tsx (Line 135:14 - Line 152:10)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn24" onclick="toggleCodeBlock('cloneGroup24', 'expandBtn24', 'collapseBtn24')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn24" onclick="toggleCodeBlock('cloneGroup24', 'expandBtn24', 'collapseBtn24')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup24"><code class="language-tsx text-sm text-gray-800">;
 
       render(&lt;ErrorNotification /&gt;);
 
@@ -869,7 +499,7 @@ describe('LoadingBar'</code></pre></div><div class="py-4"><p class="text-gray-60
         );
       });
 
-      expect(screen.queryByText</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/common/__tests__/ErrorNotification.test.tsx (Line 206:16 - Line 220:6), D:/jinsansan/frontend/src/components/common/__tests__/ErrorNotification.test.tsx (Line 115:14 - Line 129:7)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn47" onclick="toggleCodeBlock('cloneGroup47', 'expandBtn47', 'collapseBtn47')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn47" onclick="toggleCodeBlock('cloneGroup47', 'expandBtn47', 'collapseBtn47')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup47"><code class="language-tsx text-sm text-gray-800">, async () =&gt; {
+      expect(screen.queryByText</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/common/__tests__/ErrorNotification.test.tsx (Line 207:16 - Line 221:6), D:/jinsansan/frontend/src/components/common/__tests__/ErrorNotification.test.tsx (Line 116:14 - Line 130:7)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn25" onclick="toggleCodeBlock('cloneGroup25', 'expandBtn25', 'collapseBtn25')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn25" onclick="toggleCodeBlock('cloneGroup25', 'expandBtn25', 'collapseBtn25')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup25"><code class="language-tsx text-sm text-gray-800">, async () =&gt; {
       render(&lt;ErrorNotification /&gt;);
 
       await act(async () =&gt; {
@@ -883,11 +513,10 @@ describe('LoadingBar'</code></pre></div><div class="py-4"><p class="text-gray-60
         );
       });
 
-      const</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/common/layout/Navbar.tsx (Line 138:12 - Line 167:2), D:/jinsansan/frontend/src/components/common/layout/Navbar.tsx (Line 26:9 - Line 55:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn48" onclick="toggleCodeBlock('cloneGroup48', 'expandBtn48', 'collapseBtn48')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn48" onclick="toggleCodeBlock('cloneGroup48', 'expandBtn48', 'collapseBtn48')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup48"><code class="language-tsx text-sm text-gray-800">();
+      const</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/common/layout/Navbar.tsx (Line 139:12 - Line 167:2), D:/jinsansan/frontend/src/components/common/layout/Navbar.tsx (Line 27:9 - Line 55:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn26" onclick="toggleCodeBlock('cloneGroup26', 'expandBtn26', 'collapseBtn26')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn26" onclick="toggleCodeBlock('cloneGroup26', 'expandBtn26', 'collapseBtn26')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup26"><code class="language-tsx text-sm text-gray-800">();
   const { isAuthenticated, user, logout } = useAuth();
-  const [anchorEl, setAnchorEl] = React.useState&lt;null | HTMLElement&gt;(null);
 
-  const handleMenu = (event: React.MouseEvent&lt;HTMLElement&gt;) =&gt; {
+  const handleMenu = (event: MouseEvent&lt;HTMLElement&gt;) =&gt; {
     setAnchorEl(event.currentTarget);
   };
 
@@ -912,7 +541,7 @@ describe('LoadingBar'</code></pre></div><div class="py-4"><p class="text-gray-60
   };
 
   return (
-    &lt;</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/business/sections/FeatureSection.tsx (Line 38:15 - Line 46:2), D:/jinsansan/frontend/src/components/business/sections/PricingSection.tsx (Line 43:15 - Line 51:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn49" onclick="toggleCodeBlock('cloneGroup49', 'expandBtn49', 'collapseBtn49')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn49" onclick="toggleCodeBlock('cloneGroup49', 'expandBtn49', 'collapseBtn49')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup49"><code class="language-tsx text-sm text-gray-800">: React.FC = () =&gt; {
+    &lt;</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/business/sections/FeatureSection.tsx (Line 39:15 - Line 47:2), D:/jinsansan/frontend/src/components/business/sections/PricingSection.tsx (Line 44:15 - Line 52:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn27" onclick="toggleCodeBlock('cloneGroup27', 'expandBtn27', 'collapseBtn27')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn27" onclick="toggleCodeBlock('cloneGroup27', 'expandBtn27', 'collapseBtn27')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup27"><code class="language-tsx text-sm text-gray-800">: FC = () =&gt; {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -920,7 +549,7 @@ describe('LoadingBar'</code></pre></div><div class="py-4"><p class="text-gray-60
     &lt;Container maxWidth=&quot;lg&quot;&gt;
       &lt;Box
         sx={{
-          py: { xs: 4, md: 8</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/business/sections/FeatureSection.tsx (Line 53:7 - Line 68:5), D:/jinsansan/frontend/src/components/business/sections/PricingSection.tsx (Line 60:7 - Line 75:5)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn50" onclick="toggleCodeBlock('cloneGroup50', 'expandBtn50', 'collapseBtn50')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn50" onclick="toggleCodeBlock('cloneGroup50', 'expandBtn50', 'collapseBtn50')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup50"><code class="language-tsx text-sm text-gray-800">&gt;
+          py: { xs: 4, md: 8</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/business/sections/FeatureSection.tsx (Line 54:7 - Line 69:5), D:/jinsansan/frontend/src/components/business/sections/PricingSection.tsx (Line 61:7 - Line 76:5)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn28" onclick="toggleCodeBlock('cloneGroup28', 'expandBtn28', 'collapseBtn28')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn28" onclick="toggleCodeBlock('cloneGroup28', 'expandBtn28', 'collapseBtn28')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup28"><code class="language-tsx text-sm text-gray-800">&gt;
         &lt;Typography
           component=&quot;h2&quot;
           variant=&quot;h3&quot;
@@ -935,12 +564,12 @@ describe('LoadingBar'</code></pre></div><div class="py-4"><p class="text-gray-60
             WebkitTextFillColor: 'transparent',
           }}
         &gt;
-          核心功能</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/auth/__tests__/RegisterForm.test.tsx (Line 31:5 - Line 36:2), D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx (Line 61:5 - Line 67:10)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn51" onclick="toggleCodeBlock('cloneGroup51', 'expandBtn51', 'collapseBtn51')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn51" onclick="toggleCodeBlock('cloneGroup51', 'expandBtn51', 'collapseBtn51')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup51"><code class="language-tsx text-sm text-gray-800">expect(screen.getByLabelText('用户名')).toBeInTheDocument();
+          核心功能</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/auth/__tests__/RegisterForm.test.tsx (Line 32:5 - Line 37:2), D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx (Line 64:5 - Line 70:10)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn29" onclick="toggleCodeBlock('cloneGroup29', 'expandBtn29', 'collapseBtn29')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn29" onclick="toggleCodeBlock('cloneGroup29', 'expandBtn29', 'collapseBtn29')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup29"><code class="language-tsx text-sm text-gray-800">expect(screen.getByLabelText('用户名')).toBeInTheDocument();
     expect(screen.getByLabelText('邮箱')).toBeInTheDocument();
     expect(screen.getByLabelText('密码')).toBeInTheDocument();
     expect(screen.getByLabelText('确认密码')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '注册' })).toBeInTheDocument();
-  }</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/auth/__tests__/RegisterForm.test.tsx (Line 82:3 - Line 90:6), D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx (Line 84:2 - Line 91:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn52" onclick="toggleCodeBlock('cloneGroup52', 'expandBtn52', 'collapseBtn52')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn52" onclick="toggleCodeBlock('cloneGroup52', 'expandBtn52', 'collapseBtn52')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup52"><code class="language-tsx text-sm text-gray-800">);
+  }</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/auth/__tests__/RegisterForm.test.tsx (Line 83:3 - Line 91:6), D:/jinsansan/frontend/src/pages/auth/__tests__/RegisterPage.test.tsx (Line 87:2 - Line 94:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn30" onclick="toggleCodeBlock('cloneGroup30', 'expandBtn30', 'collapseBtn30')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn30" onclick="toggleCodeBlock('cloneGroup30', 'expandBtn30', 'collapseBtn30')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup30"><code class="language-tsx text-sm text-gray-800">);
 
     expect(screen.getByLabelText('用户名')).toBeDisabled();
     expect(screen.getByLabelText('邮箱')).toBeDisabled();
@@ -948,131 +577,18 @@ describe('LoadingBar'</code></pre></div><div class="py-4"><p class="text-gray-60
     expect(screen.getByLabelText('确认密码')).toBeDisabled();
     expect(screen.getByRole('button', { name: '注册' })).toBeDisabled();
 
-    const</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/auth/__tests__/LoginForm.test.tsx (Line 63:3 - Line 68:7), D:/jinsansan/frontend/src/pages/auth/__tests__/LoginPage.test.tsx (Line 82:2 - Line 87:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn53" onclick="toggleCodeBlock('cloneGroup53', 'expandBtn53', 'collapseBtn53')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn53" onclick="toggleCodeBlock('cloneGroup53', 'expandBtn53', 'collapseBtn53')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup53"><code class="language-tsx text-sm text-gray-800">);
+    const</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/auth/__tests__/LoginForm.test.tsx (Line 64:3 - Line 69:7), D:/jinsansan/frontend/src/pages/auth/__tests__/LoginPage.test.tsx (Line 85:2 - Line 90:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn31" onclick="toggleCodeBlock('cloneGroup31', 'expandBtn31', 'collapseBtn31')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn31" onclick="toggleCodeBlock('cloneGroup31', 'expandBtn31', 'collapseBtn31')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup31"><code class="language-tsx text-sm text-gray-800">);
 
     expect(screen.getByLabelText('用户名')).toBeDisabled();
     expect(screen.getByLabelText('密码')).toBeDisabled();
     expect(screen.getByRole('button', { name: '登录' })).toBeDisabled();
-    expect</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx (Line 114:2 - Line 129:12), D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx (Line 74:10 - Line 89:14)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn54" onclick="toggleCodeBlock('cloneGroup54', 'expandBtn54', 'collapseBtn54')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn54" onclick="toggleCodeBlock('cloneGroup54', 'expandBtn54', 'collapseBtn54')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup54"><code class="language-tsx text-sm text-gray-800">);
-      vi.mocked(useAuth).mockReturnValue({
-        login: mockLogin,
-        register: vi.fn(),
-        loading: false,
-        user: null,
-        token: null,
-        error: null,
-        isAuthenticated: false,
-        logout: vi.fn(),
-        getCurrentUser: vi.fn(),
-      });
-
-      const testFormData: AuthFormData = {
-        username: 'testuser',
-        password: 'wrongpass'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx (Line 129:12 - Line 146:7), D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx (Line 89:14 - Line 106:10)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn55" onclick="toggleCodeBlock('cloneGroup55', 'expandBtn55', 'collapseBtn55')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn55" onclick="toggleCodeBlock('cloneGroup55', 'expandBtn55', 'collapseBtn55')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup55"><code class="language-tsx text-sm text-gray-800">,
-      };
-
-      vi.mocked(useAuthForm).mockReturnValue({
-        formData: testFormData,
-        showPassword: false,
-        handleFormChange: vi.fn(),
-        togglePasswordVisibility: vi.fn(),
-      });
-
-      renderAuthPage('login', testFormData);
-
-      const form = screen.getByTestId('auth-form');
-      fireEvent.submit(form);
-
-      await waitFor(
-        () =&gt; {
-          expect(screen</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx (Line 203:2 - Line 217:15), D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx (Line 155:10 - Line 169:10)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn56" onclick="toggleCodeBlock('cloneGroup56', 'expandBtn56', 'collapseBtn56')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn56" onclick="toggleCodeBlock('cloneGroup56', 'expandBtn56', 'collapseBtn56')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup56"><code class="language-tsx text-sm text-gray-800">);
-      vi.mocked(useAuth).mockReturnValue({
-        login: vi.fn(),
-        register: mockRegister,
-        loading: false,
-        user: null,
-        token: null,
-        error: null,
-        isAuthenticated: false,
-        logout: vi.fn(),
-        getCurrentUser: vi.fn(),
-      });
-
-      const testFormData: AuthFormData = {
-        username: 'existinguser'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx (Line 217:15 - Line 243:7), D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx (Line 169:10 - Line 195:13)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn57" onclick="toggleCodeBlock('cloneGroup57', 'expandBtn57', 'collapseBtn57')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn57" onclick="toggleCodeBlock('cloneGroup57', 'expandBtn57', 'collapseBtn57')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup57"><code class="language-tsx text-sm text-gray-800">,
-        password: 'password123',
-        email: 'test@example.com',
-        confirmPassword: 'password123',
-      };
-
-      vi.mocked(validateRegisterForm).mockReturnValue({
-        isValid: true,
-        errorMessage: undefined,
-      });
-
-      vi.mocked(useAuthForm).mockReturnValue({
-        formData: testFormData,
-        showPassword: false,
-        handleFormChange: vi.fn(),
-        togglePasswordVisibility: vi.fn(),
-      });
-
-      renderAuthPage('register', testFormData);
-
-      const form = screen.getByTestId('auth-form');
-      fireEvent.submit(form);
-
-      await waitFor(
-        () =&gt; {
-          expect(validateRegisterForm).toHaveBeenCalledWith(testFormData);
-          expect(screen</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx (Line 259:13 - Line 277:13), D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx (Line 177:10 - Line 243:9)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn58" onclick="toggleCodeBlock('cloneGroup58', 'expandBtn58', 'collapseBtn58')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn58" onclick="toggleCodeBlock('cloneGroup58', 'expandBtn58', 'collapseBtn58')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup58"><code class="language-tsx text-sm text-gray-800">,
-      });
-
-      vi.mocked(useAuthForm).mockReturnValue({
-        formData: testFormData,
-        showPassword: false,
-        handleFormChange: vi.fn(),
-        togglePasswordVisibility: vi.fn(),
-      });
-
-      renderAuthPage('register', testFormData);
-
-      const form = screen.getByTestId('auth-form');
-      fireEvent.submit(form);
-
-      await waitFor(
-        () =&gt; {
-          expect(validateRegisterForm).toHaveBeenCalledWith(testFormData);
-          expect(screen.getByText('密码至少需要6个字符'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx (Line 318:17 - Line 341:6), D:/jinsansan/frontend/src/components/auth/__tests__/AuthPage.test.tsx (Line 285:17 - Line 308:6)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn59" onclick="toggleCodeBlock('cloneGroup59', 'expandBtn59', 'collapseBtn59')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn59" onclick="toggleCodeBlock('cloneGroup59', 'expandBtn59', 'collapseBtn59')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup59"><code class="language-tsx text-sm text-gray-800">, async () =&gt; {
-      vi.mocked(validateLoginForm).mockReturnValue({
-        isValid: false,
-        errorMessage: '用户名不能为空',
-      });
-
-      const testFormData: AuthFormData = {
-        username: '',
-        password: '',
-      };
-
-      renderAuthPage('login', testFormData);
-
-      const form = screen.getByTestId('auth-form');
-      fireEvent.submit(form);
-
-      await waitFor(
-        () =&gt; {
-          expect(screen.getByText('用户名不能为空')).toBeInTheDocument();
-        },
-        { timeout: TEST_TIMEOUT }
-      );
-
-      const</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/auth/__tests__/AuthForm.test.tsx (Line 18:2 - Line 24:34), D:/jinsansan/frontend/src/components/auth/__tests__/LoginForm.test.tsx (Line 24:3 - Line 31:15)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn60" onclick="toggleCodeBlock('cloneGroup60', 'expandBtn60', 'collapseBtn60')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn60" onclick="toggleCodeBlock('cloneGroup60', 'expandBtn60', 'collapseBtn60')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup60"><code class="language-tsx text-sm text-gray-800">);
+    expect</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/auth/__tests__/AuthForm.test.tsx (Line 19:2 - Line 25:34), D:/jinsansan/frontend/src/components/auth/__tests__/LoginForm.test.tsx (Line 25:3 - Line 32:15)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn32" onclick="toggleCodeBlock('cloneGroup32', 'expandBtn32', 'collapseBtn32')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn32" onclick="toggleCodeBlock('cloneGroup32', 'expandBtn32', 'collapseBtn32')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup32"><code class="language-tsx text-sm text-gray-800">);
     expect(screen.getByLabelText('用户名')).toBeInTheDocument();
     expect(screen.getByLabelText('密码')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '登录' })).toBeInTheDocument();
   });
 
-  it('renders register form correctly'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/auth/__tests__/AuthForm.test.tsx (Line 38:2 - Line 46:26), D:/jinsansan/frontend/src/components/auth/__tests__/RegisterForm.test.tsx (Line 29:3 - Line 38:15)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn61" onclick="toggleCodeBlock('cloneGroup61', 'expandBtn61', 'collapseBtn61')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn61" onclick="toggleCodeBlock('cloneGroup61', 'expandBtn61', 'collapseBtn61')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup61"><code class="language-tsx text-sm text-gray-800">);
+  it('renders register form correctly'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/components/auth/__tests__/AuthForm.test.tsx (Line 39:2 - Line 47:26), D:/jinsansan/frontend/src/components/auth/__tests__/RegisterForm.test.tsx (Line 30:3 - Line 39:15)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn33" onclick="toggleCodeBlock('cloneGroup33', 'expandBtn33', 'collapseBtn33')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn33" onclick="toggleCodeBlock('cloneGroup33', 'expandBtn33', 'collapseBtn33')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup33"><code class="language-tsx text-sm text-gray-800">);
     expect(screen.getByLabelText('用户名')).toBeInTheDocument();
     expect(screen.getByLabelText('邮箱')).toBeInTheDocument();
     expect(screen.getByLabelText('密码')).toBeInTheDocument();
@@ -1080,12 +596,12 @@ describe('LoadingBar'</code></pre></div><div class="py-4"><p class="text-gray-60
     expect(screen.getByRole('button', { name: '注册' })).toBeInTheDocument();
   });
 
-  it('handles form submission'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/tests/react/SuspenseList.test.tsx (Line 154:5 - Line 159:34), D:/jinsansan/frontend/src/tests/react/SuspenseList.test.tsx (Line 98:5 - Line 103:43)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn62" onclick="toggleCodeBlock('cloneGroup62', 'expandBtn62', 'collapseBtn62')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn62" onclick="toggleCodeBlock('cloneGroup62', 'expandBtn62', 'collapseBtn62')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup62"><code class="language-tsx text-sm text-gray-800">expect(screen.getByTestId('component-A')).toHaveTextContent('A');
+  it('handles form submission'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/tests/react/SuspenseList.test.tsx (Line 160:5 - Line 165:34), D:/jinsansan/frontend/src/tests/react/SuspenseList.test.tsx (Line 107:5 - Line 112:43)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn34" onclick="toggleCodeBlock('cloneGroup34', 'expandBtn34', 'collapseBtn34')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn34" onclick="toggleCodeBlock('cloneGroup34', 'expandBtn34', 'collapseBtn34')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup34"><code class="language-tsx text-sm text-gray-800">expect(screen.getByTestId('component-A')).toHaveTextContent('A');
     expect(screen.getByTestId('component-B')).toHaveTextContent('B');
     expect(screen.getByTestId('component-C')).toHaveTextContent('C');
   });
 
-  it('should handle errors gracefully'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/pages/auth/LoginPage.tsx (Line 7:10 - Line 18:2), D:/jinsansan/frontend/src/pages/auth/RegisterPage.tsx (Line 7:13 - Line 19:7)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn64" onclick="toggleCodeBlock('cloneGroup64', 'expandBtn64', 'collapseBtn64')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn64" onclick="toggleCodeBlock('cloneGroup64', 'expandBtn64', 'collapseBtn64')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup64"><code class="language-tsx text-sm text-gray-800">: React.FC = () =&gt; {
+  it('should handle errors gracefully'</code></pre></div><div class="py-4"><p class="text-gray-600">D:/jinsansan/frontend/src/pages/auth/LoginPage.tsx (Line 8:10 - Line 19:2), D:/jinsansan/frontend/src/pages/auth/RegisterPage.tsx (Line 8:13 - Line 20:7)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn36" onclick="toggleCodeBlock('cloneGroup36', 'expandBtn36', 'collapseBtn36')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn36" onclick="toggleCodeBlock('cloneGroup36', 'expandBtn36', 'collapseBtn36')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup36"><code class="language-tsx text-sm text-gray-800">: FC = () =&gt; {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
