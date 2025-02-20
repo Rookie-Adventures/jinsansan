@@ -2,7 +2,7 @@ import type { AxiosRequestConfig } from 'axios';
 
 import { Logger } from '@/infrastructure/logging/Logger';
 
-import { HttpError } from './types';
+import { HttpError, HttpErrorType } from './types';
 
 
 interface ExtendedHttpError extends HttpError {
@@ -30,18 +30,18 @@ export class ErrorRecoveryManager {
     try {
       // 根据错误类型尝试恢复
       switch (error.type) {
-        case 'NETWORK_ERROR':
+        case HttpErrorType.NETWORK_ERROR:
           return await this.handleNetworkError(error);
-        case 'AUTH_ERROR':
+        case HttpErrorType.AUTH:
           return await this.handleAuthError(error);
         default:
           return false;
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars, unused-imports/no-unused-vars -- 有意忽略恢复过程中的错误，只记录原始错误
-    } catch (_e) {
-      // _e 是恢复过程中可能发生的错误，我们有意忽略它
-      // 因为在恢复失败时，更重要的是记录原始错误，而不是恢复过程中的具体错误
-      this.logger.error('Recovery attempt failed', { originalError: error });
+    } catch (e) {
+      this.logger.error('Recovery attempt failed', {
+        error: e instanceof Error ? e : new Error('Unknown error'),
+        originalError: error,
+      });
       return false;
     }
   }
@@ -57,10 +57,10 @@ export class ErrorRecoveryManager {
     // 处理特定的网络错误
     if (error.code === 'TIMEOUT') {
       // 超时错误处理
-      return this.handleTimeout(error);
+      return await this.handleTimeout(error);
     } else if (error.code === 'NETWORK_ERROR') {
       // 网络连接错误处理
-      return this.handleConnectionError(error);
+      return await this.handleConnectionError(error);
     }
 
     return false;
@@ -76,27 +76,31 @@ export class ErrorRecoveryManager {
     // 处理特定的认证错误
     if (error.code === 'TOKEN_EXPIRED') {
       // Token过期处理
-      return this.handleTokenExpiration(error);
+      return await this.handleTokenExpiration(error);
     } else if (error.code === 'INVALID_TOKEN') {
       // Token无效处理
-      return this.handleInvalidToken(error);
+      return await this.handleInvalidToken(error);
     }
 
     return false;
   }
 
   private async handleTimeout(error: ExtendedHttpError): Promise<boolean> {
-    const retryCount = error.config?.retryCount || 0;
-    if (retryCount < this.maxRetries) {
-      await new Promise(resolve => setTimeout(resolve, this.retryDelays[retryCount]));
-      return true;
+    const retryCount = (error.data as { retryCount?: number })?.retryCount || 0;
+    // 如果已经达到最大重试次数，返回 false
+    if (retryCount >= this.maxRetries) {
+      return false;
     }
-    return false;
+    await new Promise(resolve => setTimeout(resolve, this.retryDelays[retryCount]));
+    return true;
   }
 
   private async handleConnectionError(error: ExtendedHttpError): Promise<boolean> {
     // 网络连接错误恢复逻辑
-    return navigator.onLine && (error.config?.retryCount || 0) < this.maxRetries;
+    if (!navigator.onLine || (error.config?.retryCount || 0) >= this.maxRetries) {
+      return false;
+    }
+    return true;
   }
 
   private async handleTokenExpiration(error: ExtendedHttpError): Promise<boolean> {
@@ -110,7 +114,11 @@ export class ErrorRecoveryManager {
       });
       // 这里可以添加刷新token的逻辑
       return true;
-    } catch {
+    } catch (e) {
+      this.logger.error('Token refresh failed', {
+        error: e instanceof Error ? e : new Error('Unknown error'),
+        originalError: error,
+      });
       return false;
     }
   }
