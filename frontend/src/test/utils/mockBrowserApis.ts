@@ -1,6 +1,17 @@
 import { vi } from 'vitest';
 
 /**
+ * @fileoverview 浏览器 API 模拟工具
+ * 
+ * 这个文件提供了测试环境中常用的浏览器 API 模拟实现：
+ * - matchMedia: 用于响应式设计测试
+ * - ResizeObserver: 用于元素大小变化监听
+ * - IntersectionObserver: 用于元素可见性监听
+ * - Fetch API: 用于网络请求模拟
+ * - 环境变量: 用于测试环境配置
+ */
+
+/**
  * 模拟浏览器的 matchMedia API
  */
 export const mockMatchMedia = (): void => {

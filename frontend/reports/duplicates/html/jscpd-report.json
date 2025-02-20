@@ -1,6 +1,6 @@
 {
   "statistics": {
-    "detectionDate": "2025-02-20T10:56:50.983Z",
+    "detectionDate": "2025-02-20T11:04:24.775Z",
     "formats": {
       "typescript": {
         "sources": {
@@ -869,14 +869,14 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/test/utils/mockBrowserApis.ts": {
-            "lines": 54,
-            "tokens": 463,
+            "lines": 82,
+            "tokens": 579,
             "sources": 1,
-            "clones": 1,
-            "duplicatedLines": 14,
-            "duplicatedTokens": 139,
-            "percentage": 25.93,
-            "percentageTokens": 30.02,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -1685,27 +1685,27 @@
             "newClones": 0
           },
           "D:/jinsansan/frontend/src/setupTests.ts": {
-            "lines": 46,
-            "tokens": 420,
+            "lines": 31,
+            "tokens": 258,
             "sources": 1,
-            "clones": 1,
-            "duplicatedLines": 14,
-            "duplicatedTokens": 139,
-            "percentage": 30.43,
-            "percentageTokens": 33.1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           }
         },
         "total": {
-          "lines": 16510,
-          "tokens": 149880,
+          "lines": 16523,
+          "tokens": 149834,
           "sources": 141,
-          "clones": 14,
-          "duplicatedLines": 200,
-          "duplicatedTokens": 1887,
-          "percentage": 1.21,
-          "percentageTokens": 1.26,
+          "clones": 13,
+          "duplicatedLines": 186,
+          "duplicatedTokens": 1748,
+          "percentage": 1.13,
+          "percentageTokens": 1.17,
           "newDuplicatedLines": 0,
           "newClones": 0
         }
@@ -3388,14 +3388,14 @@
       }
     },
     "total": {
-      "lines": 27376,
-      "tokens": 249132,
+      "lines": 27389,
+      "tokens": 249086,
       "sources": 278,
-      "clones": 36,
-      "duplicatedLines": 472,
-      "duplicatedTokens": 4457,
-      "percentage": 1.72,
-      "percentageTokens": 1.79,
+      "clones": 35,
+      "duplicatedLines": 458,
+      "duplicatedTokens": 4318,
+      "percentage": 1.67,
+      "percentageTokens": 1.73,
       "newDuplicatedLines": 0,
       "newClones": 0
     }
@@ -4658,42 +4658,6 @@
           "line": 112,
           "column": 43,
           "position": 1094
-        }
-      }
-    },
-    {
-      "format": "typescript",
-      "lines": 15,
-      "fragment": "Object.defineProperty(window, 'matchMedia', {\r\n  writable: true,\r\n  value: vi.fn().mockImplementation(query => ({\r\n    matches: false,\r\n    media: query,\r\n    onchange: null,\r\n    addListener: vi.fn(),\r\n    removeListener: vi.fn(),\r\n    addEventListener: vi.fn(),\r\n    removeEventListener: vi.fn(),\r\n    dispatchEvent: vi.fn(),\r\n  })),\r\n});\r\n\r\n// Mock fetch API",
-      "tokens": 0,
-      "firstFile": {
-        "name": "D:/jinsansan/frontend/src/setupTests.ts",
-        "start": 19,
-        "end": 33,
-        "startLoc": {
-          "line": 19,
-          "column": 1,
-          "position": 169
-        },
-        "endLoc": {
-          "line": 33,
-          "column": 18,
-          "position": 308
-        }
-      },
-      "secondFile": {
-        "name": "D:/jinsansan/frontend/src/test/utils/mockBrowserApis.ts",
-        "start": 7,
-        "end": 20,
-        "startLoc": {
-          "line": 7,
-          "column": 3,
-          "position": 39
-        },
-        "endLoc": {
-          "line": 20,
-          "column": 2,
-          "position": 177
         }
       }
     }
