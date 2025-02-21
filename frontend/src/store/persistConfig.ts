@@ -1,48 +1,57 @@
 import { createTransform, type PersistConfig, type StateReconciler, type PersistMigrate } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-import { RootState } from './types';
+import type { RootState } from './types';
+import type { AuthState } from '@/types/auth';
+import type { User } from '@/types/user';
 
-// 定义状态类型
-interface AuthState {
-  token?: string;
-  user?: {
-    id: string;
-    username: string;
-  } | null;
-}
+type StoredAuthState = Pick<AuthState, 'token' | 'user'>;
 
-interface ThemeState {
-  mode?: string;
-  customizations?: Record<string, unknown>;
-}
-
-// 转换函数
-const authTransform = createTransform(
+// Auth 转换函数
+const authTransform = createTransform<AuthState, StoredAuthState>(
   // 保存时转换
-  (inboundState: Partial<AuthState> | undefined) => {
-    if (!inboundState) return {};
+  (inboundState) => {
+    if (!inboundState || !inboundState.token) {
+      return {} as StoredAuthState;
+    }
     const { token, user } = inboundState;
+    if (!user) {
+      return { token, user: null };
+    }
+    // 只保留 User 类型中定义的属性
+    const cleanUser: User = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      permissions: user.permissions || []
+    };
     return {
       token,
-      user: user ? { id: user.id, username: user.username } : null,
+      user: cleanUser
     };
   },
   // 加载时转换
-  (outboundState: Partial<AuthState> | undefined) => outboundState || {},
-  { whitelist: ['auth'] }
-);
+  (outboundState, _key, fullState) => {
+    const defaultState: AuthState = {
+      token: null,
+      user: null,
+      loading: false,
+      error: null,
+    };
 
-const themeTransform = createTransform(
-  // 保存时转换
-  (inboundState: Partial<ThemeState> | undefined) => {
-    if (!inboundState) return {};
-    const { mode, customizations } = inboundState;
-    return { mode, customizations };
+    if (!outboundState || !outboundState.token) {
+      return defaultState;
+    }
+
+    const currentState = (fullState as RootState)?.auth || defaultState;
+    
+    return {
+      ...outboundState,
+      loading: currentState.loading ?? false,
+      error: currentState.error ?? null,
+    };
   },
-  // 加载时转换
-  (outboundState: Partial<ThemeState> | undefined) => outboundState || {},
-  { whitelist: ['theme'] }
+  { whitelist: ['auth'] }
 );
 
 // 迁移函数
@@ -56,18 +65,13 @@ const migrate: PersistMigrate = async (state) => {
   const version = state._persist?.version || 0;
   if (version === 0) {
     // 处理旧版本状态
-    const currentState = state as unknown as { auth?: AuthState };
+    const currentState = state as unknown as { auth?: StoredAuthState };
     return {
       ...state,
       auth: currentState.auth
         ? {
             token: currentState.auth.token,
-            user: currentState.auth.user
-              ? {
-                  id: currentState.auth.user.id,
-                  username: currentState.auth.user.username,
-                }
-              : null,
+            user: currentState.auth.user,
           }
         : null,
       _persist: {
@@ -95,8 +99,8 @@ export function createPersistConfig<T extends object>(key: string): PersistConfi
   return {
     key,
     storage,
-    whitelist: ['auth', 'theme'],
-    transforms: [authTransform, themeTransform],
+    whitelist: ['auth'],
+    transforms: [authTransform],
     version: 0,
     migrate,
     stateReconciler: createStateReconciler<T>(),

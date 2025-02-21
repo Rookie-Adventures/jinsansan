@@ -62,6 +62,8 @@ const authSlice = createSlice({
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || '登录失败，请稍后重试';
+        state.user = null;
+        state.token = null;
       });
 
     // Register
@@ -78,6 +80,8 @@ const authSlice = createSlice({
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || '注册失败，请稍后重试';
+        state.user = null;
+        state.token = null;
       });
 
     // Get Current User
@@ -104,6 +108,8 @@ const authSlice = createSlice({
       .addCase(logout.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || '退出登录失败，请稍后重试';
+        state.user = null;
+        state.token = null;
       });
   },
 });
