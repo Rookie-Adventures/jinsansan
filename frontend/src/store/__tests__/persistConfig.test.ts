@@ -5,7 +5,6 @@ import type { RootState } from '../types';
 import type { AuthState } from '@/types/auth';
 import type { User } from '@/types/user';
 import type { PersistMigrate, StateReconciler, Transform, PersistConfig } from 'redux-persist';
-import type { PersistedState } from 'redux-persist/es/types';
 
 import { createPersistConfig } from '../persistConfig';
 
@@ -192,7 +191,7 @@ describe('persistConfig', () => {
       });
     });
 
-    it('should handle state without _persist', async () => {
+    it('should handle state with version 0', async () => {
       const mockUser: User = {
         id: 1,
         username: 'test',
@@ -205,36 +204,42 @@ describe('persistConfig', () => {
           token: 'test-token',
           user: mockUser,
         },
-      } as unknown as PersistedState;
+        _persist: { version: 0, rehydrated: false }
+      };
 
       const result = await migrate(state, 0);
       expect(result).toEqual({
         ...state,
+        auth: {
+          token: 'test-token',
+          user: mockUser,
+        },
         _persist: { version: 0, rehydrated: true },
       });
     });
 
-    it('should handle state with _persist', async () => {
-      const mockUser: User = {
-        id: 1,
-        username: 'test',
-        email: 'test@example.com',
-        permissions: []
-      };
-
+    it('should handle state with version 0 and null auth', async () => {
       const state = {
-        auth: {
-          token: 'test-token',
-          user: mockUser,
-        },
-        _persist: { version: 0, rehydrated: false },
-      } as PersistedState;
+        auth: null,
+        _persist: { version: 0, rehydrated: false }
+      };
 
       const result = await migrate(state, 0);
       expect(result).toEqual({
         ...state,
+        auth: null,
         _persist: { version: 0, rehydrated: true },
       });
+    });
+
+    it('should handle state with non-zero version', async () => {
+      const state = {
+        auth: { token: 'test-token', user: null },
+        _persist: { version: 1, rehydrated: true }
+      };
+
+      const result = await migrate(state, 1);
+      expect(result).toEqual(state);
     });
   });
 
@@ -242,17 +247,16 @@ describe('persistConfig', () => {
     const config = createPersistConfig<RootState>('test');
     const reconciler = config.stateReconciler as StateReconciler<RootState>;
 
-    it('should merge inbound and reduced state', () => {
-      const inboundState = { a: 1, b: 2 } as unknown as RootState;
-      const originalState = {} as RootState;
-      const reducedState = { b: 3, c: 4 } as unknown as RootState;
+    it('should merge states with different properties', () => {
+      const inboundState = { auth: { token: 'inbound' } } as unknown as RootState;
+      const originalState = { auth: { token: 'original' } } as unknown as RootState;
+      const reducedState = { auth: { token: 'reduced' }, app: { darkMode: true } } as unknown as RootState;
       const mockConfig = { debug: true } as PersistConfig<RootState>;
 
       const result = reconciler(inboundState, originalState, reducedState, mockConfig);
       expect(result).toEqual({
-        a: 1,
-        b: 2,
-        c: 4,
+        auth: { token: 'inbound' },
+        app: { darkMode: true }
       });
     });
 
