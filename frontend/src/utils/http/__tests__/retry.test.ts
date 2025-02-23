@@ -46,7 +46,7 @@ const executeRetryFunctionTest = async (
   fn: Mock,
   options: { retries: number; delay: number } = { retries: 3, delay: 1000 }
 ) => {
-  const promise = retryFunction(fn, options);
+  const promise = retry(fn, { times: options.retries, delay: options.delay });
   await vi.runAllTimersAsync();
   return promise;
 };
@@ -261,7 +261,7 @@ describe('retryFunction', () => {
     vi.useRealTimers();
   });
 
-  test('应该在达到最大重试次数后抛出最后一次的错误', async () => {
+  it('应该在达到最大重试次数后抛出最后一次的错误', async () => {
     const failingFunction = vi.fn().mockRejectedValue(new Error('fail3'));
     await expect(executeRetryFunctionTest(failingFunction)).rejects.toThrow('fail3');
     expect(failingFunction).toHaveBeenCalledTimes(3);
