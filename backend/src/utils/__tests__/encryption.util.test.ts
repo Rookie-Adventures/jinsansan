@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { EncryptionUtil } from '../../src/utils/encryption.util';
+import { EncryptionUtil } from '../encryption.util';
 
 describe('EncryptionUtil', () => {
   it('should hash password correctly', async () => {

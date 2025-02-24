@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { ResponseUtil } from '../../src/utils/response.util';
-import { ErrorCode } from '../../src/types/error.codes';
+import { ResponseUtil } from '../response.util';
+import { ErrorCode } from '../../types/error.codes';
 
 describe('ResponseUtil', () => {
   it('should create success response', () => {

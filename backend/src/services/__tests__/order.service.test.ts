@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { OrderService } from '../../src/services/order.service';
-import Order from '../../src/models/order.model';
-import mongoose from 'mongoose';
+import { OrderService } from '../order.service';
+import Order from '../../models/order.model';
 
 // Mock redis module
 vi.mock('redis', () => ({
@@ -15,7 +14,7 @@ vi.mock('redis', () => ({
 }));
 
 // Mock redis config
-vi.mock('../../src/config/redis.config', () => ({
+vi.mock('../../config/redis.config', () => ({
   getRedisClient: () => ({
     connect: vi.fn().mockResolvedValue(undefined),
     setEx: vi.fn().mockResolvedValue('OK'),
@@ -34,13 +33,9 @@ vi.mock('../../src/config/redis.config', () => ({
 
 describe('OrderService', () => {
   beforeEach(async () => {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/test');
     vi.clearAllMocks();
-  });
-
-  afterEach(async () => {
+    // 清理测试数据
     await Order.deleteMany({});
-    await mongoose.connection.close();
   });
 
   it('should create an order', async () => {

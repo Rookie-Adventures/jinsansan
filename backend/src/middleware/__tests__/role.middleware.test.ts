@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { roleMiddleware } from '../../src/middleware/role.middleware';
+import { roleMiddleware } from '../role.middleware';
 
 describe('roleMiddleware', () => {
   it('should allow access if user has required role', () => {

@@ -1,18 +1,11 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { UserService } from '../../src/services/user.service';
-import User from '../../src/models/user.model';
-import mongoose from 'mongoose';
+import { UserService } from '../user.service';
+import User from '../../models/user.model';
 
 describe('UserService', () => {
   beforeEach(async () => {
-    // 连接测试数据库
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/test');
-  });
-
-  afterEach(async () => {
     // 清理测试数据
     await User.deleteMany({});
-    await mongoose.connection.close();
   });
 
   it('should create a user', async () => {
