@@ -1,16 +1,17 @@
-import { ApiResponse, ErrorCode } from '../types/api.response.types';
+import { ApiResponse } from '../types/api.response.types';
+import { ErrorCode } from '../types/error.codes';
 
 export class ResponseUtil {
-  static success<T>(data: T): ApiResponse<T> {
+  static success<T>(data: T, message = '成功'): ApiResponse<T> {
     return {
       code: ErrorCode.SUCCESS,
-      message: '成功',
+      message,
       data,
       timestamp: Date.now(),
     };
   }
 
-  static error(code: number, message: string): ApiResponse<null> {
+  static error(code: ErrorCode, message: string): ApiResponse<null> {
     return {
       code,
       message,

@@ -1,28 +1,32 @@
-import { resolve } from 'path'
+/// <reference types="node" />
+/// <reference types="vitest" />
+import path from 'path'
+import { fileURLToPath } from 'url'
 
 import react from '@vitejs/plugin-react'
-import { visualizer } from 'rollup-plugin-visualizer'
 import { defineConfig } from 'vite'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    visualizer({
-      filename: 'reports/bundle-analysis.html',
-      open: true,
-      gzipSize: true,
-      brotliSize: true,
-    }),
-  ],
+  plugins: [react()],
   resolve: {
     alias: {
-      '@': resolve(__dirname, './src'),
+      '@': path.resolve(__dirname, 'src'),
     },
   },
   server: {
     port: 3000,
-    open: true
+    open: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        secure: false,
+      }
+    }
   },
   build: {
     outDir: 'dist',
