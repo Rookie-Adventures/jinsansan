@@ -3,10 +3,12 @@ name: CI
 on:
   push:
     branches:
-      - main  # 触发条件：当推送到 main 分支时
+      - main    # 触发条件：当推送到 main 分支时
+      - test    # 触发条件：当推送到 test 分支时
   pull_request:
     branches:
-      - main  # 触发条件：当创建针对 main 分支的 PR 时
+      - main    # 触发条件：当创建针对 main 分支的 PR 时
+      - test    # 触发条件：当创建针对 test 分支的 PR 时
 
 jobs:
   build:
