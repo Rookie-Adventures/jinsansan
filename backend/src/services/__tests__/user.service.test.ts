@@ -30,8 +30,9 @@ describe('UserService', () => {
     };
 
     await UserService.createUser(userData);
+    console.log("User created:", userData);
     const foundUser = await UserService.findUserByEmail(userData.email);
-
+    console.log("Found user:", foundUser);
     expect(foundUser).toBeDefined();
     expect(foundUser?.email).toBe(userData.email);
   });

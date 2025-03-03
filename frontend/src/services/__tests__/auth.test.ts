@@ -28,6 +28,7 @@ describe('Auth Service', () => {
       token: 'mock-token',
       user: mockUser,
     },
+    timestamp: Date.now(),
   };
 
   beforeEach(() => {
@@ -110,6 +111,7 @@ describe('Auth Service', () => {
         code: 200,
         message: 'success',
         data: {},
+        timestamp: Date.now(),
       };
       vi.mocked(request).mockResolvedValueOnce(mockLogoutResponse);
 
@@ -136,6 +138,7 @@ describe('Auth Service', () => {
         code: 200,
         message: 'success',
         data: mockUser,
+        timestamp: Date.now(),
       };
       vi.mocked(request).mockResolvedValueOnce(mockUserResponse);
 
