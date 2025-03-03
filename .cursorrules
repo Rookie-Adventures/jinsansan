@@ -5,6 +5,11 @@
 - **前端规范**：请参阅 [Jinshanshan/frontend/.cursorrules]
 - **后端规范**：请参阅 [Jinshanshan/backend/.cursorrules]
 
+···
+JINSANSAN
+ - frontend
+ - backend
+ - shared （通用类型定义）
 
 ## **开发顺序**
 

@@ -1,4 +1,5 @@
-import { ApiResponse, ErrorCode } from '../types/api.response.types';
+import { ApiResponse } from '../types/api.response.types';
+import { ErrorCode } from '../types/error.codes';
 
 export class ErrorUtil {
   static handleError(message: string, code: ErrorCode = ErrorCode.INTERNAL_ERROR): ApiResponse<null> {

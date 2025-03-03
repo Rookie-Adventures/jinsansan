@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main    # 触发条件：当推送到 main 分支时
+      - test    # 触发条件：当推送到 test 分支时
+  pull_request:
+    branches:
+      - main    # 触发条件：当创建针对 main 分支的 PR 时
+      - test    # 触发条件：当创建针对 test 分支的 PR 时
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # 使用最新的 Ubuntu 环境
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2  # 检出代码
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'  # 设置 Node.js 版本
+
+      - name: Install dependencies
+        run: npm install  # 安装依赖
+
+      - name: Run tests
+        run: npm test  # 运行测试
+
+      - name: Build frontend
+        run: npm run build --prefix frontend  # 构建前端应用 
