@@ -23,11 +23,23 @@ describe('Auth Service', () => {
 
   const mockLoginResponse: ApiResponse<{ token: string; user: User }> = {
     code: 200,
-    message: 'success',
-    data: {
-      token: 'mock-token',
-      user: mockUser,
-    },
+    message: '登录成功',
+    data: { token: 'mockToken', user: mockUser },
+    timestamp: Date.now(),
+  };
+
+  const mockLogoutResponse: ApiResponse<Record<string, never>> = {
+    code: 200,
+    message: '登出成功',
+    data: {},
+    timestamp: Date.now(),
+  };
+
+  const mockUserResponse: ApiResponse<User> = {
+    code: 200,
+    message: '获取用户信息成功',
+    data: mockUser,
+    timestamp: Date.now(),
   };
 
   beforeEach(() => {
@@ -106,11 +118,6 @@ describe('Auth Service', () => {
 
   describe('logout', () => {
     it('应该成功处理登出请求', async () => {
-      const mockLogoutResponse: ApiResponse<Record<string, never>> = {
-        code: 200,
-        message: 'success',
-        data: {},
-      };
       vi.mocked(request).mockResolvedValueOnce(mockLogoutResponse);
 
       await authApi.logout();
@@ -132,11 +139,6 @@ describe('Auth Service', () => {
 
   describe('getCurrentUser', () => {
     it('应该成功获取当前用户信息', async () => {
-      const mockUserResponse: ApiResponse<User> = {
-        code: 200,
-        message: 'success',
-        data: mockUser,
-      };
       vi.mocked(request).mockResolvedValueOnce(mockUserResponse);
 
       const user = await authApi.getCurrentUser();

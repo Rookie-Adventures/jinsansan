@@ -16,6 +16,7 @@ describe('HttpClient', () => {
     code: 200,
     message: 'success',
     data: { message: 'success' },
+    timestamp: Date.now(),
   };
 
   beforeEach(() => {

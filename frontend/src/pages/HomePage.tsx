@@ -11,7 +11,7 @@ const HomePage: FC = () => {
     <Box
       sx={{
         width: '100vw',
-        margin: '-8px',
+        margin: 0,
         padding: 0,
         overflow: 'hidden',
         position: 'relative',
@@ -19,6 +19,7 @@ const HomePage: FC = () => {
         right: '50%',
         marginLeft: '-50vw',
         marginRight: '-50vw',
+        backgroundColor: '#f0f0f0', // 添加背景色
       }}
     >
       <Navbar />
@@ -29,6 +30,8 @@ const HomePage: FC = () => {
           color: 'white',
           position: 'relative',
           pt: '64px', // 为导航栏留出空间
+          pb: '64px', // 为底部留出空间
+          textAlign: 'center', // 中心对齐
           '&::before': {
             content: '""',
             position: 'absolute',
@@ -43,10 +46,12 @@ const HomePage: FC = () => {
         }}
       >
         <HeroSection />
+        <h1 style={{ fontSize: '2.5rem', margin: '20px 0' }}>欢迎来到我们的主页</h1> {/* 添加欢迎标题 */}
+        <p style={{ fontSize: '1.2rem', margin: '10px 0' }}>探索我们的特色和服务</p> {/* 添加描述 */}
       </Box>
 
       {/* Feature Section */}
-      <Box>
+      <Box sx={{ padding: '40px 20px', textAlign: 'center' }}>
         <FeatureSection />
       </Box>
 
@@ -54,6 +59,8 @@ const HomePage: FC = () => {
       <Box
         sx={{
           background: 'linear-gradient(135deg, #f5f7fa 0%, #e8ecf3 100%)',
+          padding: '40px 20px',
+          textAlign: 'center',
         }}
       >
         <PricingSection />
