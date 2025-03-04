@@ -5,23 +5,25 @@ export type { User };
 export type LoginMethod = 'username' | 'phone' | 'email';
 
 export interface BaseLoginFormData {
-  password: string;
   rememberMe?: boolean;
 }
 
 export interface UsernameLoginFormData extends BaseLoginFormData {
   loginMethod: 'username';
   username: string;
+  password: string;
 }
 
 export interface PhoneLoginFormData extends BaseLoginFormData {
   loginMethod: 'phone';
   phone: string;
+  verificationCode: string;
 }
 
 export interface EmailLoginFormData extends BaseLoginFormData {
   loginMethod: 'email';
   email: string;
+  verificationCode: string;
 }
 
 export type LoginFormData = UsernameLoginFormData | PhoneLoginFormData | EmailLoginFormData;
