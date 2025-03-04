@@ -5,6 +5,7 @@ import FeatureSection from '../components/business/sections/FeatureSection';
 import HeroSection from '../components/business/sections/HeroSection';
 import PricingSection from '../components/business/sections/PricingSection';
 import Navbar from '../components/common/layout/Navbar';
+import Footer from '../components/common/layout/Footer';
 
 const HomePage: FC = () => {
   return (
@@ -58,6 +59,7 @@ const HomePage: FC = () => {
       >
         <PricingSection />
       </Box>
+      <Footer />
     </Box>
   );
 };
