@@ -37,6 +37,7 @@ describe('Auth Service', () => {
 
   describe('login', () => {
     const loginData: LoginFormData = {
+      loginMethod: 'username',
       username: 'testuser',
       password: 'password123',
     };

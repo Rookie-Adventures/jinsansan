@@ -87,7 +87,11 @@ describe('authSlice', () => {
 
   describe('async actions', () => {
     describe('login', () => {
-      const mockLoginData = { username: 'test', password: 'password' };
+      const mockLoginData = {
+        loginMethod: 'username' as const,
+        username: 'test',
+        password: 'password'
+      };
       const mockUser: User = {
         id: 1,
         username: 'test',

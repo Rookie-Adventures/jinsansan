@@ -7,7 +7,7 @@ import { withAuthRedirect } from './withAuthRedirect';
 
 const LoginPage: FC = () => {
   return (
-    <AuthPage type="login" initialData={{ username: '', password: '' }}>
+    <AuthPage type="login" initialData={{ username: '', password: '', loginMethod: 'username' }}>
       <LoginForm />
     </AuthPage>
   );

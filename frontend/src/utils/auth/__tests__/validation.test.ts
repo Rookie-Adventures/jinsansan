@@ -7,6 +7,7 @@ import { validateLoginForm, validateRegisterForm } from '../validation';
 describe('validateLoginForm', () => {
   it('应该在表单数据有效时返回 isValid: true', () => {
     const validForm: LoginFormData = {
+      loginMethod: 'username',
       username: 'testuser',
       password: 'password123',
     };
@@ -18,6 +19,7 @@ describe('validateLoginForm', () => {
 
   it('应该在用户名为空时返回错误', () => {
     const formWithEmptyUsername: LoginFormData = {
+      loginMethod: 'username',
       username: '',
       password: 'password123',
     };
@@ -29,6 +31,7 @@ describe('validateLoginForm', () => {
 
   it('应该在用户名只包含空格时返回错误', () => {
     const formWithWhitespaceUsername: LoginFormData = {
+      loginMethod: 'username',
       username: '   ',
       password: 'password123',
     };
@@ -40,6 +43,7 @@ describe('validateLoginForm', () => {
 
   it('应该在密码为空时返回错误', () => {
     const formWithEmptyPassword: LoginFormData = {
+      loginMethod: 'username',
       username: 'testuser',
       password: '',
     };

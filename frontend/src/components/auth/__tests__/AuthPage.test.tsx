@@ -2,7 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, beforeEach, vi, type Mock } from 'vitest';
 
-import type { LoginFormData, RegisterFormData } from '@/types/auth';
+// import type { LoginFormData } from '@/types/auth';
 
 import { useAuth, useAuthForm } from '@/hooks/auth';
 import { waitForAnimation } from '@/test/utils/muiTestHelpers';
@@ -16,9 +16,11 @@ import RegisterForm from '../RegisterForm';
 const TEST_TIMEOUT = 7000;
 
 // 测试类型和辅助函数
-interface AuthFormData extends Partial<LoginFormData & RegisterFormData> {
+interface AuthFormData {
   username: string;
   password: string;
+  email: string;
+  confirmPassword: string;
 }
 
 interface MockAuthOptions {
@@ -41,14 +43,14 @@ interface RenderOptions {
   };
 }
 
-const createTestFormData = (type: 'login' | 'register'): AuthFormData => {
-  const baseData = {
+const createTestFormData = (_type: 'login' | 'register'): AuthFormData => {
+  const baseData: AuthFormData = {
     username: 'testuser',
     password: 'password123',
+    email: 'test@example.com',
+    confirmPassword: 'password123',
   };
-  return type === 'login' 
-    ? baseData 
-    : { ...baseData, email: 'test@example.com', confirmPassword: 'password123' };
+  return baseData;
 };
 
 const setupMockAuth = (options: MockAuthOptions) => {
@@ -63,17 +65,17 @@ const setupMockAuth = (options: MockAuthOptions) => {
 };
 
 const setupTestEnvironment = (options: TestSetupOptions) => {
-  const { type, formData, ...mockOptions } = options;
+  const { type: _type, formData, ...mockOptions } = options;
   const mock = setupMockAuth(mockOptions);
   
-  const mockOverrides = type === 'login' 
+  const mockOverrides = _type === 'login' 
     ? { login: mock }
     : { register: mock };
   
   vi.mocked(useAuth).mockReturnValue(createMockAuthHook(mockOverrides));
   vi.mocked(useAuthForm).mockReturnValue(createMockAuthFormHook(formData));
   
-  if (type === 'register') {
+  if (_type === 'register') {
     vi.mocked(validateRegisterForm).mockReturnValue({
       isValid: options.isSuccess,
       errorMessage: options.isSuccess ? undefined : options.errorMessage,
@@ -83,18 +85,16 @@ const setupTestEnvironment = (options: TestSetupOptions) => {
   return { mock };
 };
 
-const renderAuthPage = ({ type, formData, mockValidation }: RenderOptions) => {
+const renderAuthPage = ({ type: _type, formData, mockValidation }: RenderOptions) => {
   if (mockValidation) {
-    const validateFn = type === 'login' ? validateLoginForm : validateRegisterForm;
+    const validateFn = _type === 'login' ? validateLoginForm : validateRegisterForm;
     vi.mocked(validateFn).mockReturnValue(mockValidation);
   }
 
-  vi.mocked(useAuthForm).mockReturnValue(createMockAuthFormHook(formData));
-
   return render(
     <MemoryRouter>
-      <AuthPage type={type} initialData={formData}>
-        {type === 'login' ? <LoginForm /> : <RegisterForm />}
+      <AuthPage type={_type} initialData={formData}>
+        {_type === 'login' ? <LoginForm /> : <RegisterForm />}
       </AuthPage>
     </MemoryRouter>
   );
@@ -142,7 +142,11 @@ const createMockAuthHook = (overrides = {}) => ({
 });
 
 const createMockAuthFormHook = (formData: AuthFormData) => ({
-  formData,
+  formData: {
+    ...formData,
+    email: 'test@example.com',
+    confirmPassword: 'password123',
+  },
   showPassword: false,
   handleFormChange: vi.fn(),
   togglePasswordVisibility: vi.fn(),
@@ -151,7 +155,12 @@ const createMockAuthFormHook = (formData: AuthFormData) => ({
 // Mock hooks
 vi.mock('@/hooks/auth', () => ({
   useAuth: vi.fn(() => createMockAuthHook()),
-  useAuthForm: vi.fn(() => createMockAuthFormHook({ username: '', password: '' })),
+  useAuthForm: vi.fn(() => createMockAuthFormHook({
+    username: '',
+    password: '',
+    email: 'test@example.com',
+    confirmPassword: 'password123',
+  })),
 }));
 
 // Mock validation

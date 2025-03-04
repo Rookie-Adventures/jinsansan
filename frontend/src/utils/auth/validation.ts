@@ -95,16 +95,88 @@ const validateUsername = (username: string): ValidationResult => {
 };
 
 export const validateLoginForm = (formData: LoginFormData): ValidationResult => {
-  const usernameValidation = validateUsername(formData.username);
-  if (!usernameValidation.isValid) {
-    return usernameValidation;
-  }
+  switch (formData.loginMethod) {
+    case 'username': {
+      const usernameValidation = validateUsername(formData.username);
+      if (!usernameValidation.isValid) {
+        return usernameValidation;
+      }
 
-  if (!formData.password) {
-    return {
-      isValid: false,
-      errorMessage: '请输入密码',
-    };
+      if (!formData.password) {
+        return {
+          isValid: false,
+          errorMessage: '请输入密码',
+        };
+      }
+
+      const passwordValidation = validatePasswordStrength(formData.password);
+      if (!passwordValidation.isValid) {
+        return passwordValidation;
+      }
+      break;
+    }
+    case 'phone': {
+      if (!formData.phone) {
+        return {
+          isValid: false,
+          errorMessage: '请输入手机号',
+        };
+      }
+
+      const phonePattern = /^1[3-9]\d{9}$/;
+      if (!phonePattern.test(formData.phone)) {
+        return {
+          isValid: false,
+          errorMessage: '请输入有效的手机号',
+        };
+      }
+
+      if (!formData.verificationCode) {
+        return {
+          isValid: false,
+          errorMessage: '请输入验证码',
+        };
+      }
+
+      if (!/^\d{6}$/.test(formData.verificationCode)) {
+        return {
+          isValid: false,
+          errorMessage: '验证码必须是6位数字',
+        };
+      }
+      break;
+    }
+    case 'email': {
+      if (!formData.email) {
+        return {
+          isValid: false,
+          errorMessage: '请输入邮箱',
+        };
+      }
+
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(formData.email)) {
+        return {
+          isValid: false,
+          errorMessage: '请输入有效的邮箱地址',
+        };
+      }
+
+      if (!formData.verificationCode) {
+        return {
+          isValid: false,
+          errorMessage: '请输入验证码',
+        };
+      }
+
+      if (!/^\d{6}$/.test(formData.verificationCode)) {
+        return {
+          isValid: false,
+          errorMessage: '验证码必须是6位数字',
+        };
+      }
+      break;
+    }
   }
 
   return { isValid: true };

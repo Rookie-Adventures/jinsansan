@@ -8,6 +8,7 @@ describe('useAuthForm', () => {
   describe('基础功能', () => {
     it('应该使用初始数据初始化表单', () => {
       const initialLoginData: LoginFormData = {
+        loginMethod: 'username',
         username: 'testuser',
         password: 'password123',
       };
@@ -36,6 +37,7 @@ describe('useAuthForm', () => {
   describe('表单操作', () => {
     it('应该正确更新表单数据', () => {
       const initialData: LoginFormData = {
+        loginMethod: 'username',
         username: '',
         password: '',
       };
@@ -47,6 +49,7 @@ describe('useAuthForm', () => {
       });
 
       expect(result.current.formData).toEqual({
+        loginMethod: 'username',
         username: 'newuser',
         password: '',
       });
@@ -56,6 +59,7 @@ describe('useAuthForm', () => {
       });
 
       expect(result.current.formData).toEqual({
+        loginMethod: 'username',
         username: 'newuser',
         password: 'newpassword',
       });
@@ -63,6 +67,7 @@ describe('useAuthForm', () => {
 
     it('应该正确切换密码可见性', () => {
       const initialData: LoginFormData = {
+        loginMethod: 'username',
         username: 'testuser',
         password: 'password123',
       };
@@ -108,6 +113,7 @@ describe('useAuthForm', () => {
   describe('类型安全', () => {
     it('应该正确处理 LoginFormData 类型', () => {
       const initialLoginData: LoginFormData = {
+        loginMethod: 'username',
         username: 'testuser',
         password: 'password123',
       };
@@ -121,6 +127,7 @@ describe('useAuthForm', () => {
       });
 
       expect(result.current.formData).toEqual({
+        loginMethod: 'username',
         username: 'newuser',
         password: 'password123',
       });

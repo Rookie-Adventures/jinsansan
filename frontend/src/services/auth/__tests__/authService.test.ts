@@ -37,6 +37,7 @@ describe('AuthService', () => {
       email: 'test@example.com',
       password: 'password123',
       username: 'testuser',
+      loginMethod: 'username' as const,
     };
 
     const mockLoginResponse = {
