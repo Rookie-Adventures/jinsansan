@@ -1,8 +1,8 @@
 import { AUTH_CONSTANTS } from '../constants/auth';
 
 export interface SecurityConfig {
-  tokenKey: string;
-  refreshTokenKey: string;
+  tokenKey: keyof typeof AUTH_CONSTANTS;
+  refreshTokenKey: keyof typeof AUTH_CONSTANTS;
   tokenExpiresIn: number;
   refreshTokenExpiresIn: number;
   passwordSaltRounds: number;

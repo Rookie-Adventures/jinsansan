@@ -24,6 +24,7 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, './src'),
       '@shared': resolve(__dirname, '../shared/src'),
+      '@jinshanshan/shared': resolve(__dirname, '../shared/src'),
     },
   },
   server: {

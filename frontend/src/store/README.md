@@ -62,20 +62,28 @@ export const slice = createSlice({
 - `loggerMiddleware`: 日志中间件
 - `errorMiddleware`: 错误处理中间件
 - `persistMiddleware`: 持久化中间件
+- `thunkMiddleware`: 异步操作中间件
+- `sagaMiddleware`: 副作用处理中间件
 
 ### 2. 选择器 (selectors/)
 - `authSelectors`: 认证状态选择器
 - `userSelectors`: 用户状态选择器
 - `uiSelectors`: UI 状态选择器
+- `errorSelectors`: 错误状态选择器
+- `loadingSelectors`: 加载状态选择器
 
 ### 3. 切片 (slices/)
 - `authSlice`: 认证状态切片
 - `userSlice`: 用户状态切片
 - `uiSlice`: UI 状态切片
+- `errorSlice`: 错误状态切片
+- `loadingSlice`: 加载状态切片
 
 ### 4. 类型定义 (types/)
 - `store.types.ts`: 状态管理基础类型
 - `slice.types.ts`: 切片相关类型
+- `action.types.ts`: 动作相关类型
+- `selector.types.ts`: 选择器相关类型
 
 ## 使用示例
 
@@ -129,6 +137,65 @@ export const UserProfile = () => {
 };
 ```
 
+### 异步操作
+```typescript
+import { createAsyncThunk } from '@reduxjs/toolkit';
+
+export const fetchUser = createAsyncThunk(
+  'user/fetchUser',
+  async (userId: string) => {
+    const response = await api.getUser(userId);
+    return response.data;
+  }
+);
+
+// 在组件中使用
+const UserProfile = () => {
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+  const loading = useSelector(selectLoading);
+  const error = useSelector(selectError);
+
+  useEffect(() => {
+    dispatch(fetchUser('123'));
+  }, [dispatch]);
+
+  if (loading) return <Loading />;
+  if (error) return <Error message={error.message} />;
+  
+  return <div>{user.name}</div>;
+};
+```
+
+### 状态持久化
+```typescript
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['auth', 'user'], // 只持久化这些状态
+  blacklist: ['error', 'loading'], // 不持久化这些状态
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+```
+
+### 状态订阅
+```typescript
+import { store } from './store';
+
+// 订阅状态变化
+const unsubscribe = store.subscribe(() => {
+  const state = store.getState();
+  console.log('State updated:', state);
+});
+
+// 取消订阅
+unsubscribe();
+```
+
 ## 最佳实践
 
 1. **状态设计**
@@ -151,6 +218,30 @@ export const UserProfile = () => {
    - 遵循 Redux 最佳实践
    - 保持代码简洁
 
+5. **状态组织**
+   - 按功能模块划分
+   - 避免状态重复
+   - 保持状态扁平
+   - 使用命名空间
+
+6. **状态更新**
+   - 使用不可变更新
+   - 批量更新状态
+   - 避免深层更新
+   - 使用选择器优化
+
+7. **错误处理**
+   - 统一错误处理
+   - 错误状态管理
+   - 错误恢复机制
+   - 用户反馈
+
+8. **性能优化**
+   - 使用 reselect
+   - 避免不必要的更新
+   - 优化重渲染
+   - 使用 memo
+
 ## 注意事项
 
 1. 状态开发时需要考虑：
@@ -164,9 +255,34 @@ export const UserProfile = () => {
    - 处理状态持久化
    - 遵循状态规范
 
+3. 状态测试注意事项：
+   - 测试初始状态
+   - 测试状态更新
+   - 测试异步操作
+   - 测试错误处理
+   - 测试选择器性能
+
+4. 状态调试注意事项：
+   - 使用 Redux DevTools
+   - 记录状态变化
+   - 分析性能问题
+   - 检查内存泄漏
+
 ## 更新日志
 
 ### v1.0.0
 - 初始化状态管理模块
 - 实现基础状态管理
-- 添加状态管理文档 
+- 添加状态管理文档
+
+### v1.1.0
+- 添加异步操作支持
+- 优化状态持久化
+- 增强错误处理
+- 改进性能优化
+
+### v1.2.0
+- 添加状态订阅机制
+- 优化状态组织
+- 增强测试覆盖
+- 改进调试工具 
