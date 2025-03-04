@@ -1,16 +1,103 @@
-import { LoginFormData, RegisterFormData } from '@/types/auth';
+import type { LoginFormData, RegisterFormData } from '@/types/auth';
 
-export interface ValidationResult {
+interface ValidationResult {
   isValid: boolean;
   errorMessage?: string;
 }
 
-export const validateLoginForm = (formData: LoginFormData): ValidationResult => {
-  if (!formData.username.trim()) {
+// 用户名验证规则
+const USERNAME_RULES = {
+  minLength: 3,
+  maxLength: 20,
+  pattern: /^[a-zA-Z0-9_-]+$/,
+};
+
+// 密码验证规则
+const PASSWORD_RULES = {
+  minLength: 8,
+  maxLength: 32,
+  requireNumber: true,
+  requireLetter: true,
+  requireSpecialChar: true,
+};
+
+// 验证密码强度
+const validatePasswordStrength = (password: string): ValidationResult => {
+  if (password.length < PASSWORD_RULES.minLength) {
+    return {
+      isValid: false,
+      errorMessage: `密码长度不能少于${PASSWORD_RULES.minLength}个字符`,
+    };
+  }
+
+  if (password.length > PASSWORD_RULES.maxLength) {
+    return {
+      isValid: false,
+      errorMessage: `密码长度不能超过${PASSWORD_RULES.maxLength}个字符`,
+    };
+  }
+
+  if (PASSWORD_RULES.requireNumber && !/\d/.test(password)) {
+    return {
+      isValid: false,
+      errorMessage: '密码必须包含数字',
+    };
+  }
+
+  if (PASSWORD_RULES.requireLetter && !/[a-zA-Z]/.test(password)) {
+    return {
+      isValid: false,
+      errorMessage: '密码必须包含字母',
+    };
+  }
+
+  if (PASSWORD_RULES.requireSpecialChar && !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+    return {
+      isValid: false,
+      errorMessage: '密码必须包含特殊字符',
+    };
+  }
+
+  return { isValid: true };
+};
+
+// 验证用户名格式
+const validateUsername = (username: string): ValidationResult => {
+  if (!username.trim()) {
     return {
       isValid: false,
       errorMessage: '请输入用户名',
     };
+  }
+
+  if (username.length < USERNAME_RULES.minLength) {
+    return {
+      isValid: false,
+      errorMessage: `用户名长度不能少于${USERNAME_RULES.minLength}个字符`,
+    };
+  }
+
+  if (username.length > USERNAME_RULES.maxLength) {
+    return {
+      isValid: false,
+      errorMessage: `用户名长度不能超过${USERNAME_RULES.maxLength}个字符`,
+    };
+  }
+
+  if (!USERNAME_RULES.pattern.test(username)) {
+    return {
+      isValid: false,
+      errorMessage: '用户名只能包含字母、数字、下划线和连字符',
+    };
+  }
+
+  return { isValid: true };
+};
+
+export const validateLoginForm = (formData: LoginFormData): ValidationResult => {
+  const usernameValidation = validateUsername(formData.username);
+  if (!usernameValidation.isValid) {
+    return usernameValidation;
   }
 
   if (!formData.password) {
@@ -24,32 +111,14 @@ export const validateLoginForm = (formData: LoginFormData): ValidationResult => 
 };
 
 export const validateRegisterForm = (formData: RegisterFormData): ValidationResult => {
-  if (!formData.username.trim()) {
-    return {
-      isValid: false,
-      errorMessage: '请输入用户名',
-    };
+  const usernameValidation = validateUsername(formData.username);
+  if (!usernameValidation.isValid) {
+    return usernameValidation;
   }
 
-  if (!formData.email.trim()) {
-    return {
-      isValid: false,
-      errorMessage: '请输入邮箱',
-    };
-  }
-
-  if (!formData.password) {
-    return {
-      isValid: false,
-      errorMessage: '请输入密码',
-    };
-  }
-
-  if (!formData.confirmPassword) {
-    return {
-      isValid: false,
-      errorMessage: '请确认密码',
-    };
+  const passwordValidation = validatePasswordStrength(formData.password);
+  if (!passwordValidation.isValid) {
+    return passwordValidation;
   }
 
   if (formData.password !== formData.confirmPassword) {
@@ -59,8 +128,15 @@ export const validateRegisterForm = (formData: RegisterFormData): ValidationResu
     };
   }
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(formData.email)) {
+  if (!formData.email) {
+    return {
+      isValid: false,
+      errorMessage: '请输入邮箱',
+    };
+  }
+
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(formData.email)) {
     return {
       isValid: false,
       errorMessage: '请输入有效的邮箱地址',

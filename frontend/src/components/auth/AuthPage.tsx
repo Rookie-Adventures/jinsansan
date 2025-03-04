@@ -2,7 +2,7 @@ import { Alert, Box, CircularProgress, Snackbar } from '@mui/material';
 import { useState, type FC, type ReactElement, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import type { LoginFormData, RegisterFormData } from '@/types/auth';
+import type { LoginFormData, RegisterFormData, UsernameLoginFormData } from '@/types/auth';
 
 import { useAuth, useAuthForm } from '@/hooks/auth';
 import { validateLoginForm, validateRegisterForm } from '@/utils/auth/validation';
@@ -21,6 +21,7 @@ interface AuthFormComponentProps {
   onSubmit: (e: FormEvent) => void;
   onFormChange: (data: Partial<FormData>) => void;
   onTogglePassword: () => void;
+  onCancel?: () => void;
 }
 
 interface AuthPageProps {
@@ -66,7 +67,7 @@ const AuthPage: FC<AuthPageProps> = ({ type, children, initialData }) => {
       Logger.error(error, {
         context: type === 'login' ? 'LoginPage' : 'RegisterPage',
         data: {
-          username: formData.username,
+          username: (formData as UsernameLoginFormData).username,
           ...(type === 'register' && { email: (formData as RegisterFormData).email }),
         },
       });
@@ -75,6 +76,10 @@ const AuthPage: FC<AuthPageProps> = ({ type, children, initialData }) => {
       );
       setShowError(true);
     }
+  };
+
+  const handleCancel = () => {
+    navigate('/');
   };
 
   const handleCloseError = () => {
@@ -90,6 +95,7 @@ const AuthPage: FC<AuthPageProps> = ({ type, children, initialData }) => {
       onSubmit: handleSubmit,
       onFormChange: handleFormChange,
       onTogglePassword: togglePasswordVisibility,
+      onCancel: handleCancel,
       disabled: loading,
     },
   } as ReactElement<AuthFormComponentProps>;

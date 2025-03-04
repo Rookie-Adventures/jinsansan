@@ -2,12 +2,33 @@ import type { User } from './user';
 
 export type { User };
 
-export interface LoginFormData {
-  username: string;
+export type LoginMethod = 'username' | 'phone' | 'email';
+
+export interface BaseLoginFormData {
   password: string;
+  rememberMe?: boolean;
 }
 
-export interface RegisterFormData extends LoginFormData {
+export interface UsernameLoginFormData extends BaseLoginFormData {
+  loginMethod: 'username';
+  username: string;
+}
+
+export interface PhoneLoginFormData extends BaseLoginFormData {
+  loginMethod: 'phone';
+  phone: string;
+}
+
+export interface EmailLoginFormData extends BaseLoginFormData {
+  loginMethod: 'email';
+  email: string;
+}
+
+export type LoginFormData = UsernameLoginFormData | PhoneLoginFormData | EmailLoginFormData;
+
+export interface RegisterFormData {
+  username: string;
+  password: string;
   email: string;
   confirmPassword: string;
 }

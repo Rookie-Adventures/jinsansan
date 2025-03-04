@@ -1,9 +1,9 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Box, Button, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+import { Box, Button, Checkbox, FormControlLabel, IconButton, InputAdornment, TextField, Typography, Tabs, Tab } from '@mui/material';
 
 import type { ChangeEvent, FC, FormEvent } from 'react';
 
-import { LoginFormData, RegisterFormData } from '@/types/auth';
+import { LoginFormData, LoginMethod, RegisterFormData, UsernameLoginFormData, PhoneLoginFormData, EmailLoginFormData } from '@/types/auth';
 
 type FormType = 'login' | 'register';
 type FormData = LoginFormData | RegisterFormData;
@@ -37,6 +37,11 @@ interface AuthFormProps {
    * @remarks 控制密码字段的显示/隐藏状态
    */
   onTogglePassword: () => void;
+  /** 
+   * 取消处理函数
+   * @remarks 用于处理取消操作，如取消登录或取消注册
+   */
+  onCancel?: () => void;
 }
 
 /**
@@ -65,6 +70,8 @@ interface PasswordFieldProps {
   showPassword: boolean;
   /** 是否禁用 */
   disabled?: boolean;
+  /** 自动完成属性 */
+  autoComplete?: string;
   /** 
    * 值变更处理函数
    * @param value 新的密码值
@@ -83,6 +90,7 @@ const PasswordField: FC<PasswordFieldProps> = ({
   value,
   showPassword,
   disabled,
+  autoComplete,
   onChange,
   onTogglePassword,
 }) => (
@@ -94,6 +102,7 @@ const PasswordField: FC<PasswordFieldProps> = ({
     margin="normal"
     value={value}
     disabled={disabled}
+    autoComplete={autoComplete}
     onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
     InputProps={{
       endAdornment: (
@@ -114,6 +123,27 @@ const PasswordField: FC<PasswordFieldProps> = ({
 );
 
 /**
+ * 登录方式切换组件
+ */
+interface LoginMethodTabsProps {
+  currentMethod: LoginMethod;
+  onChange: (method: LoginMethod) => void;
+  disabled?: boolean;
+}
+
+const LoginMethodTabs: FC<LoginMethodTabsProps> = ({ currentMethod, onChange, disabled }) => (
+  <Tabs
+    value={currentMethod}
+    onChange={(_, value: LoginMethod) => onChange(value)}
+    sx={{ mb: 2 }}
+  >
+    <Tab label="用户名登录" value="username" disabled={disabled} />
+    <Tab label="手机号登录" value="phone" disabled={disabled} />
+    <Tab label="邮箱登录" value="email" disabled={disabled} />
+  </Tabs>
+);
+
+/**
  * 认证表单组件
  * 用于处理用户登录和注册
  */
@@ -125,71 +155,182 @@ const AuthForm: FC<AuthFormProps> = ({
   onSubmit,
   onFormChange,
   onTogglePassword,
-}) => (
-  <Box
-    component="form"
-    onSubmit={(_event: FormEvent<HTMLFormElement>) => {
-      _event.preventDefault();
-      onSubmit(_event);
-    }}
-    data-testid="auth-form"
-  >
-    <FormHeader type={type} />
+  onCancel,
+}) => {
+  const currentLoginMethod = (formData as LoginFormData).loginMethod || 'username';
 
-    <TextField
-      fullWidth
-      label="用户名"
-      variant="outlined"
-      margin="normal"
-      value={formData.username}
-      disabled={disabled}
-      onChange={(_e: ChangeEvent<HTMLInputElement>) => onFormChange({ username: _e.target.value })}
-    />
+  const handleLoginMethodChange = (method: LoginMethod) => {
+    onFormChange({
+      loginMethod: method,
+      username: '',
+      phone: '',
+      email: '',
+      password: '',
+    });
+  };
 
-    {type === 'register' && (
-      <TextField
-        fullWidth
-        label="邮箱"
-        type="email"
-        variant="outlined"
-        margin="normal"
-        value={(formData as RegisterFormData).email}
-        disabled={disabled}
-        onChange={(_e: ChangeEvent<HTMLInputElement>) => onFormChange({ email: _e.target.value })}
-      />
-    )}
+  return (
+    <Box
+      component="form"
+      onSubmit={(_event: FormEvent<HTMLFormElement>) => {
+        _event.preventDefault();
+        onSubmit(_event);
+      }}
+      data-testid="auth-form"
+      autoComplete={type === 'login' ? 'on' : 'off'}
+    >
+      <FormHeader type={type} />
 
-    <PasswordField
-      label="密码"
-      value={formData.password}
-      showPassword={showPassword}
-      disabled={disabled}
-      onChange={(_value: string) => onFormChange({ password: _value })}
-      onTogglePassword={onTogglePassword}
-    />
+      {type === 'login' && (
+        <LoginMethodTabs
+          currentMethod={currentLoginMethod}
+          onChange={handleLoginMethodChange}
+          disabled={disabled}
+        />
+      )}
 
-    {type === 'register' && (
+      {type === 'login' ? (
+        <>
+          {currentLoginMethod === 'username' && (
+            <TextField
+              fullWidth
+              label="用户名"
+              variant="outlined"
+              margin="normal"
+              value={(formData as UsernameLoginFormData).username || ''}
+              disabled={disabled}
+              autoComplete="username"
+              onChange={(_e: ChangeEvent<HTMLInputElement>) =>
+                onFormChange({ username: _e.target.value })
+              }
+            />
+          )}
+
+          {currentLoginMethod === 'phone' && (
+            <TextField
+              fullWidth
+              label="手机号"
+              variant="outlined"
+              margin="normal"
+              value={(formData as PhoneLoginFormData).phone || ''}
+              disabled={disabled}
+              autoComplete="tel"
+              onChange={(_e: ChangeEvent<HTMLInputElement>) =>
+                onFormChange({ phone: _e.target.value })
+              }
+            />
+          )}
+
+          {currentLoginMethod === 'email' && (
+            <TextField
+              fullWidth
+              label="邮箱"
+              type="email"
+              variant="outlined"
+              margin="normal"
+              value={(formData as EmailLoginFormData).email || ''}
+              disabled={disabled}
+              autoComplete="email"
+              onChange={(_e: ChangeEvent<HTMLInputElement>) =>
+                onFormChange({ email: _e.target.value })
+              }
+            />
+          )}
+        </>
+      ) : (
+        <TextField
+          fullWidth
+          label="用户名"
+          variant="outlined"
+          margin="normal"
+          value={(formData as RegisterFormData).username}
+          disabled={disabled}
+          autoComplete="username"
+          onChange={(_e: ChangeEvent<HTMLInputElement>) =>
+            onFormChange({ username: _e.target.value })
+          }
+        />
+      )}
+
+      {type === 'register' && (
+        <TextField
+          fullWidth
+          label="邮箱"
+          type="email"
+          variant="outlined"
+          margin="normal"
+          value={(formData as RegisterFormData).email}
+          disabled={disabled}
+          autoComplete="email"
+          onChange={(_e: ChangeEvent<HTMLInputElement>) =>
+            onFormChange({ email: _e.target.value })
+          }
+        />
+      )}
+
       <PasswordField
-        label="确认密码"
-        value={(formData as RegisterFormData).confirmPassword || ''}
+        label="密码"
+        value={formData.password}
         showPassword={showPassword}
         disabled={disabled}
-        onChange={(_value: string) => onFormChange({ confirmPassword: _value })}
+        autoComplete={type === 'login' ? 'current-password' : 'new-password'}
+        onChange={(_value: string) => onFormChange({ password: _value })}
         onTogglePassword={onTogglePassword}
       />
-    )}
 
-    <Button
-      type="submit"
-      fullWidth
-      variant="contained"
-      size="large"
-      disabled={disabled}
-      sx={{ mt: 3 }}
-    >
-      {type === 'login' ? '登录' : '注册'}
-    </Button>
-  </Box>
-);
+      {type === 'register' && (
+        <PasswordField
+          label="确认密码"
+          value={(formData as RegisterFormData).confirmPassword || ''}
+          showPassword={showPassword}
+          disabled={disabled}
+          autoComplete="new-password"
+          onChange={(_value: string) => onFormChange({ confirmPassword: _value })}
+          onTogglePassword={onTogglePassword}
+        />
+      )}
+
+      {type === 'login' && (
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={(formData as LoginFormData).rememberMe || false}
+              onChange={(_e: ChangeEvent<HTMLInputElement>) =>
+                onFormChange({ rememberMe: _e.target.checked })
+              }
+              disabled={disabled}
+              color="primary"
+            />
+          }
+          label="记住密码"
+        />
+      )}
+
+      <Box sx={{ mt: 3, display: 'flex', gap: 2 }}>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          size="large"
+          disabled={disabled}
+        >
+          {type === 'login' ? '登录' : '注册'}
+        </Button>
+        {onCancel && (
+          <Button
+            type="button"
+            fullWidth
+            variant="outlined"
+            size="large"
+            disabled={disabled}
+            onClick={onCancel}
+          >
+            取消
+          </Button>
+        )}
+      </Box>
+    </Box>
+  );
+};
 
 export default AuthForm;
