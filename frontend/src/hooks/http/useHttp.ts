@@ -1,11 +1,10 @@
 import { useCallback } from 'react';
-
-import type { HttpRequestConfig } from '@/utils/http/types';
+import type { HttpConfig } from '@/utils/http';
 
 import { http } from '@/utils/http';
 
-type RequestConfig = Omit<HttpRequestConfig, 'url' | 'method'>;
-type RequestConfigWithoutData = Omit<HttpRequestConfig, 'url' | 'method' | 'data'>;
+type RequestConfig = Partial<HttpConfig>;
+type RequestConfigWithoutData = Omit<RequestConfig, 'data'>;
 
 interface UseHttpReturn {
   get: <T>(url: string, config?: RequestConfig) => Promise<T>;

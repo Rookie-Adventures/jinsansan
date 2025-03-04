@@ -5,6 +5,12 @@
 - **前端规范**：请参阅 [Jinshanshan/frontend/.cursorrules]
 - **后端规范**：请参阅 [Jinshanshan/backend/.cursorrules]
 
+```
+jinshanshan/
+├── frontend/
+├── backend/
+└── shared/ (后端和前端共享目录)
+``` 
 
 ## **开发顺序**
 

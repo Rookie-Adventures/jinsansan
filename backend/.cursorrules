@@ -79,6 +79,11 @@ config：配置管理
 utils：工具函数
 types：类型定义
 
+## 目录结构
+jinshanshan/
+├── frontend/
+├── backend/
+└── shared/ (后端和前端共享目录) 
 
 #项目结构
 backend/

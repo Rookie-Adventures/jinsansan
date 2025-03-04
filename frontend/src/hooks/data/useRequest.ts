@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import type { HttpRequestConfig } from '@/utils/http/types';
+import type { HttpRequestConfig, HttpMethod } from '@/utils/http/types';
 
 import { useCache } from '@/hooks/http/useCache';
 import { useHttp } from '@/hooks/http/useHttp';
@@ -13,6 +13,7 @@ interface ApiResponse<T> {
 
 // 扩展 RequestOptions 接口以支持 signal 属性
 export interface RequestOptions extends Pick<HttpRequestConfig, 'signal'> {
+  method: HttpMethod;
   cache?: {
     enable: boolean;
     ttl: number;
@@ -54,6 +55,7 @@ const createFinalOptions = (
 ): HttpRequestConfig => ({
   ...defaultOptions,
   ...options,
+  method: options?.method || defaultOptions?.method || 'GET',
   cache: options?.cache
     ? {
         enable: options.cache.enable,

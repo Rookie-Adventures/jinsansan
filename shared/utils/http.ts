@@ -1,5 +1,5 @@
 import { HttpConfig, HttpHeaders, HttpParams, HttpMethod } from '../types/http';
-import { API_HEADERS, API_CONTENT_TYPES, API_METHODS } from '../constants/api';
+import { API_HEADERS, API_CONTENT_TYPES } from '../constants/api';
 import { createNetworkError } from './error';
 
 export const createHttpConfig = (

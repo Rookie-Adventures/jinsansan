@@ -1,6 +1,6 @@
-import { API_METHODS, API_HEADERS, API_CONTENT_TYPES } from '../constants/api';
+import { API_HEADERS, API_CONTENT_TYPES } from '../constants/api';
 
-export type HttpMethod = typeof API_METHODS[keyof typeof API_METHODS];
+export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 export type HttpHeader = typeof API_HEADERS[keyof typeof API_HEADERS];
 export type ContentType = typeof API_CONTENT_TYPES[keyof typeof API_CONTENT_TYPES];
 
@@ -22,6 +22,8 @@ export interface HttpConfig {
   withCredentials?: boolean;
   responseType?: 'arraybuffer' | 'blob' | 'document' | 'json' | 'text';
   validateStatus?: (status: number) => boolean;
+  /** 取消请求的信号 */
+  signal?: AbortSignal;
 }
 
 export interface HttpResponse<T = any> {

@@ -3,17 +3,18 @@
  * @packageDocumentation
  */
 
+import type { HttpMethod, HttpHeaders } from '@shared/types/http';
 import type { HttpError } from './error/types';
 import type { Severity } from '../../types/severity';
 import type { AxiosRequestConfig } from 'axios';
 
-
+export type { HttpMethod };
 
 /**
  * HTTP 请求配置类型
  * @description 扩展 Axios 请求配置，添加自定义配置选项
  */
-export type HttpRequestConfig = AxiosRequestConfig & {
+export type HttpRequestConfig = Omit<AxiosRequestConfig, 'headers' | 'responseType' | 'validateStatus'> & {
   /** 是否启用重试机制 */
   retry?: boolean;
   /** 重试次数 */
@@ -38,6 +39,16 @@ export type HttpRequestConfig = AxiosRequestConfig & {
     /** 优先级（数字越大优先级越高） */
     priority: number;
   };
+  /** 请求方法 */
+  method?: HttpMethod;
+  /** 请求头 */
+  headers?: HttpHeaders;
+  /** 响应类型 */
+  responseType?: 'document' | 'arraybuffer' | 'blob' | 'json' | 'text';
+  /** 验证状态码 */
+  validateStatus?: (status: number) => boolean;
+  /** 取消请求的信号 */
+  signal?: AbortSignal;
 };
 
 /**

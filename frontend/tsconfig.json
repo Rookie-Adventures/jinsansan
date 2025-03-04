@@ -25,7 +25,8 @@
     "allowUnreachableCode": false,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@shared/*": ["../shared/*"]
     }
   },
   "include": ["src"],

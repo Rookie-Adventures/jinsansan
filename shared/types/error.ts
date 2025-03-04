@@ -1,4 +1,4 @@
-import { ERROR_CODES, ERROR_MESSAGES, ERROR_SEVERITY } from '../constants/error';
+import { ERROR_CODES, ERROR_SEVERITY } from '../constants/error';
 
 export type ErrorCode = typeof ERROR_CODES[keyof typeof ERROR_CODES];
 export type ErrorSeverity = typeof ERROR_SEVERITY[keyof typeof ERROR_SEVERITY];

@@ -20,6 +20,8 @@ import {
 } from '@/tests/utils/http-test-utils';
 
 import { useRequest } from '../useRequest';
+import type { HttpMethod } from '@/utils/http/types';
+import type { RequestOptions } from '../useRequest';
 
 // Mock hooks
 vi.mock('@/hooks/http/useHttp', () => ({
@@ -91,7 +93,9 @@ describe('useRequest', () => {
 
       let response;
       await act(async () => {
-        response = await result.current.execute();
+        response = await result.current.execute({
+          method: 'GET',
+        });
       });
 
       expect(response).toEqual(testData);
@@ -133,6 +137,7 @@ describe('useRequest', () => {
 
       const executePromise = result.current.execute({
         signal: abortController.signal,
+        method: 'GET',
       });
 
       // 立即取消请求
@@ -169,6 +174,7 @@ describe('useRequest', () => {
             enable: true,
             ttl: 5000,
           },
+          method: 'GET',
         });
       });
       
@@ -192,7 +198,7 @@ describe('useRequest', () => {
       const { testData, result } = setupRequestTest();
       mockGetCacheData.mockReturnValue(null);
 
-      await executeRequestWithCache(result, { key: customCacheKey });
+      await executeRequestWithCache(result, { key: customCacheKey, method: 'GET' });
 
       expect(mockGetCacheData).toHaveBeenCalledWith(customCacheKey);
       expect(mockSetCacheData).toHaveBeenCalledWith(customCacheKey, testData, 5000);
@@ -220,6 +226,7 @@ describe('useRequest', () => {
             enable: true,
             ttl: 5000,
           },
+          method: 'GET',
         });
       });
 
@@ -233,6 +240,7 @@ describe('useRequest', () => {
             enable: true,
             ttl: 5000,
           },
+          method: 'GET',
         });
       });
 
@@ -245,18 +253,20 @@ describe('useRequest', () => {
 
   describe('请求配置', () => {
     it('应该合并默认配置和执行配置', async () => {
-      const defaultOptions = {
+      const defaultOptions: RequestOptions = {
         cache: {
           enable: true,
           ttl: 5000,
         },
+        method: 'GET' as HttpMethod,
       };
-      const executeOptions = {
+      const executeOptions: RequestOptions = {
         cache: {
           enable: true,
           ttl: 10000,
           key: 'custom-key',
         },
+        method: 'GET' as HttpMethod,
       };
       const testData = createTestData();
       const mockResponse = createTestResponse(testData);
@@ -295,6 +305,7 @@ describe('useRequest', () => {
             enable: true,
             priority: 1,
           },
+          method: 'GET',
         });
       });
 
@@ -332,18 +343,21 @@ describe('useRequest', () => {
             enable: true,
             priority: 1,
           },
+          method: 'GET',
         }),
         result.current.execute({
           queue: {
             enable: true,
             priority: 2,
           },
+          method: 'GET',
         }),
         result.current.execute({
           queue: {
             enable: true,
             priority: 3,
           },
+          method: 'GET',
         }),
       ];
 
@@ -376,7 +390,9 @@ describe('useRequest', () => {
 
       let promise: Promise<any>;
       await act(async () => {
-        promise = result.current.execute();
+        promise = result.current.execute({
+          method: 'GET',
+        });
       });
 
       // 验证 loading 状态为 true
@@ -417,7 +433,9 @@ describe('useRequest', () => {
       // 第一次请求失败
       await act(async () => {
         try {
-          await result.current.execute();
+          await result.current.execute({
+            method: 'GET',
+          });
         } catch (error) {
           expect(error).toBe(mockError);
         }
@@ -427,7 +445,9 @@ describe('useRequest', () => {
 
       // 第二次请求成功
       await act(async () => {
-        await result.current.execute();
+        await result.current.execute({
+          method: 'GET',
+        });
       });
 
       expect(result.current.error).toBeNull();
@@ -443,7 +463,9 @@ describe('useRequest', () => {
       const { result } = renderHook(() => useRequest<ComplexTestData>('/test'));
       
       const response = await act(async () => {
-        return await result.current.execute();
+        return await result.current.execute({
+          method: 'GET',
+        });
       });
 
       expect(response).toEqual(mockComplexData);
@@ -461,7 +483,9 @@ describe('useRequest', () => {
       const { result } = renderHook(() => useRequest<UnionResponseType>('/test'));
       
       const response1 = await act(async () => {
-        return await result.current.execute();
+        return await result.current.execute({
+          method: 'GET',
+        });
       });
 
       if ('success' in response1 && response1.success) {
@@ -469,7 +493,9 @@ describe('useRequest', () => {
       }
 
       const response2 = await act(async () => {
-        return await result.current.execute();
+        return await result.current.execute({
+          method: 'GET',
+        });
       });
 
       if ('success' in response2 && !response2.success) {
@@ -497,7 +523,8 @@ const executeRequestWithCache = async (
   result: any, 
   options?: { 
     ttl?: number, 
-    key?: string 
+    key?: string,
+    method: string
   }
 ) => {
   await act(async () => {
@@ -507,6 +534,7 @@ const executeRequestWithCache = async (
         ttl: options?.ttl || 5000,
         ...(options?.key && { key: options.key }),
       },
+      method: options?.method || 'GET',
     });
   });
 };
@@ -517,7 +545,9 @@ const expectErrorHandling = async (
 ) => {
   await act(async () => {
     try {
-      await result.current.execute();
+      await result.current.execute({
+        method: 'GET',
+      });
     } catch (error) {
       expect(error).toBe(mockError);
     }
