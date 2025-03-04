@@ -1,0 +1,27 @@
+{
+  "name": "@jinshanshan/shared",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.tsx",
+    "clean": "rimraf dist",
+    "prebuild": "npm run clean"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.5",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.3.3",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.56.0"
+  }
+} 

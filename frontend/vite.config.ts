@@ -1,8 +1,13 @@
+/// <reference types="node" />
 import { resolve } from 'path'
+import { fileURLToPath } from 'url'
 
 import react from '@vitejs/plugin-react'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { defineConfig } from 'vite'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -18,7 +23,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
-      '@shared': resolve(__dirname, '../shared'),
+      '@shared': resolve(__dirname, '../shared/src'),
     },
   },
   server: {

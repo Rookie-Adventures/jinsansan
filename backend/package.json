@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "build": "cd ../shared && npm run build && cd ../backend && tsc"
   },
   "keywords": [],
   "author": "",
@@ -20,13 +21,14 @@
     "vitest": "^3.0.6"
   },
   "dependencies": {
-    "@types/express": "^5.0.0",
-    "bcrypt": "^5.1.1",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "helmet": "^8.0.0",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^7.0.4",
-    "redis": "^4.7.0"
+    "@jinshanshan/shared": "file:../shared",
+    "@types/express": "5.0.0",
+    "bcrypt": "5.1.1",
+    "dotenv": "16.4.7",
+    "express": "4.21.2",
+    "helmet": "8.0.0",
+    "jsonwebtoken": "9.0.2",
+    "mongoose": "7.0.4",
+    "redis": "4.7.0"
   }
 }
