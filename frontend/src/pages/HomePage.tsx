@@ -4,8 +4,8 @@ import { type FC } from 'react';
 import FeatureSection from '../components/business/sections/FeatureSection';
 import HeroSection from '../components/business/sections/HeroSection';
 import PricingSection from '../components/business/sections/PricingSection';
-import Navbar from '../components/common/layout/Navbar';
 import Footer from '../components/common/layout/Footer';
+import Navbar from '../components/common/layout/Navbar';
 
 const HomePage: FC = () => {
   return (

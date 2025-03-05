@@ -1,4 +1,3 @@
-import type { HttpConfig, HttpHeaders, HttpParams, HttpMethod } from '@shared/types/http';
 import { API_METHODS } from '@shared/constants/api';
 import {
   createHttpConfig,
@@ -10,7 +9,9 @@ import {
   getHttpErrorStatus,
   getHttpErrorHeaders,
 } from '@shared/utils/http';
+
 import type { HttpError } from '@/utils/http/error/types';
+import type { HttpConfig, HttpHeaders, HttpParams, HttpMethod } from '@shared/types/http';
 
 export type { HttpConfig, HttpHeaders, HttpParams, HttpMethod };
 export type { HttpError } from '@/utils/http/error/types';

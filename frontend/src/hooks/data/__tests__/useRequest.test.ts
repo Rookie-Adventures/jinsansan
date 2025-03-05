@@ -3,6 +3,9 @@ import { renderHook, act, waitFor } from '@testing-library/react';
 import { vi, expect, describe, it, beforeEach } from 'vitest';
 
 // 内部模块导入
+import type { RequestOptions } from '../useRequest';
+import type { HttpMethod } from '@/utils/http/types';
+
 import { useCache } from '@/hooks/http/useCache';
 import { useHttp } from '@/hooks/http/useHttp';
 import {
@@ -20,8 +23,6 @@ import {
 } from '@/tests/utils/http-test-utils';
 
 import { useRequest } from '../useRequest';
-import type { HttpMethod } from '@/utils/http/types';
-import type { RequestOptions } from '../useRequest';
 
 // Mock hooks
 vi.mock('@/hooks/http/useHttp', () => ({

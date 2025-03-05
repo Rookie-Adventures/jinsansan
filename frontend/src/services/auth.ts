@@ -15,6 +15,16 @@ export interface ApiError {
   message: string;
 }
 
+export interface SendVerificationCodeRequest {
+  type: 'phone' | 'email';
+  target: string;
+}
+
+export interface SendVerificationCodeResponse {
+  success: boolean;
+  message: string;
+}
+
 const defaultHeaders = new AxiosHeaders({
   'Content-Type': 'application/json',
 });
@@ -74,6 +84,21 @@ export const authApi = {
     } catch (error) {
       const apiError = error as ApiError;
       throw new Error(apiError.message || '获取用户信息失败，请重试');
+    }
+  },
+
+  sendVerificationCode: async (data: SendVerificationCodeRequest): Promise<SendVerificationCodeResponse> => {
+    try {
+      const response = await request<SendVerificationCodeResponse>({
+        method: 'POST',
+        url: '/auth/send-verification-code',
+        data,
+        headers: defaultHeaders,
+      });
+      return response.data;
+    } catch (error) {
+      const apiError = error as ApiError;
+      throw new Error(apiError.message || '发送验证码失败，请重试');
     }
   },
 };

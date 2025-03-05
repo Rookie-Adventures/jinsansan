@@ -3,9 +3,9 @@
  * @packageDocumentation
  */
 
-import type { HttpMethod, HttpHeaders } from '@shared/types/http';
 import type { HttpError } from './error/types';
 import type { Severity } from '../../types/severity';
+import type { HttpMethod, HttpHeaders } from '@shared/types/http';
 import type { AxiosRequestConfig } from 'axios';
 
 export type { HttpMethod };

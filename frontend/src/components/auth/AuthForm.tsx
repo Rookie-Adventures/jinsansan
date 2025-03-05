@@ -1,9 +1,10 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box, Button, Checkbox, FormControlLabel, IconButton, InputAdornment, TextField, Typography, Tabs, Tab, Stack, Link, LinearProgress } from '@mui/material';
-
 import { useState } from 'react';
+
 import type { ChangeEvent, FC, FormEvent } from 'react';
 
+import { authApi } from '@/services/auth';
 import { LoginFormData, LoginMethod, RegisterFormData, UsernameLoginFormData, PhoneLoginFormData, EmailLoginFormData } from '@/types/auth';
 
 type FormType = 'login' | 'register';
@@ -214,14 +215,14 @@ const PasswordStrength: FC<PasswordStrengthProps> = ({ password }) => {
 
   const strength = calculateStrength(password);
   const strengthText = ['非常弱', '弱', '中等', '强', '非常强'][strength - 1] || '未设置';
-  const strengthColor = ['error', 'error', 'warning', 'info', 'success'][strength - 1] || 'default';
+  const strengthColor = ['error', 'error', 'warning', 'info', 'success'][strength - 1] || 'primary';
 
   return (
     <Box sx={{ width: '100%', mt: 1 }}>
       <LinearProgress
         variant="determinate"
         value={(strength / 5) * 100}
-        color={strengthColor as any}
+        color={strengthColor as 'error' | 'warning' | 'info' | 'success' | 'primary'}
         sx={{ height: 4, borderRadius: 2 }}
       />
       <Typography variant="caption" color="textSecondary" sx={{ mt: 0.5 }}>
@@ -427,18 +428,33 @@ const AuthForm: FC<AuthFormProps> = ({
     if (countdown > 0) return;
 
     let isValid = true;
+    let target = '';
+    let verificationType: 'phone' | 'email';
+
     if (currentLoginMethod === 'phone') {
       const phone = (formData as PhoneLoginFormData).phone;
       isValid = validatePhone(phone);
+      target = phone;
+      verificationType = 'phone';
     } else if (currentLoginMethod === 'email') {
       const email = (formData as EmailLoginFormData).email;
       isValid = validateEmail(email);
+      target = email;
+      verificationType = 'email';
+    } else {
+      return; // 用户名登录方式不需要发送验证码
     }
 
     if (!isValid) return;
 
     try {
-      // TODO: 调用发送验证码的 API
+      // 调用发送验证码的 API
+      await authApi.sendVerificationCode({
+        type: verificationType,
+        target,
+      });
+
+      // 开始倒计时
       setCountdown(60);
       const timer = setInterval(() => {
         setCountdown(prev => {
@@ -450,7 +466,10 @@ const AuthForm: FC<AuthFormProps> = ({
         });
       }, 1000);
     } catch (error) {
-      // TODO: 处理错误
+      // 处理错误
+      const errorMessage = error instanceof Error ? error.message : '发送验证码失败，请重试';
+      setVerificationCodeError(true);
+      setVerificationCodeHelperText(errorMessage);
     }
   };
 
