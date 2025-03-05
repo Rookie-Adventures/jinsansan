@@ -2,7 +2,11 @@ import express, { Request, Response } from 'express';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import Redis from 'redis';  // 取消注释 Redis
+import { createClient } from '@redis/client';
+
+import { VerificationService } from './services/verification';
+import { VerificationController } from './controllers/verification';
+import { createVerificationRouter } from './routes/verification';
 
 // 加载环境变量
 dotenv.config();
@@ -20,7 +24,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/jinshansh
   .catch(err => console.error('MongoDB connection error:', err));
 
 // 连接 Redis
-const redisClient = Redis.createClient({
+const redisClient = createClient({
   url: process.env.REDIS_URI || 'redis://localhost:6379'
 });
 
@@ -28,10 +32,17 @@ redisClient.connect()
   .then(() => console.log('Connected to Redis at:', process.env.REDIS_URI))
   .catch(err => console.error('Redis connection error:', err));
 
+// 初始化服务和控制器
+const verificationService = new VerificationService(redisClient);
+const verificationController = new VerificationController(verificationService);
+
 // 路由
 app.get('/', (_req: Request, res: Response) => {
   res.json({ message: 'Welcome to Jinshanshan API' });
 });
+
+// 验证码路由
+app.use('/api/verification', createVerificationRouter(verificationController));
 
 // 启动服务器
 app.listen(port, () => {

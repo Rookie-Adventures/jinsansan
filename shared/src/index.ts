@@ -5,4 +5,10 @@ export * from './types';
 export * from './utils';
 
 // 导出所有常量
-export * from './constants'; 
+export * from './constants';
+
+// 导出验证码相关的类型
+export * from './types/verification';
+
+// 导出验证相关的工具函数
+export * from './utils/validation'; 
