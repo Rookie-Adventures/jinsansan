@@ -327,6 +327,7 @@ const AuthForm: FC<AuthFormProps> = ({
   const [emailHelperText, setEmailHelperText] = useState('');
   const [verificationCodeError, setVerificationCodeError] = useState(false);
   const [verificationCodeHelperText, setVerificationCodeHelperText] = useState('');
+  const [isVerifying, setIsVerifying] = useState(false);
 
   const validatePhone = (phone: string): boolean => {
     if (!phone) {
@@ -360,7 +361,7 @@ const AuthForm: FC<AuthFormProps> = ({
     return true;
   };
 
-  const validateVerificationCode = (code: string): boolean => {
+  const validateVerificationCode = async (code: string): Promise<boolean> => {
     if (!code) {
       setVerificationCodeHelperText('请输入验证码');
       setVerificationCodeError(true);
@@ -371,9 +372,46 @@ const AuthForm: FC<AuthFormProps> = ({
       setVerificationCodeError(true);
       return false;
     }
-    setVerificationCodeHelperText('');
-    setVerificationCodeError(false);
-    return true;
+
+    // 验证码格式正确，进行服务器验证
+    try {
+      setIsVerifying(true);
+      let target = '';
+      let verificationType: 'phone' | 'email';
+
+      if (currentLoginMethod === 'phone') {
+        target = (formData as PhoneLoginFormData).phone;
+        verificationType = 'phone';
+      } else if (currentLoginMethod === 'email') {
+        target = (formData as EmailLoginFormData).email;
+        verificationType = 'email';
+      } else {
+        return true; // 用户名登录不需要验证码
+      }
+
+      const response = await authApi.verifyCode({
+        type: verificationType,
+        target,
+        code,
+      });
+
+      if (response.success) {
+        setVerificationCodeHelperText('');
+        setVerificationCodeError(false);
+        return true;
+      } else {
+        setVerificationCodeHelperText(response.message || '验证码验证失败');
+        setVerificationCodeError(true);
+        return false;
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : '验证码验证失败，请重试';
+      setVerificationCodeHelperText(errorMessage);
+      setVerificationCodeError(true);
+      return false;
+    } finally {
+      setIsVerifying(false);
+    }
   };
 
   const handleLoginMethodChange = (method: LoginMethod) => {
@@ -476,8 +514,16 @@ const AuthForm: FC<AuthFormProps> = ({
   return (
     <Box
       component="form"
-      onSubmit={(_event: FormEvent<HTMLFormElement>) => {
+      onSubmit={async (_event: FormEvent<HTMLFormElement>) => {
         _event.preventDefault();
+        
+        // 如果是手机号或邮箱登录，先验证验证码
+        if (currentLoginMethod === 'phone' || currentLoginMethod === 'email') {
+          const verificationCode = (formData as PhoneLoginFormData | EmailLoginFormData).verificationCode;
+          const isValid = await validateVerificationCode(verificationCode);
+          if (!isValid) return;
+        }
+        
         onSubmit(_event);
       }}
       data-testid="auth-form"
@@ -532,7 +578,7 @@ const AuthForm: FC<AuthFormProps> = ({
               />
               <VerificationCodeField
                 value={(formData as PhoneLoginFormData).verificationCode || ''}
-                disabled={disabled}
+                disabled={disabled || isVerifying}
                 onSendCode={handleSendCode}
                 countdown={countdown}
                 onChange={(value) => {
@@ -559,7 +605,7 @@ const AuthForm: FC<AuthFormProps> = ({
               />
               <VerificationCodeField
                 value={(formData as EmailLoginFormData).verificationCode || ''}
-                disabled={disabled}
+                disabled={disabled || isVerifying}
                 onSendCode={handleSendCode}
                 countdown={countdown}
                 onChange={(value) => {

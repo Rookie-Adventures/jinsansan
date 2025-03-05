@@ -25,6 +25,17 @@ export interface SendVerificationCodeResponse {
   message: string;
 }
 
+export interface VerifyCodeRequest {
+  type: 'phone' | 'email';
+  target: string;
+  code: string;
+}
+
+export interface VerifyCodeResponse {
+  success: boolean;
+  message: string;
+}
+
 const defaultHeaders = new AxiosHeaders({
   'Content-Type': 'application/json',
 });
@@ -99,6 +110,21 @@ export const authApi = {
     } catch (error) {
       const apiError = error as ApiError;
       throw new Error(apiError.message || '发送验证码失败，请重试');
+    }
+  },
+
+  verifyCode: async (data: VerifyCodeRequest): Promise<VerifyCodeResponse> => {
+    try {
+      const response = await request<VerifyCodeResponse>({
+        method: 'POST',
+        url: '/auth/verify-code',
+        data,
+        headers: defaultHeaders,
+      });
+      return response.data;
+    } catch (error) {
+      const apiError = error as ApiError;
+      throw new Error(apiError.message || '验证码验证失败，请重试');
     }
   },
 };
